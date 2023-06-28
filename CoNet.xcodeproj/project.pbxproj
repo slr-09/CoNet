@@ -13,6 +13,8 @@
 		513D6B902A4BFCCC00E9ACDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B8E2A4BFCCC00E9ACDA /* Main.storyboard */; };
 		513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */; };
 		513D6B952A4BFCCE00E9ACDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */; };
+		513D6B9E2A4BFE9100E9ACDA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B9D2A4BFE9100E9ACDA /* .gitignore */; };
+		513D6BA02A4BFFDB00E9ACDA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B9F2A4BFFDB00E9ACDA /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		513D6B942A4BFCCE00E9ACDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		513D6B962A4BFCCE00E9ACDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		513D6B9D2A4BFE9100E9ACDA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		513D6B9F2A4BFFDB00E9ACDA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,8 @@
 		513D6B7C2A4BFCCC00E9ACDA = {
 			isa = PBXGroup;
 			children = (
+				513D6B9F2A4BFFDB00E9ACDA /* .swiftlint.yml */,
+				513D6B9D2A4BFE9100E9ACDA /* .gitignore */,
 				513D6B872A4BFCCC00E9ACDA /* CoNet */,
 				513D6B862A4BFCCC00E9ACDA /* Products */,
 			);
@@ -74,6 +80,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 513D6B992A4BFCCE00E9ACDA /* Build configuration list for PBXNativeTarget "CoNet" */;
 			buildPhases = (
+				513D6B9C2A4BFDE100E9ACDA /* SwiftLint Script */,
 				513D6B812A4BFCCC00E9ACDA /* Sources */,
 				513D6B822A4BFCCC00E9ACDA /* Frameworks */,
 				513D6B832A4BFCCC00E9ACDA /* Resources */,
@@ -125,6 +132,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				513D6BA02A4BFFDB00E9ACDA /* .swiftlint.yml in Resources */,
+				513D6B9E2A4BFE9100E9ACDA /* .gitignore in Resources */,
 				513D6B952A4BFCCE00E9ACDA /* LaunchScreen.storyboard in Resources */,
 				513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */,
 				513D6B902A4BFCCC00E9ACDA /* Main.storyboard in Resources */,
@@ -132,6 +141,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		513D6B9C2A4BFDE100E9ACDA /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		513D6B812A4BFCCC00E9ACDA /* Sources */ = {
@@ -293,8 +324,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -321,8 +352,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
