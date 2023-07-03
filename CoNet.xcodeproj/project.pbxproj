@@ -7,27 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
 		513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */; };
-		513D6B902A4BFCCC00E9ACDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B8E2A4BFCCC00E9ACDA /* Main.storyboard */; };
 		513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */; };
 		513D6B952A4BFCCE00E9ACDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */; };
 		513D6B9E2A4BFE9100E9ACDA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B9D2A4BFE9100E9ACDA /* .gitignore */; };
 		513D6BA02A4BFFDB00E9ACDA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B9F2A4BFFDB00E9ACDA /* .swiftlint.yml */; };
+		51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64952A532CB300BBA4C0 /* KakaoSDK */; };
+		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		513D6B8F2A4BFCCC00E9ACDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		513D6B942A4BFCCE00E9ACDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		513D6B962A4BFCCE00E9ACDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		513D6B9D2A4BFE9100E9ACDA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		513D6B9F2A4BFFDB00E9ACDA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		513D6BA12A4C585600E9ACDA /* CoNet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoNet.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +38,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */,
+				51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,10 +67,11 @@
 		513D6B872A4BFCCC00E9ACDA /* CoNet */ = {
 			isa = PBXGroup;
 			children = (
+				513D6BA12A4C585600E9ACDA /* CoNet.entitlements */,
 				513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */,
 				513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */,
+				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
 				513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */,
-				513D6B8E2A4BFCCC00E9ACDA /* Main.storyboard */,
 				513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */,
 				513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */,
 				513D6B962A4BFCCE00E9ACDA /* Info.plist */,
@@ -90,6 +96,10 @@
 			dependencies = (
 			);
 			name = CoNet;
+			packageProductDependencies = (
+				51DA64952A532CB300BBA4C0 /* KakaoSDK */,
+				51DA64982A532CF800BBA4C0 /* SnapKit */,
+			);
 			productName = CoNet;
 			productReference = 513D6B852A4BFCCC00E9ACDA /* CoNet.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +128,10 @@
 				Base,
 			);
 			mainGroup = 513D6B7C2A4BFCCC00E9ACDA;
+			packageReferences = (
+				51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 513D6B862A4BFCCC00E9ACDA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -136,7 +150,6 @@
 				513D6B9E2A4BFE9100E9ACDA /* .gitignore in Resources */,
 				513D6B952A4BFCCE00E9ACDA /* LaunchScreen.storyboard in Resources */,
 				513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */,
-				513D6B902A4BFCCC00E9ACDA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,20 +185,13 @@
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
+				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		513D6B8E2A4BFCCC00E9ACDA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				513D6B8F2A4BFCCC00E9ACDA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -316,6 +322,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CoNet/CoNet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99KH3TLG9V;
@@ -323,7 +330,7 @@
 				INFOPLIST_FILE = CoNet/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -344,6 +351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CoNet/CoNet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99KH3TLG9V;
@@ -351,7 +359,7 @@
 				INFOPLIST_FILE = CoNet/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -389,6 +397,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		51DA64952A532CB300BBA4C0 /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		51DA64982A532CF800BBA4C0 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 513D6B7D2A4BFCCC00E9ACDA /* Project object */;
 }
