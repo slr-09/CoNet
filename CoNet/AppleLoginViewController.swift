@@ -46,16 +46,14 @@ class AppleLoginViewController: UIViewController {
         
         // request를 보내줄 controller 생성
         let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = self as? ASAuthorizationControllerDelegate
+        controller.delegate = self as ASAuthorizationControllerDelegate
         controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
         
         // 요청 보내기
         controller.performRequests()
     }
 
-    
 }
-
 
 extension AppleLoginViewController: ASAuthorizationControllerDelegate {
     // 성공 시
@@ -63,11 +61,11 @@ extension AppleLoginViewController: ASAuthorizationControllerDelegate {
         if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
             let idToken = credential.identityToken!
             let tokenStr = String(data: idToken, encoding: .utf8)
-            print(tokenStr)
+            print(tokenStr ?? "")
             
             guard let code = credential.authorizationCode else { return }
             let codeStr = String(data: code, encoding: .utf8)
-            print(codeStr)
+            print(codeStr ?? "")
             
             let user = credential.user
             print(user)
