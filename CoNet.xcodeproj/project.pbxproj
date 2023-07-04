@@ -19,6 +19,9 @@
 		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
 		51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4692A548A1000D134CC /* FontExtension.swift */; };
+		51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 51F2A46C2A54960200D134CC /* KeychainSwift */; };
+		51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthApi.swift */; };
+		51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,8 @@
 		513D6BA12A4C585600E9ACDA /* CoNet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoNet.entitlements; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
+		51F2A4702A5497A500D134CC /* AuthApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
+		51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRegenerateToken.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */,
 				51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */,
 				51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */,
 			);
@@ -71,6 +77,8 @@
 		513D6B872A4BFCCC00E9ACDA /* CoNet */ = {
 			isa = PBXGroup;
 			children = (
+				51F2A4722A549A1900D134CC /* DTO */,
+				51F2A46E2A54972700D134CC /* Main */,
 				51F2A4662A547C5700D134CC /* Extension */,
 				513D6BA12A4C585600E9ACDA /* CoNet.entitlements */,
 				513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */,
@@ -93,6 +101,30 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		51F2A46E2A54972700D134CC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				51F2A46F2A54973300D134CC /* Login */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		51F2A46F2A54973300D134CC /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				51F2A4702A5497A500D134CC /* AuthApi.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		51F2A4722A549A1900D134CC /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,6 +145,7 @@
 			packageProductDependencies = (
 				51DA64952A532CB300BBA4C0 /* KakaoSDK */,
 				51DA64982A532CF800BBA4C0 /* SnapKit */,
+				51F2A46C2A54960200D134CC /* KeychainSwift */,
 			);
 			productName = CoNet;
 			productReference = 513D6B852A4BFCCC00E9ACDA /* CoNet.app */;
@@ -145,6 +178,7 @@
 			packageReferences = (
 				51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = 513D6B862A4BFCCC00E9ACDA /* Products */;
 			projectDirPath = "";
@@ -196,10 +230,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
+				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 			);
@@ -431,6 +467,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 20.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -443,6 +487,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		51F2A46C2A54960200D134CC /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
