@@ -19,6 +19,7 @@
 		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
 		51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4692A548A1000D134CC /* FontExtension.swift */; };
+		51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 51F2A46C2A54960200D134CC /* KeychainSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */,
 				51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */,
 				51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */,
 			);
@@ -113,6 +115,7 @@
 			packageProductDependencies = (
 				51DA64952A532CB300BBA4C0 /* KakaoSDK */,
 				51DA64982A532CF800BBA4C0 /* SnapKit */,
+				51F2A46C2A54960200D134CC /* KeychainSwift */,
 			);
 			productName = CoNet;
 			productReference = 513D6B852A4BFCCC00E9ACDA /* CoNet.app */;
@@ -145,6 +148,7 @@
 			packageReferences = (
 				51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = 513D6B862A4BFCCC00E9ACDA /* Products */;
 			projectDirPath = "";
@@ -431,6 +435,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 20.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -443,6 +455,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 51DA64972A532CF800BBA4C0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		51F2A46C2A54960200D134CC /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
