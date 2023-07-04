@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
 		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */,
 				513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */,
 				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
+				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
 				513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */,
 				513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */,
 				513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */,
@@ -184,6 +187,7 @@
 			files = (
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
+				1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
 			);
