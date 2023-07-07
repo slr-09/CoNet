@@ -50,10 +50,12 @@ class EnterNameViewController: UIViewController {
         
         view.addSubview(xMarkView)
         
+        // AutoResizingMask로 인한 constraint 변환을 막기 위해 false로 설정
         xMarkView.translatesAutoresizingMaskIntoConstraints = false
         
-        xMarkView.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        xMarkView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        // constraint 설정
+        xMarkView.heightAnchor.constraint(equalToConstant: 24).isActive = true  // height 설정
+        xMarkView.widthAnchor.constraint(equalToConstant: 24).isActive = true   // width 설정 
         xMarkView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 21).isActive = true
         xMarkView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 21).isActive = true
         
@@ -78,11 +80,8 @@ class EnterNameViewController: UIViewController {
         
         view.addSubview(enterNameLabel)
         
-        // AutoResizingMask로 인한 constraint 변환을 막기 위해 false로 설정
         enterNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        
-        // constraint 설정
         enterNameLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
         enterNameLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24).isActive = true
         enterNameLabel.topAnchor.constraint(equalTo: topBar.bottomAnchor, constant: 40).isActive = true
@@ -162,7 +161,7 @@ class EnterNameViewController: UIViewController {
         
         nextBtn.translatesAutoresizingMaskIntoConstraints = false
         
-        nextBtn.heightAnchor.constraint(equalToConstant: 52).isActive = true    // height 설정
+        nextBtn.heightAnchor.constraint(equalToConstant: 52).isActive = true
         nextBtn.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24).isActive = true
         nextBtn.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -24).isActive = true
         nextBtn.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -46).isActive = true
