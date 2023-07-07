@@ -14,7 +14,6 @@ class EnterNameViewController: UIViewController {
     var topBar = UIView()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,7 +26,7 @@ class EnterNameViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         
-        // nameTextField underline 그리기 
+        // nameTextField underline 그리기
         let underline = CALayer()
         underline.frame = CGRectMake(0, nameTextField.frame.size.height-1, nameTextField.frame.width, 1)
         underline.backgroundColor = UIColor.gray100?.cgColor
@@ -40,17 +39,11 @@ class EnterNameViewController: UIViewController {
     
     // show UI
     func showScreen() {
-        // component
-        let enterNameLabel = UILabel()
-        let nameCondition1 = UILabel()
-        let nameCondition2 = UILabel()
-        let nextBtn = UIButton()
-        
         
         // 안전 영역
         let safeArea = view.safeAreaLayoutGuide
         
-        // xmark image (창 끄기)
+        // Component: xmark image (창 끄기)
         let xMarkView = UIImageView()
         xMarkView.image = UIImage(systemName: "xmark")
         xMarkView.tintColor = UIColor.gray600
@@ -65,7 +58,7 @@ class EnterNameViewController: UIViewController {
         xMarkView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 21).isActive = true
         
         
-        // top purple bar
+        // Component: top purple bar
         topBar.layer.backgroundColor = UIColor.purpleMain?.cgColor
         
         view.addSubview(topBar)
@@ -78,10 +71,10 @@ class EnterNameViewController: UIViewController {
         topBar.topAnchor.constraint(equalTo: xMarkView.bottomAnchor, constant: 14).isActive = true
         
         
-        // main label
+        // Component: main label
+        let enterNameLabel = UILabel()
         enterNameLabel.text = "이름을 입력해주세요"
         enterNameLabel.font = UIFont.headline1
-//        enterNameLabel.font.lineHeight = 36
         
         view.addSubview(enterNameLabel)
         
@@ -90,12 +83,12 @@ class EnterNameViewController: UIViewController {
         
         
         // constraint 설정
+        enterNameLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
         enterNameLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24).isActive = true
         enterNameLabel.topAnchor.constraint(equalTo: topBar.bottomAnchor, constant: 40).isActive = true
         
         
-        
-        // 이름 입력 텍스트필드
+        // Component: 이름 입력 텍스트필드
         nameTextField.placeholder = "이름 입력"
         nameTextField.font = UIFont.body1Regular
         
@@ -107,7 +100,7 @@ class EnterNameViewController: UIViewController {
         nameTextField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -24).isActive = true
         nameTextField.topAnchor.constraint(equalTo: enterNameLabel.bottomAnchor, constant: 42).isActive = true
         
-        // 느낌표 마크 1
+        // Component: 느낌표 마크 1
         let eMarkView1 = UIImageView()
         eMarkView1.image = UIImage(named: "emark")
         
@@ -120,9 +113,11 @@ class EnterNameViewController: UIViewController {
         eMarkView1.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24).isActive = true
         eMarkView1.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 12).isActive = true
         
-        // 이름 입력 조건 1
+        // Component: 이름 입력 조건 label 1
+        let nameCondition1 = UILabel()
         nameCondition1.text = "공백 없이 20자 이내의 한글, 영어, 숫자로 입력해주세요."
         nameCondition1.font = UIFont.caption
+        
         view.addSubview(nameCondition1)
         
         nameCondition1.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +126,7 @@ class EnterNameViewController: UIViewController {
         nameCondition1.leadingAnchor.constraint(equalTo: eMarkView1.trailingAnchor, constant: 5).isActive = true
         nameCondition1.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10).isActive = true
         
-        // 느낌표 마크 2
+        // Component: 느낌표 마크 2
         let eMarkView2 = UIImageView()
         eMarkView2.image = UIImage(named: "emark")
         
@@ -144,7 +139,8 @@ class EnterNameViewController: UIViewController {
         eMarkView2.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24).isActive = true
         eMarkView2.topAnchor.constraint(equalTo: eMarkView1.bottomAnchor, constant: 8).isActive = true
         
-        // 이름 입력 조건 2
+        // Component: 이름 입력 조건 label 2
+        let nameCondition2 = UILabel()
         nameCondition2.text = "참여자 간 원활한 소통을 위해 실명을 권장합니다."
         nameCondition2.font = UIFont.caption
         view.addSubview(nameCondition2)
@@ -156,7 +152,8 @@ class EnterNameViewController: UIViewController {
         nameCondition2.topAnchor.constraint(equalTo: nameCondition1.bottomAnchor, constant: 4).isActive = true
         
         
-        // 완료 버튼
+        // Component: 완료 버튼
+        let nextBtn = UIButton()
         nextBtn.setTitle("완료", for: .normal)
         nextBtn.setTitleColor(.white, for: .normal)
         nextBtn.backgroundColor = UIColor.gray200
@@ -173,7 +170,7 @@ class EnterNameViewController: UIViewController {
         nextBtn.layer.cornerRadius = 12
         
         
-       
+        
     }
     
 
