@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class EnterNameViewController: UIViewController {
+class EnterNameViewController: UIViewController, UITextFieldDelegate {
 
     // Component: xmark image (창 끄기)
     let xMarkView = UIImageView().then{
@@ -33,12 +33,11 @@ class EnterNameViewController: UIViewController {
         $0.placeholder = "이름 입력"
         $0.font = UIFont.body1Regular
         $0.tintColor = UIColor.black
-//        $0.clearButtonMode = .whileEditing
+        $0.becomeFirstResponder()
     }
     
     let clearButton = UIButton().then{
         $0.setImage(UIImage(), for: .normal)
-//        $0.addTarget(self, action: #selector(didClickClearBtn), for: .touchUpInside)
     }
     
     // textfield underline
@@ -88,10 +87,8 @@ class EnterNameViewController: UIViewController {
         
         // .editingChanged: editing이 될 때마다 didChangeNameTextField 함수가 호출됩니다.
         self.nameTextField.addTarget(self, action: #selector(self.didChangeNameTextField(_:)), for: .editingChanged)
-        
     }
-    
-    
+
     
     // show UI
     func layoutConstraints() {
@@ -108,7 +105,6 @@ class EnterNameViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(21)
             make.top.equalTo(safeArea.snp.top).offset(21)
         }
-        
         
         // Component: top purple bar
         view.addSubview(topBar)
@@ -128,7 +124,6 @@ class EnterNameViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.top.equalTo(topBar.snp.bottom).offset(40)
         }
-        
         
         // Component: nametextfield
         view.addSubview(nameTextField)
@@ -256,5 +251,9 @@ class EnterNameViewController: UIViewController {
     @objc func didClickClearButton() {
         nameTextField.text = ""
     }
-    
+
+    // 텍스트필드 외의 공간 클릭시 키보드가 내려갑니다.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
