@@ -148,8 +148,8 @@
 		51F72C572A592B3E0055E8C4 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
 				514D73CF2A59839200404E64 /* MyPageList.swift */,
+				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
 				514D73D12A59B42A00404E64 /* UserInfoViewController.swift */,
 			);
 			path = MyPage;

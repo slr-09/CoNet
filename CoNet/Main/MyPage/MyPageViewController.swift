@@ -32,6 +32,8 @@ class MyPageViewController: UIViewController {
     let shortDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
     
     let myPageList = MyPageList()
+    let userInfoButton = UIButton().then { $0.backgroundColor = .clear }
+    
     lazy var userInfoView = myPageList.arrowView(title: "회원정보")
     lazy var notificationView = myPageList.toggleView(title: "알림 설정")
     
@@ -52,6 +54,17 @@ class MyPageViewController: UIViewController {
         // show UI
         titleLayoutConstraints()
         layoutConstraints()
+        
+        userInfoView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        noticeView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        inquireView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        termView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+    }
+    
+    @objc func didClickNextButton(_ sender: UIView) {
+        let nextVC = UserInfoViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
     }
     
     func titleLayoutConstraints() {

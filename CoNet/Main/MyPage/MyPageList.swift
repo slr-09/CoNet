@@ -10,8 +10,8 @@ import Then
 import UIKit
 
 class MyPageList {
-    func arrowView(title: String) -> UIView {
-        let arrowView = UIView().then { $0.backgroundColor = .clear }
+    func arrowView(title: String) -> UIButton {
+        let arrowView = UIButton().then { $0.backgroundColor = .clear }
         
         arrowView.snp.makeConstraints { make in
             make.height.equalTo(24)
@@ -47,8 +47,8 @@ class MyPageList {
         return arrowView
     }
     
-    func noArrowView(title: String) -> UIView {
-        let noArrowView = UIView().then { $0.backgroundColor = .clear }
+    func noArrowView(title: String) -> UIButton {
+        let noArrowView = UIButton().then { $0.backgroundColor = .clear }
         
         noArrowView.snp.makeConstraints { make in
             make.height.equalTo(24)
@@ -71,8 +71,8 @@ class MyPageList {
         return noArrowView
     }
     
-    func toggleView(title: String) -> UIView {
-        let toggleView = UIView().then { $0.backgroundColor = .clear }
+    func toggleView(title: String) -> UIButton {
+        let toggleView = UIButton().then { $0.backgroundColor = .clear }
         
         toggleView.snp.makeConstraints { make in
             make.height.equalTo(24)
