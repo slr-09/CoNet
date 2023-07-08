@@ -57,13 +57,19 @@ class MyPageViewController: UIViewController {
         layoutConstraints()
         
         userInfoView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
-        noticeView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        noticeView.addTarget(self, action: #selector(showNoticeViewController(_:)), for: .touchUpInside)
         inquireView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
         termView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
     }
     
     @objc func didClickNextButton(_ sender: UIView) {
         let nextVC = UserInfoViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
+    }
+    
+    @objc func showNoticeViewController(_ sender: UIView) {
+        let nextVC = NoticeViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
     }
