@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		231EA9D02A587DE700138628 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 231EA9CF2A587DE700138628 /* Then */; };
 		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
+		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
+		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
+				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
+				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
