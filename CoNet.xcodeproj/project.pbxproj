@@ -119,7 +119,6 @@
 				513D6BA12A4C585600E9ACDA /* CoNet.entitlements */,
 				513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */,
 				513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */,
-				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
 				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
 				513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */,
 				513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */,
