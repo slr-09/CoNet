@@ -85,10 +85,18 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // show UI
         layoutConstraints()
         
-        // .editingChanged: editing이 될 때마다 didChangeNameTextField 함수가 호출됩니다.
-        self.nameTextField.addTarget(self, action: #selector(self.didChangeNameTextField(_:)), for: .editingChanged)
+        // 클릭 이벤트
+        clickEvents()
     }
 
+    func clickEvents() {
+        // .editingChanged: editing이 될 때마다 didChangeNameTextField 함수가 호출됩니다.
+        self.nameTextField.addTarget(self, action: #selector(self.didChangeNameTextField(_:)), for: .editingChanged)
+        // 텍스트필드 클리어버튼
+        self.clearButton.addTarget(self, action: #selector(didClickClearButton), for: .touchUpInside)
+        // 완료 버튼
+        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+    }
     
     // show UI
     func layoutConstraints() {
@@ -222,7 +230,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         }
         
         // 공백없이 한글, 영어, 숫자로만 20자 이내
-        let regexPattern = "^[0-9A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]{1,20}$"
+        let regexPattern = "^[0-9A-Za-z가-힣]{1,20}$"
         guard let _ = editText?.range(of: regexPattern, options: .regularExpression)
         else {
             // 조건 만족하지 않을 경우 return false
@@ -237,7 +245,6 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 조건 만족한 경우 return true
         clearButton.setImage(UIImage(named: "clearBtn"), for: .normal)
-        clearButton.addTarget(self, action: #selector(didClickClearButton), for: .touchUpInside)
         underlineView.layer.backgroundColor = UIColor.purpleMain?.cgColor
         nameCondition1.textColor = UIColor.black
         eMarkView1.image = UIImage(named: "emarkPurple")
@@ -255,5 +262,16 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
     // 텍스트필드 외의 공간 클릭시 키보드가 내려갑니다.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    // 완료 버튼 클릭 시
+    // 버튼이 활성화된 경우에만 탭바 화면으로 넘어갑니다.
+    @objc func didClickNextButton(_ sender: UIButton) {
+        // 버튼 색으로 활성화 여부 체크
+        if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
+            let vc = TabbarViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: false, completion: nil)
+        }
     }
 }
