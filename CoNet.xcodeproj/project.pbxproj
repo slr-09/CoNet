@@ -24,6 +24,7 @@
 		51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 51F2A46C2A54960200D134CC /* KeychainSwift */; };
 		51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthApi.swift */; };
 		51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */; };
+		51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
 		51F2A4702A5497A500D134CC /* AuthApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
 		51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRegenerateToken.swift; sourceTree = "<group>"; };
+		51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		51F2A46E2A54972700D134CC /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				51F72C572A592B3E0055E8C4 /* MyPage */,
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
 			);
@@ -136,6 +139,14 @@
 				51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		51F72C572A592B3E0055E8C4 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
+			);
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +261,7 @@
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
+				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
