@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // 맨 처음 보여줄 ViewController
-        let mainViewController = TabbarViewController()
+        let mainViewController = EnterNameViewController()
         
         // 맨 처음 보여줄 ViewController로 설정
         window?.rootViewController = mainViewController
@@ -24,8 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 화면을 띄움
         window?.makeKeyAndVisible()
         
-//        let tabbar = UITabBarController()
-//        tabbar.view.backgroundColor = .white
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
