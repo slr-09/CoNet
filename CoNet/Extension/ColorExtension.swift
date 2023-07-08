@@ -28,8 +28,8 @@ extension UIColor {
     
     // text
     static let textDisabled = UIColor(named: "textDisabled")
-    static let textInactive = UIColor(named: "textInactive")
-    static let textActive = UIColor(named: "textActive")
+    static let textMedium = UIColor(named: "textMedium")
+    static let textHigh = UIColor(named: "textHigh")
     
     // icon
     static let iconDisabled = UIColor(named: "iconDisabled")

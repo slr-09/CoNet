@@ -25,11 +25,12 @@ extension UIFont {
     
     // headline3: lineHeight 22
     static let headline3Regular = UIFont.systemFont(ofSize: 18, weight: .regular)
+    static let headline3Medium = UIFont.systemFont(ofSize: 18, weight: .medium)
     static let headline3Bold = UIFont.systemFont(ofSize: 18, weight: .bold)
     
     // body1: lineHeight 20
     static let body1Regular = UIFont.systemFont(ofSize: 16, weight: .regular)
-    static let body1Medium = UIFont.systemFont(ofSize: 16, weight: .medium)
+    static let body1Medium = UIFont.systemFont(ofSize: 16, weight: .medium) // lineHeight: 24
     static let body1Bold = UIFont.systemFont(ofSize: 16, weight: .bold)
     
     // body2: lineHeight 18

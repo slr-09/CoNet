@@ -14,7 +14,7 @@ class MyPageViewController: UIViewController {
     let titleLabel = UILabel().then {
         $0.text = "MY"
         $0.font = UIFont.headline1
-        $0.textColor = UIColor.textActive
+        $0.textColor = UIColor.textHigh
     }
     
     override func viewDidLoad() {
