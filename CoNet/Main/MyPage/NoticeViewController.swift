@@ -8,7 +8,6 @@
 import UIKit
 
 class NoticeViewController: UIViewController {
-    // title
     let nothingNoticeLabel = UILabel().then {
         $0.text = "등록된 공지가 없습니다."
         $0.font = UIFont.body2Medium
@@ -39,9 +38,7 @@ class NoticeViewController: UIViewController {
     func layoutConstraints() {
         let safeArea = view.safeAreaLayoutGuide
         
-        // Component: xmark image (창 끄기)
         view.addSubview(nothingNoticeLabel)
-        
         nothingNoticeLabel.snp.makeConstraints { make in
             make.height.equalTo(18)
             make.top.equalTo(safeArea.snp.top).offset(40)

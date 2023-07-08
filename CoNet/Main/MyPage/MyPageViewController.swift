@@ -58,7 +58,7 @@ class MyPageViewController: UIViewController {
         
         userInfoView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
         noticeView.addTarget(self, action: #selector(showNoticeViewController(_:)), for: .touchUpInside)
-        inquireView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        inquireView.addTarget(self, action: #selector(showInquireViewController(_:)), for: .touchUpInside)
         termView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
     }
     
@@ -70,6 +70,12 @@ class MyPageViewController: UIViewController {
     
     @objc func showNoticeViewController(_ sender: UIView) {
         let nextVC = NoticeViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
+    }
+    
+    @objc func showInquireViewController(_ sender: UIView) {
+        let nextVC = InquireViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
     }
