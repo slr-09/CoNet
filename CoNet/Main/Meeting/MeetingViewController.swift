@@ -5,13 +5,21 @@
 //  Created by 가은 on 2023/07/08.
 //
 
+import SnapKit
 import UIKit
 
 class MeetingViewController: UIViewController {
 
+    let label = UILabel().then{
+        $0.text = "meetingviewcontroller"
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.addSubview(label)
+        label.snp.makeConstraints{ make in
+            make.center.equalTo(view.safeAreaLayoutGuide.snp.center).offset(0)
+        }
         // Do any additional setup after loading the view.
     }
     

@@ -23,6 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 화면을 띄움
         window?.makeKeyAndVisible()
+        
+//        let tabbar = UITabBarController()
+//        tabbar.view.backgroundColor = .white
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
