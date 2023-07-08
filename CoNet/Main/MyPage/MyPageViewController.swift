@@ -47,6 +47,7 @@ class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         
         // background color를 white로 설정 (default: black)
         view.backgroundColor = .white
