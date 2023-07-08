@@ -30,16 +30,16 @@ class MyPageViewController: UIViewController {
     
     let divider = UIView().then { $0.backgroundColor = UIColor.gray50 }
     let shortDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
-    let secondShortDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
     
-    var myPageList = MyPageList()
-    
+    let myPageList = MyPageList()
     lazy var userInfoView = myPageList.arrowView(title: "회원정보")
     lazy var notificationView = myPageList.toggleView(title: "알림 설정")
     
     lazy var noticeView = myPageList.arrowView(title: "공지사항")
     lazy var inquireView = myPageList.arrowView(title: "문의하기")
     lazy var termView = myPageList.noArrowView(title: "이용약관")
+    
+    let secondShortDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
     
     lazy var logoutView = myPageList.noArrowView(title: "로그아웃")
     
@@ -50,13 +50,11 @@ class MyPageViewController: UIViewController {
         view.backgroundColor = .white
         
         // show UI
+        titleLayoutConstraints()
         layoutConstraints()
     }
     
-    // show UI
-    func layoutConstraints() {
-        
-        // 안전 영역
+    func titleLayoutConstraints() {
         let safeArea = view.safeAreaLayoutGuide
         
         // Component: xmark image (창 끄기)
@@ -67,6 +65,13 @@ class MyPageViewController: UIViewController {
             make.top.equalTo(safeArea.snp.top).offset(40)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
+    }
+    
+    // show UI
+    func layoutConstraints() {
+        
+        // 안전 영역
+        let safeArea = view.safeAreaLayoutGuide
         
         view.addSubview(profileImage)
         
@@ -98,18 +103,10 @@ class MyPageViewController: UIViewController {
         userInfoView.snp.makeConstraints { make in
             make.width.equalTo(safeArea.snp.width).offset(-48)
             make.top.equalTo(divider.snp.bottom).offset(32)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
+            verticalPadding(make: make)
         }
         
-        view.addSubview(notificationView)
-        
-        notificationView.snp.makeConstraints { make in
-            make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(userInfoView.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
-        }
+        myPageListLayoutConstraints(notificationView, previousView: userInfoView)
         
         view.addSubview(shortDivider)
         
@@ -118,36 +115,12 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(safeArea.snp.width).offset(-48)
             
             make.top.equalTo(notificationView.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
+            verticalPadding(make: make)
         }
         
-        view.addSubview(noticeView)
-
-        noticeView.snp.makeConstraints { make in
-            make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(shortDivider.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
-        }
-        
-        view.addSubview(inquireView)
-
-        inquireView.snp.makeConstraints { make in
-            make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(noticeView.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
-        }
-        
-        view.addSubview(termView)
-
-        termView.snp.makeConstraints { make in
-            make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(inquireView.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
-        }
+        myPageListLayoutConstraints(noticeView, previousView: shortDivider)
+        myPageListLayoutConstraints(inquireView, previousView: noticeView)
+        myPageListLayoutConstraints(termView, previousView: inquireView)
         
         view.addSubview(secondShortDivider)
 
@@ -156,17 +129,29 @@ class MyPageViewController: UIViewController {
             make.width.equalTo(safeArea.snp.width).offset(-48)
 
             make.top.equalTo(termView.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
+            verticalPadding(make: make)
         }
         
-        view.addSubview(logoutView)
+        myPageListLayoutConstraints(logoutView, previousView: secondShortDivider)
+    }
+    
+    func myPageListLayoutConstraints(_ listView: UIView, previousView: UIView) {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(listView)
 
-        logoutView.snp.makeConstraints { make in
+        listView.snp.makeConstraints { make in
             make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(secondShortDivider.snp.bottom).offset(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
+            make.top.equalTo(previousView.snp.bottom).offset(24)
+            verticalPadding(make: make)
         }
     }
+    
+    func verticalPadding(make: ConstraintMaker) {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        make.leading.equalTo(safeArea.snp.leading).offset(24)
+        make.trailing.equalTo(safeArea.snp.trailing).offset(24)
+    }
+    
 }
