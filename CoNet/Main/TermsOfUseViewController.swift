@@ -43,6 +43,17 @@ class TermsOfUseViewController: UIViewController {
             make.width.height.equalTo(24)
         }
         
+        
+        let grayLine = UIView().then {
+            $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
+        }
+        
+        view.addSubview(grayLine)
+        grayLine.snp.makeConstraints { make in
+            make.width.equalTo(394)
+            make.height.equalTo(4)
+        }
+        
         let purpleLine = UIView().then {
             $0.backgroundColor = UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1)
         }
@@ -54,17 +65,7 @@ class TermsOfUseViewController: UIViewController {
             make.height.equalTo(4)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().inset(196)
-        }
-        
-        let grayLine = UIView().then {
-            $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-        }
-        
-        view.addSubview(grayLine)
-        grayLine.snp.makeConstraints { make in
-            make.top.equalTo(purpleLine.snp.bottom)
-            make.width.equalTo(394)
-            make.height.equalTo(4)
+            make.top.equalTo(grayLine.snp.top)
         }
         
         // Label
