@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
+		1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */; };
+		1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE23DBA2A59837F000D498F /* LoginViewController.swift */; };
 		231EA9D02A587DE700138628 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 231EA9CF2A587DE700138628 /* Then */; };
 		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
 		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
@@ -26,12 +28,14 @@
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
 		51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4692A548A1000D134CC /* FontExtension.swift */; };
 		51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 51F2A46C2A54960200D134CC /* KeychainSwift */; };
-		51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthApi.swift */; };
+		51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthAPI.swift */; };
 		51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
+		1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		1AE23DBA2A59837F000D498F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		236054F62A593F3B00CA991E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -49,7 +53,7 @@
 		513D6BA12A4C585600E9ACDA /* CoNet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoNet.entitlements; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
-		51F2A4702A5497A500D134CC /* AuthApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
+		51F2A4702A5497A500D134CC /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRegenerateToken.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,7 +123,6 @@
 				513D6BA12A4C585600E9ACDA /* CoNet.entitlements */,
 				513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */,
 				513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */,
-				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
 				513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */,
 				513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */,
 				513D6B932A4BFCCE00E9ACDA /* LaunchScreen.storyboard */,
@@ -145,6 +148,7 @@
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
+				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -152,8 +156,10 @@
 		51F2A46F2A54973300D134CC /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				1AE23DBA2A59837F000D498F /* LoginViewController.swift */,
 				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
-				51F2A4702A5497A500D134CC /* AuthApi.swift */,
+				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
+				51F2A4702A5497A500D134CC /* AuthAPI.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -273,8 +279,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */,
+				1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */,
 				23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */,
-				51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */,
+				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
@@ -432,6 +440,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -461,6 +470,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

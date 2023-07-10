@@ -9,7 +9,7 @@ import Alamofire
 import Foundation
 import KeychainSwift
 
-class AuthApi {
+class AuthAPI {
     let keychain = KeychainSwift()
     let baseUrl = "http://15.164.196.172:9000"
     
