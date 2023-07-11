@@ -107,6 +107,7 @@
 		23FE4ECA2A55B03600BBF17E /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 				23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */,
 			);
 			path = SignUp;
@@ -176,7 +177,6 @@
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
-				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
