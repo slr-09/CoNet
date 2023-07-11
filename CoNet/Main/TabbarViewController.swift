@@ -38,7 +38,7 @@ class TabbarViewController: UITabBarController {
     // 마이페이지 탭
     // TODO: ViewController()를 마이페이지 컨트롤러로 바꾸기
     let thirdNVController = UINavigationController().then {
-        let thirdTabController = ViewController()
+        let thirdTabController = MyPageViewController()
         $0.addChild(thirdTabController)
         $0.tabBarItem.image = UIImage(named: "tabbarMypage")
         $0.tabBarItem.selectedImage = UIImage(named: "tabbarMypageSelected")

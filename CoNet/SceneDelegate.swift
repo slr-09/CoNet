@@ -25,13 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         var navigationController: UINavigationController?
         
-        navigationController = UINavigationController(rootViewController: MyPageViewController())
+        navigationController = UINavigationController(rootViewController: TabbarViewController())
+        navigationController?.navigationBar.isHidden = true
+        
         window?.rootViewController = navigationController
         
         /*
         // 맨 처음 보여줄 ViewController
         let mainViewController = MyPageViewController()
-//        let mainViewController = UserInfoViewController()
+        let mainViewController = UserInfoViewController()
         
         // 맨 처음 보여줄 ViewController로 설정
         window?.rootViewController = mainViewController
