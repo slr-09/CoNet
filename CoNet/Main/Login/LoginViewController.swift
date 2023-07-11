@@ -29,11 +29,20 @@ class LoginViewController: UIViewController {
         tempButtonUI()
         
         showSignUpButton.addTarget(self, action: #selector(showSignUp(_:)), for: .touchUpInside)
+        showMainButton.addTarget(self, action: #selector(showMain(_:)), for: .touchUpInside)
     }
     
     @objc func showSignUp(_ sender: UIView) {
         let nextVC = TermsOfUseViewController()
         navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func showMain(_ sender: UIView) {
+        let nextVC = TabbarViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
     }
     
     func tempButtonUI() {
