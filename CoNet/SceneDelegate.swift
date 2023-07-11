@@ -5,8 +5,8 @@
 //  Created by 이안진 on 2023/06/28.
 //
 
-import UIKit
 import KakaoSDKAuth
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
             if let url = URLContexts.first?.url {
-                if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                if AuthApi.isKakaoTalkLoginUrl(url) {
                     _ = AuthController.handleOpenUrl(url: url)
                 }
         }
@@ -25,23 +25,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         var navigationController: UINavigationController?
         
-        navigationController = UINavigationController(rootViewController: TabbarViewController())
+        navigationController = UINavigationController(rootViewController: LoginViewController())
         navigationController?.navigationBar.isHidden = true
         
         window?.rootViewController = navigationController
         
-        /*
-        // 맨 처음 보여줄 ViewController
-        let mainViewController = MyPageViewController()
-        let mainViewController = UserInfoViewController()
-        
-        // 맨 처음 보여줄 ViewController로 설정
-        window?.rootViewController = mainViewController
-        */
-        
         // 화면을 띄움
         window?.makeKeyAndVisible()
         
+    }
+    
+    func changeRootVC(_ viewController: UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        window.rootViewController = viewController // 전환
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -4,11 +4,12 @@
 //
 //  Created by 정아현 on 2023/07/04.
 //
-import UIKit
-import SnapKit
-import KakaoSDKUser
+
 import KakaoSDKAuth
 import KakaoSDKCommon
+import KakaoSDKUser
+import SnapKit
+import UIKit
 
 class KakaoLoginViewController: UIViewController {
     
@@ -38,7 +39,7 @@ class KakaoLoginViewController: UIViewController {
     
     @objc func loginButtonTapped() {
         
-        //requestKakaoLogin()
+        // requestKakaoLogin()
         kakaoLogin() // 예외 처리 가정
         print("# requestKakaoLogin() 완료")
         
@@ -46,34 +47,32 @@ class KakaoLoginViewController: UIViewController {
         
     }
     
-    func kakaoLogin(){
+    func kakaoLogin() {
         
         // 카카오톡 실행 가능 여부 확인
-        if (UserApi.isKakaoTalkLoginAvailable()) {
+        if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
                     print(error)
-                }
-                else {
+                } else {
                     print("loginWithKakaoTalk() success")
                     print("Kakao id token: (oauthToken.idToken)")
                     
-                    //do something
+                    // do something
                     _ = oauthToken
                 }
             }
         }
         
         // 카카오계정으로 로그인
-        else{
+        else {
             UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                 if let error = error {
                     print(error)
-                }
-                else {
+                } else {
                     print("Kakao id token: (oauthToken.idToken)")
                     
-                    //do something
+                    // do something
                     _ = oauthToken
                 }
             }
@@ -81,33 +80,31 @@ class KakaoLoginViewController: UIViewController {
         
     }
     
-    //카카오계정 가입 후 로그인하기
-    func createAccount(){
+    // 카카오계정 가입 후 로그인하기
+    func createAccount() {
         UserApi.shared.loginWithKakaoAccount(prompts: [.Create]) {(oauthToken, error) in
             if let error = error {
                 print(error)
-            }
-            else {
+            } else {
                 print("loginWithKakaoAccount() success.")
                 
-                //do something
+                // do something
                 _ = oauthToken
             }
         }
     }
         
-    //사용자 정보 가져오기
-    func printMyUserInfo(){
+    // 사용자 정보 가져오기
+    func printMyUserInfo() {
             
-        UserApi.shared.me() {(user, error) in
+        UserApi.shared.me {(user, error) in
             if let error = error {
                 print("# me() failed")
                 print(error)
-            }
-            else {
+            } else {
                 print("# me() success.")
                     
-                //do something
+                // do something
                 print("# myInfo's ID : " + (user?.id?.description ?? "ID default value"))
                 print("# myInfo's email : " + (user?.kakaoAccount?.email ?? "email default value"))
                 print("# myInfo's profileImageUrl : " + (user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? "profileImageUrl default value"))
@@ -120,4 +117,3 @@ class KakaoLoginViewController: UIViewController {
     }
         
 }
-

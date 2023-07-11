@@ -5,9 +5,9 @@
 //  Created by 정아현 on 2023/07/09.
 //
 
+import SnapKit
 import Then
 import UIKit
-import SnapKit
 
 class TermsOfUseViewController: UIViewController {
     private var button1: UIButton!
@@ -22,7 +22,14 @@ class TermsOfUseViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        
+        customButton.addTarget(self, action: #selector(showEnterName(_:)), for: .touchUpInside)
+    }
+    
+    @objc func showEnterName(_ sender: UIView) {
+        let nextVC = EnterNameViewController()
+        if buttonSelectedStates[1] && buttonSelectedStates[2] {
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // MARK: - UI Setup
@@ -32,7 +39,7 @@ class TermsOfUseViewController: UIViewController {
         
         // X Button
         let xButton = UIButton().then {
-            $0.setImage(UIImage(named: "x-close"), for: .normal)
+            $0.setImage(UIImage(named: "closeBtn"), for: .normal)
             $0.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         }
         
@@ -336,13 +343,7 @@ class TermsOfUseViewController: UIViewController {
     
     // x Button click -> LoginViewController
     @objc private func xButtonTapped() {
-        let loginVC = LoginViewController()
-        
-        // Set the presentation style to fullscreen
-        loginVC.modalPresentationStyle = .fullScreen
-        
-        // Present the LoginViewController
-        present(loginVC, animated: true, completion: nil)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc private func button1Tapped() {

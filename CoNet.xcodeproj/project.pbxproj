@@ -107,6 +107,7 @@
 		23FE4ECA2A55B03600BBF17E /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 				23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */,
 			);
 			path = SignUp;
@@ -176,7 +177,6 @@
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
-				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -223,7 +223,6 @@
 				513D6B812A4BFCCC00E9ACDA /* Sources */,
 				513D6B822A4BFCCC00E9ACDA /* Frameworks */,
 				513D6B832A4BFCCC00E9ACDA /* Resources */,
-				1ADA548E2A5D6FA600609041 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -297,23 +296,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1ADA548E2A5D6FA600609041 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
-		};
 		513D6B9C2A4BFDE100E9ACDA /* SwiftLint Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -344,7 +326,7 @@
 				1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */,
 				23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */,
 				514D73D22A59B42A00404E64 /* UserInfoViewController.swift in Sources */,
-				51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */,
+				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */,
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,

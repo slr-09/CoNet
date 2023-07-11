@@ -86,6 +86,18 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 클릭 이벤트
         clickEvents()
+        
+        nextBtn.addTarget(self, action: #selector(showTabView(_:)), for: .touchUpInside)
+    }
+    
+    @objc func showTabView(_ sender: UIView) {
+        if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
+            let nextVC = TabbarViewController()
+            navigationController?.pushViewController(nextVC, animated: true)
+            
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+            sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+        }
     }
 
     func clickEvents() {
@@ -94,7 +106,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // 텍스트필드 클리어버튼
         self.clearButton.addTarget(self, action: #selector(didClickClearButton), for: .touchUpInside)
         // 완료 버튼
-        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+//        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
     }
     
     // show UI
@@ -263,6 +275,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
+    /*
     // 완료 버튼 클릭 시
     // 버튼이 활성화된 경우에만 탭바 화면으로 넘어갑니다.
     @objc func didClickNextButton(_ sender: UIButton) {
@@ -273,4 +286,5 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
             self.present(tabBarVC, animated: false, completion: nil)
         }
     }
+     */
 }

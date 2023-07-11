@@ -36,7 +36,6 @@ class TabbarViewController: UITabBarController {
     }
     
     // 마이페이지 탭
-    // TODO: ViewController()를 마이페이지 컨트롤러로 바꾸기
     let thirdNVController = UINavigationController().then {
         let thirdTabController = MyPageViewController()
         $0.addChild(thirdTabController)
@@ -47,13 +46,15 @@ class TabbarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
         self.view.backgroundColor = .white
         self.selectedIndex = defaultIndex
         
         let viewControllers = [firstNVController, secondNVController, thirdNVController]
         self.setViewControllers(viewControllers, animated: true)
-        
     }
     
 }
