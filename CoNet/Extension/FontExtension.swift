@@ -31,11 +31,12 @@ extension UIFont {
     
     // headline3: lineHeight 22
     static let headline3Regular = UIFont(name: Font.pretendardRegular, size: 18)
+    static let headline3Medium = UIFont(name: Font.pretendardMedium, size: 18)
     static let headline3Bold = UIFont(name: Font.pretendardBold, size: 18)
     
     // body1: lineHeight 20
     static let body1Regular = UIFont(name: Font.pretendardRegular, size: 16)
-    static let body1Medium = UIFont(name: Font.pretendardMedium, size: 16)
+    static let body1Medium = UIFont(name: Font.pretendardMedium, size: 16) // lineHeight: 24
     static let body1Bold = UIFont(name: Font.pretendardBold, size: 16)
     
     // body2: lineHeight 18

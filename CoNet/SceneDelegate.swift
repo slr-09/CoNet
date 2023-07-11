@@ -23,12 +23,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        var navigationController: UINavigationController?
         
+        navigationController = UINavigationController(rootViewController: MyPageViewController())
+        window?.rootViewController = navigationController
+        
+        /*
         // 맨 처음 보여줄 ViewController
-        let mainViewController = KakaoLoginViewController()
+        let mainViewController = MyPageViewController()
+//        let mainViewController = UserInfoViewController()
         
         // 맨 처음 보여줄 ViewController로 설정
         window?.rootViewController = mainViewController
+        */
         
         // 화면을 띄움
         window?.makeKeyAndVisible()
