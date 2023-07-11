@@ -5,9 +5,9 @@
 //  Created by 정아현 on 2023/07/09.
 //
 
+import SnapKit
 import Then
 import UIKit
-import SnapKit
 
 class TermsOfUseViewController: UIViewController {
     private var button1: UIButton!
