@@ -18,7 +18,7 @@ class TabbarViewController: UITabBarController {
     }
     
     // 홈탭
-    let firstNVController = UINavigationController().then{
+    let firstNVController = UINavigationController().then {
         let firstTabController = HomeViewController()
         $0.addChild(firstTabController)
         $0.tabBarItem.image = UIImage(named: "tabbarHome")
@@ -27,7 +27,7 @@ class TabbarViewController: UITabBarController {
     }
     
     // 모임탭
-    let secondNVController = UINavigationController().then{
+    let secondNVController = UINavigationController().then {
         let secondTabController = MeetingViewController()
         $0.addChild(secondTabController)
         $0.tabBarItem.image = UIImage(named: "tabbarMeeting")
@@ -37,7 +37,7 @@ class TabbarViewController: UITabBarController {
     
     // 마이페이지 탭
     // TODO: ViewController()를 마이페이지 컨트롤러로 바꾸기
-    let thirdNVController = UINavigationController().then{
+    let thirdNVController = UINavigationController().then {
         let thirdTabController = ViewController()
         $0.addChild(thirdTabController)
         $0.tabBarItem.image = UIImage(named: "tabbarMypage")
@@ -57,5 +57,3 @@ class TabbarViewController: UITabBarController {
     }
     
 }
-
-

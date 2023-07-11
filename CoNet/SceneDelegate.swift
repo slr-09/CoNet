@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // 맨 처음 보여줄 ViewController
-        let mainViewController = TermsOfUseViewController()
+        let mainViewController = KakaoLoginViewController()
         
         // 맨 처음 보여줄 ViewController로 설정
         window?.rootViewController = mainViewController
