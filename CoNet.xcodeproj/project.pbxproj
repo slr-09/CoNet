@@ -7,9 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
+		1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */; };
+		1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE23DBA2A59837F000D498F /* LoginViewController.swift */; };
 		231EA9D02A587DE700138628 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 231EA9CF2A587DE700138628 /* Then */; };
 		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
+		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
+		236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F62A593F3B00CA991E /* HomeViewController.swift */; };
+		236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F92A593F5400CA991E /* MeetingViewController.swift */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
+		51046AA32A5D7DA400AD543D /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */; };
+		51046AA52A5D7E3300AD543D /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */; };
+		51046AA72A5D7E4100AD543D /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
 		513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */; };
@@ -26,14 +35,23 @@
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
 		51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4692A548A1000D134CC /* FontExtension.swift */; };
 		51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 51F2A46C2A54960200D134CC /* KeychainSwift */; };
-		51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthApi.swift */; };
+		51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4702A5497A500D134CC /* AuthAPI.swift */; };
 		51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */; };
 		51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
+		1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		1AE23DBA2A59837F000D498F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
+		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
+		236054F62A593F3B00CA991E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		236054F92A593F5400CA991E /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
+		51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,7 +68,7 @@
 		514D73D52A59D2FB00404E64 /* InquireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquireViewController.swift; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
-		51F2A4702A5497A500D134CC /* AuthApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
+		51F2A4702A5497A500D134CC /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRegenerateToken.swift; sourceTree = "<group>"; };
 		51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,12 +88,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		236054F52A593F2E00CA991E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				236054F62A593F3B00CA991E /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		236054F82A593F4000CA991E /* Meeting */ = {
+			isa = PBXGroup;
+			children = (
+				236054F92A593F5400CA991E /* MeetingViewController.swift */,
+			);
+			path = Meeting;
+			sourceTree = "<group>";
+		};
 		23FE4ECA2A55B03600BBF17E /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
 				23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */,
 			);
 			path = SignUp;
+			sourceTree = "<group>";
+		};
+		51046A9D2A5D796D00AD543D /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */,
+				51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */,
+				51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		513D6B7C2A4BFCCC00E9ACDA = {
@@ -116,6 +160,7 @@
 		51F2A4662A547C5700D134CC /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				51046A9D2A5D796D00AD543D /* Font */,
 				51F2A4672A54804100D134CC /* ColorExtension.swift */,
 				51F2A4692A548A1000D134CC /* FontExtension.swift */,
 			);
@@ -126,8 +171,12 @@
 			isa = PBXGroup;
 			children = (
 				51F72C572A592B3E0055E8C4 /* MyPage */,
+				236054F82A593F4000CA991E /* Meeting */,
+				236054F52A593F2E00CA991E /* Home */,
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
 				51F2A46F2A54973300D134CC /* Login */,
+				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
+				1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -135,8 +184,10 @@
 		51F2A46F2A54973300D134CC /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				1AE23DBA2A59837F000D498F /* LoginViewController.swift */,
 				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
-				51F2A4702A5497A500D134CC /* AuthApi.swift */,
+				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
+				51F2A4702A5497A500D134CC /* AuthAPI.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -172,6 +223,7 @@
 				513D6B812A4BFCCC00E9ACDA /* Sources */,
 				513D6B822A4BFCCC00E9ACDA /* Frameworks */,
 				513D6B832A4BFCCC00E9ACDA /* Resources */,
+				1ADA548E2A5D6FA600609041 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -233,15 +285,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				513D6BA02A4BFFDB00E9ACDA /* .swiftlint.yml in Resources */,
+				51046AA32A5D7DA400AD543D /* Pretendard-Bold.otf in Resources */,
 				513D6B9E2A4BFE9100E9ACDA /* .gitignore in Resources */,
 				513D6B952A4BFCCE00E9ACDA /* LaunchScreen.storyboard in Resources */,
+				51046AA72A5D7E4100AD543D /* Pretendard-Regular.otf in Resources */,
 				513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */,
+				51046AA52A5D7E3300AD543D /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1ADA548E2A5D6FA600609041 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
+		};
 		513D6B9C2A4BFDE100E9ACDA /* SwiftLint Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -268,6 +340,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */,
+				1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */,
 				23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */,
 				514D73D22A59B42A00404E64 /* UserInfoViewController.swift in Sources */,
 				51F2A4712A5497A500D134CC /* AuthApi.swift in Sources */,
@@ -276,11 +350,15 @@
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
 				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
+				1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
+				236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */,
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				514D73D02A59839200404E64 /* MyPageList.swift in Sources */,
-				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
+				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
+				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
+				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,6 +506,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -457,6 +536,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
