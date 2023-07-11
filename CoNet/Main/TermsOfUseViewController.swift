@@ -22,7 +22,14 @@ class TermsOfUseViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        
+        customButton.addTarget(self, action: #selector(showEnterName(_:)), for: .touchUpInside)
+    }
+    
+    @objc func showEnterName(_ sender: UIView) {
+        let nextVC = EnterNameViewController()
+        if buttonSelectedStates[1] && buttonSelectedStates[2] {
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // MARK: - UI Setup
@@ -32,7 +39,7 @@ class TermsOfUseViewController: UIViewController {
         
         // X Button
         let xButton = UIButton().then {
-            $0.setImage(UIImage(named: "x-close"), for: .normal)
+            $0.setImage(UIImage(named: "closeBtn"), for: .normal)
             $0.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         }
         
