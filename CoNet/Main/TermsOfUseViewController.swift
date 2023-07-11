@@ -5,9 +5,9 @@
 //  Created by 정아현 on 2023/07/09.
 //
 
+import Then
 import UIKit
 import SnapKit
-import Then
 
 class TermsOfUseViewController: UIViewController {
     private var button1: UIButton!
@@ -42,7 +42,6 @@ class TermsOfUseViewController: UIViewController {
             make.left.equalToSuperview().offset(21)
             make.width.height.equalTo(24)
         }
-        
         
         let grayLine = UIView().then {
             $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
@@ -93,9 +92,8 @@ class TermsOfUseViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
         }
         
-        
         // Buttons and Labels
-        //button1
+        // Button1
         button1 = UIButton().then {
             $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
             $0.addTarget(self, action: #selector(button1Tapped), for: .touchUpInside)
@@ -108,9 +106,8 @@ class TermsOfUseViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        
-        //lable1
-        let label1 = UILabel().then{
+        // label1
+        let label1 = UILabel().then {
             $0.text = "모두 동의"
             $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
             $0.font = UIFont.body1Medium
@@ -133,7 +130,7 @@ class TermsOfUseViewController: UIViewController {
             make.height.equalTo(20)
         }
         
-        //button2
+        // Button2
         button2 = UIButton().then {
             $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
             $0.addTarget(self, action: #selector(button2Tapped), for: .touchUpInside)
@@ -145,8 +142,8 @@ class TermsOfUseViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        //label2-1
-        let label2_1 = UILabel().then{
+        // label2-1
+        let label21 = UILabel().then {
             $0.text = "[필수] 개인정보 수집 및 이용 동의"
             $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
             $0.font = UIFont.body1Medium
@@ -163,16 +160,16 @@ class TermsOfUseViewController: UIViewController {
             
             $0.attributedText = attributedText
         }
-        view.addSubview(label2_1)
-        label2_1.snp.makeConstraints { make in
+        view.addSubview(label21)
+        label21.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(610)
             make.left.equalToSuperview().offset(54)
             make.width.equalTo(204)
             make.height.equalTo(20)
         }
         
-        //button2-2(보기)
-        let button2_2 = UIButton().then {
+        // Button2-2(보기)
+        let button22 = UIButton().then {
             $0.setTitle("보기", for: .normal)
             $0.setTitleColor(UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1), for: .normal)
             $0.titleLabel?.font = UIFont.body2Medium
@@ -184,15 +181,15 @@ class TermsOfUseViewController: UIViewController {
             $0.setAttributedTitle(attributedTitle, for: .normal)
         }
         
-        view.addSubview(button2_2)
-        button2_2.snp.makeConstraints { make in
+        view.addSubview(button22)
+        button22.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(610)
-            make.left.equalTo(label2_1.snp.right).offset(14)
+            make.left.equalTo(label21.snp.right).offset(14)
             make.width.equalTo(24)
             make.height.equalTo(18)
         }
         
-        //button3
+        // Button3
         button3 = UIButton().then {
             $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
             $0.addTarget(self, action: #selector(button3Tapped), for: .touchUpInside)
@@ -204,8 +201,8 @@ class TermsOfUseViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        //label3-1
-        let label3_1 = UILabel().then {
+        // Label3-1
+        let label31 = UILabel().then {
             $0.text = "[필수] 이용약관 동의"
             $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
             $0.font = UIFont.body1Medium
@@ -222,16 +219,16 @@ class TermsOfUseViewController: UIViewController {
             
             $0.attributedText = attributedText
         }
-        view.addSubview(label3_1)
-        label3_1.snp.makeConstraints { make in
+        view.addSubview(label31)
+        label31.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(646)
             make.left.equalToSuperview().offset(54)
             make.width.equalTo(126)
             make.height.equalTo(20)
         }
         
-        //button3-2(보기)
-        let button3_2 = UIButton().then {
+        // Button3-2(보기)
+        let button32 = UIButton().then {
             $0.setTitle("보기", for: .normal)
             $0.setTitleColor(UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1), for: .normal)
             $0.titleLabel?.font = UIFont.body2Medium
@@ -242,15 +239,15 @@ class TermsOfUseViewController: UIViewController {
             let attributedTitle = NSAttributedString(string: "보기", attributes: attributes)
             $0.setAttributedTitle(attributedTitle, for: .normal)
         }
-        view.addSubview(button3_2)
-        button3_2.snp.makeConstraints { make in
+        view.addSubview(button32)
+        button32.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(646)
             make.left.equalToSuperview().offset(190)
             make.width.equalTo(24)
             make.height.equalTo(18)
         }
         
-        //button4
+        // Button4
         button4 = UIButton().then {
             $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
             $0.addTarget(self, action: #selector(button4Tapped), for: .touchUpInside)
@@ -262,7 +259,7 @@ class TermsOfUseViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        //label4
+        // Label4
         let label4 = UILabel().then {
             $0.text = "[선택] 푸시 알람 수신 동의"
             $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
@@ -299,7 +296,7 @@ class TermsOfUseViewController: UIViewController {
             make.height.equalTo(1.5)
         }
         
-        //Next Button
+        // Next Button
         customButton = UIButton().then {
             $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
             $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
@@ -335,10 +332,9 @@ class TermsOfUseViewController: UIViewController {
         
     }
     
-    
     // MARK: - Button Actions
     
-    //x Button click -> LoginViewController
+    // x Button click -> LoginViewController
     @objc private func xButtonTapped() {
         let loginVC = LoginViewController()
         
@@ -348,8 +344,6 @@ class TermsOfUseViewController: UIViewController {
         // Present the LoginViewController
         present(loginVC, animated: true, completion: nil)
     }
-    
-    
     
     @objc private func button1Tapped() {
         // 요구사항 1과 3: 버튼 1을 선택한 경우 나머지 버튼도 같은 상태로 변경
