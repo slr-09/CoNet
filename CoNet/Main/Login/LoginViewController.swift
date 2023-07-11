@@ -5,12 +5,11 @@
 //  Created by 정아현 on 2023/07/08.
 //
 
-import Foundation
-import UIKit
-import SnapKit
-import Then
 import AuthenticationServices
 import KakaoSDKUser
+import SnapKit
+import Then
+import UIKit
 
 class LoginViewController: UIViewController {
     
@@ -110,7 +109,6 @@ class LoginViewController: UIViewController {
         }
         kakaoStackView.addArrangedSubview(kakaoLabel)
 
-        
         let appleButton = UIButton().then {
             $0.backgroundColor = .black
             $0.layer.cornerRadius = 12
@@ -170,38 +168,33 @@ class LoginViewController: UIViewController {
             appleLogin()
         }
         
-    
-    
-    
         // MARK: - Login Actions
-        private func kakaoLogin(){
+        private func kakaoLogin() {
             
             // 카카오톡 실행 가능 여부 확인
-            if (UserApi.isKakaoTalkLoginAvailable()) {
+            if UserApi.isKakaoTalkLoginAvailable() {
                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                     if let error = error {
                         print(error)
-                    }
-                    else {
+                    } else {
                         print("loginWithKakaoTalk() success")
                         print("Kakao id token: (oauthToken.idToken)")
                         
-                        //do something
+                        // do something
                         _ = oauthToken
                     }
                 }
             }
             
             // 카카오계정으로 로그인
-            else{
+            else {
                 UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                     if let error = error {
                         print(error)
-                    }
-                    else {
+                    } else {
                         print("Kakao id token: (oauthToken.idToken)")
                         
-                        //do something
+                        // do something
                         _ = oauthToken
                     }
                 }
@@ -238,14 +231,13 @@ class LoginViewController: UIViewController {
         func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
             if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
                 // 애플 로그인 성공
-                //handleAppleLoginSuccess(appleIDCredential: appleIDCredential)
+                // handleAppleLoginSuccess(appleIDCredential: appleIDCredential)
             }
         }
         
         func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
             print("Apple login error: \(error)")
         }
-        
         
     }
 
@@ -265,5 +257,3 @@ class LoginViewController: UIViewController {
             $0.layer.cornerRadius = 12
         }
     }
-
-
