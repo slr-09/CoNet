@@ -5,8 +5,8 @@
 //  Created by 이안진 on 2023/06/28.
 //
 
-import UIKit
 import KakaoSDKAuth
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -30,18 +30,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.rootViewController = navigationController
         
-        /*
-        // 맨 처음 보여줄 ViewController
-        let mainViewController = MyPageViewController()
-        let mainViewController = UserInfoViewController()
-        
-        // 맨 처음 보여줄 ViewController로 설정
-        window?.rootViewController = mainViewController
-        */
-        
         // 화면을 띄움
         window?.makeKeyAndVisible()
         
+    }
+    
+    func changeRootVC(_ viewController: UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        window.rootViewController = viewController // 전환
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

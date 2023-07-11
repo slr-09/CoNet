@@ -343,6 +343,7 @@ class TermsOfUseViewController: UIViewController {
     
     // x Button click -> LoginViewController
     @objc private func xButtonTapped() {
+        /*
         let loginVC = LoginViewController()
         
         // Set the presentation style to fullscreen
@@ -350,6 +351,9 @@ class TermsOfUseViewController: UIViewController {
         
         // Present the LoginViewController
         present(loginVC, animated: true, completion: nil)
+        */
+        
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc private func button1Tapped() {

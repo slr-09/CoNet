@@ -47,13 +47,15 @@ class TabbarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
         self.view.backgroundColor = .white
         self.selectedIndex = defaultIndex
         
         let viewControllers = [firstNVController, secondNVController, thirdNVController]
         self.setViewControllers(viewControllers, animated: true)
-        
     }
     
 }
