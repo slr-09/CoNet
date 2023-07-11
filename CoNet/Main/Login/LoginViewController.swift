@@ -12,11 +12,44 @@ import Then
 import UIKit
 
 class LoginViewController: UIViewController {
+    let showSignUpButton = UIButton().then {
+        $0.setTitle("회원가입(이용약관) 페이지로", for: .normal)
+        $0.setTitleColor(UIColor.purpleMain, for: .normal)
+    }
+    
+    let showMainButton = UIButton().then {
+        $0.setTitle("메인 페이지로", for: .normal)
+        $0.setTitleColor(UIColor.purpleMain, for: .normal)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
+        tempButtonUI()
+        
+        showSignUpButton.addTarget(self, action: #selector(showSignUp(_:)), for: .touchUpInside)
+    }
+    
+    @objc func showSignUp(_ sender: UIView) {
+        let nextVC = TermsOfUseViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func tempButtonUI() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(showSignUpButton)
+        showSignUpButton.snp.makeConstraints { make in
+            make.centerX.equalTo(safeArea.snp.centerX)
+            make.bottom.equalTo(safeArea.snp.bottom).offset(-60)
+        }
+        
+        view.addSubview(showMainButton)
+        showMainButton.snp.makeConstraints { make in
+            make.centerX.equalTo(safeArea.snp.centerX)
+            make.bottom.equalTo(safeArea.snp.bottom).offset(-30)
+        }
     }
     
     // MARK: - UI Setup
