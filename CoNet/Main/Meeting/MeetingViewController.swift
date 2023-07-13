@@ -10,20 +10,19 @@ import UIKit
 
 class MeetingViewController: UIViewController {
 
-    let label = UILabel().then{
+    let label = UILabel().then {
         $0.text = "meetingviewcontroller"
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(label)
-        label.snp.makeConstraints{ make in
+        label.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide.snp.center).offset(0)
         }
         // Do any additional setup after loading the view.
     }
     
-
     /*
     // MARK: - Navigation
 

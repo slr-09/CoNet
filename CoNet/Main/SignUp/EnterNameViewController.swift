@@ -12,69 +12,68 @@ import UIKit
 class EnterNameViewController: UIViewController, UITextFieldDelegate {
 
     // Component: xmark image (창 끄기)
-    let xMarkView = UIImageView().then{
+    let xMarkView = UIImageView().then {
         $0.image = UIImage(systemName: "xmark")
         $0.tintColor = UIColor.gray600
     }
     
     // Component: top purple bar
-    let topBar = UIView().then{
+    let topBar = UIView().then {
         $0.layer.backgroundColor = UIColor.purpleMain?.cgColor
     }
     
     // Component: enter name label
-    let enterNameLabel = UILabel().then{
+    let enterNameLabel = UILabel().then {
         $0.text = "이름을 입력해주세요"
         $0.font = UIFont.headline1
     }
     
     // Component: 이름 입력 텍스트필드
-    let nameTextField = UITextField().then{
+    let nameTextField = UITextField().then {
         $0.placeholder = "이름 입력"
         $0.font = UIFont.body1Regular
         $0.tintColor = UIColor.black
         $0.becomeFirstResponder()
     }
     
-    let clearButton = UIButton().then{
+    let clearButton = UIButton().then {
         $0.setImage(UIImage(), for: .normal)
     }
     
     // textfield underline
-    let underlineView = UIView().then{
+    let underlineView = UIView().then {
         $0.layer.backgroundColor = UIColor.gray100?.cgColor
     }
     
     // Component: 느낌표 마크 1
-    let eMarkView1 = UIImageView().then{
+    let eMarkView1 = UIImageView().then {
         $0.image = UIImage(named: "emarkPurple")
     }
     
     // Component: 이름 입력 조건 label 1
-    let nameCondition1 = UILabel().then{
+    let nameCondition1 = UILabel().then {
         $0.text = "공백 없이 20자 이내의 한글, 영어, 숫자로 입력해주세요."
         $0.font = UIFont.caption
     }
     
     // Component: 느낌표 마크 2
-    let eMarkView2 = UIImageView().then{
+    let eMarkView2 = UIImageView().then {
         $0.image = UIImage(named: "emarkPurple")
     }
     
     // Component: 이름 입력 조건 label 2
-    let nameCondition2 = UILabel().then{
+    let nameCondition2 = UILabel().then {
         $0.text = "참여자 간 원활한 소통을 위해 실명을 권장합니다."
         $0.font = UIFont.caption
     }
     
     // Component: 완료 버튼
-    let nextBtn = UIButton().then{
+    let nextBtn = UIButton().then {
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = UIColor.gray200
         $0.layer.cornerRadius = 12
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +86,18 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 클릭 이벤트
         clickEvents()
+        
+        nextBtn.addTarget(self, action: #selector(showTabView(_:)), for: .touchUpInside)
+    }
+    
+    @objc func showTabView(_ sender: UIView) {
+        if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
+            let nextVC = TabbarViewController()
+            navigationController?.pushViewController(nextVC, animated: true)
+            
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+            sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+        }
     }
 
     func clickEvents() {
@@ -95,7 +106,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // 텍스트필드 클리어버튼
         self.clearButton.addTarget(self, action: #selector(didClickClearButton), for: .touchUpInside)
         // 완료 버튼
-        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+//        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
     }
     
     // show UI
@@ -107,7 +118,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: xmark image (창 끄기)
         view.addSubview(xMarkView)
         
-        xMarkView.snp.makeConstraints{ make in
+        xMarkView.snp.makeConstraints { make in
             make.height.equalTo(24)
             make.width.equalTo(24)
             make.leading.equalTo(safeArea.snp.leading).offset(21)
@@ -117,7 +128,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: top purple bar
         view.addSubview(topBar)
         
-        topBar.snp.makeConstraints{ make in
+        topBar.snp.makeConstraints { make in
             make.height.equalTo(4)
             make.leading.equalTo(safeArea.snp.leading).offset(0)
             make.trailing.equalTo(safeArea.snp.trailing).offset(0)
@@ -127,7 +138,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: main label
         view.addSubview(enterNameLabel)
         
-        enterNameLabel.snp.makeConstraints{ make in
+        enterNameLabel.snp.makeConstraints { make in
             make.height.equalTo(36)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.top.equalTo(topBar.snp.bottom).offset(40)
@@ -136,7 +147,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: nametextfield
         view.addSubview(nameTextField)
         
-        nameTextField.snp.makeConstraints{ make in
+        nameTextField.snp.makeConstraints { make in
             make.height.equalTo(20)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
@@ -146,7 +157,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // textfield underline
         view.addSubview(underlineView)
         
-        underlineView.snp.makeConstraints{ make in
+        underlineView.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
@@ -156,7 +167,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // textfield clear button
         view.addSubview(clearButton)
         
-        clearButton.snp.makeConstraints{ make in
+        clearButton.snp.makeConstraints { make in
             make.width.equalTo(16)
             make.height.equalTo(16)
             make.trailing.equalTo(nameTextField.snp.trailing).offset(0)
@@ -167,7 +178,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: 느낌표 마크 1
         view.addSubview(eMarkView1)
         
-        eMarkView1.snp.makeConstraints{ make in
+        eMarkView1.snp.makeConstraints { make in
             make.height.equalTo(12)
             make.width.equalTo(12)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
@@ -177,7 +188,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: 이름 입력 조건 label 1
         view.addSubview(nameCondition1)
         
-        nameCondition1.snp.makeConstraints{ make in
+        nameCondition1.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.leading.equalTo(eMarkView1.snp.trailing).offset(5)
             make.top.equalTo(underlineView.snp.bottom).offset(10)
@@ -186,7 +197,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: 느낌표 마크 2
         view.addSubview(eMarkView2)
         
-        eMarkView2.snp.makeConstraints{ make in
+        eMarkView2.snp.makeConstraints { make in
             make.height.equalTo(12)
             make.width.equalTo(12)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
@@ -196,7 +207,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: 이름 입력 조건 label 2
         view.addSubview(nameCondition2)
         
-        nameCondition2.snp.makeConstraints{ make in
+        nameCondition2.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.leading.equalTo(eMarkView2.snp.trailing).offset(5)
             make.top.equalTo(nameCondition1.snp.bottom).offset(4)
@@ -205,7 +216,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // Component: 완료 버튼
         view.addSubview(nextBtn)
         
-        nextBtn.snp.makeConstraints{ make in
+        nextBtn.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
@@ -231,7 +242,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 공백없이 한글, 영어, 숫자로만 20자 이내
         let regexPattern = "^[0-9A-Za-z가-힣]{1,20}$"
-        guard let _ = editText?.range(of: regexPattern, options: .regularExpression)
+        guard let _ = editText!.range(of: regexPattern, options: .regularExpression)
         else {
             // 조건 만족하지 않을 경우 return false
             clearButton.setImage(UIImage(named: "emarkRedEmpty"), for: .normal)
@@ -264,14 +275,16 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
+    /*
     // 완료 버튼 클릭 시
     // 버튼이 활성화된 경우에만 탭바 화면으로 넘어갑니다.
     @objc func didClickNextButton(_ sender: UIButton) {
         // 버튼 색으로 활성화 여부 체크
         if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
-            let vc = TabbarViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: false, completion: nil)
+            let tabBarVC = TabbarViewController()
+            tabBarVC.modalPresentationStyle = .fullScreen
+            self.present(tabBarVC, animated: false, completion: nil)
         }
     }
+     */
 }

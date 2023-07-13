@@ -13,9 +13,12 @@ extension UIColor {
     static let purpleMain = UIColor(named: "purpleMain")
     static let purplePressed = UIColor(named: "purplePressed")
     static let purpleDisabled = UIColor(named: "purpleDisabled")
+    static let mainSub1 = UIColor(named: "mainSub1")
+    static let mainSub2 = UIColor(named: "mainSub2")
     
     // gray
     static let grayWhite = UIColor(named: "grayWhite")
+    static let gray50 = UIColor(named: "gray50")
     static let gray100 = UIColor(named: "gray100")
     static let gray200 = UIColor(named: "gray200")
     static let gray300 = UIColor(named: "gray300")
@@ -28,8 +31,8 @@ extension UIColor {
     
     // text
     static let textDisabled = UIColor(named: "textDisabled")
-    static let textInactive = UIColor(named: "textInactive")
-    static let textActive = UIColor(named: "textActive")
+    static let textMedium = UIColor(named: "textMedium")
+    static let textHigh = UIColor(named: "textHigh")
     
     // icon
     static let iconDisabled = UIColor(named: "iconDisabled")

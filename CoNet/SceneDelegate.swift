@@ -5,34 +5,39 @@
 //  Created by 이안진 on 2023/06/28.
 //
 
-import UIKit
 import KakaoSDKAuth
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                _ = AuthController.handleOpenUrl(url: url)
-            }
+            if let url = URLContexts.first?.url {
+                if AuthApi.isKakaoTalkLoginUrl(url) {
+                    _ = AuthController.handleOpenUrl(url: url)
+                }
         }
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        var navigationController: UINavigationController?
         
-        // 맨 처음 보여줄 ViewController
-        let mainViewController = EnterNameViewController()
+        navigationController = UINavigationController(rootViewController: LoginViewController())
+        navigationController?.navigationBar.isHidden = true
         
-        // 맨 처음 보여줄 ViewController로 설정
-        window?.rootViewController = mainViewController
+        window?.rootViewController = navigationController
         
         // 화면을 띄움
         window?.makeKeyAndVisible()
         
+    }
+    
+    func changeRootVC(_ viewController: UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        window.rootViewController = viewController // 전환
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
