@@ -11,7 +11,6 @@
 		1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */; };
 		1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE23DBA2A59837F000D498F /* LoginViewController.swift */; };
 		231EA9D02A587DE700138628 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 231EA9CF2A587DE700138628 /* Then */; };
-		231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */; };
 		234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2344286F2A5E99BE006A4D66 /* BaseResponse.swift */; };
 		234428762A5EF81D006A4D66 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234428752A5EF81D006A4D66 /* Login.swift */; };
 		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
@@ -46,7 +45,6 @@
 		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
 		1AE23DBA2A59837F000D498F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		2344286F2A5E99BE006A4D66 /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		234428752A5EF81D006A4D66 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 			isa = PBXGroup;
 			children = (
 				1AE23DBA2A59837F000D498F /* LoginViewController.swift */,
-				231EDEE42A4C71DD00187950 /* AppleLoginViewController.swift */,
 				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
 				51F2A4702A5497A500D134CC /* AuthAPI.swift */,
 			);
@@ -347,7 +344,6 @@
 				514D73D02A59839200404E64 /* MyPageList.swift in Sources */,
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
-				231EDEE52A4C71DD00187950 /* AppleLoginViewController.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 			);
