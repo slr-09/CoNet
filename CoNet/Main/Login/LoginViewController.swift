@@ -7,6 +7,7 @@
 
 import AuthenticationServices
 import KakaoSDKUser
+import KeychainSwift
 import SnapKit
 import Then
 import UIKit
@@ -253,27 +254,67 @@ class LoginViewController: UIViewController {
             }
         }*/
         
+        // apple: 사용자에게 기존 계정이 있는지 확인
         private func appleLogin() {
-            let appleIDProvider = ASAuthorizationAppleIDProvider()
-            let request = appleIDProvider.createRequest()
+            // request 생성
+            let request = ASAuthorizationAppleIDProvider().createRequest()
             request.requestedScopes = [.fullName, .email]
             
+            // request를 보내줄 controller 생성
             let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-            authorizationController.delegate = self
-            authorizationController.presentationContextProvider = self
+            authorizationController.delegate = self as ASAuthorizationControllerDelegate
+            authorizationController.presentationContextProvider = self as ASAuthorizationControllerPresentationContextProviding
+            
+            // 요청 보내기
             authorizationController.performRequests()
         }
         
     }
 
-    // MARK: - ASAuthorizationControllerDelegate
+    let keychain = KeychainSwift()
 
+    // MARK: - ASAuthorizationControllerDelegate
+    // apple login
     extension LoginViewController: ASAuthorizationControllerDelegate {
         
         func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                // 애플 로그인 성공
-                // handleAppleLoginSuccess(appleIDCredential: appleIDCredential)
+            if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                let idToken = credential.identityToken!
+                let tokenStr = String(data: idToken, encoding: .utf8)
+                print(tokenStr ?? "")
+                
+                guard let code = credential.authorizationCode else { return }
+                let codeStr = String(data: code, encoding: .utf8)
+                print(codeStr ?? "")
+                
+                let user = credential.user
+                print(user)
+                
+                // idToken 저장
+                keychain.set(tokenStr ?? "", forKey: "idToken")
+                
+                // api 호출
+                AuthAPI.shared.appleLogin()
+                
+                // 가입 여부 저장: Bool
+                let isRegistered = keychain.getBool("appleIsRegistered")
+                
+                // 가입이 되어있는 경우
+                if isRegistered == true {
+                    // 홈 탭으로 이동
+                    let nextVC = TabbarViewController()
+                    navigationController?.pushViewController(nextVC, animated: true)
+                    
+                    // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
+                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                    sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+                }
+                // 가입이 되지 않은 경우
+                else {
+                    // 회원가입 탭으로 이동
+                    let nextVC = TermsOfUseViewController()
+                    navigationController?.pushViewController(nextVC, animated: true)
+                }
             }
         }
         

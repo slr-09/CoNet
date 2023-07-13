@@ -242,7 +242,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 공백없이 한글, 영어, 숫자로만 20자 이내
         let regexPattern = "^[0-9A-Za-z가-힣]{1,20}$"
-        guard let _ = editText?.range(of: regexPattern, options: .regularExpression)
+        guard let _ = editText!.range(of: regexPattern, options: .regularExpression)
         else {
             // 조건 만족하지 않을 경우 return false
             clearButton.setImage(UIImage(named: "emarkRedEmpty"), for: .normal)
