@@ -74,6 +74,8 @@ class UserInfoViewController: UIViewController {
         nameViewConstraits() // 이름 변경 버튼 constraint
         linkedSocialConstraints() // 연결된 계정 constraint
         signOutConstraints() // 회원 탈퇴 constraint
+        
+        changeNameView.addTarget(self, action: #selector(showChangeNameViewController(_:)), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,6 +86,12 @@ class UserInfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc func showChangeNameViewController(_ sender: UIView) {
+        let nextVC = ChangeNameViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
     }
     
     // 프로필 이미지 수정 버튼의 constraint
@@ -167,7 +175,7 @@ class UserInfoViewController: UIViewController {
         // 회원탈퇴 버튼
         view.addSubview(signOutButton)
         signOutButton.snp.makeConstraints { make in
-            make.bottom.equalTo(safeArea.snp.bottom).offset(-56)
+            make.bottom.equalTo(safeArea.snp.bottom).offset(-12)
             make.centerX.equalTo(safeArea.snp.centerX)
         }
     }
