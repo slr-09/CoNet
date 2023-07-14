@@ -10,7 +10,7 @@ import Then
 import UIKit
 
 class MyPageList {
-    func arrowView(title: String) -> UIButton {
+    func arrowView(title: String, labelFont: UIFont) -> UIButton {
         let arrowView = UIButton().then { $0.backgroundColor = .clear }
         
         arrowView.snp.makeConstraints { make in
@@ -19,7 +19,7 @@ class MyPageList {
         
         let titleLabel = UILabel().then {
             $0.text = title
-            $0.font = UIFont.body1Regular
+            $0.font = labelFont
             $0.textColor = UIColor.textHigh
         }
         
