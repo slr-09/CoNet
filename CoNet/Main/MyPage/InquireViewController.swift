@@ -5,6 +5,8 @@
 //  Created by 이안진 on 2023/07/09.
 //
 
+import SnapKit
+import Then
 import UIKit
 
 class InquireViewController: UIViewController {
@@ -20,6 +22,24 @@ class InquireViewController: UIViewController {
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.textMedium
     }
+    
+    // 이메일 보내기 버튼
+    let emailButton = UIButton().then {
+        $0.backgroundColor = UIColor.grayWhite
+        $0.layer.cornerRadius = 12
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.purpleMain?.cgColor
+    }
+    
+    // 이메일 아이콘
+    let mailImage = UIImageView().then { $0.image = UIImage(named: "mail") }
+    
+    // 이메일 보내기 텍스트
+    let emailLabel = UILabel().then {
+        $0.text = "이메일 보내기"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textHigh
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +50,7 @@ class InquireViewController: UIViewController {
         view.backgroundColor = .white
         
         layoutConstraints()
+        emailButtonConstraints()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,4 +79,40 @@ class InquireViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
     }
+    
+    func emailButtonConstraints() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(emailButton)
+        emailButton.snp.makeConstraints { make in
+            make.width.equalTo(140)
+            make.height.equalTo(40)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(30)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
+        
+        emailButton.addSubview(mailImage)
+        mailImage.snp.makeConstraints { make in
+            make.width.equalTo(16)
+            make.height.equalTo(16)
+            make.centerY.equalTo(emailButton.snp.centerY)
+            make.leading.equalTo(emailButton.snp.leading).offset(20)
+        }
+        
+        emailButton.addSubview(emailLabel)
+        emailLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(mailImage.snp.centerY)
+            make.leading.equalTo(mailImage.snp.trailing).offset(6)
+        }
+    }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        InquireViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
