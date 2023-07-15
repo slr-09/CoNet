@@ -5,11 +5,12 @@
 //  Created by 이안진 on 2023/07/09.
 //
 
+import MessageUI
 import SnapKit
 import Then
 import UIKit
 
-class InquireViewController: UIViewController {
+class InquireViewController: UIViewController, MFMailComposeViewControllerDelegate {
     let titleLabel = UILabel().then {
         $0.text = "무엇을 도와드릴까요?"
         $0.font = UIFont.headline2Bold
@@ -40,6 +41,14 @@ class InquireViewController: UIViewController {
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.textHigh
     }
+    
+    // 메일앱 사용 불가 안내
+    let impossibleMailAppLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.text = "기기의 메일 앱이 활성화되어있지 않습니다.\n상단의 이메일로 문의사항을 보내주시기 바랍니다."
+        $0.font = UIFont.body3Medium
+        $0.textColor = UIColor.textMedium
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +60,8 @@ class InquireViewController: UIViewController {
         
         layoutConstraints()
         emailButtonConstraints()
+        
+        emailButton.addTarget(self, action: #selector(showEmail(_:)), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -61,6 +72,24 @@ class InquireViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc func showEmail(_ sender: UIButton) {
+        if MFMailComposeViewController.canSendMail() {
+            showMailApp()
+        } else {
+            impossibleMailAppConstraints()
+        }
+    }
+    
+    private func showMailApp() {
+        let mailComposer = MFMailComposeViewController()
+        mailComposer.mailComposeDelegate = self
+        mailComposer.setToRecipients(["conet.official23@gmail.com"])
+        mailComposer.setSubject("문의사항")
+//            mailComposer.setMessageBody("Message Body", isHTML: false)
+        
+        present(mailComposer, animated: true, completion: nil)
     }
     
     func layoutConstraints() {
@@ -105,14 +134,21 @@ class InquireViewController: UIViewController {
             make.leading.equalTo(mailImage.snp.trailing).offset(6)
         }
     }
-}
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        InquireViewController().showPreview(.iPhone14Pro)
+    
+    func impossibleMailAppConstraints() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(impossibleMailAppLabel)
+        impossibleMailAppLabel.snp.makeConstraints { make in
+            make.top.equalTo(emailButton.snp.bottom).offset(12)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
     }
 }
-#endif
+
+extension ViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController,
+                               didFinishWith result: MFMailComposeResult, error: Error?) {
+        dismiss(animated: true, completion: nil)
+    }
+}
