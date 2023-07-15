@@ -21,6 +21,7 @@
 		51046AA52A5D7E3300AD543D /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */; };
 		51046AA72A5D7E4100AD543D /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */; };
 		51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AA82A6147F500AD543D /* ChangeNameViewController.swift */; };
+		51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AAA2A62F60200AD543D /* PreviewExtension.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
 		513D6B8D2A4BFCCC00E9ACDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8C2A4BFCCC00E9ACDA /* ViewController.swift */; };
@@ -56,6 +57,7 @@
 		51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		51046AA82A6147F500AD543D /* ChangeNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNameViewController.swift; sourceTree = "<group>"; };
+		51046AAA2A62F60200AD543D /* PreviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExtension.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				51046A9D2A5D796D00AD543D /* Font */,
 				51F2A4672A54804100D134CC /* ColorExtension.swift */,
 				51F2A4692A548A1000D134CC /* FontExtension.swift */,
+				51046AAA2A62F60200AD543D /* PreviewExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
 				1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */,
+				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */,
 				234428762A5EF81D006A4D66 /* Login.swift in Sources */,
