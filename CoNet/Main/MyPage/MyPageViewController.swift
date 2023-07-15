@@ -17,11 +17,12 @@ class MyPageViewController: UIViewController {
         $0.textColor = UIColor.textHigh
     }
     
+    // 프로필 이미지 - 현재 기본 이미지로 보여줌
     let profileImage = UIImageView().then {
-        $0.image = UIImage(systemName: "person.circle.fill")
-        $0.tintColor = .gray100
+        $0.image = UIImage(named: "defaultProfile")
     }
     
+    // 이름
     let nameLabel = UILabel().then {
         $0.text = "이안진"
         $0.font = UIFont.headline2Bold
@@ -183,3 +184,13 @@ class MyPageViewController: UIViewController {
     }
     
 }
+
+#if canImport(SwiftUI) && DEBUG
+ import SwiftUI
+
+ struct ViewControllerPreview: PreviewProvider {
+     static var previews: some View {
+         MyPageViewController().showPreview(.iPhone14Pro)
+     }
+ }
+ #endif
