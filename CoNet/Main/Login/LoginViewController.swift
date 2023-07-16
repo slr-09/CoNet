@@ -281,7 +281,7 @@ class LoginViewController: UIViewController {
             if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
                 let idToken = credential.identityToken!
                 let tokenStr = String(data: idToken, encoding: .utf8)
-                print(tokenStr ?? "")
+                print("idToken: ", tokenStr ?? "")
                 
                 guard let code = credential.authorizationCode else { return }
                 let codeStr = String(data: code, encoding: .utf8)

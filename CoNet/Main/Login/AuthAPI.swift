@@ -64,11 +64,12 @@ class AuthAPI {
         dataRequest.responseDecodable(of: BaseResponse<PostAppleLoginResult>.self) { response in
             switch response.result {
             case .success(let response):  // 성공한 경우에
-//                print(response.result ?? "result empty")
+                print(response.result ?? "result empty")
                 
                 // 사용자 정보 저장
                 self.keychain.set(response.result!.email, forKey: "email")
                 self.keychain.set(response.result!.accessToken, forKey: "accessToken")
+                self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
                 self.keychain.set(response.result!.isRegistered, forKey: "appleIsRegistered")
                 
             case .failure(let error):
