@@ -5,8 +5,8 @@
 //  Created by 이안진 on 2023/06/28.
 //
 
-import UIKit
 import KakaoSDKAuth
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // 맨 처음 보여줄 ViewController
-        let mainViewController = TermsOfUseViewController()
+        let mainViewController = GatherViewController()
         
         // 맨 처음 보여줄 ViewController로 설정
         window?.rootViewController = mainViewController

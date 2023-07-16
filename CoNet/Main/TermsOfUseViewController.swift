@@ -2,410 +2,310 @@
 //  TermsOfUseViewController.swift
 //  CoNet
 //
-//  Created by 정아현 on 2023/07/09.
+//  Created by 정아현 on 2023/07/16.
 //
 
-import UIKit
 import SnapKit
 import Then
+import UIKit
 
 class TermsOfUseViewController: UIViewController {
-    private var button1: UIButton!
-    private var button2: UIButton!
-    private var button3: UIButton!
-    private var button4: UIButton!
-    private var customButton: UIButton!
     
     private var buttonSelectedStates: [Bool] = [false, false, false, false]
+    
+    let xButton = UIButton().then {
+        $0.setImage(UIImage(named: "x-close"), for: .normal)
+    }
+    
+    let grayLine = UIView().then {
+        $0.backgroundColor = UIColor.gray200
+    }
+    
+    let purpleLine = UIView().then {
+        $0.backgroundColor = UIColor.purpleMain
+    }
+    
+    let termsLabel = UILabel().then {
+        $0.text = "커넷 서비스 이용약관을\n확인해주세요"
+        $0.font = UIFont.headline1
+        $0.textColor = UIColor.black
+        $0.numberOfLines = 0
+    }
+    
+    let button1 = UIButton().then {
+        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
+    }
+    
+    let label1 = UILabel().then {
+        $0.text = "모두 동의"
+        $0.textColor = UIColor.black
+        $0.font = UIFont.body1Medium
+    }
+    
+    let grayLine2 = UIView().then {
+        $0.backgroundColor = UIColor.gray100
+    }
+    
+    let button2 = UIButton().then {
+        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
+    }
+    
+    let label21 = UILabel().then {
+        $0.text = "[필수] 개인정보 수집 및 이용 동의"
+        $0.textColor = UIColor.black
+        $0.font = UIFont.body1Medium
+    }
+    
+    let button22 = UIButton().then {
+        let button22Title = NSMutableAttributedString(string: "보기")
+        button22Title.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: button22Title.length))
+        
+        if let purpleMain = UIColor.purpleMain {
+            button22Title.addAttribute(NSAttributedString.Key.foregroundColor, value: purpleMain, range: NSRange(location: 0, length: button22Title.length))
+        }
+
+        $0.setAttributedTitle(button22Title, for: .normal)
+        $0.titleLabel?.font = UIFont.body2Medium
+    }
+    
+    let button3 = UIButton().then {
+        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
+    }
+    
+    let label31 = UILabel().then {
+        $0.text = "[필수] 이용약관 동의"
+        $0.textColor = UIColor.black
+        $0.font = UIFont.body1Medium
+    }
+    
+    let button32 = UIButton().then {
+        let button32Title = NSMutableAttributedString(string: "보기")
+        button32Title.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: button32Title.length))
+        
+        if let purpleMain = UIColor.purpleMain {
+            button32Title.addAttribute(NSAttributedString.Key.foregroundColor, value: purpleMain, range: NSRange(location: 0, length: button32Title.length))
+        }
+
+        $0.setAttributedTitle(button32Title, for: .normal)
+        $0.titleLabel?.font = UIFont.body2Medium
+    }
+    
+    let button4 = UIButton().then {
+        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
+    }
+    
+    let label4 = UILabel().then {
+        $0.text = "[선택] 푸시 알람 수신 동의"
+        $0.textColor = UIColor.black
+        $0.font = UIFont.body1Medium
+    }
+    
+    let nextButton = UIButton().then {
+        $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
+        $0.backgroundColor = UIColor.gray200
+        $0.setTitleColor(.white, for: .normal)
+        $0.setTitle("다음", for: .normal)
+        $0.titleLabel?.font = UIFont.body1Medium
+        $0.layer.cornerRadius = 12
+        $0.layer.masksToBounds = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
+        self.view.backgroundColor = .white
         
+        self.view.addSubview(xButton)
+        self.view.addSubview(grayLine)
+        self.view.addSubview(purpleLine)
+        applyConstraintsToTopSection()
+        
+        self.view.addSubview(termsLabel)
+        self.view.addSubview(button1)
+        self.view.addSubview(label1)
+        self.view.addSubview(grayLine2)
+        self.view.addSubview(button2)
+        self.view.addSubview(label21)
+        self.view.addSubview(button22)
+        self.view.addSubview(button3)
+        self.view.addSubview(label31)
+        self.view.addSubview(button32)
+        self.view.addSubview(button4)
+        self.view.addSubview(label4)
+        applyConstraintsToButtonsAndLabels()
+        
+        self.view.addSubview(nextButton)
+        applyConstraintsToNextButton()
+        
+        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
+        button1.addTarget(self, action: #selector(button1Tapped), for: .touchUpInside)
+        button2.addTarget(self, action: #selector(button2Tapped), for: .touchUpInside)
+        button3.addTarget(self, action: #selector(button3Tapped), for: .touchUpInside)
+        button4.addTarget(self, action: #selector(button4Tapped), for: .touchUpInside)
+        
+        button1.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+        button2.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+        button3.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+        button4.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
     }
     
-    // MARK: - UI Setup
-    
-    private func setupUI() {
-        view.backgroundColor = .white
+    func applyConstraintsToTopSection() {
+        let safeArea = view.safeAreaLayoutGuide
         
-        // X Button
-        let xButton = UIButton().then {
-            $0.setImage(UIImage(named: "x-close"), for: .normal)
-            $0.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-        }
-        
-        view.addSubview(xButton)
         xButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(65)
-            make.left.equalToSuperview().offset(21)
             make.width.height.equalTo(24)
+            make.leading.equalTo(safeArea.snp.leading).offset(21)
+            make.top.equalTo(safeArea.snp.top).offset(21)
         }
-        
-        
-        let grayLine = UIView().then {
-            $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-        }
-        
-        view.addSubview(grayLine)
         grayLine.snp.makeConstraints { make in
             make.width.equalTo(394)
             make.height.equalTo(4)
+            make.leading.equalTo(safeArea.snp.leading).offset(0)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(0)
+            make.top.equalTo(xButton.snp.bottom).offset(14)
         }
-        
-        let purpleLine = UIView().then {
-            $0.backgroundColor = UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1)
-        }
-        
-        view.addSubview(purpleLine)
         purpleLine.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(103)
             make.width.equalTo(197)
             make.height.equalTo(4)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview().inset(196)
+            make.leading.equalTo(safeArea.snp.leading).offset(0)
             make.top.equalTo(grayLine.snp.top)
         }
+    }
+    
+    func applyConstraintsToButtonsAndLabels() {
+        let safeArea = view.safeAreaLayoutGuide
         
-        // Label
-        let termsLabel = UILabel().then {
-            $0.text = "커넷 서비스 이용약관을\n확인해주세요"
-            $0.font = UIFont.headline1
-            $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
-            $0.numberOfLines = 0
-            
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = 1.16
-            
-            let attributedText = NSMutableAttributedString(string: "커넷 서비스 이용약관을\n확인해주세요", attributes: [
-                NSAttributedString.Key.kern: -0.65,
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
-            ])
-            $0.attributedText = attributedText
-        }
-        
-        view.addSubview(termsLabel)
         termsLabel.snp.makeConstraints { make in
-            make.top.equalTo(grayLine.snp.bottom).offset(44)
-            make.width.equalTo(230)
-            make.height.equalTo(72)
-            make.leading.equalToSuperview().offset(24)
+            make.top.equalTo(grayLine.snp.bottom).offset(40)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        
-        
-        // Buttons and Labels
-        //button1
-        button1 = UIButton().then {
-            $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-            $0.addTarget(self, action: #selector(button1Tapped), for: .touchUpInside)
-        }
-        
-        view.addSubview(button1)
         button1.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(557)
-            make.left.equalToSuperview().offset(24)
+            make.top.equalTo(termsLabel.snp.bottom).offset(338)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.width.height.equalTo(20)
         }
-        
-        
-        //lable1
-        let label1 = UILabel().then{
-            $0.text = "모두 동의"
-            $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
-            $0.font = UIFont.body1Medium
-            $0.numberOfLines = 0
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = 1.16
-            
-            let attributedText = NSMutableAttributedString(string: "모두 동의", attributes: [
-                NSAttributedString.Key.kern: -0.65,
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
-            ])
-            $0.attributedText = attributedText
-        }
-        
-        view.addSubview(label1)
         label1.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(557)
-            make.left.equalToSuperview().offset(54)
-            make.width.equalTo(58)
-            make.height.equalTo(20)
+            make.centerY.equalTo(button1)
+            make.leading.equalTo(button1.snp.trailing).offset(10)
         }
-        
-        //button2
-        button2 = UIButton().then {
-            $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-            $0.addTarget(self, action: #selector(button2Tapped), for: .touchUpInside)
-        }
-        view.addSubview(button2)
-        button2.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(610)
-            make.left.equalToSuperview().offset(24)
-            make.width.height.equalTo(20)
-        }
-        
-        //label2-1
-        let label2_1 = UILabel().then{
-            $0.text = "[필수] 개인정보 수집 및 이용 동의"
-            $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
-            $0.font = UIFont.body1Medium
-            $0.numberOfLines = 0
-            
-            let paragraphStyle = NSMutableParagraphStyle().then {
-                $0.lineHeightMultiple = 1.16
-            }
-            
-            let attributedText = NSMutableAttributedString(string: "[필수] 개인정보 수집 및 이용 동의", attributes: [
-                .kern: -0.65,
-                .paragraphStyle: paragraphStyle
-            ])
-            
-            $0.attributedText = attributedText
-        }
-        view.addSubview(label2_1)
-        label2_1.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(610)
-            make.left.equalToSuperview().offset(54)
-            make.width.equalTo(204)
-            make.height.equalTo(20)
-        }
-        
-        //button2-2(보기)
-        let button2_2 = UIButton().then {
-            $0.setTitle("보기", for: .normal)
-            $0.setTitleColor(UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1), for: .normal)
-            $0.titleLabel?.font = UIFont.body2Medium
-            let attributes: [NSAttributedString.Key: Any] = [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
-                .kern: -0.35
-            ]
-            let attributedTitle = NSAttributedString(string: "보기", attributes: attributes)
-            $0.setAttributedTitle(attributedTitle, for: .normal)
-        }
-        
-        view.addSubview(button2_2)
-        button2_2.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(610)
-            make.left.equalTo(label2_1.snp.right).offset(14)
-            make.width.equalTo(24)
-            make.height.equalTo(18)
-        }
-        
-        //button3
-        button3 = UIButton().then {
-            $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-            $0.addTarget(self, action: #selector(button3Tapped), for: .touchUpInside)
-        }
-        view.addSubview(button3)
-        button3.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(646)
-            make.left.equalToSuperview().offset(24)
-            make.width.height.equalTo(20)
-        }
-        
-        //label3-1
-        let label3_1 = UILabel().then {
-            $0.text = "[필수] 이용약관 동의"
-            $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
-            $0.font = UIFont.body1Medium
-            $0.numberOfLines = 0
-            
-            let paragraphStyle = NSMutableParagraphStyle().then {
-                $0.lineHeightMultiple = 1.16
-            }
-            
-            let attributedText = NSMutableAttributedString(string: "[필수] 이용약관 동의", attributes: [
-                .kern: -0.65,
-                .paragraphStyle: paragraphStyle
-            ])
-            
-            $0.attributedText = attributedText
-        }
-        view.addSubview(label3_1)
-        label3_1.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(646)
-            make.left.equalToSuperview().offset(54)
-            make.width.equalTo(126)
-            make.height.equalTo(20)
-        }
-        
-        //button3-2(보기)
-        let button3_2 = UIButton().then {
-            $0.setTitle("보기", for: .normal)
-            $0.setTitleColor(UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1), for: .normal)
-            $0.titleLabel?.font = UIFont.body2Medium
-            let attributes: [NSAttributedString.Key: Any] = [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
-                .kern: -0.35
-            ]
-            let attributedTitle = NSAttributedString(string: "보기", attributes: attributes)
-            $0.setAttributedTitle(attributedTitle, for: .normal)
-        }
-        view.addSubview(button3_2)
-        button3_2.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(646)
-            make.left.equalToSuperview().offset(190)
-            make.width.equalTo(24)
-            make.height.equalTo(18)
-        }
-        
-        //button4
-        button4 = UIButton().then {
-            $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-            $0.addTarget(self, action: #selector(button4Tapped), for: .touchUpInside)
-        }
-        view.addSubview(button4)
-        button4.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(682)
-            make.left.equalToSuperview().offset(24)
-            make.width.height.equalTo(20)
-        }
-        
-        //label4
-        let label4 = UILabel().then {
-            $0.text = "[선택] 푸시 알람 수신 동의"
-            $0.textColor = UIColor(red: 0.141, green: 0.141, blue: 0.141, alpha: 1)
-            $0.font = UIFont.body1Medium
-            $0.numberOfLines = 0
-            
-            let paragraphStyle = NSMutableParagraphStyle().then {
-                $0.lineHeightMultiple = 1.16
-            }
-            
-            let attributedText = NSMutableAttributedString(string: "[선택] 푸시 알람 수신 동의", attributes: [
-                .kern: -0.65,
-                .paragraphStyle: paragraphStyle
-            ])
-            
-            $0.attributedText = attributedText
-        }
-        view.addSubview(label4)
-        label4.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(682)
-            make.left.equalToSuperview().offset(54)
-            make.width.equalTo(160)
-            make.height.equalTo(20)
-        }
-        
-        // Gray Line between Button1 and Button2
-        let grayLine2 = UIView()
-        grayLine2.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
-        view.addSubview(grayLine2)
         grayLine2.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(591)
-            make.left.equalToSuperview().offset(24)
-            make.right.equalToSuperview().offset(-24)
+            make.top.equalTo(button1.snp.bottom).offset(14)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(24)
             make.height.equalTo(1.5)
         }
-        
-        //Next Button
-        customButton = UIButton().then {
-            $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
-            $0.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-            $0.setTitleColor(.white, for: .normal)
-            $0.setTitle("다음", for: .normal)
-            $0.titleLabel?.font = UIFont.body1Medium
-            $0.layer.cornerRadius = 12
-            $0.layer.masksToBounds = true
+        button2.snp.makeConstraints { make in
+            make.top.equalTo(grayLine2.snp.bottom).offset(19)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.width.height.equalTo(20)
         }
-        
-        let customButtonBackground = UIView().then {
-            $0.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.16)
-            $0.layer.cornerRadius = 12
-            $0.layer.masksToBounds = true
+        label21.snp.makeConstraints { make in
+            make.centerY.equalTo(button2)
+            make.leading.equalTo(button2.snp.trailing).offset(10)
         }
+        button22.snp.makeConstraints { make in
+            make.centerY.equalTo(button2)
+            make.leading.equalTo(label21.snp.trailing).offset(10)
+        }
+        button3.snp.makeConstraints { make in
+            make.top.equalTo(button2.snp.bottom).offset(16)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.width.height.equalTo(20)
+        }
+        label31.snp.makeConstraints { make in
+            make.centerY.equalTo(button3)
+            make.leading.equalTo(button3.snp.trailing).offset(10)
+        }
+        button32.snp.makeConstraints { make in
+            make.centerY.equalTo(button3)
+            make.leading.equalTo(label31.snp.trailing).offset(10)
+        }
+        button4.snp.makeConstraints { make in
+            make.top.equalTo(button3.snp.bottom).offset(16)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.width.height.equalTo(20)
+        }
+        label4.snp.makeConstraints { make in
+            make.centerY.equalTo(button4)
+            make.leading.equalTo(button4.snp.trailing).offset(10)
+        }
+    }
+    
+    func applyConstraintsToNextButton() {
+        let safeArea = view.safeAreaLayoutGuide
         
-        let parentView = self.view!
-        
-        customButtonBackground.addSubview(customButton)
-        parentView.addSubview(customButtonBackground)
-        customButtonBackground.translatesAutoresizingMaskIntoConstraints = false
-        
-        customButtonBackground.snp.makeConstraints { make in
-            make.top.equalTo(label4.snp.bottom).offset(52)
-            make.centerX.equalTo(parentView.snp.centerX)
+        nextButton.snp.makeConstraints { make in
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.bottom.equalTo(safeArea.snp.bottom)
             make.width.equalTo(345)
             make.height.equalTo(52)
         }
-        
-        customButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
     }
     
+    @objc private func buttonTouchedDown() {
+        nextButton.backgroundColor = UIColor.purplePressed
+    }
     
-    // MARK: - Button Actions
+    @objc private func updateNextButtonState() {
+        if (buttonSelectedStates[1] && buttonSelectedStates[2]) || buttonSelectedStates[0] {
+            nextButton.backgroundColor = UIColor.purpleMain
+        } else {
+            nextButton.backgroundColor = UIColor.gray200
+        }
+    }
     
-    //x Button click -> LoginViewController
     @objc private func xButtonTapped() {
         let loginVC = LoginViewController()
-        
-        // Set the presentation style to fullscreen
         loginVC.modalPresentationStyle = .fullScreen
-        
-        // Present the LoginViewController
         present(loginVC, animated: true, completion: nil)
     }
     
-    
-    
     @objc private func button1Tapped() {
-        // 요구사항 1과 3: 버튼 1을 선택한 경우 나머지 버튼도 같은 상태로 변경
         let newState = !buttonSelectedStates[0]
         buttonSelectedStates = [newState, newState, newState, newState]
         
-        // 버튼 이미지 업데이트
         let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
         button1.setImage(selectedImage, for: .normal)
         button2.setImage(selectedImage, for: .normal)
         button3.setImage(selectedImage, for: .normal)
         button4.setImage(selectedImage, for: .normal)
         
-        // 요구사항 5: 버튼 2, 3의 이미지가 "checkbox 1"인 경우 customButton의 배경색 변경
-        if buttonSelectedStates[1] && buttonSelectedStates[2] {
-            customButton.backgroundColor = UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1)
-        } else {
-            customButton.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-        }
+        buttonTouchedDown()
+        updateNextButtonState()
     }
     
     @objc private func button2Tapped() {
         let newState = !buttonSelectedStates[1]
-            buttonSelectedStates[1] = newState
+        buttonSelectedStates[1] = newState
             
-            let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
-            button2.setImage(selectedImage, for: .normal)
+        let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
+        button2.setImage(selectedImage, for: .normal)
         
-        // 요구사항 5: 버튼 2, 3의 이미지가 "checkbox 1"인 경우 customButton의 배경색 변경
-        if buttonSelectedStates[1] && buttonSelectedStates[2] {
-            customButton.backgroundColor = UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1)
-        } else {
-            customButton.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-        }
+        buttonTouchedDown()
+        updateNextButtonState()
     }
-    
+        
     @objc private func button3Tapped() {
         let newState = !buttonSelectedStates[2]
-            buttonSelectedStates[2] = newState
+        buttonSelectedStates[2] = newState
             
-            let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
-            button3.setImage(selectedImage, for: .normal)
-        
-        // 요구사항 5: 버튼 2, 3의 이미지가 "checkbox 1"인 경우 customButton의 배경색 변경
-        if buttonSelectedStates[1] && buttonSelectedStates[2] {
-            customButton.backgroundColor = UIColor(red: 0.467, green: 0.217, blue: 1, alpha: 1)
-        } else {
-            customButton.backgroundColor = UIColor(red: 0.757, green: 0.757, blue: 0.757, alpha: 1)
-        }
+        let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
+        button3.setImage(selectedImage, for: .normal)
+         
+        buttonTouchedDown()
+        updateNextButtonState()
     }
-    
+        
     @objc private func button4Tapped() {
         let newState = !buttonSelectedStates[3]
-            buttonSelectedStates[3] = newState
-            
-            let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
-            button4.setImage(selectedImage, for: .normal)
+        buttonSelectedStates[3] = newState
+        
+        let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
+        button4.setImage(selectedImage, for: .normal)
+        
+        buttonTouchedDown()
+        updateNextButtonState()
     }
 }
+
