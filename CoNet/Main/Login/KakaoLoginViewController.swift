@@ -48,7 +48,6 @@ class KakaoLoginViewController: UIViewController {
     }
     
     func kakaoLogin() {
-        
         // 카카오톡 실행 가능 여부 확인
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
@@ -56,28 +55,24 @@ class KakaoLoginViewController: UIViewController {
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success")
-                    print("Kakao id token: (oauthToken.idToken)")
+                    print("Kakao id token: \(String(describing: oauthToken?.idToken) )")
                     
                     // do something
                     _ = oauthToken
                 }
             }
-        }
-        
-        // 카카오계정으로 로그인
-        else {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+        } else {
+            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
                 if let error = error {
                     print(error)
                 } else {
-                    print("Kakao id token: (oauthToken.idToken)")
+                    print("Kakao id token: \(String(describing: oauthToken?.idToken))")
                     
                     // do something
                     _ = oauthToken
                 }
             }
         }
-        
     }
     
     // 카카오계정 가입 후 로그인하기
@@ -96,24 +91,20 @@ class KakaoLoginViewController: UIViewController {
         
     // 사용자 정보 가져오기
     func printMyUserInfo() {
-            
-        UserApi.shared.me {(user, error) in
+        UserApi.shared.me { user, error in
             if let error = error {
                 print("# me() failed")
                 print(error)
             } else {
                 print("# me() success.")
-                    
+                
                 // do something
                 print("# myInfo's ID : " + (user?.id?.description ?? "ID default value"))
                 print("# myInfo's email : " + (user?.kakaoAccount?.email ?? "email default value"))
                 print("# myInfo's profileImageUrl : " + (user?.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? "profileImageUrl default value"))
                 print("# myInfo's nickname : " + (user?.kakaoAccount?.profile?.nickname ?? "nickname default value"))
                 print("# myInfo's connectedAt : " + (user?.connectedAt?.description ?? "connectedAt default value"))
-                    
             }
         }
-            
     }
-        
 }
