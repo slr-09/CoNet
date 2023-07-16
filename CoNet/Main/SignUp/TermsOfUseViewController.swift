@@ -14,7 +14,7 @@ class TermsOfUseViewController: UIViewController {
     private var buttonSelectedStates: [Bool] = [false, false, false, false]
     
     let xButton = UIButton().then {
-        $0.setImage(UIImage(named: "x-close"), for: .normal)
+        $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
     
     let grayLine = UIView().then {
@@ -148,7 +148,7 @@ class TermsOfUseViewController: UIViewController {
         button3.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
         button4.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
         
-        customButton.addTarget(self, action: #selector(showEnterName(_:)), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(showEnterName(_:)), for: .touchUpInside)
     }
     
     @objc func showEnterName(_ sender: UIView) {
@@ -321,4 +321,3 @@ class TermsOfUseViewController: UIViewController {
         updateNextButtonState()
     }
 }
-

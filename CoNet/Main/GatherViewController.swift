@@ -169,6 +169,7 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         
         item = UIStackView(arrangedSubviews: [allTab, favTab]).then {
             $0.axis = .horizontal
