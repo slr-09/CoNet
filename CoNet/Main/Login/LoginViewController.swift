@@ -66,7 +66,13 @@ class LoginViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-
+        setupTitleLabel()
+        setupLogoImageView()
+        setupKakaoButton()
+        setupAppleButton()
+    }
+    
+    private func setupTitleLabel() {
         let titleLabel = UILabel().then {
             $0.text = "우리들의 모임관리"
             $0.font = UIFont.headline3Regular
@@ -88,7 +94,8 @@ class LoginViewController: UIViewController {
             make.width.equalTo(126)
             make.height.equalTo(22)
         }
-        
+    }
+    private func setupLogoImageView() {
         let logoImageView = UIImageView().then {
             $0.image = UIImage(named: "LaunchScreenImage")
             $0.contentMode = .scaleAspectFit
@@ -101,7 +108,8 @@ class LoginViewController: UIViewController {
             make.right.equalToSuperview().offset(-130)
             make.height.equalTo(198.64)
         }
-        
+    }
+    private func setupKakaoButton() {
         let kakaoButton = UIButton().then {
             $0.backgroundColor = UIColor(red: 0.976, green: 0.922, blue: 0, alpha: 1)
             $0.layer.cornerRadius = 12
@@ -110,11 +118,11 @@ class LoginViewController: UIViewController {
         view.addSubview(kakaoButton)
         kakaoButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(574)
-                        make.left.equalToSuperview().offset(24)
-                        make.right.equalToSuperview().offset(-24)
-                        make.height.equalTo(52)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
+            make.height.equalTo(52)
         }
-
+        
         let kakaoStackView = UIStackView().then {
             $0.axis = .horizontal
             $0.spacing = 8
@@ -123,7 +131,7 @@ class LoginViewController: UIViewController {
         kakaoStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
-
+        
         let kakaoImageView = UIImageView().then {
             $0.image = UIImage(named: "kakao")
             $0.contentMode = .scaleAspectFit
@@ -135,7 +143,7 @@ class LoginViewController: UIViewController {
             make.width.equalTo(21)
             make.height.equalTo(19)
         }
-
+        
         let kakaoLabel = UILabel().then {
             $0.text = "카카오톡으로 3초만에 시작하기"
             $0.font = UIFont.body1Bold
@@ -151,56 +159,57 @@ class LoginViewController: UIViewController {
             $0.attributedText = attributedText
         }
         kakaoStackView.addArrangedSubview(kakaoLabel)
-
-        let appleButton = UIButton().then {
-            $0.backgroundColor = .black
-            $0.layer.cornerRadius = 12
-            $0.addTarget(self, action: #selector(appleButtonTapped), for: .touchUpInside)
-        }
-        view.addSubview(appleButton)
-        appleButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(634)
-                        make.left.equalToSuperview().offset(24)
-                        make.right.equalToSuperview().offset(-24)
-                        make.height.equalTo(52)
-        }
-
-        let appleStackView = UIStackView().then {
-            $0.axis = .horizontal
-            $0.spacing = 8
-        }
-        appleButton.addSubview(appleStackView)
-        appleStackView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-        }
-
-        let appleImageView = UIImageView().then {
-            $0.image = UIImage(named: "apple")
-            $0.contentMode = .scaleAspectFit
-            $0.backgroundColor = .clear
-        }
-        appleStackView.addArrangedSubview(appleImageView)
-        appleImageView.snp.makeConstraints { make in
-            make.width.equalTo(16)
-            make.height.equalTo(19)
-        }
-
-        let appleLabel = UILabel().then {
-            $0.text = "Apple로 계속하기"
-            $0.font = UIFont.body1Bold
-            $0.textColor = .white
+    }
+        
+        private func setupAppleButton() {
+            let appleButton = UIButton().then {
+                $0.backgroundColor = .black
+                $0.layer.cornerRadius = 12
+                $0.addTarget(self, action: #selector(appleButtonTapped), for: .touchUpInside)
+            }
+            view.addSubview(appleButton)
+            appleButton.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(634)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+                make.height.equalTo(52)
+            }
             
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = 1.05
+            let appleStackView = UIStackView().then {
+                $0.axis = .horizontal
+                $0.spacing = 8
+            }
+            appleButton.addSubview(appleStackView)
+            appleStackView.snp.makeConstraints { make in
+                make.centerX.centerY.equalToSuperview()
+            }
             
-            let attributedText = NSMutableAttributedString(string: "Apple로 계속하기", attributes: [
-                NSAttributedString.Key.kern: -0.4,
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
-            ])
-            $0.attributedText = attributedText
-        }
-        appleStackView.addArrangedSubview(appleLabel)
-
+            let appleImageView = UIImageView().then {
+                $0.image = UIImage(named: "apple")
+                $0.contentMode = .scaleAspectFit
+                $0.backgroundColor = .clear
+            }
+            appleStackView.addArrangedSubview(appleImageView)
+            appleImageView.snp.makeConstraints { make in
+                make.width.equalTo(16)
+                make.height.equalTo(19)
+            }
+            
+            let appleLabel = UILabel().then {
+                $0.text = "Apple로 계속하기"
+                $0.font = UIFont.body1Bold
+                $0.textColor = .white
+                
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineHeightMultiple = 1.05
+                
+                let attributedText = NSMutableAttributedString(string: "Apple로 계속하기", attributes: [
+                    NSAttributedString.Key.kern: -0.4,
+                    NSAttributedString.Key.paragraphStyle: paragraphStyle
+                ])
+                $0.attributedText = attributedText
+            }
+            appleStackView.addArrangedSubview(appleLabel)
         }
         
         @objc private func kakaoButtonTapped() {
@@ -213,7 +222,6 @@ class LoginViewController: UIViewController {
         
         // MARK: - Login Actions
         private func kakaoLogin() {
-            
             // 카카오톡 실행 가능 여부 확인
             if UserApi.isKakaoTalkLoginAvailable() {
                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
@@ -223,14 +231,15 @@ class LoginViewController: UIViewController {
                         print("loginWithKakaoTalk() success")
                         print("Kakao id token: (oauthToken.idToken)")
                         
-                        // do something
-                        _ = oauthToken
+                        // api 호출
+                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
+                        
+                        // 가입 여부 저장: Bool
+                        let isRegistered = keychain.getBool("kakaoIsRegistered")
                     }
                 }
-            }
-            
-            // 카카오계정으로 로그인
-            else {
+            } else {
+                // 카카오 계정으로 로그인
                 UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                     if let error = error {
                         print(error)
@@ -239,22 +248,15 @@ class LoginViewController: UIViewController {
                         
                         // do something
                         _ = oauthToken
+                        
+                        // api 호출
+                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
                     }
                 }
             }
             
         }
         
-        /*private func handleKakaoLoginSuccess(token: oauthToken?) {
-            // 로그인 성공 처리
-            // 예시: 토큰을 이용해 필요한 작업 수행
-            if let token = token {
-                print("Kakao access token: \(token.accessToken)")
-                // 추가 작업 수행
-            }
-        }*/
-        
-        // apple: 사용자에게 기존 계정이 있는지 확인
         private func appleLogin() {
             // request 생성
             let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -321,7 +323,6 @@ class LoginViewController: UIViewController {
         func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
             print("Apple login error: \(error)")
         }
-        
     }
 
     // MARK: - ASAuthorizationControllerPresentationContextProviding

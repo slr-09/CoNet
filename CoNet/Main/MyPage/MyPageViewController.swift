@@ -34,11 +34,11 @@ class MyPageViewController: UIViewController {
     let myPageList = MyPageList()
     let userInfoButton = UIButton().then { $0.backgroundColor = .clear }
     
-    lazy var userInfoView = myPageList.arrowView(title: "회원정보")
+    lazy var userInfoView = myPageList.arrowView(title: "회원정보", labelFont: UIFont.body1Regular!)
     lazy var notificationView = myPageList.toggleView(title: "알림 설정")
     
-    lazy var noticeView = myPageList.arrowView(title: "공지사항")
-    lazy var inquireView = myPageList.arrowView(title: "문의하기")
+    lazy var noticeView = myPageList.arrowView(title: "공지사항", labelFont: UIFont.body1Regular!)
+    lazy var inquireView = myPageList.arrowView(title: "문의하기", labelFont: UIFont.body1Regular!)
     lazy var termView = myPageList.noArrowView(title: "이용약관")
     
     let secondShortDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
@@ -62,8 +62,10 @@ class MyPageViewController: UIViewController {
         termView.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
     }
     
+    // TODO: method 통일 시키기
     @objc func didClickNextButton(_ sender: UIView) {
         let nextVC = UserInfoViewController()
+        nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
         
     }
