@@ -231,8 +231,11 @@ class LoginViewController: UIViewController {
                         print("loginWithKakaoTalk() success")
                         print("Kakao id token: (oauthToken.idToken)")
                         
-                        // do something
-                        _ = oauthToken
+                        // api 호출
+                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
+                        
+                        // 가입 여부 저장: Bool
+                        let isRegistered = keychain.getBool("kakaoIsRegistered")
                     }
                 }
             } else {
@@ -245,6 +248,9 @@ class LoginViewController: UIViewController {
                         
                         // do something
                         _ = oauthToken
+                        
+                        // api 호출
+                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
                     }
                 }
             }

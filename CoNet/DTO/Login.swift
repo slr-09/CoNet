@@ -14,3 +14,11 @@ struct PostAppleLoginResult: Codable {
     let refreshToken: String
     let isRegistered: Bool
 }
+
+// kakao login
+struct PostKakaoLoginResult: Codable {
+    let email: String
+    let accessToken: String
+    let refreshToken: String
+    let isRegistered: Bool
+}

@@ -76,4 +76,30 @@ class AuthAPI {
             }
         }
     }
+    
+    // MARK: kakao login
+    func kakaoLogin(idToken: String) {
+        let url = "\(baseUrl)/auth/login/kakao"
+        let headers: HTTPHeaders = ["Content-Type": "application/json"]
+        let body: [String: Any] = [
+            "idToken": idToken
+        ]
+        
+        let dataRequest = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+        
+        dataRequest.responseDecodable(of: BaseResponse<PostKakaoLoginResult>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(kakao login) access token: \(response.result?.accessToken)")
+                print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken)")
+                
+                self.keychain.set(response.result!.email, forKey: "email")
+                self.keychain.set(response.result!.email, forKey: "accessToken")
+                self.keychain.set(response.result!.email, forKey: "kakaoIsRegistered")
+                
+            case .failure(let error):
+                print("DEBUG(kakao login api) error: \(error)")
+            }
+        }
+    }
 }
