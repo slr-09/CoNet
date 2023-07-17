@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController = UINavigationController(rootViewController: LoginViewController())
         navigationController?.navigationBar.isHidden = true
         
-        window?.rootViewController = CalendarViewController()
+        window?.rootViewController = navigationController
         
         // 화면을 띄움
         window?.makeKeyAndVisible()

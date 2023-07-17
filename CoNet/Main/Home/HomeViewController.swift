@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
-    
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -24,6 +23,18 @@ class HomeViewController: UIViewController {
         $0.setImage(UIImage(named: "bell"), for: .normal)
     }
     
+    // label: 오늘의 약속
+    let dayPlanLabel = UILabel().then {
+        $0.text = "오늘의 약속"
+        $0.font = UIFont.headline2Bold
+    }
+    
+    // tableView: 특정 날짜 약속
+    let dayPlanTableView = UITableView().then {
+        $0.rowHeight = 82
+        $0.register(PlanTableViewCell.self, forCellReuseIdentifier: PlanTableViewCell.identifier)
+    }
+    
 //    let calendarView = CalendarViewController().calendarView
     
     override func viewDidLoad() {
@@ -32,7 +43,9 @@ class HomeViewController: UIViewController {
         // background color를 white로 설정 (default: black)
         view.backgroundColor = .white
         // navigation bar 숨기기
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
+        
+        dayPlanTableView.dataSource = self
         
         // layout
         addView()
@@ -43,12 +56,12 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(alarmBtn)
-//        contentView.addSubview(calendarView)
+        contentView.addSubview(dayPlanLabel)
+        contentView.addSubview(dayPlanTableView)
     }
     
     // layout
     func layoutConstraints() {
-        
         // 안전 영역
         let safeArea = view.safeAreaLayoutGuide
         
@@ -64,10 +77,10 @@ class HomeViewController: UIViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(1000)   // 높이를 설정해야 스크롤이 됨
+            make.height.equalTo(1000) // 높이를 설정해야 스크롤이 됨
         }
         
-        // 알림 버튼 
+        // 알림 버튼
         alarmBtn.snp.makeConstraints { make in
             make.width.equalTo(24)
             make.height.equalTo(24)
@@ -75,11 +88,42 @@ class HomeViewController: UIViewController {
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
         }
         
-//        calendarView.snp.makeConstraints { make in
-//            make.leading.equalTo(contentView.snp.leading).offset(0)
-//            make.trailing.equalTo(contentView.snp.trailing).offset(0)
-//            make.top.equalTo(alarmBtn.snp.bottom).offset(30)
-//        }
+        // label: 오늘의 약속
+        dayPlanLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.snp.leading).offset(0)
+            make.top.equalTo(alarmBtn.snp.bottom).offset(451)
+        }
+        
+        // TableView: 특정 날짜 약속
+        dayPlanTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+        }
     }
-
 }
+
+extension HomeViewController: UITableViewDataSource {
+    // 셀 수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dayPlanData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PlanTableViewCell.identifier, for: indexPath) as! PlanTableViewCell
+//        cell.time.text = dayPlanData[IndexPath.row].
+//        cell.planTitle.text = "test"
+//        cell.groupName.text = "ios"
+        return cell
+    }
+}
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        HomeViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
