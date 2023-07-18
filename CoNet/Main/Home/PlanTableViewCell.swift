@@ -29,7 +29,7 @@ class PlanTableViewCell: UITableViewCell {
     // 모임 이름
     let planTitle = UILabel().then {
         $0.text = "1차 스터디"
-        $0.font = UIFont.headline3Bold
+        $0.font = UIFont.body1Bold
     }
     
     // 그룹 이름
@@ -44,6 +44,12 @@ class PlanTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
+        contentView.layer.borderWidth = 1
+        // 그림자 설정
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        contentView.layer.shadowOpacity = 1 // 투명도
+        contentView.layer.shadowRadius = 8 / UIScreen.main.scale
         
         // layout
         addContentView()
@@ -52,6 +58,13 @@ class PlanTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0))
+        
     }
     
     override func awakeFromNib() {
@@ -96,12 +109,14 @@ class PlanTableViewCell: UITableViewCell {
         
         // 약속 타이틀
         planTitle.snp.makeConstraints { make in
+            make.height.equalTo(20)
             make.leading.equalTo(time.snp.trailing).offset(20)
             make.top.equalToSuperview()
         }
         
         // 그룹 이름
         groupName.snp.makeConstraints { make in
+            make.height.equalTo(18)
             make.leading.equalTo(time.snp.trailing).offset(20)
             make.top.equalTo(planTitle.snp.bottom).offset(4)
         }

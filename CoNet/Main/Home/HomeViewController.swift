@@ -29,9 +29,24 @@ class HomeViewController: UIViewController {
         $0.font = UIFont.headline2Bold
     }
     
+    let planNumCircle = UIView().then {
+        $0.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        $0.layer.cornerRadius = 50
+        $0.layer.borderColor = UIColor.purpleMain?.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    // 약속 수
+    let planNum = UILabel().then {
+        $0.text = "2"
+        $0.textColor = UIColor.purpleMain
+        $0.font = UIFont.body3Bold
+    }
+    
     // tableView: 특정 날짜 약속
     let dayPlanTableView = UITableView().then {
-        $0.rowHeight = 82
+        $0.rowHeight = 92
+        $0.separatorStyle = .none
         $0.register(PlanTableViewCell.self, forCellReuseIdentifier: PlanTableViewCell.identifier)
     }
     
@@ -46,6 +61,7 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         dayPlanTableView.dataSource = self
+        dayPlanTableView.delegate = self
         
         // layout
         addView()
@@ -57,6 +73,8 @@ class HomeViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(alarmBtn)
         contentView.addSubview(dayPlanLabel)
+        contentView.addSubview(planNumCircle)
+        contentView.addSubview(planNum)
         contentView.addSubview(dayPlanTableView)
     }
     
@@ -94,6 +112,19 @@ class HomeViewController: UIViewController {
             make.top.equalTo(alarmBtn.snp.bottom).offset(451)
         }
         
+//        planNumCircle.snp.makeConstraints { make in
+//            make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
+////            make.top.equalTo(alarmBtn.snp.bottom).offset(451)
+//            make.centerY.equalTo(dayPlanLabel.snp.centerY)
+//        }
+        // label: 약속 수
+        planNum.snp.makeConstraints { make in
+            make.width.equalTo(20)
+            make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
+            make.centerY.equalTo(dayPlanLabel.snp.centerY)
+//            make.centerX.equalTo(planNumCircle.snp.centerX)
+        }
+        
         // TableView: 특정 날짜 약속
         dayPlanTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -103,10 +134,10 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UITableViewDataSource {
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     // 셀 수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dayPlanData.count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
