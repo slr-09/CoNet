@@ -39,8 +39,8 @@ class MyPageList {
         arrowView.addSubview(arrowImage)
         
         arrowImage.snp.makeConstraints { make in
-            make.width.equalTo(18)
-            make.height.equalTo(24)
+            make.width.equalTo(12)
+            make.height.equalTo(21)
             make.trailing.equalTo(arrowView.snp.trailing)
         }
         
@@ -86,19 +86,18 @@ class MyPageList {
         
         let toggleButton = UISwitch().then {
             $0.isOn = true
+            $0.onTintColor = UIColor.purpleMain
         }
         
         toggleView.addSubview(titleLabel)
-        
-        // Apply constraints using SnapKit
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(20)
             make.leading.equalTo(toggleView.snp.leading)
         }
         
         toggleView.addSubview(toggleButton)
-        
         toggleButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel.snp.centerY)
             make.trailing.equalTo(toggleView.snp.trailing)
         }
         
