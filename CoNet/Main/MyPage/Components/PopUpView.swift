@@ -15,8 +15,7 @@ class PopUpView {
                          leftButtonTitle: String,
                          leftButtonAction: Selector,
                          rightButtonTitle: String,
-                         rightButtonAction: Selector) -> UIView
-    {
+                         rightButtonAction: Selector) -> UIView {
         // 배경
         let view = UIView().then {
             $0.backgroundColor = .white
