@@ -13,7 +13,7 @@ class MyPageAPI {
     let keychain = KeychainSwift()
     let baseUrl = "http://15.164.196.172:9000"
     
-    func getUser(completion: @escaping (_ name: String, _ imageUrl: String) -> Void) {
+    func getUser(completion: @escaping (_ name: String, _ imageUrl: String, _ email: String, _ social: String) -> Void) {
         let url = "\(baseUrl)/user"
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
@@ -31,9 +31,14 @@ class MyPageAPI {
                 print("DEBUG(getUser) name: \(response.result?.name ?? "이름 없음")")
                 print("DEBUG(getUser) imageUrl: \(response.result?.imageUrl ?? "url 없음")")
                 
-                let name = response.result?.name ?? "api에서 이름 없음"
-                let imageUrl = response.result?.imageUrl ?? "api에서 url 없음"
-                completion(name, imageUrl)
+                guard let result = response.result else { return }
+                
+                let name = result.name
+                let imageUrl = result.imageUrl
+                let email = result.email
+                let social = result.social
+                
+                completion(name, imageUrl, email, social)
                 
             case .failure(let error):
                 print("DEBUG(get user api) error: \(error)")

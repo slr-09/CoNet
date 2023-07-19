@@ -15,6 +15,8 @@ class UserInfoViewController: UIViewController {
     // 프로필 이미지 - 현재 기본 이미지로 보여줌
     let profileImage = UIImageView().then {
         $0.image = UIImage(named: "defaultProfile")
+        $0.layer.cornerRadius = 50
+        $0.clipsToBounds = true
     }
     
     // 이름 Label
@@ -25,7 +27,7 @@ class UserInfoViewController: UIViewController {
     }
     
     // 이름 변경 버튼 row
-    var name: String = "이안진"
+    var name: String = ""
     lazy var changeNameView = myPageList.arrowView(title: name, labelFont: UIFont.headline3Medium!)
 
     // 구분선
@@ -39,9 +41,8 @@ class UserInfoViewController: UIViewController {
     }
     
     // 연결된 계정 - 이메일
-    var email: String = "conet@gmail.com"
     lazy var emailLabel = UILabel().then {
-        $0.text = self.email
+        $0.text = ""
         $0.font = UIFont.headline3Medium
         $0.textColor = UIColor.textHigh
     }
@@ -62,6 +63,18 @@ class UserInfoViewController: UIViewController {
         $0.titleLabel?.font = UIFont.body2Medium
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        
+        fetchUser()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
@@ -79,14 +92,52 @@ class UserInfoViewController: UIViewController {
         signOutButton.addTarget(self, action: #selector(showPopup(_:)), for: .touchUpInside)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+    private func fetchUser() {
+        MyPageAPI().getUser { username, _, email, social in
+            // TODO: 이름 변경 후 화면에 안 뜨는 버그 수정
+            DispatchQueue.global().async {
+                self.name = username
+            }
+            
+            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
+            self.loadImage(url: imageURL)
+            
+            self.emailLabel.text = email
+            
+            if social == "APPLE" {
+                self.linkedSocialImage.image = UIImage(named: "linkedApple")
+            } else {
+                self.linkedSocialImage.image = UIImage(named: "linkedKakao")
+            }
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = false
+    private func loadImage(url imageURL: URL) {
+        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
+        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
+            // 에러 처리
+            if let error = error {
+                print("Error loading image: \(error.localizedDescription)")
+                return
+            }
+            
+            // 데이터가 정상적으로 받아와졌는지 확인
+            guard let imageData = data else {
+                print("No image data received")
+                return
+            }
+            
+            // 이미지 데이터를 UIImage로 변환
+            if let image = UIImage(data: imageData, scale: 100) {
+                // UI 업데이트는 메인 큐에서 수행
+                DispatchQueue.main.async {
+                    // 이미지를 UIImageView에 설정
+                    self.profileImage.image = image
+                }
+            } else {
+                print("Failed to convert image data")
+            }
+        }.resume()
     }
     
     @objc func showChangeNameViewController(_ sender: UIView) {
@@ -109,6 +160,7 @@ class UserInfoViewController: UIViewController {
         // 프로필 이미지
         view.addSubview(profileImage)
         profileImage.snp.makeConstraints { make in
+            make.width.equalTo(100)
             make.height.equalTo(100)
             make.top.equalTo(safeArea.snp.top).offset(48)
             make.centerX.equalTo(safeArea.snp.centerX)
