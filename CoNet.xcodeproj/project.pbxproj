@@ -34,6 +34,7 @@
 		514D73D22A59B42A00404E64 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D12A59B42A00404E64 /* UserInfoViewController.swift */; };
 		514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D32A59D19A00404E64 /* NoticeViewController.swift */; };
 		514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D52A59D2FB00404E64 /* InquireViewController.swift */; };
+		518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */; };
 		51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64952A532CB300BBA4C0 /* KakaoSDK */; };
 		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
@@ -74,6 +75,7 @@
 		514D73D12A59B42A00404E64 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		514D73D32A59D19A00404E64 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		514D73D52A59D2FB00404E64 /* InquireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquireViewController.swift; sourceTree = "<group>"; };
+		518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutPopUpViewController.swift; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
 		51F2A4702A5497A500D134CC /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				514D73D52A59D2FB00404E64 /* InquireViewController.swift */,
 				51046AA82A6147F500AD543D /* ChangeNameViewController.swift */,
 				511B35732A6512B100EDC3E0 /* SendEmailButton.swift */,
+				518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				514D73D02A59839200404E64 /* MyPageList.swift in Sources */,
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
+				518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				511B35742A6512B100EDC3E0 /* SendEmailButton.swift in Sources */,

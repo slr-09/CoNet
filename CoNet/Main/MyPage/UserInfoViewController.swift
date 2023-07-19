@@ -76,6 +76,7 @@ class UserInfoViewController: UIViewController {
         signOutConstraints() // 회원 탈퇴 constraint
         
         changeNameView.addTarget(self, action: #selector(showChangeNameViewController(_:)), for: .touchUpInside)
+        signOutButton.addTarget(self, action: #selector(showPopup(_:)), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -92,6 +93,13 @@ class UserInfoViewController: UIViewController {
         let nextVC = ChangeNameViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
+    }
+    
+    @objc func showPopup(_ sender: UIView) {
+        let popupVC = SignOutPopUpViewController()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        present(popupVC, animated: true, completion: nil)
     }
     
     // 프로필 이미지 수정 버튼의 constraint

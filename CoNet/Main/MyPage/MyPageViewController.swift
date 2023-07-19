@@ -184,13 +184,3 @@ class MyPageViewController: UIViewController {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         MyPageViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif
