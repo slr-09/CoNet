@@ -41,7 +41,7 @@ class SignOutPopUpViewController: UIViewController {
                                      leftButtonTitle: "취소",
                                      leftButtonAction: #selector(dismissPopUp),
                                      rightButtonTitle: "탈퇴",
-                                     rightButtonAction: #selector(dismissPopUp))
+                                     rightButtonAction: #selector(showCompletSignOutViewController))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +58,14 @@ class SignOutPopUpViewController: UIViewController {
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func showCompletSignOutViewController(_ sender: UIView) {
+        let nextVC = CompleteSignOutViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
     }
     
     // 모든 layout Constraints
@@ -88,13 +96,3 @@ class SignOutPopUpViewController: UIViewController {
     }
     
 }
-
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         SignOutPopUpViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif
