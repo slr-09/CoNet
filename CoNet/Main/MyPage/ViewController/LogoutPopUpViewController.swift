@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KeychainSwift
 
 class LogoutPopUpViewController: UIViewController {
     // 배경 - black 투명도 30%
@@ -39,11 +40,18 @@ class LogoutPopUpViewController: UIViewController {
     }
     
     @objc func showLoginViewController(_ sender: UIView) {
+        self.logout()
+        
         let nextVC = LoginViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
         sceneDelegate?.changeRootVC(LoginViewController(), animated: false)
+    }
+    
+    private func logout() {
+        let keychain = KeychainSwift()
+        keychain.clear()
     }
     
     // 모든 layout Constraints
