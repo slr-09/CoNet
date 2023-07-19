@@ -168,6 +168,25 @@
 			path = CoNet;
 			sourceTree = "<group>";
 		};
+		518F55D62A683E15002D8F0F /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				514D73D12A59B42A00404E64 /* UserInfoViewController.swift */,
+				51046AA82A6147F500AD543D /* ChangeNameViewController.swift */,
+				518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		518F55D72A683F27002D8F0F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				514D73CF2A59839200404E64 /* MyPageList.swift */,
+				511B35732A6512B100EDC3E0 /* SendEmailButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		51F2A4662A547C5700D134CC /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,14 +234,11 @@
 		51F72C572A592B3E0055E8C4 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				514D73CF2A59839200404E64 /* MyPageList.swift */,
+				518F55D72A683F27002D8F0F /* Components */,
+				518F55D62A683E15002D8F0F /* UserInfo */,
 				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
-				514D73D12A59B42A00404E64 /* UserInfoViewController.swift */,
 				514D73D32A59D19A00404E64 /* NoticeViewController.swift */,
 				514D73D52A59D2FB00404E64 /* InquireViewController.swift */,
-				51046AA82A6147F500AD543D /* ChangeNameViewController.swift */,
-				511B35732A6512B100EDC3E0 /* SendEmailButton.swift */,
-				518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
