@@ -21,8 +21,9 @@ class MyPageViewController: UIViewController {
     let profileImage = UIImageView().then { $0.image = UIImage(named: "defaultProfile") }
     
     // 이름
-    let nameLabel = UILabel().then {
-        $0.text = "이안진"
+//    var name: String = "왜이러지"
+    lazy var nameLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.headline2Bold
         $0.textColor = UIColor.textHigh
     }
@@ -40,6 +41,14 @@ class MyPageViewController: UIViewController {
     lazy var inquireView = myPageList.arrowView(title: "문의하기", labelFont: UIFont.body1Regular!)
     lazy var termView = myPageList.noArrowView(title: "이용약관")
     lazy var logoutView = myPageList.noArrowView(title: "로그아웃")
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        MyPageAPI().getUser { name in
+            self.nameLabel.text = name
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +82,6 @@ class MyPageViewController: UIViewController {
     @objc private func showInquireViewController(_ sender: UIView) {
         let nextVC = InquireViewController()
         navigationController?.pushViewController(nextVC, animated: true)
-        
     }
     
     @objc func showLogoutPopup(_ sender: UIView) {
