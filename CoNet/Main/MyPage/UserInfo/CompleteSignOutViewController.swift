@@ -83,13 +83,3 @@ class CompleteSignOutViewController: UIViewController {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        CompleteSignOutViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

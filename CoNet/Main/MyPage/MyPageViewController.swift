@@ -51,9 +51,10 @@ class MyPageViewController: UIViewController {
         // 전체 layout constraints
         layoutConstraints()
         
-        userInfoView.addTarget(self, action: #selector(showUserInfoViewController(_:)), for: .touchUpInside)
-        noticeView.addTarget(self, action: #selector(showNoticeViewController(_:)), for: .touchUpInside)
-        inquireView.addTarget(self, action: #selector(showInquireViewController(_:)), for: .touchUpInside)
+        userInfoView.addTarget(self, action: #selector(showUserInfoViewController), for: .touchUpInside)
+        noticeView.addTarget(self, action: #selector(showNoticeViewController), for: .touchUpInside)
+        inquireView.addTarget(self, action: #selector(showInquireViewController), for: .touchUpInside)
+        logoutView.addTarget(self, action: #selector(showLogoutPopup), for: .touchUpInside)
     }
     
     @objc private func showUserInfoViewController(_ sender: UIView) {
@@ -73,6 +74,13 @@ class MyPageViewController: UIViewController {
         let nextVC = InquireViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
+    }
+    
+    @objc func showLogoutPopup(_ sender: UIView) {
+        let popupVC = LogoutPopUpViewController()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        present(popupVC, animated: true, completion: nil)
     }
     
     // 전체 layout constraints

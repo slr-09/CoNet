@@ -1,15 +1,13 @@
 //
-//  SignOutPopUpViewController.swift
+//  LogOutPopUpViewController.swift
 //  CoNet
 //
 //  Created by 이안진 on 2023/07/20.
 //
 
-import SnapKit
-import Then
 import UIKit
 
-class SignOutPopUpViewController: UIViewController {
+class LogoutPopUpViewController: UIViewController {
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -17,16 +15,15 @@ class SignOutPopUpViewController: UIViewController {
     
     // 팝업
     let popUp = PopUpView()
-                    .withDescription(title: "탈퇴하시겠습니까?",
-                                     description: "계정 내 참여한 모임, 약속이 모두 삭제되며\n복구되지 않습니다.",
-                                     leftButtonTitle: "취소",
-                                     leftButtonAction: #selector(dismissPopUp),
-                                     rightButtonTitle: "탈퇴",
-                                     rightButtonAction: #selector(showCompletSignOutViewController))
+                    .withNoDescription(title: "로그아웃 하시겠습니까?",
+                                       leftButtonTitle: "취소",
+                                       leftButtonAction: #selector(dismissPopUp),
+                                       rightButtonTitle: "로그아웃",
+                                       rightButtonAction: #selector(showLoginViewController))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // background color를 clear로 설정 (default: black)
         view.backgroundColor = .clear
         
@@ -35,18 +32,18 @@ class SignOutPopUpViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
     }
-    
+
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func showCompletSignOutViewController(_ sender: UIView) {
-        let nextVC = CompleteSignOutViewController()
+    @objc func showLoginViewController(_ sender: UIView) {
+        let nextVC = LoginViewController()
         navigationController?.pushViewController(nextVC, animated: true)
         
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
+        sceneDelegate?.changeRootVC(LoginViewController(), animated: false)
     }
     
     // 모든 layout Constraints
@@ -76,3 +73,13 @@ class SignOutPopUpViewController: UIViewController {
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        LogoutPopUpViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
