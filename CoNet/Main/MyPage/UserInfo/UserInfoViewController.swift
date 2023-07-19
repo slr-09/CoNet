@@ -38,10 +38,10 @@ class UserInfoViewController: UIViewController {
         $0.textColor = UIColor.gray300
     }
     
-    // 연결된 계정 - 카카오/애플
-    var social: String = "애플"
-    lazy var linkedSocial = UILabel().then {
-        $0.text = self.social
+    // 연결된 계정 - 이메일
+    var email: String = "conet@gmail.com"
+    lazy var emailLabel = UILabel().then {
+        $0.text = self.email
         $0.font = UIFont.headline3Medium
         $0.textColor = UIColor.textHigh
     }
@@ -159,8 +159,8 @@ class UserInfoViewController: UIViewController {
         }
         
         // 연결된 계정 - 카카오/애플
-        view.addSubview(linkedSocial)
-        linkedSocial.snp.makeConstraints { make in
+        view.addSubview(emailLabel)
+        emailLabel.snp.makeConstraints { make in
             make.height.equalTo(22)
             make.top.equalTo(linkedSocialLabel.snp.bottom).offset(8)
             verticalPadding(make: make)
@@ -171,7 +171,7 @@ class UserInfoViewController: UIViewController {
         linkedSocialImage.snp.makeConstraints { make in
             make.width.equalTo(34)
             make.height.equalTo(34)
-            make.centerY.equalTo(linkedSocial.snp.centerY)
+            make.centerY.equalTo(emailLabel.snp.centerY)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
     }
