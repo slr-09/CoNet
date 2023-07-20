@@ -33,6 +33,15 @@ class SideBarViewController: UIViewController {
         $0.textColor = UIColor.textMedium
     }
     
+    // 초대코드 발급 버튼
+    let inviteCodeButton = UIButton().then { $0.backgroundColor = UIColor.mainSub2?.withAlphaComponent(0.5) }
+    let inviteCodeImage = UIImageView().then { $0.image = UIImage(named: "inviteCode") }
+    let inviteCodeLabel = UILabel().then {
+        $0.text = "초대 코드 발급"
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +63,7 @@ class SideBarViewController: UIViewController {
     private func layoutConstraints() {
         backgroundConstraints()
         meetingInfoConstraints()
+        inviteCodeConstraints()
     }
     
     // 배경 Constraints
@@ -110,6 +120,31 @@ class SideBarViewController: UIViewController {
             make.height.equalTo(16)
             make.centerY.equalTo(memberCountImage.snp.centerY)
             make.leading.equalTo(memberCountImage.snp.trailing).offset(4)
+        }
+    }
+    
+    // 초대 코드 발급 Constrints
+    private func inviteCodeConstraints() {
+        sideBarBackground.addSubview(inviteCodeButton)
+        inviteCodeButton.snp.makeConstraints { make in
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.height.equalTo(50)
+            make.top.equalTo(memberCountLabel.snp.bottom).offset(20)
+        }
+        
+        inviteCodeButton.addSubview(inviteCodeImage)
+        inviteCodeImage.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(24)
+            make.centerY.equalTo(inviteCodeButton.snp.centerY)
+            make.leading.equalTo(inviteCodeButton.snp.leading).offset(18)
+        }
+        
+        inviteCodeButton.addSubview(inviteCodeLabel)
+        inviteCodeLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(inviteCodeButton.snp.centerY)
+            make.leading.equalTo(inviteCodeImage.snp.trailing).offset(6)
         }
     }
 }
