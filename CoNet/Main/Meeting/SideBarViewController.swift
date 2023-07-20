@@ -12,7 +12,6 @@ import UIKit
 class SideBarViewController: UIViewController {
     // 배경 - black 투명도 30%
     let background = UIView().then { $0.backgroundColor = UIColor.black.withAlphaComponent(0.5) }
-    
     // 사이드 바 하얀 배경
     let sideBarBackground = UIView().then { $0.backgroundColor = UIColor.grayWhite }
     
@@ -42,6 +41,41 @@ class SideBarViewController: UIViewController {
         $0.textColor = UIColor.textHigh
     }
     
+    // 약속 카테고리
+    let planLabel = UILabel().then {
+        $0.text = "약속"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.purpleMain
+    }
+    
+    // 대기중인 약속
+    let waitingPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let waitingPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
+    let waitingPlanLabel = UILabel().then {
+        $0.text = "대기중인 약속"
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
+    
+    // 확정된 약속
+    let decidedPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let decidedPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
+    let decidedPlanLabel = UILabel().then {
+        $0.text = "확정된 약속"
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
+    
+    // 지난 약속
+    let pastPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let pastPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
+    let pastPlanLabel = UILabel().then {
+        $0.text = "지난 약속"
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
+    let pastPlanBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,6 +98,7 @@ class SideBarViewController: UIViewController {
         backgroundConstraints()
         meetingInfoConstraints()
         inviteCodeConstraints()
+        planConstraints()
     }
     
     // 배경 Constraints
@@ -146,6 +181,121 @@ class SideBarViewController: UIViewController {
             make.centerY.equalTo(inviteCodeButton.snp.centerY)
             make.leading.equalTo(inviteCodeImage.snp.trailing).offset(6)
         }
+    }
+    
+    // 약속 Constraints
+    private func planConstraints() {
+        sideBarBackground.addSubview(planLabel)
+        planLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.top.equalTo(inviteCodeButton.snp.bottom).offset(30)
+            make.leading.equalTo(sideBarBackground.snp.leading).offset(18)
+        }
+        
+        // 대기중인 약속
+        sideBarBackground.addSubview(waitingPlanTopBorder)
+        waitingPlanTopBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(planLabel.snp.bottom).offset(16)
+        }
+        
+        sideBarBackground.addSubview(waitingPlanButton)
+        waitingPlanButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(planLabel.snp.bottom).offset(16)
+        }
+        
+        waitingPlanButton.addSubview(waitingPlanLabel)
+        waitingPlanLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(waitingPlanButton.snp.centerY)
+            make.leading.equalTo(waitingPlanButton.snp.leading).offset(20)
+        }
+        
+        // 확정된 약속
+        sideBarBackground.addSubview(decidedPlanTopBorder)
+        decidedPlanTopBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(waitingPlanButton.snp.bottom)
+        }
+        
+        sideBarBackground.addSubview(decidedPlanButton)
+        decidedPlanButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(waitingPlanButton.snp.bottom)
+        }
+        
+        decidedPlanButton.addSubview(decidedPlanLabel)
+        decidedPlanLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(decidedPlanButton.snp.centerY)
+            make.leading.equalTo(decidedPlanButton.snp.leading).offset(20)
+        }
+        
+        // 지난 약속
+        sideBarBackground.addSubview(pastPlanTopBorder)
+        pastPlanTopBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(decidedPlanButton.snp.bottom)
+        }
+        
+        sideBarBackground.addSubview(pastPlanButton)
+        pastPlanButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(decidedPlanButton.snp.bottom)
+        }
+        
+        pastPlanButton.addSubview(pastPlanLabel)
+        pastPlanLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(pastPlanButton.snp.centerY)
+            make.leading.equalTo(pastPlanButton.snp.leading).offset(20)
+        }
+        
+        sideBarBackground.addSubview(pastPlanBottomBorder)
+        pastPlanBottomBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(pastPlanButton.snp.bottom)
+        }
+    }
+}
+
+class Divider: UIView {
+    let divider = UIView().then {
+        $0.backgroundColor = UIColor.black
+//        $0.backgroundColor = UIColor.gray100
+    }
+    
+    // Custom View 초기화
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+    }
+    
+    // 구성 요소들을 Custom View에 추가하고 레이아웃 설정
+    private func setupViews() {
+        addSubview(divider)
+        
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalToSuperview()
+        }
+    }
+    
+    func setColor(_ color: UIColor) {
+        divider.backgroundColor = color
     }
 }
 
