@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         var navigationController: UINavigationController?
 
-        navigationController = UINavigationController(rootViewController: LoginViewController())
+        navigationController = UINavigationController(rootViewController: GatherPopUpViewController())
         navigationController?.navigationBar.isHidden = true
         
         window?.rootViewController = navigationController
