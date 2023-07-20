@@ -9,7 +9,15 @@ import SnapKit
 import Then
 import UIKit
 
-class GatherPopUpViewController: UIViewController {
+class MeetingPopUpViewController: UIViewController {
+    
+    let background = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    }
+    let popUpView = UIView().then {
+        $0.backgroundColor = UIColor.white
+        $0.layer.cornerRadius = 10
+    }
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
@@ -48,8 +56,10 @@ class GatherPopUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .clear
         
+        self.view.addSubview(background)
+        self.view.addSubview(popUpView)
         self.view.addSubview(xButton)
         self.view.addSubview(inviteLabel)
         self.view.addSubview(codeTextField)
@@ -61,46 +71,62 @@ class GatherPopUpViewController: UIViewController {
         
         codeTextField.addTarget(self, action: #selector(codeTextFieldDidChange), for: .editingChanged)
         participateButton.addTarget(self, action: #selector(participateButtonTapped), for: .touchUpInside)
+        
+        infoView.isHidden = true
     }
     
     func applyConstraintsToComponents() {
         let safeArea = view.safeAreaLayoutGuide
         
+        popUpView.snp.makeConstraints { make in
+            make.width.equalTo(257)
+            make.height.equalTo(332)
+            make.top.equalTo(view.snp.top).offset(260)
+            make.leading.equalTo(safeArea.snp.leading).offset(68)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-68)
+        }
         xButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.top.equalTo(safeArea.snp.top).offset(18)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-18)
+            make.top.equalTo(popUpView.snp.top).offset(18)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-18)
         }
         inviteLabel.snp.makeConstraints { make in
             make.height.equalTo(52)
-            make.top.equalTo(safeArea.snp.top).offset(66)
-            make.leading.equalTo(safeArea.snp.leading).offset(33)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(66)
+            make.top.equalTo(popUpView.snp.top).offset(66)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(66)
         }
         codeTextField.snp.makeConstraints { make in
             make.top.equalTo(inviteLabel.snp.bottom).offset(66)
-            make.leading.equalTo(safeArea.snp.leading).offset(33)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-33)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
         }
         grayLine.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.top.equalTo(inviteLabel.snp.bottom).offset(96)
-            make.leading.equalTo(safeArea.snp.leading).offset(33)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-33)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
         }
         infoView.snp.makeConstraints { make in
             make.width.height.equalTo(8)
             make.top.equalTo(grayLine.snp.bottom).offset(6)
-            make.leading.equalTo(safeArea.snp.leading).offset(33)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.centerY.equalTo(infoLabel)
         }
         infoLabel.snp.makeConstraints { make in
             make.top.equalTo(infoView)
-            make.leading.equalTo(safeArea.snp.leading).offset(45)
+            make.leading.equalTo(popUpView.snp.leading).offset(45)
         }
         participateButton.snp.makeConstraints { make in
             make.top.equalTo(grayLine.snp.bottom).offset(32)
-            make.leading.equalTo(safeArea.snp.leading).offset(33)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-33)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
+        }
+    }
+    
+    func applyConstraintsTobackground() {
+        background.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
         }
     }
     

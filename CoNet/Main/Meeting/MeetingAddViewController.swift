@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class GatherAddViewController: UIViewController {
+class MeetingAddViewController: UIViewController {
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
@@ -120,8 +120,8 @@ class GatherAddViewController: UIViewController {
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
         gatherAddLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.bottom).offset(42)
-            make.leading.equalTo(xButton.snp.trailing).offset(101)
+            make.top.equalTo(safeArea.snp.top).offset(42)
+            make.leading.equalTo(safeArea.snp.leading).offset(149)
         }
     }
     
@@ -190,7 +190,7 @@ class GatherAddViewController: UIViewController {
     }
     
     @objc private func xButtonTapped() {
-        let gatherVC = GatherViewController()
+        let gatherVC = MeetingViewController()
         gatherVC.modalPresentationStyle = .fullScreen
         present(gatherVC, animated: true, completion: nil)
     }
@@ -224,7 +224,7 @@ class GatherAddViewController: UIViewController {
     }
 }
 
-extension GatherAddViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MeetingAddViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             photoImageView.image = selectedImage
