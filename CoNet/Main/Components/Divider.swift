@@ -12,7 +12,6 @@ import UIKit
 class Divider: UIView {
     let divider = UIView().then {
         $0.backgroundColor = UIColor.black
-//        $0.backgroundColor = UIColor.gray100
     }
     
     // Custom View 초기화

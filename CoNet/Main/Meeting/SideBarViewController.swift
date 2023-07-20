@@ -93,6 +93,28 @@ class SideBarViewController: UIViewController {
         $0.textColor = UIColor.textHigh
     }
     
+    // 하단 divider
+    let bottomButtonDivider = Divider().then { $0.setColor(UIColor.gray100!) }
+    let bottomVerticalDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
+    
+    // 모임 삭제
+    let deleteMeetingButton = UIButton().then { $0.backgroundColor = .clear }
+    let deleteMeetingImage = UIImageView().then { $0.image = UIImage(named: "deleteMeeting") }
+    let deleteMeetingButtonTitle = UILabel().then {
+        $0.text = "모임 삭제"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textHigh
+    }
+    
+    // 모임 나가기
+    let leaveMeetingButton = UIButton().then { $0.backgroundColor = .clear }
+    let leaveMeetingImage = UIImageView().then { $0.image = UIImage(named: "leaveMeeting") }
+    let leaveMeetingButtonTitle = UILabel().then {
+        $0.text = "모임 나가기"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.error
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -117,6 +139,7 @@ class SideBarViewController: UIViewController {
         inviteCodeConstraints()
         planConstraints()
         historyConstraints()
+        bottomButtonsConstraints()
     }
     
     // 배경 Constraints
@@ -320,6 +343,72 @@ class SideBarViewController: UIViewController {
             make.height.equalTo(1)
             make.width.equalTo(sideBarBackground.snp.width)
             make.bottom.equalTo(historyButton.snp.bottom)
+        }
+    }
+    
+    // 모임 나가기, 탈퇴 Constraints
+    private func bottomButtonsConstraints() {
+        sideBarBackground.addSubview(bottomButtonDivider)
+        bottomButtonDivider.snp.makeConstraints { make in
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.height.equalTo(1)
+            make.bottom.equalTo(sideBarBackground.snp.bottom).offset(-60)
+        }
+        
+        // 모임 삭제
+        sideBarBackground.addSubview(deleteMeetingButton)
+        deleteMeetingButton.snp.makeConstraints { make in
+            make.width.equalTo(sideBarBackground.snp.width).dividedBy(2)
+            make.height.equalTo(60)
+            make.leading.equalTo(sideBarBackground.snp.leading)
+            make.bottom.equalTo(sideBarBackground.snp.bottom)
+        }
+        
+        deleteMeetingButton.addSubview(deleteMeetingButtonTitle)
+        deleteMeetingButtonTitle.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.centerY.equalTo(deleteMeetingButton.snp.centerY)
+            make.trailing.equalTo(deleteMeetingButton.snp.trailing).offset(-30)
+        }
+        
+        deleteMeetingButton.addSubview(deleteMeetingImage)
+        deleteMeetingImage.snp.makeConstraints { make in
+            make.height.equalTo(16)
+            make.width.equalTo(16)
+            make.centerY.equalTo(deleteMeetingButtonTitle.snp.centerY)
+            make.trailing.equalTo(deleteMeetingButtonTitle.snp.leading).offset(-2)
+        }
+        
+        // 모임 나가기
+        sideBarBackground.addSubview(leaveMeetingButton)
+        leaveMeetingButton.snp.makeConstraints { make in
+            make.width.equalTo(sideBarBackground.snp.width).dividedBy(2)
+            make.height.equalTo(60)
+            make.trailing.equalTo(sideBarBackground.snp.trailing)
+            make.bottom.equalTo(sideBarBackground.snp.bottom)
+        }
+        
+        leaveMeetingButton.addSubview(leaveMeetingImage)
+        leaveMeetingImage.snp.makeConstraints { make in
+            make.width.equalTo(16)
+            make.height.equalTo(16)
+            make.centerY.equalTo(leaveMeetingButton.snp.centerY)
+            make.leading.equalTo(leaveMeetingButton.snp.leading).offset(30)
+        }
+        
+        leaveMeetingButton.addSubview(leaveMeetingButtonTitle)
+        leaveMeetingButtonTitle.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.centerY.equalTo(leaveMeetingButton)
+            make.leading.equalTo(leaveMeetingImage.snp.trailing).offset(2)
+        }
+        
+        sideBarBackground.addSubview(bottomVerticalDivider)
+        bottomVerticalDivider.snp.makeConstraints { make in
+            make.width.equalTo(1)
+            make.height.equalTo(30)
+            make.centerX.equalTo(sideBarBackground.snp.centerX)
+            make.centerY.equalTo(deleteMeetingButton.snp.centerY)
         }
     }
 }
