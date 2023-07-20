@@ -68,13 +68,30 @@ class SideBarViewController: UIViewController {
     
     // 지난 약속
     let pastPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let pastPlanBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
     let pastPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
     let pastPlanLabel = UILabel().then {
         $0.text = "지난 약속"
         $0.font = UIFont.body1Medium
         $0.textColor = UIColor.textHigh
     }
-    let pastPlanBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    
+    // 히스토리 카테고리
+    let historyLabel = UILabel().then {
+        $0.text = "히스토리"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.purpleMain
+    }
+    
+    // 히스토리
+    let historyTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let historyBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let historyButton = UIButton().then { $0.backgroundColor = UIColor.clear }
+    let historyButtonLabel = UILabel().then {
+        $0.text = "히스토리"
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +116,7 @@ class SideBarViewController: UIViewController {
         meetingInfoConstraints()
         inviteCodeConstraints()
         planConstraints()
+        historyConstraints()
     }
     
     // 배경 Constraints
@@ -265,37 +283,44 @@ class SideBarViewController: UIViewController {
             make.top.equalTo(pastPlanButton.snp.bottom)
         }
     }
-}
-
-class Divider: UIView {
-    let divider = UIView().then {
-        $0.backgroundColor = UIColor.black
-//        $0.backgroundColor = UIColor.gray100
-    }
     
-    // Custom View 초기화
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-    }
-    
-    // 구성 요소들을 Custom View에 추가하고 레이아웃 설정
-    private func setupViews() {
-        addSubview(divider)
-        
-        divider.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalToSuperview()
+    // 히스토리 Constraints
+    private func historyConstraints() {
+        sideBarBackground.addSubview(historyLabel)
+        historyLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.top.equalTo(pastPlanButton.snp.bottom).offset(30)
+            make.leading.equalTo(sideBarBackground.snp.leading).offset(18)
         }
-    }
-    
-    func setColor(_ color: UIColor) {
-        divider.backgroundColor = color
+        
+        // 히스토리
+        sideBarBackground.addSubview(historyTopBorder)
+        historyTopBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(historyLabel.snp.bottom).offset(16)
+        }
+        
+        sideBarBackground.addSubview(historyButton)
+        historyButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.top.equalTo(historyLabel.snp.bottom).offset(16)
+        }
+        
+        historyButton.addSubview(historyButtonLabel)
+        historyButtonLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(historyButton.snp.centerY)
+            make.leading.equalTo(historyButton.snp.leading).offset(20)
+        }
+        
+        historyButton.addSubview(historyBottomBorder)
+        historyBottomBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalTo(sideBarBackground.snp.width)
+            make.bottom.equalTo(historyButton.snp.bottom)
+        }
     }
 }
 
