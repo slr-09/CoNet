@@ -97,6 +97,7 @@ class LoginViewController: UIViewController {
             make.height.equalTo(22)
         }
     }
+
     private func setupLogoImageView() {
         let logoImageView = UIImageView().then {
             $0.image = UIImage(named: "LaunchScreenImage")
@@ -111,6 +112,7 @@ class LoginViewController: UIViewController {
             make.height.equalTo(198.64)
         }
     }
+
     private func setupKakaoButton() {
         let kakaoButton = UIButton().then {
             $0.backgroundColor = UIColor(red: 0.976, green: 0.922, blue: 0, alpha: 1)
@@ -163,183 +165,180 @@ class LoginViewController: UIViewController {
         kakaoStackView.addArrangedSubview(kakaoLabel)
     }
         
-        private func setupAppleButton() {
-            let appleButton = UIButton().then {
-                $0.backgroundColor = .black
-                $0.layer.cornerRadius = 12
-                $0.addTarget(self, action: #selector(appleButtonTapped), for: .touchUpInside)
-            }
-            view.addSubview(appleButton)
-            appleButton.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(634)
-                make.left.equalToSuperview().offset(24)
-                make.right.equalToSuperview().offset(-24)
-                make.height.equalTo(52)
-            }
-            
-            let appleStackView = UIStackView().then {
-                $0.axis = .horizontal
-                $0.spacing = 8
-            }
-            appleButton.addSubview(appleStackView)
-            appleStackView.snp.makeConstraints { make in
-                make.centerX.centerY.equalToSuperview()
-            }
-            
-            let appleImageView = UIImageView().then {
-                $0.image = UIImage(named: "apple")
-                $0.contentMode = .scaleAspectFit
-                $0.backgroundColor = .clear
-            }
-            appleStackView.addArrangedSubview(appleImageView)
-            appleImageView.snp.makeConstraints { make in
-                make.width.equalTo(16)
-                make.height.equalTo(19)
-            }
-            
-            let appleLabel = UILabel().then {
-                $0.text = "Apple로 계속하기"
-                $0.font = UIFont.body1Bold
-                $0.textColor = .white
-                
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineHeightMultiple = 1.05
-                
-                let attributedText = NSMutableAttributedString(string: "Apple로 계속하기", attributes: [
-                    NSAttributedString.Key.kern: -0.4,
-                    NSAttributedString.Key.paragraphStyle: paragraphStyle
-                ])
-                $0.attributedText = attributedText
-            }
-            appleStackView.addArrangedSubview(appleLabel)
-        }
-        
-        @objc private func kakaoButtonTapped() {
-            kakaoLogin()
-        }
-        
-        @objc private func appleButtonTapped() {
-            appleLogin()
-        }
-        
-        // MARK: - Login Actions
-        private func kakaoLogin() {
-            // 카카오톡 실행 가능 여부 확인
-            if UserApi.isKakaoTalkLoginAvailable() {
-                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                    if let error = error {
-                        print(error)
-                    } else {
-                        print("loginWithKakaoTalk() success")
-                        print("Kakao id token: (oauthToken.idToken)")
-                        
-                        // api 호출
-                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
-                        
-                        // 가입 여부 저장: Bool
-                        let isRegistered = keychain.getBool("kakaoIsRegistered")
-                    }
-                }
-            } else {
-                // 카카오 계정으로 로그인
-                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                    if let error = error {
-                        print(error)
-                    } else {
-                        print("Kakao id token: (oauthToken.idToken)")
-                        
-                        // do something
-                        _ = oauthToken
-                        
-                        // api 호출
-                        AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
-                    }
-                }
-            }
-            
-        }
-        
-        private func appleLogin() {
-            // request 생성
-            let request = ASAuthorizationAppleIDProvider().createRequest()
-            request.requestedScopes = [.fullName, .email]
-            
-            // request를 보내줄 controller 생성
-            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-            authorizationController.delegate = self as ASAuthorizationControllerDelegate
-            authorizationController.presentationContextProvider = self as ASAuthorizationControllerPresentationContextProviding
-            
-            // 요청 보내기
-            authorizationController.performRequests()
-        }
-        
-    }
-
-    let keychain = KeychainSwift()
-
-    // MARK: - ASAuthorizationControllerDelegate
-    // apple login
-    extension LoginViewController: ASAuthorizationControllerDelegate {
-        
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                let idToken = credential.identityToken!
-                let tokenStr = String(data: idToken, encoding: .utf8)
-                print("idToken: ", tokenStr ?? "")
-                
-                guard let code = credential.authorizationCode else { return }
-                let codeStr = String(data: code, encoding: .utf8)
-                print(codeStr ?? "")
-                
-                let user = credential.user
-                print(user)
-                
-                // idToken 저장
-                keychain.set(tokenStr ?? "", forKey: "idToken")
-                
-                // api 호출
-                AuthAPI.shared.appleLogin()
-                
-                // 가입 여부 저장: Bool
-                let isRegistered = keychain.getBool("appleIsRegistered")
-                
-                // 가입이 되어있는 경우
-                if isRegistered == true {
-                    // 홈 탭으로 이동
-                    let nextVC = TabbarViewController()
-                    navigationController?.pushViewController(nextVC, animated: true)
-                    
-                    // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
-                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-                    sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
-                }
-                // 가입이 되지 않은 경우
-                else {
-                    // 회원가입 탭으로 이동
-                    let nextVC = TermsOfUseViewController()
-                    navigationController?.pushViewController(nextVC, animated: true)
-                }
-            }
-        }
-        
-        func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-            print("Apple login error: \(error)")
-        }
-    }
-
-    // MARK: - ASAuthorizationControllerPresentationContextProviding
-
-    extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
-        
-        func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-            return self.view.window!
-        }
-        
-    }
-    
-    private func createButton(color: UIColor) -> UIButton {
-        return UIButton().then {
-            $0.backgroundColor = color
+    private func setupAppleButton() {
+        let appleButton = UIButton().then {
+            $0.backgroundColor = .black
             $0.layer.cornerRadius = 12
+            $0.addTarget(self, action: #selector(appleButtonTapped), for: .touchUpInside)
+        }
+        view.addSubview(appleButton)
+        appleButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(634)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
+            make.height.equalTo(52)
+        }
+            
+        let appleStackView = UIStackView().then {
+            $0.axis = .horizontal
+            $0.spacing = 8
+        }
+        appleButton.addSubview(appleStackView)
+        appleStackView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
+            
+        let appleImageView = UIImageView().then {
+            $0.image = UIImage(named: "apple")
+            $0.contentMode = .scaleAspectFit
+            $0.backgroundColor = .clear
+        }
+        appleStackView.addArrangedSubview(appleImageView)
+        appleImageView.snp.makeConstraints { make in
+            make.width.equalTo(16)
+            make.height.equalTo(19)
+        }
+            
+        let appleLabel = UILabel().then {
+            $0.text = "Apple로 계속하기"
+            $0.font = UIFont.body1Bold
+            $0.textColor = .white
+                
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.05
+                
+            let attributedText = NSMutableAttributedString(string: "Apple로 계속하기", attributes: [
+                NSAttributedString.Key.kern: -0.4,
+                NSAttributedString.Key.paragraphStyle: paragraphStyle
+            ])
+            $0.attributedText = attributedText
+        }
+        appleStackView.addArrangedSubview(appleLabel)
+    }
+        
+    @objc private func kakaoButtonTapped() {
+        kakaoLogin()
+    }
+        
+    @objc private func appleButtonTapped() {
+        appleLogin()
+    }
+        
+    // MARK: - Login Actions
+
+    private func kakaoLogin() {
+        // 카카오톡 실행 가능 여부 확인
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoTalk() success")
+                    print("Kakao id token: (oauthToken.idToken)")
+                        
+                    // api 호출
+                    AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
+                        
+                    // 가입 여부 저장: Bool
+                    let isRegistered = keychain.getBool("kakaoIsRegistered")
+                }
+            }
+        } else {
+            // 카카오 계정으로 로그인
+            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("Kakao id token: (oauthToken.idToken)")
+                        
+                    // do something
+                    _ = oauthToken
+                        
+                    // api 호출
+                    AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
+                }
+            }
         }
     }
+        
+    private func appleLogin() {
+        // request 생성
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+            
+        // request를 보내줄 controller 생성
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self as ASAuthorizationControllerDelegate
+        authorizationController.presentationContextProvider = self as ASAuthorizationControllerPresentationContextProviding
+            
+        // 요청 보내기
+        authorizationController.performRequests()
+    }
+}
+
+let keychain = KeychainSwift()
+
+// MARK: - ASAuthorizationControllerDelegate
+
+// apple login
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let idToken = credential.identityToken!
+            let tokenStr = String(data: idToken, encoding: .utf8)
+            print("idToken: ", tokenStr ?? "")
+                
+            guard let code = credential.authorizationCode else { return }
+            let codeStr = String(data: code, encoding: .utf8)
+            print(codeStr ?? "")
+                
+            let user = credential.user
+            print(user)
+                
+            // idToken 저장
+            keychain.set(tokenStr ?? "", forKey: "idToken")
+                
+            // api 호출
+            AuthAPI.shared.appleLogin()
+                
+            // 가입 여부 저장: Bool
+            let isRegistered = keychain.getBool("appleIsRegistered")
+                
+            // 가입이 되어있는 경우
+            if isRegistered == true {
+                // 홈 탭으로 이동
+                let nextVC = TabbarViewController()
+                navigationController?.pushViewController(nextVC, animated: true)
+                    
+                // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+            }
+            // 가입이 되지 않은 경우
+            else {
+                // 회원가입 탭으로 이동
+                let nextVC = TermsOfUseViewController()
+                navigationController?.pushViewController(nextVC, animated: true)
+            }
+        }
+    }
+        
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Apple login error: \(error)")
+    }
+}
+
+// MARK: - ASAuthorizationControllerPresentationContextProviding
+
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return view.window!
+    }
+}
+    
+private func createButton(color: UIColor) -> UIButton {
+    return UIButton().then {
+        $0.backgroundColor = color
+        $0.layer.cornerRadius = 12
+    }
+}
