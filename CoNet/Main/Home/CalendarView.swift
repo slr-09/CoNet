@@ -21,7 +21,7 @@ struct CalendarCollectionLayout {
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 3, trailing: 0)
                 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 26, leading: 0, bottom: 0, trailing: 0)
                 
         return section
     }
@@ -53,7 +53,7 @@ class CalendarView: UIView {
     }
     
     // 날짜
-    lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: getCollectionViewLayout()).then {
         $0.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.identifier)
     }
     
@@ -71,16 +71,12 @@ class CalendarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getCollectionViewLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout { _, _ -> NSCollectionLayoutSection? in
-            CalendarCollectionLayout().create()
-        }
-    }
-    
+    // 현재 달로 update
     func updateCalendarData() {
         calendarDateFormatter.updateCurrentMonthDays()
     }
     
+    // layout
     func layoutConstraints() {
         headerConstraints()
         weekConstraints()
@@ -153,14 +149,23 @@ class CalendarView: UIView {
             make.leading.trailing.equalTo(self).inset(28)
             make.top.equalTo(weekStackView.snp.bottom).offset(0)
             make.bottom.equalTo(self.snp.bottom).offset(-19)
-//            make.height.equalTo(300)
         }
     }
 }
 
-extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
+extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return calendarDateFormatter.days.count
+    }
+    
+    // 셀 사이즈 설정 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = weekStackView.frame.width / 7
+        return CGSize(width: width, height: 48)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -168,12 +173,18 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
         
         // 날짜 설정
         cell.configureday(text: calendarDateFormatter.days[indexPath.item])
-        print(indexPath)
+        
         // 일요일 날짜 빨간색으로 설정
         if indexPath.item % 7 == 0 {
             cell.setSundayColor()
         }
         
         return cell
+    }
+    
+    func getCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout { _, _ -> NSCollectionLayoutSection? in
+            CalendarCollectionLayout().create()
+        }
     }
 }

@@ -8,11 +8,10 @@
 import Foundation
 
 class CalendarDateFormatter {
-    
-    private let calendar = Calendar.current
-    private let dateFormatter = DateFormatter()
-    private var nowCalendarDate = Date()    // 현재 시간
-    private(set) var days = [String]()
+    private let calendar = Calendar.current // Calendar 구조체를 현재 달력으로 초기화
+    private let dateFormatter = DateFormatter() // 원하는 String 타입으로 변화시켜줄 formatter
+    private var nowCalendarDate = Date() // 현재 시간
+    private(set) var days = [String]() // 달력에 표시할 날짜를 담을 배열
     
     init() {
         configureCalendar()
@@ -32,12 +31,12 @@ class CalendarDateFormatter {
         let startDayOfWeek = getStartingDayOfWeek()
         let totalDaysOfMonth = startDayOfWeek + getEndDateOfMonth()
         
-        for day in 0..<totalDaysOfMonth {
+        for day in 0 ..< totalDaysOfMonth {
             if day < startDayOfWeek {
                 days.append("")
-            } else {
-                days.append("\(day - startDayOfWeek + 1)")
+                continue
             }
+            days.append("\(day - startDayOfWeek + 1)")
         }
     }
 }
