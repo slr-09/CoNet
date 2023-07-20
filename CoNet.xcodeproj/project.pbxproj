@@ -19,6 +19,7 @@
 		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
 		236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F62A593F3B00CA991E /* HomeViewController.swift */; };
 		236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F92A593F5400CA991E /* MeetingViewController.swift */; };
+		23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */; };
 		23B681D72A5FF1490039A67B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B681D62A5FF1490039A67B /* CalendarViewController.swift */; };
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
@@ -67,6 +68,7 @@
 		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		236054F62A593F3B00CA991E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		236054F92A593F5400CA991E /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
+		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23B681D62A5FF1490039A67B /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
 		51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			children = (
 				236054F62A593F3B00CA991E /* HomeViewController.swift */,
 				23B681D62A5FF1490039A67B /* CalendarViewController.swift */,
+				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				511B35742A6512B100EDC3E0 /* SendEmailButton.swift in Sources */,
 				518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
+				23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */,
 				1ADA54922A62B70700609041 /* GatherViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
