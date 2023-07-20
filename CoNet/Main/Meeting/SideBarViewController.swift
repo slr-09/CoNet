@@ -412,13 +412,3 @@ class SideBarViewController: UIViewController {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        SideBarViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
