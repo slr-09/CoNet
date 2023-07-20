@@ -18,11 +18,15 @@ class MyPageViewController: UIViewController {
     }
     
     // 프로필 이미지 - 현재 기본 이미지로 보여줌
-    let profileImage = UIImageView().then { $0.image = UIImage(named: "defaultProfile") }
+    var profileImage = UIImageView().then {
+        $0.image = UIImage(named: "defaultProfile")
+        $0.layer.cornerRadius = 30
+        $0.clipsToBounds = true
+    }
     
     // 이름
-    let nameLabel = UILabel().then {
-        $0.text = "이안진"
+    var nameLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.headline2Bold
         $0.textColor = UIColor.textHigh
     }
@@ -55,6 +59,46 @@ class MyPageViewController: UIViewController {
         noticeView.addTarget(self, action: #selector(showNoticeViewController), for: .touchUpInside)
         inquireView.addTarget(self, action: #selector(showInquireViewController), for: .touchUpInside)
         logoutView.addTarget(self, action: #selector(showLogoutPopup), for: .touchUpInside)
+        
+        fetchUser()
+    }
+    
+    private func fetchUser() {
+        MyPageAPI().getUser { name, imageUrl, _, _ in
+            self.nameLabel.text = name
+            
+//            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
+            let url = URL(string: imageUrl)!
+            self.loadImage(url: url)
+        }
+    }
+    
+    private func loadImage(url imageURL: URL) {
+        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
+        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
+            // 에러 처리
+            if let error = error {
+                print("Error loading image: \(error.localizedDescription)")
+                return
+            }
+            
+            // 데이터가 정상적으로 받아와졌는지 확인
+            guard let imageData = data else {
+                print("No image data received")
+                return
+            }
+            
+            // 이미지 데이터를 UIImage로 변환
+            if let image = UIImage(data: imageData, scale: 60) {
+                // UI 업데이트는 메인 큐에서 수행
+                DispatchQueue.main.async {
+                    // 이미지를 UIImageView에 설정
+                    self.profileImage.image = image
+                }
+            } else {
+                print("Failed to convert image data")
+            }
+        }.resume()
     }
     
     @objc private func showUserInfoViewController(_ sender: UIView) {
@@ -73,7 +117,6 @@ class MyPageViewController: UIViewController {
     @objc private func showInquireViewController(_ sender: UIView) {
         let nextVC = InquireViewController()
         navigationController?.pushViewController(nextVC, animated: true)
-        
     }
     
     @objc func showLogoutPopup(_ sender: UIView) {
