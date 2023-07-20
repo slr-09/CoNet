@@ -93,14 +93,15 @@ class UserInfoViewController: UIViewController {
     }
     
     private func fetchUser() {
-        MyPageAPI().getUser { username, _, email, social in
+        MyPageAPI().getUser { username, imageUrl, email, social in
             // TODO: 이름 변경 후 화면에 안 뜨는 버그 수정
             DispatchQueue.global().async {
                 self.name = username
             }
             
-            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
-            self.loadImage(url: imageURL)
+//            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
+            let url = URL(string: imageUrl)!
+            self.loadImage(url: url)
             
             self.emailLabel.text = email
             

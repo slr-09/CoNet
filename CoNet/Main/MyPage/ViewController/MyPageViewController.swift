@@ -67,8 +67,9 @@ class MyPageViewController: UIViewController {
         MyPageAPI().getUser { name, imageUrl, _, _ in
             self.nameLabel.text = name
             
-            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
-            self.loadImage(url: imageURL)
+//            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
+            let url = URL(string: imageUrl)!
+            self.loadImage(url: url)
         }
     }
     
