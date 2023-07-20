@@ -47,7 +47,14 @@ class HomeViewController: UIViewController {
     let dayPlanTableView = UITableView().then {
         $0.rowHeight = 92
         $0.separatorStyle = .none
+//        $0.backgroundColor = UIColor.red
         $0.register(PlanTableViewCell.self, forCellReuseIdentifier: PlanTableViewCell.identifier)
+    }
+    
+    // label: 대기 중 약속
+    let waitingPlanLabel = UILabel().then {
+        $0.text = "대기 중인 약속"
+        $0.font = UIFont.headline2Bold
     }
     
 //    let calendarView = CalendarViewController().calendarView
@@ -76,6 +83,7 @@ class HomeViewController: UIViewController {
         contentView.addSubview(planNumCircle)
         contentView.addSubview(planNum)
         contentView.addSubview(dayPlanTableView)
+        contentView.addSubview(waitingPlanLabel)
     }
     
     // layout
@@ -130,6 +138,12 @@ class HomeViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
+        }
+        
+        // label: 대기 중 약속
+        waitingPlanLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.snp.leading).offset(0)
+            make.top.equalTo(dayPlanTableView.snp.bottom).offset(50)
         }
     }
 }

@@ -44,7 +44,7 @@ class PlanTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
-        contentView.layer.borderWidth = 1
+//        contentView.layer.borderWidth = 1
         // 그림자 설정
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -100,10 +100,11 @@ class PlanTableViewCell: UITableViewCell {
         
         // 중간 회색 바
 //        bar.snp.makeConstraints { make in
-//            make.width.equalTo(1)
-//            make.height.equalTo(26)
+////            make.width.equalTo(1)
+////            make.height.equalTo(26)
 ////            make.top.bottom.equalTo(background).inset(8)
 //            make.leading.equalTo(time.snp.bottom).offset(20)
+////            make.top.equalTo(background.snp.top).offset(0)
 //            make.centerY.equalTo(background.snp.centerY)
 //        }
         
