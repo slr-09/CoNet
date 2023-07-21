@@ -28,7 +28,7 @@ class TabbarViewController: UITabBarController {
     
     // 모임탭
     let secondNVController = UINavigationController().then {
-        let secondTabController = GatherViewController()
+        let secondTabController = MeetingViewController()
         $0.addChild(secondTabController)
         $0.tabBarItem.image = UIImage(named: "tabbarMeeting")
         $0.tabBarItem.selectedImage = UIImage(named: "tabbarMeetingSelected")

@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var navigationController: UINavigationController?
 
         navigationController = UINavigationController(rootViewController: LoginViewController())
+
         navigationController?.navigationBar.isHidden = true
         
         window?.rootViewController = navigationController
