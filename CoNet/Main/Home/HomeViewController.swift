@@ -23,6 +23,11 @@ class HomeViewController: UIViewController {
         $0.setImage(UIImage(named: "bell"), for: .normal)
     }
     
+    let calendarView = CalendarView().then {
+        $0.layer.borderWidth = 0.2
+        $0.layer.borderColor = UIColor.gray300?.cgColor
+    }
+    
     // label: 오늘의 약속
     let dayPlanLabel = UILabel().then {
         $0.text = "오늘의 약속"
@@ -57,8 +62,6 @@ class HomeViewController: UIViewController {
         $0.font = UIFont.headline2Bold
     }
     
-//    let calendarView = CalendarViewController().calendarView
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,6 +82,7 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(alarmBtn)
+        contentView.addSubview(calendarView)
         contentView.addSubview(dayPlanLabel)
         contentView.addSubview(planNumCircle)
         contentView.addSubview(planNum)
@@ -93,8 +97,8 @@ class HomeViewController: UIViewController {
         
         // 스크롤뷰
         scrollView.snp.makeConstraints { make in
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(safeArea.snp.leading).offset(0)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(0)
             make.top.equalTo(safeArea.snp.top).offset(13)
             make.bottom.equalTo(safeArea.snp.bottom).offset(0)
         }
@@ -111,13 +115,21 @@ class HomeViewController: UIViewController {
             make.width.equalTo(24)
             make.height.equalTo(24)
             make.top.equalTo(contentView.snp.top).offset(0)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
+        }
+        
+        // 캘린더 뷰
+        calendarView.snp.makeConstraints { make in
+            make.top.equalTo(alarmBtn.snp.bottom).offset(6)
+            make.leading.equalTo(contentView.snp.leading).offset(0)
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
+            make.height.equalTo(448)
         }
         
         // label: 오늘의 약속
         dayPlanLabel.snp.makeConstraints { make in
-            make.leading.equalTo(contentView.snp.leading).offset(0)
-            make.top.equalTo(alarmBtn.snp.bottom).offset(451)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.top.equalTo(calendarView.snp.bottom).offset(36)
         }
         
 //        planNumCircle.snp.makeConstraints { make in
@@ -135,7 +147,7 @@ class HomeViewController: UIViewController {
         
         // TableView: 특정 날짜 약속
         dayPlanTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(24)
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
         }
