@@ -12,7 +12,7 @@ import UIKit
 class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
 
-    let imageView = UIImageView()
+    let imageView = UIImageView(image: UIImage(named: "space"))
     let titleLabel = UILabel()
     let starButton = UIButton()
     var onStarButtonTapped: (() -> Void)?
@@ -75,7 +75,7 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
 
         let meetingIndex: Int
-        // If the favorites tab is selected, only use the favorited meetings
+
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
             meetingIndex = favoritedMeetings[indexPath.row]
         } else {
@@ -85,21 +85,16 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
         let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
         cell.starButton.setImage(UIImage(named: imageName), for: .normal)
 
-        // Handle the star button tap
         cell.onStarButtonTapped = {
             if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-                // If the meeting is already favorited, unfavorite it
                 self.favoritedMeetings.remove(at: index)
             } else {
-                // Otherwise, favorite the meeting
                 self.favoritedMeetings.append(meetingIndex)
             }
-
-            // Update the star image for the cell
+            
             let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
             cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
 
-            // Always reload the collection view because both tabs need to be updated
             collectionView.reloadData()
         }
         return cell
@@ -141,6 +136,12 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
         
+    let favcollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+    }()
+    
     let plusButton = UIButton().then {
         $0.setImage(UIImage(named: "plus"), for: .normal)
     }
@@ -203,6 +204,7 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
         applyConstraintsToPartButtonAndAddLabel()
 
         plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
+        participateButton.addTarget(self, action: #selector(didTapparticipateButton), for: .touchUpInside)
         
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
             overlayView.frame = self.view.bounds
@@ -221,7 +223,7 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.participateButton.alpha = 0
             self.joinLabel.alpha = 0
             self.addLabel.alpha = 0
-            self.overlayView.alpha = 0  // Change alpha here
+            self.overlayView.alpha = 0
         }
     }
     
@@ -242,11 +244,28 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
             make.bottom.equalTo(plusButton.snp.top).offset(-16)
         }
     }
+    
+    func applyConstraintsToFavCollectionView() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        favcollectionView.snp.makeConstraints { make in
+            make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.bottom.equalTo(plusButton.snp.top).offset(-16)
+        }
+    }
 
     func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
+    }
+    
+    func setupFavCollectionView() {
+        favcollectionView.dataSource = self
+        favcollectionView.delegate = self
+        favcollectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
     }
     
     func applyConstraintsToTabs(stackView: UIStackView) {
@@ -296,7 +315,6 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
             make.height.equalTo(2)
             make.left.right.equalTo(allTab)
         }
-
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -323,7 +341,7 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.participateButton.alpha = 1
                 self.joinLabel.alpha = 1
                 self.addLabel.alpha = 1
-                self.overlayView.alpha = 0.8  // Change alpha here
+                self.overlayView.alpha = 0.8
             }
         } else {
             plusButton.setImage(UIImage(named: "plus"), for: .normal)
@@ -333,8 +351,15 @@ class GatherViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.participateButton.alpha = 0
                 self.joinLabel.alpha = 0
                 self.addLabel.alpha = 0
-                self.overlayView.alpha = 0  // Change alpha here
+                self.overlayView.alpha = 0
+                
             }
         }
+    }
+    
+    @objc func didTapparticipateButton(_ sender: Any) {
+        let popupVC = GatherPopUpViewController()
+        popupVC.modalPresentationStyle = .overFullScreen
+        present(popupVC, animated: false, completion: nil)
     }
 }

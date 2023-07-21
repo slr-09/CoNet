@@ -31,6 +31,8 @@ class LoginViewController: UIViewController {
         
         showSignUpButton.addTarget(self, action: #selector(showSignUp(_:)), for: .touchUpInside)
         showMainButton.addTarget(self, action: #selector(showMain(_:)), for: .touchUpInside)
+        
+        print("DEBUG(loginVC) keychain에 저장된 모든 Key: \(KeychainSwift().allKeys)")
     }
     
     @objc func showSignUp(_ sender: UIView) {

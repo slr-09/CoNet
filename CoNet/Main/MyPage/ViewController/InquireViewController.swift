@@ -146,7 +146,7 @@ class InquireViewController: UIViewController, MFMailComposeViewControllerDelega
     }
 }
 
-extension ViewController: MFMailComposeViewControllerDelegate {
+extension InquireViewController {
     func mailComposeController(_ controller: MFMailComposeViewController,
                                didFinishWith result: MFMailComposeResult, error: Error?) {
         dismiss(animated: true, completion: nil)
