@@ -54,6 +54,7 @@
 		518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */; };
 		518F55F22A6BC172002D8F0F /* WaitingPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */; };
 		51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B526C32A6C2F76009DBFB4 /* SideBarList.swift */; };
+		51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B526C52A6C324D009DBFB4 /* SideBarMenu.swift */; };
 		51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64952A532CB300BBA4C0 /* KakaoSDK */; };
 		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
@@ -113,6 +114,7 @@
 		518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListCollectionView.swift; sourceTree = "<group>"; };
 		518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPlanCell.swift; sourceTree = "<group>"; };
 		51B526C32A6C2F76009DBFB4 /* SideBarList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarList.swift; sourceTree = "<group>"; };
+		51B526C52A6C324D009DBFB4 /* SideBarMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarMenu.swift; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
 		51F2A4702A5497A500D134CC /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 			children = (
 				518F55E32A68EF7B002D8F0F /* SideBarViewController.swift */,
 				51B526C32A6C2F76009DBFB4 /* SideBarList.swift */,
+				51B526C52A6C324D009DBFB4 /* SideBarMenu.swift */,
 			);
 			path = SideBar;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
+				51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */,
 				23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */,
 				235F5B732A69893F00ADC0D6 /* CalendarDateFormatter.swift in Sources */,
 				1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */,

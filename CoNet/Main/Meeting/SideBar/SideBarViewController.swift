@@ -9,10 +9,6 @@ import SnapKit
 import Then
 import UIKit
 
-enum SideBarMenu {
-    case wait, decided, past, history
-}
-
 protocol SideBarListButtonDelegate: AnyObject {
     func sideBarListButtonTapped(title: SideBarMenu)
 }
@@ -97,6 +93,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         $0.textColor = UIColor.error
     }
     
+    // MARK: viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         
