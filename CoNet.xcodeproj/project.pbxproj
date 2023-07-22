@@ -158,7 +158,6 @@
 				236054F92A593F5400CA991E /* MeetingViewController.swift */,
 				1ADA54952A65161F00609041 /* MeetingAddViewController.swift */,
 				1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */,
-				518F55E32A68EF7B002D8F0F /* SideBarViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 			);
 			path = Meeting;
@@ -271,6 +270,7 @@
 		51B526C22A6C2F65009DBFB4 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
+				518F55E32A68EF7B002D8F0F /* SideBarViewController.swift */,
 				51B526C32A6C2F76009DBFB4 /* SideBarList.swift */,
 			);
 			path = SideBar;

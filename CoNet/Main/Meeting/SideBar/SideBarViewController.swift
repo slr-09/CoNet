@@ -127,7 +127,6 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
 
     // 이전 ViewController에 값을 전달하는 동작
     func sendDataToPreviousViewController(title: SideBarMenu) {
-//        let dataToSend = "Hello, World!"
         delegate?.sendDataBack(data: title)
     }
     
@@ -238,25 +237,19 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         // 대기중인 약속
         sideBarBackground.addSubview(waitingPlanButton)
         waitingPlanButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(planLabel.snp.bottom).offset(16)
+            listConstraints(make: make, previousView: planLabel, isFirstList: true)
         }
         
         // 확정된 약속
         sideBarBackground.addSubview(decidedPlanButton)
         decidedPlanButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(waitingPlanButton.snp.bottom)
+            listConstraints(make: make, previousView: waitingPlanButton, isFirstList: false)
         }
         
         // 지난 약속
         sideBarBackground.addSubview(pastPlanButton)
         pastPlanButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(decidedPlanButton.snp.bottom)
+            listConstraints(make: make, previousView: decidedPlanButton, isFirstList: false)
         }
     }
     
@@ -272,9 +265,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         // 히스토리
         sideBarBackground.addSubview(historyButton)
         historyButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(historyLabel.snp.bottom).offset(16)
+            listConstraints(make: make, previousView: historyLabel, isFirstList: true)
         }
     }
     
@@ -305,8 +296,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         
         deleteMeetingButton.addSubview(deleteMeetingImage)
         deleteMeetingImage.snp.makeConstraints { make in
-            make.height.equalTo(16)
-            make.width.equalTo(16)
+            make.width.height.equalTo(16)
             make.centerY.equalTo(deleteMeetingButtonTitle.snp.centerY)
             make.trailing.equalTo(deleteMeetingButtonTitle.snp.leading).offset(-2)
         }
@@ -322,8 +312,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         
         leaveMeetingButton.addSubview(leaveMeetingImage)
         leaveMeetingImage.snp.makeConstraints { make in
-            make.width.equalTo(16)
-            make.height.equalTo(16)
+            make.width.height.equalTo(16)
             make.centerY.equalTo(leaveMeetingButton.snp.centerY)
             make.leading.equalTo(leaveMeetingButton.snp.leading).offset(30)
         }
@@ -342,6 +331,13 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
             make.centerX.equalTo(sideBarBackground.snp.centerX)
             make.centerY.equalTo(deleteMeetingButton.snp.centerY)
         }
+    }
+    
+    // 메뉴 리스트 공통 constraints
+    private func listConstraints(make: ConstraintMaker, previousView: UIView, isFirstList: Bool) {
+        make.height.equalTo(50)
+        make.width.equalTo(sideBarBackground.snp.width)
+        make.top.equalTo(previousView.snp.bottom).offset(isFirstList ? 16 : 0)
     }
 }
 
