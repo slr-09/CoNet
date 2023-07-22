@@ -40,7 +40,7 @@ class PastPlanListViewController: UIViewController {
     private func setupCollectionView() {
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
-        mainView.collectionView.register(DecidedPlanCell.self, forCellWithReuseIdentifier: DecidedPlanCell.registerId)
+        mainView.collectionView.register(PastPlanCell.self, forCellWithReuseIdentifier: PastPlanCell.registerId)
     }
 }
 
@@ -57,13 +57,13 @@ extension PastPlanListViewController: UICollectionViewDelegate, UICollectionView
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PastPlanCell.registerId, for: indexPath) as? PastPlanCell else {
             return UICollectionViewCell()
         }
-        cell.dateLabel.text = decidedPlanData[indexPath.item].date
-        cell.timeLabel.text = decidedPlanData[indexPath.item].time
-        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
-        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
+//        cell.dateLabel.text = decidedPlanData[indexPath.item].date
+//        cell.timeLabel.text = decidedPlanData[indexPath.item].time
+//        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
+//        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
         
         return cell
     }
@@ -71,7 +71,7 @@ extension PastPlanListViewController: UICollectionViewDelegate, UICollectionView
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 110)
+        return CGSize.init(width: width, height: 88)
     }
     
     // 셀 사이의 위아래 간격
