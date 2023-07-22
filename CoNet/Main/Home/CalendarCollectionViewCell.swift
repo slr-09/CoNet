@@ -68,4 +68,9 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     func setWeekdayColor() {
         dayLabel.textColor = UIColor.black
     }
+    
+    // 오늘 날짜 보라색으로 설정 
+    func setTodayColor() {
+        dayLabel.textColor = UIColor.purpleMain
+    }
 }
