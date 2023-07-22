@@ -20,6 +20,11 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         $0.image = UIImage(named: "calendarCellSelected")
     }
     
+    // 약속 있을 때 보라 동그라미
+    private let planCircle = UIImageView().then {
+        $0.image = UIImage(named: "calendarPlanMark")
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -34,8 +39,8 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             if isSelected {
                 self.insertSubview(backCircle, at: 0)
                 backCircle.snp.makeConstraints { make in
-                    make.width.equalTo(30)
-                    make.height.equalTo(30)
+                    make.width.equalTo(26)
+                    make.height.equalTo(26)
                     make.centerX.equalTo(self.snp.centerX)
                     make.centerY.equalTo(self.snp.centerY)
                 }
@@ -56,6 +61,18 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         dayLabel.snp.makeConstraints { make in
             make.centerX.equalTo(self.snp.centerX)
             make.centerY.equalTo(self.snp.centerY)
+        }
+    }
+    
+    // 약속 표시 
+    func configurePlan() {
+        self.addSubview(planCircle)
+        
+        planCircle.snp.makeConstraints { make in
+            make.width.equalTo(7)
+            make.height.equalTo(7)
+            make.bottom.equalTo(self.snp.bottom).offset(-3)
+            make.centerX.equalTo(self.snp.centerX)
         }
     }
     

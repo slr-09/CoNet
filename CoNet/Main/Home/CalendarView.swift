@@ -169,7 +169,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     // 셀 사이즈 설정 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = weekStackView.frame.width / 7
-        return CGSize(width: width, height: 48)
+        return CGSize(width: width, height: 50)
     }
     
     // 위 아래 space zero로 설정
