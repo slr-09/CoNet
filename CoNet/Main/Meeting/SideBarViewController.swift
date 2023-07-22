@@ -9,7 +9,102 @@ import SnapKit
 import Then
 import UIKit
 
-class SideBarViewController: UIViewController {
+class SideBarList: UIButton {
+    let topBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    let bottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
+    
+    let button = UIButton().then { $0.backgroundColor = UIColor.clear }
+    let label = UILabel().then {
+        $0.text = ""
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textHigh
+    }
+    
+    weak var delegate: SideBarListButtonDelegate?
+    
+    // Custom View 초기화
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+        setButton()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+        setButton()
+    }
+    
+    // 버튼 동작
+    func setButton() {
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func buttonTapped(_ sender: UIButton) {
+        // 버튼이 탭되었을 때 동작할 코드를 여기에 작성
+        var title: SideBarMenu
+        
+        switch label.text {
+        case "대기중인 약속": title = .wait
+        case "확정된 약속": title = .decided
+        case "지난 약속": title = .past
+        case "히스토리": title = .history
+        default: title = .wait
+        }
+        
+        delegate?.sideBarListButtonTapped(title: title)
+    }
+    
+    // 구성 요소들을 Custom View에 추가하고 레이아웃 설정
+    private func setupViews() {
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
+        }
+        
+        button.addSubview(topBorder)
+        topBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalToSuperview()
+            make.top.equalTo(button.snp.top)
+        }
+        
+        button.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.centerY.equalTo(button.snp.centerY)
+            make.leading.equalTo(button.snp.leading).offset(20)
+        }
+    }
+    
+    private func bottomDividerConstraints() {
+        button.addSubview(bottomBorder)
+        bottomBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.width.equalToSuperview()
+            make.bottom.equalTo(button.snp.bottom)
+        }
+    }
+    
+    func setTitle(_ title: String) {
+        label.text = title
+    }
+    
+    func setBottomBorder() {
+        bottomDividerConstraints()
+    }
+}
+
+enum SideBarMenu {
+    case wait, decided, past, history
+}
+
+protocol SideBarListButtonDelegate: AnyObject {
+    func sideBarListButtonTapped(title: SideBarMenu)
+}
+
+class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     // 배경 - black 투명도 30%
     let background = UIView().then { $0.backgroundColor = UIColor.black.withAlphaComponent(0.5) }
     // 사이드 바 하얀 배경
@@ -41,41 +136,19 @@ class SideBarViewController: UIViewController {
         $0.textColor = UIColor.textHigh
     }
     
-    // 약속 카테고리
+    // 약속 카테고리 - 대기중인 약속, 확정된 약속, 지난 약속
     let planLabel = UILabel().then {
         $0.text = "약속"
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.purpleMain
     }
-    
-    // 대기중인 약속
-    let waitingPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let waitingPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
-    let waitingPlanLabel = UILabel().then {
-        $0.text = "대기중인 약속"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textHigh
+    let waitingPlanButton = SideBarList().then { $0.setTitle("대기중인 약속") }
+    let decidedPlanButton = SideBarList().then { $0.setTitle("확정된 약속") }
+    let pastPlanButton = SideBarList().then {
+        $0.setTitle("지난 약속")
+        $0.setBottomBorder()
     }
-    
-    // 확정된 약속
-    let decidedPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let decidedPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
-    let decidedPlanLabel = UILabel().then {
-        $0.text = "확정된 약속"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textHigh
-    }
-    
-    // 지난 약속
-    let pastPlanTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let pastPlanBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let pastPlanButton = UIButton().then { $0.backgroundColor = UIColor.clear }
-    let pastPlanLabel = UILabel().then {
-        $0.text = "지난 약속"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textHigh
-    }
-    
+
     // 히스토리 카테고리
     let historyLabel = UILabel().then {
         $0.text = "히스토리"
@@ -84,13 +157,9 @@ class SideBarViewController: UIViewController {
     }
     
     // 히스토리
-    let historyTopBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let historyBottomBorder = Divider().then { $0.setColor(UIColor.gray100!) }
-    let historyButton = UIButton().then { $0.backgroundColor = UIColor.clear }
-    let historyButtonLabel = UILabel().then {
-        $0.text = "히스토리"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textHigh
+    let historyButton = SideBarList().then {
+        $0.setTitle("히스토리")
+        $0.setBottomBorder()
     }
     
     // 하단 divider
@@ -126,16 +195,14 @@ class SideBarViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
         
-        waitingPlanButton.addTarget(self, action: #selector(showWaitingPlanListViewController), for: .touchUpInside)
+        buttonsDelegate()
     }
     
-    weak var delegate: ModalViewControllerDelegate?
-
-    // 이전 ViewController에 값을 전달하는 동작
-    func sendDataToPreviousViewController() {
-        let dataToSend = "Hello, World!"
-        delegate?.sendDataBack(data: dataToSend)
-        dismiss(animated: true, completion: nil)
+    func buttonsDelegate() {
+        waitingPlanButton.delegate = self
+        decidedPlanButton.delegate = self
+        pastPlanButton.delegate = self
+        historyButton.delegate = self
     }
     
     // 배경 탭 시 팝업 닫기
@@ -143,16 +210,17 @@ class SideBarViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    // 대기중인 약속 화면 띄우기
-    @objc func showWaitingPlanListViewController() {
-        print("아나 왜 안뜸")
+    weak var delegate: ModalViewControllerDelegate?
+
+    // 이전 ViewController에 값을 전달하는 동작
+    func sendDataToPreviousViewController(title: SideBarMenu) {
+//        let dataToSend = "Hello, World!"
+        delegate?.sendDataBack(data: title)
+    }
+    
+    func sideBarListButtonTapped(title: SideBarMenu) {
         dismiss(animated: true) {
-            print("wow")
-            NextViewController().next = "waiting"
-            self.sendDataToPreviousViewController()
-            let nextVC = WaitingPlanListViewController()
-            nextVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(nextVC, animated: true)
+            self.sendDataToPreviousViewController(title: title)
         }
     }
     
@@ -201,16 +269,14 @@ class SideBarViewController: UIViewController {
         
         sideBarBackground.addSubview(editMeetingInfoButton)
         editMeetingInfoButton.snp.makeConstraints { make in
-            make.width.equalTo(16)
-            make.height.equalTo(16)
+            make.width.height.equalTo(16)
             make.centerY.equalTo(meetingNameLabel.snp.centerY)
             make.leading.equalTo(meetingNameLabel.snp.trailing).offset(8)
         }
         
         sideBarBackground.addSubview(memberCountImage)
         memberCountImage.snp.makeConstraints { make in
-            make.width.equalTo(12)
-            make.height.equalTo(12)
+            make.width.height.equalTo(12)
             make.top.equalTo(meetingNameLabel.snp.bottom).offset(4)
             make.leading.equalTo(sideBarBackground.snp.leading).offset(18)
         }
@@ -234,8 +300,7 @@ class SideBarViewController: UIViewController {
         
         inviteCodeButton.addSubview(inviteCodeImage)
         inviteCodeImage.snp.makeConstraints { make in
-            make.width.equalTo(24)
-            make.height.equalTo(24)
+            make.width.height.equalTo(24)
             make.centerY.equalTo(inviteCodeButton.snp.centerY)
             make.leading.equalTo(inviteCodeButton.snp.leading).offset(18)
         }
@@ -258,13 +323,6 @@ class SideBarViewController: UIViewController {
         }
         
         // 대기중인 약속
-        sideBarBackground.addSubview(waitingPlanTopBorder)
-        waitingPlanTopBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(planLabel.snp.bottom).offset(16)
-        }
-        
         sideBarBackground.addSubview(waitingPlanButton)
         waitingPlanButton.snp.makeConstraints { make in
             make.height.equalTo(50)
@@ -272,21 +330,7 @@ class SideBarViewController: UIViewController {
             make.top.equalTo(planLabel.snp.bottom).offset(16)
         }
         
-        waitingPlanButton.addSubview(waitingPlanLabel)
-        waitingPlanLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.centerY.equalTo(waitingPlanButton.snp.centerY)
-            make.leading.equalTo(waitingPlanButton.snp.leading).offset(20)
-        }
-        
         // 확정된 약속
-        sideBarBackground.addSubview(decidedPlanTopBorder)
-        decidedPlanTopBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(waitingPlanButton.snp.bottom)
-        }
-        
         sideBarBackground.addSubview(decidedPlanButton)
         decidedPlanButton.snp.makeConstraints { make in
             make.height.equalTo(50)
@@ -294,40 +338,12 @@ class SideBarViewController: UIViewController {
             make.top.equalTo(waitingPlanButton.snp.bottom)
         }
         
-        decidedPlanButton.addSubview(decidedPlanLabel)
-        decidedPlanLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.centerY.equalTo(decidedPlanButton.snp.centerY)
-            make.leading.equalTo(decidedPlanButton.snp.leading).offset(20)
-        }
-        
         // 지난 약속
-        sideBarBackground.addSubview(pastPlanTopBorder)
-        pastPlanTopBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(decidedPlanButton.snp.bottom)
-        }
-        
         sideBarBackground.addSubview(pastPlanButton)
         pastPlanButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.width.equalTo(sideBarBackground.snp.width)
             make.top.equalTo(decidedPlanButton.snp.bottom)
-        }
-        
-        pastPlanButton.addSubview(pastPlanLabel)
-        pastPlanLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.centerY.equalTo(pastPlanButton.snp.centerY)
-            make.leading.equalTo(pastPlanButton.snp.leading).offset(20)
-        }
-        
-        sideBarBackground.addSubview(pastPlanBottomBorder)
-        pastPlanBottomBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(pastPlanButton.snp.bottom)
         }
     }
     
@@ -341,32 +357,11 @@ class SideBarViewController: UIViewController {
         }
         
         // 히스토리
-        sideBarBackground.addSubview(historyTopBorder)
-        historyTopBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.top.equalTo(historyLabel.snp.bottom).offset(16)
-        }
-        
         sideBarBackground.addSubview(historyButton)
         historyButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.width.equalTo(sideBarBackground.snp.width)
             make.top.equalTo(historyLabel.snp.bottom).offset(16)
-        }
-        
-        historyButton.addSubview(historyButtonLabel)
-        historyButtonLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
-            make.centerY.equalTo(historyButton.snp.centerY)
-            make.leading.equalTo(historyButton.snp.leading).offset(20)
-        }
-        
-        historyButton.addSubview(historyBottomBorder)
-        historyBottomBorder.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.width.equalTo(sideBarBackground.snp.width)
-            make.bottom.equalTo(historyButton.snp.bottom)
         }
     }
     
@@ -436,3 +431,13 @@ class SideBarViewController: UIViewController {
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        SideBarViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
