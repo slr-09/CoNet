@@ -16,6 +16,8 @@ class WaitingPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
+    private let waitingPlanData = PlanDummyData.watingPlanData
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = true
@@ -52,7 +54,7 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return waitingPlanData.count
     }
     
     // 셀
@@ -60,6 +62,9 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
             return UICollectionViewCell()
         }
+        cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
+        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
+        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
         
         return cell
     }
@@ -79,3 +84,13 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
 protocol ModalViewControllerDelegate: AnyObject {
     func sendDataBack(data: SideBarMenu)
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        WaitingPlanListViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
