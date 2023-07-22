@@ -12,8 +12,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "CalendarCollectionViewCell"
     
+    // 날짜
     private lazy var dayLabel = UILabel()
     
+    // 셀 선택 시 보라 동그라미
     private let backCircle = UIImageView().then {
         $0.image = UIImage(named: "calendarCellSelected")
     }
@@ -44,6 +46,7 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    // 날짜 보여주기
     func configureday(text: String) {
         self.addSubview(dayLabel)
         
