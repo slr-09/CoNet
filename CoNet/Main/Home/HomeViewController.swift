@@ -76,6 +76,16 @@ class HomeViewController: UIViewController {
         // layout
         addView()
         layoutConstraints()
+        
+        calendarView.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
+    }
+    
+    // yearMonth 클릭
+    @objc func didClickYearBtn(_ sender: UIView) {
+        let popupVC = MonthViewController()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        present(popupVC, animated: true, completion: nil)
     }
     
     func addView() {
