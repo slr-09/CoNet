@@ -14,12 +14,34 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     private lazy var dayLabel = UILabel()
     
+    private let backCircle = UIImageView().then {
+        $0.image = UIImage(named: "calendarCellSelected")
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // 셀 선택 시
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                self.insertSubview(backCircle, at: 0)
+                backCircle.snp.makeConstraints { make in
+                    make.width.equalTo(30)
+                    make.height.equalTo(30)
+                    make.centerX.equalTo(self.snp.centerX)
+                    make.centerY.equalTo(self.snp.centerY)
+                }
+                backCircle.isHidden = false
+            } else {
+                backCircle.isHidden = true
+            }
+        }
     }
     
     func configureday(text: String) {
@@ -29,8 +51,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         dayLabel.font = UIFont.body2Bold
         
         dayLabel.snp.makeConstraints { make in
-//            make.width.equalTo(48)
-//            make.height.equalTo(48)
             make.centerX.equalTo(self.snp.centerX)
             make.centerY.equalTo(self.snp.centerY)
         }
