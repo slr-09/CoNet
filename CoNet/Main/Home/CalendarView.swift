@@ -199,6 +199,8 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 일요일 날짜 빨간색으로 설정
         if indexPath.item % 7 == 0 {
             cell.setSundayColor()
+        } else {
+            cell.setWeekdayColor()
         }
         
         return cell

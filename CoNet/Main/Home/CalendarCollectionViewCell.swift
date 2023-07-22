@@ -39,4 +39,8 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     func setSundayColor() {
         dayLabel.textColor = UIColor.error
     }
+    
+    func setWeekdayColor() {
+        dayLabel.textColor = UIColor.black
+    }
 }
