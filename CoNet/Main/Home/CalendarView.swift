@@ -162,16 +162,18 @@ class CalendarView: UIView {
     
     // 이전 달로 이동 버튼
     @objc func didClickPrevBtn() {
-        calendarDateFormatter.minusMonth()
-        updateCalendarData()
-        calendarCollectionView.reloadData()
+        let header = calendarDateFormatter.minusMonth()
+        updateCalendarData()                     // days 배열 update
+        calendarCollectionView.reloadData()      // collectionView reload
+        yearMonth.setTitle(header, for: .normal) // yearMonth update
     }
     
     // 다음 달로 이동 버튼
     @objc func didClickNextBtn() {
-        calendarDateFormatter.plusMonth()
+        let header = calendarDateFormatter.plusMonth()
         updateCalendarData()
         calendarCollectionView.reloadData()
+        yearMonth.setTitle(header, for: .normal)
     }
 }
 

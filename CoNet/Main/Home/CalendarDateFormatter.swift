@@ -41,15 +41,19 @@ class CalendarDateFormatter {
     }
     
     // 이전 달로
-    func minusMonth() {
+    func minusMonth() -> String {
         nowCalendarDate = calendar.date(byAdding: DateComponents(month: -1), to: nowCalendarDate) ?? Date()
         updateCurrentMonthDays()
+        
+        return getYearMonthText()
     }
     
     // 다음 달로
-    func plusMonth() {
+    func plusMonth() -> String{
         nowCalendarDate = calendar.date(byAdding: DateComponents(month: 1), to: nowCalendarDate) ?? Date()
         updateCurrentMonthDays()
+        
+        return getYearMonthText()
     }
 }
 
