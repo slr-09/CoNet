@@ -9,6 +9,10 @@ import SnapKit
 import Then
 import UIKit
 
+class NextViewController {
+    var next = ""
+}
+
 class MyPageViewController: UIViewController {
     // "MY" 타이틀
     let titleLabel = UILabel().then {
@@ -45,6 +49,16 @@ class MyPageViewController: UIViewController {
     lazy var termView = myPageList.noArrowView(title: "이용약관")
     lazy var logoutView = myPageList.noArrowView(title: "로그아웃")
     lazy var sideBar = myPageList.noArrowView(title: "사이드바")
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("view will appear")
+        if NextViewController().next == "waiting" {
+            let nextVC = WaitingPlanListViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +118,12 @@ class MyPageViewController: UIViewController {
     }
     
     @objc private func showSideBar(_ sender: UIView) {
+//        let nextVC = SideBarViewController()
+//        nextVC.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(nextVC, animated: true)
+        
         let popupVC = SideBarViewController()
+        popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
         present(popupVC, animated: true, completion: nil)
@@ -114,7 +133,6 @@ class MyPageViewController: UIViewController {
         let nextVC = UserInfoViewController()
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
-        
     }
     
     @objc private func showNoticeViewController(_ sender: UIView) {
@@ -243,4 +261,15 @@ class MyPageViewController: UIViewController {
         make.trailing.equalTo(safeArea.snp.trailing).offset(24)
     }
     
+}
+
+extension MyPageViewController: ModalViewControllerDelegate {
+    func sendDataBack(data: String) {
+        print("Received data from modal: \(data)")
+        
+        let nextVC = WaitingPlanListViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+        // 여기서 받은 값을 이용해서 이전 ViewController에서 처리할 작업을 수행합니다.
+    }
 }

@@ -125,11 +125,35 @@ class SideBarViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
+        
+        waitingPlanButton.addTarget(self, action: #selector(showWaitingPlanListViewController), for: .touchUpInside)
+    }
+    
+    weak var delegate: ModalViewControllerDelegate?
+
+    // 이전 ViewController에 값을 전달하는 동작
+    func sendDataToPreviousViewController() {
+        let dataToSend = "Hello, World!"
+        delegate?.sendDataBack(data: dataToSend)
+        dismiss(animated: true, completion: nil)
     }
     
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
+    }
+    
+    // 대기중인 약속 화면 띄우기
+    @objc func showWaitingPlanListViewController() {
+        print("아나 왜 안뜸")
+        dismiss(animated: true) {
+            print("wow")
+            NextViewController().next = "waiting"
+            self.sendDataToPreviousViewController()
+            let nextVC = WaitingPlanListViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // 모든 layout Constraints
