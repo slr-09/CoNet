@@ -14,7 +14,7 @@ class DecidedPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let waitingPlanData = PlanDummyData.watingPlanData
+    private let decidedPlanData = PlanDummyData.decidedPlanData
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -52,7 +52,7 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return waitingPlanData.count
+        return decidedPlanData.count
     }
     
     // 셀
@@ -60,9 +60,10 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
             return UICollectionViewCell()
         }
-//        cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-//        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-//        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+        cell.dateLabel.text = decidedPlanData[indexPath.item].date
+        cell.timeLabel.text = decidedPlanData[indexPath.item].time
+        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
+        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
         
         return cell
     }
