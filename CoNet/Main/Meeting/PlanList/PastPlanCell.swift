@@ -71,9 +71,7 @@ class PastPlanCell: UICollectionViewCell {
         dateViewConstraints()
         verticalDividerConstraints()
         planTitleConstraints()
-        if isExistHistory {
-            existHistory()
-        }
+        existHistory()
     }
     
     private func backgroundConstraints() {
@@ -122,7 +120,7 @@ class PastPlanCell: UICollectionViewCell {
             make.height.equalTo(48)
             make.centerY.equalTo(verticalDivider.snp.centerY)
             make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
-            make.trailing.equalTo(background.snp.trailing).offset(isExistHistory ? -64 : -20)
+            make.trailing.equalTo(background.snp.trailing).offset(-64)
         }
     }
     
@@ -133,10 +131,6 @@ class PastPlanCell: UICollectionViewCell {
             make.centerY.equalTo(verticalDivider.snp.centerY)
             make.trailing.equalTo(background.snp.trailing).offset(-20)
         }
-    }
-    
-    func setIsExistHistory(_ exist: Bool) {
-        self.isExistHistory = exist
     }
 }
 

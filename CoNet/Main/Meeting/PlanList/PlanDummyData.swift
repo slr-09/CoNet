@@ -20,6 +20,13 @@ struct DecidedPlan {
     let leftDate: String
 }
 
+struct PastPlan {
+    let date: String
+    let time: String
+    let title: String
+    let isExistHistory: Bool
+}
+
 struct PlanDummyData {
     static let watingPlanData: [WaitingPlan] = [
         WaitingPlan(startDate: "2023. 07. 02", finishDate: "2023. 07. 08", title: "iOS 스터디 1차"),
@@ -47,4 +54,20 @@ struct PlanDummyData {
         DecidedPlan(date: "2023. 07. 12", time: "15:00", title: "Server 3차 스터디입니다요 우하하흐하", leftDate: "7일 남았습니다."),
         DecidedPlan(date: "2023. 07. 12", time: "15:00", title: "Server 3차 스터디입니다요 우하하흐하", leftDate: "7일 남았습니다."),
         DecidedPlan(date: "2023. 07. 12", time: "15:00", title: "Server 3차 스터디입니다요 우하하흐하", leftDate: "7일 남았습니다.")]
+    
+    static let pastPlanData: [PastPlan] = [
+        PastPlan(date: "2023. 07. 08", time: "14:00", title: "iOS 1차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 09", time: "16:00", title: "Android 2차 스터디", isExistHistory: false),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: false),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: false),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: false),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: false),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
+        PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true)]
 }

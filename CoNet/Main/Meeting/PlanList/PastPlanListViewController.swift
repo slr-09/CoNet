@@ -14,7 +14,7 @@ class PastPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let decidedPlanData = PlanDummyData.decidedPlanData
+    private let pastPlanData = PlanDummyData.pastPlanData
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -52,7 +52,7 @@ extension PastPlanListViewController: UICollectionViewDelegate, UICollectionView
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return decidedPlanData.count
+        return pastPlanData.count
     }
     
     // 셀
@@ -60,10 +60,15 @@ extension PastPlanListViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PastPlanCell.registerId, for: indexPath) as? PastPlanCell else {
             return UICollectionViewCell()
         }
-//        cell.dateLabel.text = decidedPlanData[indexPath.item].date
-//        cell.timeLabel.text = decidedPlanData[indexPath.item].time
-//        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
-//        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
+        
+        cell.dateLabel.text = pastPlanData[indexPath.item].date
+        cell.timeLabel.text = pastPlanData[indexPath.item].time
+        cell.planTitleLabel.text = pastPlanData[indexPath.item].title
+        if pastPlanData[indexPath.item].isExistHistory {
+            cell.historyImage.image = UIImage(named: "existHistory")
+        } else {
+            cell.historyImage.image = UIImage(named: "")
+        }
         
         return cell
     }
