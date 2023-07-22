@@ -36,7 +36,13 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    // 일요일 빨간색으로 설정
     func setSundayColor() {
         dayLabel.textColor = UIColor.error
+    }
+    
+    // 일요일 외 검정색으로 설정 
+    func setWeekdayColor() {
+        dayLabel.textColor = UIColor.black
     }
 }
