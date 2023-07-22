@@ -11,6 +11,10 @@ import UIKit
 
 class MonthViewController: UIViewController {
     
+    let background = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
     let popUpView = UIView().then {
         $0.layer.backgroundColor = UIColor.white.cgColor
         $0.layer.cornerRadius = 10
@@ -38,17 +42,29 @@ class MonthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .clear
         
         monthCollectionView.dataSource = self
         monthCollectionView.delegate = self
         
         layoutConstraints()
+        
+        // 배경 탭
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        background.addGestureRecognizer(tapGesture)
+    }
+    
+    // 배경 탭 시 팝업 닫기
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
     }
     
     func layoutConstraints() {
         let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(background)
+        background.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
         
         view.addSubview(popUpView)
         popUpView.snp.makeConstraints { make in
