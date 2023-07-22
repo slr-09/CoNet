@@ -49,7 +49,7 @@ class CalendarDateFormatter {
     }
     
     // 다음 달로
-    func plusMonth() -> String{
+    func plusMonth() -> String {
         nowCalendarDate = calendar.date(byAdding: DateComponents(month: 1), to: nowCalendarDate) ?? Date()
         updateCurrentMonthDays()
         

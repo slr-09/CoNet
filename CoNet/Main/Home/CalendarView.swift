@@ -9,24 +9,6 @@ import SnapKit
 import Then
 import UIKit
 
-struct CalendarCollectionLayout {
-    func create() -> NSCollectionLayoutSection? {
-        let itemFractionalSize: CGFloat = 1 / 7
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemFractionalSize), heightDimension: .fractionalHeight(itemFractionalSize))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(itemFractionalSize))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 3, trailing: 0)
-                
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 26, leading: 0, bottom: 0, trailing: 0)
-                
-        return section
-    }
-}
-
 class CalendarView: UIView {
     // MARK: UIComponents
 
@@ -53,7 +35,7 @@ class CalendarView: UIView {
     }
     
     // 날짜
-    lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: getCollectionViewLayout()).then {
+    lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.identifier)
     }
     
@@ -178,6 +160,8 @@ class CalendarView: UIView {
 }
 
 extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return calendarDateFormatter.days.count
     }
@@ -188,7 +172,13 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         return CGSize(width: width, height: 48)
     }
     
+    // 위 아래 space zero로 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+    
+    // 양옆 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return .zero
     }
     
@@ -206,11 +196,5 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         }
         
         return cell
-    }
-    
-    func getCollectionViewLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout { _, _ -> NSCollectionLayoutSection? in
-            CalendarCollectionLayout().create()
-        }
     }
 }
