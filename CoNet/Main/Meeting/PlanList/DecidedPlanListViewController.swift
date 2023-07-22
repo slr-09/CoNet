@@ -29,7 +29,7 @@ class DecidedPlanListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "대기중인 약속"
+        navigationItem.title = "확정된 약속"
         
         view = mainView
         
@@ -40,7 +40,7 @@ class DecidedPlanListViewController: UIViewController {
     private func setupCollectionView() {
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
-        mainView.collectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
+        mainView.collectionView.register(DecidedPlanCell.self, forCellWithReuseIdentifier: DecidedPlanCell.registerId)
     }
 }
 
@@ -57,12 +57,12 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
             return UICollectionViewCell()
         }
-        cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+//        cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
+//        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
+//        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
         
         return cell
     }
@@ -70,7 +70,7 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 92)
+        return CGSize.init(width: width, height: 110)
     }
     
     // 셀 사이의 위아래 간격
@@ -78,13 +78,3 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
         return 10
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        DecidedPlanListViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
