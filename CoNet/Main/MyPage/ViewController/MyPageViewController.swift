@@ -50,16 +50,6 @@ class MyPageViewController: UIViewController {
     lazy var logoutView = myPageList.noArrowView(title: "로그아웃")
     lazy var sideBar = myPageList.noArrowView(title: "사이드바")
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("view will appear")
-        if NextViewController().next == "waiting" {
-            let nextVC = WaitingPlanListViewController()
-            nextVC.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(nextVC, animated: true)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
@@ -118,10 +108,6 @@ class MyPageViewController: UIViewController {
     }
     
     @objc private func showSideBar(_ sender: UIView) {
-//        let nextVC = SideBarViewController()
-//        nextVC.hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(nextVC, animated: true)
-        
         let popupVC = SideBarViewController()
         popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
@@ -264,12 +250,17 @@ class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController: ModalViewControllerDelegate {
-    func sendDataBack(data: String) {
-        print("Received data from modal: \(data)")
+    func sendDataBack(data: SideBarMenu) {
+        var nextVC: UIViewController
         
-        let nextVC = WaitingPlanListViewController()
+        switch data {
+        case .wait: nextVC = WaitingPlanListViewController()
+        case .decided: nextVC = WaitingPlanListViewController()
+        case .past: nextVC = WaitingPlanListViewController()
+        case .history: nextVC = WaitingPlanListViewController()
+        }
+        
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
-        // 여기서 받은 값을 이용해서 이전 ViewController에서 처리할 작업을 수행합니다.
     }
 }

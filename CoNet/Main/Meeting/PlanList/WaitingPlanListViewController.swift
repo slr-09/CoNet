@@ -77,15 +77,5 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
 }
 
 protocol ModalViewControllerDelegate: AnyObject {
-    func sendDataBack(data: String)
+    func sendDataBack(data: SideBarMenu)
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        WaitingPlanListViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
