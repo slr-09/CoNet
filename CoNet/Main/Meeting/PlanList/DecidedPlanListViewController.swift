@@ -1,15 +1,13 @@
 //
-//  WaitingPlanListViewController.swift
+//  DecidedPlanListViewController.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/22.
+//  Created by 이안진 on 2023/07/23.
 //
 
-import SnapKit
-import Then
 import UIKit
 
-class WaitingPlanListViewController: UIViewController {
+class DecidedPlanListViewController: UIViewController {
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
 
 //    static func instance() -> ViewController {
@@ -46,7 +44,7 @@ class WaitingPlanListViewController: UIViewController {
     }
 }
 
-extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
@@ -81,6 +79,12 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     }
 }
 
-protocol ModalViewControllerDelegate: AnyObject {
-    func sendDataBack(data: SideBarMenu)
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        DecidedPlanListViewController().showPreview(.iPhone14Pro)
+    }
 }
+#endif
