@@ -64,6 +64,9 @@ class CalendarView: UIView {
         
         updateCalendarData()
         layoutConstraints()
+        
+        // 버튼 클릭 이벤트
+        btnEvents()
     }
     
     @available(*, unavailable)
@@ -74,6 +77,11 @@ class CalendarView: UIView {
     // 현재 달로 update
     func updateCalendarData() {
         calendarDateFormatter.updateCurrentMonthDays()
+    }
+    
+    func btnEvents() {
+        prevBtn.addTarget(self, action: #selector(didClickPrevBtn), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(didClickNextBtn), for: .touchUpInside)
     }
     
     // layout
@@ -150,6 +158,20 @@ class CalendarView: UIView {
             make.top.equalTo(weekStackView.snp.bottom).offset(0)
             make.bottom.equalTo(self.snp.bottom).offset(-19)
         }
+    }
+    
+    // 이전 달로 이동 버튼
+    @objc func didClickPrevBtn() {
+        calendarDateFormatter.minusMonth()
+        updateCalendarData()
+        calendarCollectionView.reloadData()
+    }
+    
+    // 다음 달로 이동 버튼
+    @objc func didClickNextBtn() {
+        calendarDateFormatter.plusMonth()
+        updateCalendarData()
+        calendarCollectionView.reloadData()
     }
 }
 

@@ -23,7 +23,7 @@ class CalendarDateFormatter {
         
         return yearMonthText
     }
-    
+    // 이번 달 날짜로 update
     func updateCurrentMonthDays() {
         days.removeAll()
         
@@ -38,6 +38,18 @@ class CalendarDateFormatter {
             }
             days.append("\(day - startDayOfWeek + 1)")
         }
+    }
+    
+    // 이전 달로
+    func minusMonth() {
+        nowCalendarDate = calendar.date(byAdding: DateComponents(month: -1), to: nowCalendarDate) ?? Date()
+        updateCurrentMonthDays()
+    }
+    
+    // 다음 달로
+    func plusMonth() {
+        nowCalendarDate = calendar.date(byAdding: DateComponents(month: 1), to: nowCalendarDate) ?? Date()
+        updateCurrentMonthDays()
     }
 }
 
