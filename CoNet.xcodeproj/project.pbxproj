@@ -244,8 +244,8 @@
 			isa = PBXGroup;
 			children = (
 				518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */,
-				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
 				518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */,
+				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
 			);
 			path = PlanList;
 			sourceTree = "<group>";

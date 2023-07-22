@@ -16,8 +16,20 @@ class WaitingPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "대기중인 약속"
         
         view = mainView
         
@@ -62,6 +74,10 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
+}
+
+protocol ModalViewControllerDelegate: AnyObject {
+    func sendDataBack(data: String)
 }
 
 #if canImport(SwiftUI) && DEBUG
