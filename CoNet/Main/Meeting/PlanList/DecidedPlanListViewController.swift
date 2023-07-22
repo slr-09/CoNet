@@ -1,22 +1,20 @@
 //
-//  WaitingPlanListViewController.swift
+//  DecidedPlanListViewController.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/22.
+//  Created by 이안진 on 2023/07/23.
 //
 
-import SnapKit
-import Then
 import UIKit
 
-class WaitingPlanListViewController: UIViewController {
+class DecidedPlanListViewController: UIViewController {
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
 
 //    static func instance() -> ViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let waitingPlanData = PlanDummyData.watingPlanData
+    private let decidedPlanData = PlanDummyData.decidedPlanData
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -31,7 +29,7 @@ class WaitingPlanListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "대기중인 약속"
+        navigationItem.title = "확정된 약속"
         
         view = mainView
         
@@ -42,11 +40,11 @@ class WaitingPlanListViewController: UIViewController {
     private func setupCollectionView() {
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
-        mainView.collectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
+        mainView.collectionView.register(DecidedPlanCell.self, forCellWithReuseIdentifier: DecidedPlanCell.registerId)
     }
 }
 
-extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
@@ -54,17 +52,18 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return waitingPlanData.count
+        return decidedPlanData.count
     }
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
             return UICollectionViewCell()
         }
-        cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+        cell.dateLabel.text = decidedPlanData[indexPath.item].date
+        cell.timeLabel.text = decidedPlanData[indexPath.item].time
+        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
+        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
         
         return cell
     }
@@ -72,15 +71,11 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 92)
+        return CGSize.init(width: width, height: 110)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
-}
-
-protocol ModalViewControllerDelegate: AnyObject {
-    func sendDataBack(data: SideBarMenu)
 }

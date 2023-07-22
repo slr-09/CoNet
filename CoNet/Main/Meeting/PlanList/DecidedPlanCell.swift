@@ -1,16 +1,16 @@
 //
-//  WaitingPlanCell.swift
+//  DecidedPlanCell.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/22.
+//  Created by 이안진 on 2023/07/23.
 //
 
 import SnapKit
 import Then
 import UIKit
 
-class WaitingPlanCell: UICollectionViewCell {
-    static let registerId = "\(WaitingPlanCell.self)"
+class DecidedPlanCell: UICollectionViewCell {
+    static let registerId = "\(DecidedPlanCell.self)"
     
     // 배경
     let background = UIView().then {
@@ -24,24 +24,26 @@ class WaitingPlanCell: UICollectionViewCell {
     
     // 날짜View - 시작 날짜, 구분선, 끝 날짜
     let dateView = UIView().then { $0.backgroundColor = .clear }
-    let startDateLabel = UILabel().then {
+    let dateLabel = UILabel().then {
         $0.text = "2023. 07. 02"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
     }
-    let finishDateLabel = UILabel().then {
-        $0.text = "2023. 07. 08"
-        $0.font = UIFont.body2Bold
-        $0.textColor = UIColor.textHigh
-    }
-    let divider = UILabel().then {
-        $0.text = "-"
+    let timeLabel = UILabel().then {
+        $0.text = "14:00"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
     }
     
     // 세로 구분선
     let verticalDivider = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
+    
+    // 남은 날짜
+    let leftDateLabel = UILabel().then {
+        $0.text = "3일 남았습니다."
+        $0.font = UIFont.body1Medium
+        $0.textColor = UIColor.textMedium
+    }
     
     // 약속 이름
     // TODO: line height 24
@@ -79,28 +81,24 @@ class WaitingPlanCell: UICollectionViewCell {
     }
     
     private func dateViewConstraints() {
-        dateView.addSubview(startDateLabel)
-        startDateLabel.snp.makeConstraints { make in
+        dateView.addSubview(dateLabel)
+        dateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateView.snp.top)
         }
         
-        dateView.addSubview(finishDateLabel)
-        finishDateLabel.snp.makeConstraints { make in
+        dateView.addSubview(timeLabel)
+        timeLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
-            make.bottom.equalTo(dateView.snp.bottom)
-        }
-        
-        dateView.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.center.equalTo(dateView.snp.center)
+            make.top.equalTo(dateLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(dateLabel.snp.centerX)
         }
         
         background.addSubview(dateView)
         dateView.snp.makeConstraints { make in
-            make.width.equalTo(startDateLabel.snp.width)
-            make.height.equalTo(background).offset(-40)
-            make.top.equalTo(background.snp.top).offset(20)
+            make.height.equalTo(36)
+            make.width.equalTo(dateLabel.snp.width)
+            make.centerY.equalTo(background.snp.centerY)
             make.leading.equalTo(background.snp.leading).offset(20)
         }
     }
@@ -116,12 +114,19 @@ class WaitingPlanCell: UICollectionViewCell {
     }
     
     private func planTitleConstraints() {
+        background.addSubview(leftDateLabel)
+        leftDateLabel.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.top.equalTo(background.snp.top).offset(20)
+            make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
+        }
+        
         background.addSubview(planTitleLabel)
         planTitleLabel.snp.makeConstraints { make in
-            make.height.equalTo(52)
-            make.centerY.equalTo(background.snp.centerY)
+            make.height.equalTo(48)
             make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
             make.trailing.equalTo(background.snp.trailing).offset(-20)
+            make.bottom.equalTo(background.snp.bottom).offset(-20)
         }
     }
 }

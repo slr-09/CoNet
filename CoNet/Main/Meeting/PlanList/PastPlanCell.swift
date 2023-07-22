@@ -1,16 +1,16 @@
 //
-//  WaitingPlanCell.swift
+//  PastPlanCell.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/22.
+//  Created by 이안진 on 2023/07/23.
 //
 
 import SnapKit
 import Then
 import UIKit
 
-class WaitingPlanCell: UICollectionViewCell {
-    static let registerId = "\(WaitingPlanCell.self)"
+class PastPlanCell: UICollectionViewCell {
+    static let registerId = "\(PastPlanCell.self)"
     
     // 배경
     let background = UIView().then {
@@ -24,18 +24,13 @@ class WaitingPlanCell: UICollectionViewCell {
     
     // 날짜View - 시작 날짜, 구분선, 끝 날짜
     let dateView = UIView().then { $0.backgroundColor = .clear }
-    let startDateLabel = UILabel().then {
+    let dateLabel = UILabel().then {
         $0.text = "2023. 07. 02"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
     }
-    let finishDateLabel = UILabel().then {
-        $0.text = "2023. 07. 08"
-        $0.font = UIFont.body2Bold
-        $0.textColor = UIColor.textHigh
-    }
-    let divider = UILabel().then {
-        $0.text = "-"
+    let timeLabel = UILabel().then {
+        $0.text = "14:00"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
     }
@@ -47,11 +42,18 @@ class WaitingPlanCell: UICollectionViewCell {
     // TODO: line height 24
     let planTitleLabel = UILabel().then {
         $0.numberOfLines = 2
-        $0.text = "제목은 최대 두 줄, 더 늘어나면 말줄임표로"
+        $0.text = "제목제목제목제목제목제목제목제목제목제목"
+//        $0.text = "제목은 최대 두 줄, 더 늘어나면 말줄임표로"
         $0.font = UIFont.body1Medium
         $0.textColor = UIColor.textHigh
         $0.lineBreakMode = .byWordWrapping
     }
+    
+    let historyImage = UIImageView().then {
+        $0.image = UIImage(named: "existHistory")
+    }
+    
+    var isExistHistory: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,6 +71,7 @@ class WaitingPlanCell: UICollectionViewCell {
         dateViewConstraints()
         verticalDividerConstraints()
         planTitleConstraints()
+        existHistory()
     }
     
     private func backgroundConstraints() {
@@ -79,28 +82,24 @@ class WaitingPlanCell: UICollectionViewCell {
     }
     
     private func dateViewConstraints() {
-        dateView.addSubview(startDateLabel)
-        startDateLabel.snp.makeConstraints { make in
+        dateView.addSubview(dateLabel)
+        dateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateView.snp.top)
         }
         
-        dateView.addSubview(finishDateLabel)
-        finishDateLabel.snp.makeConstraints { make in
+        dateView.addSubview(timeLabel)
+        timeLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
-            make.bottom.equalTo(dateView.snp.bottom)
-        }
-        
-        dateView.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.center.equalTo(dateView.snp.center)
+            make.top.equalTo(dateLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(dateLabel.snp.centerX)
         }
         
         background.addSubview(dateView)
         dateView.snp.makeConstraints { make in
-            make.width.equalTo(startDateLabel.snp.width)
-            make.height.equalTo(background).offset(-40)
-            make.top.equalTo(background.snp.top).offset(20)
+            make.height.equalTo(36)
+            make.width.equalTo(dateLabel.snp.width)
+            make.centerY.equalTo(background.snp.centerY)
             make.leading.equalTo(background.snp.leading).offset(20)
         }
     }
@@ -118,10 +117,29 @@ class WaitingPlanCell: UICollectionViewCell {
     private func planTitleConstraints() {
         background.addSubview(planTitleLabel)
         planTitleLabel.snp.makeConstraints { make in
-            make.height.equalTo(52)
-            make.centerY.equalTo(background.snp.centerY)
+            make.height.equalTo(48)
+            make.centerY.equalTo(verticalDivider.snp.centerY)
             make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
+            make.trailing.equalTo(background.snp.trailing).offset(-64)
+        }
+    }
+    
+    private func existHistory() {
+        background.addSubview(historyImage)
+        historyImage.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(verticalDivider.snp.centerY)
             make.trailing.equalTo(background.snp.trailing).offset(-20)
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        PastPlanListViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif

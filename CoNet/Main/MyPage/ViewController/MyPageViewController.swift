@@ -255,8 +255,8 @@ extension MyPageViewController: ModalViewControllerDelegate {
         
         switch data {
         case .wait: nextVC = WaitingPlanListViewController()
-        case .decided: nextVC = WaitingPlanListViewController()
-        case .past: nextVC = WaitingPlanListViewController()
+        case .decided: nextVC = DecidedPlanListViewController()
+        case .past: nextVC = PastPlanListViewController()
         case .history: nextVC = WaitingPlanListViewController()
         }
         

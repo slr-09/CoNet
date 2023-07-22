@@ -272,7 +272,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         bottomButtonDivider.snp.makeConstraints { make in
             make.width.equalTo(sideBarBackground.snp.width)
             make.height.equalTo(1)
-            make.bottom.equalTo(sideBarBackground.snp.bottom).offset(-60)
+            make.bottom.equalTo(sideBarBackground.snp.bottom).offset(-96)
         }
         
         // 모임 삭제
@@ -281,7 +281,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
             make.width.equalTo(sideBarBackground.snp.width).dividedBy(2)
             make.height.equalTo(60)
             make.leading.equalTo(sideBarBackground.snp.leading)
-            make.bottom.equalTo(sideBarBackground.snp.bottom)
+            make.bottom.equalTo(sideBarBackground.snp.bottom).offset(-36)
         }
         
         deleteMeetingButton.addSubview(deleteMeetingButtonTitle)
@@ -304,7 +304,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
             make.width.equalTo(sideBarBackground.snp.width).dividedBy(2)
             make.height.equalTo(60)
             make.trailing.equalTo(sideBarBackground.snp.trailing)
-            make.bottom.equalTo(sideBarBackground.snp.bottom)
+            make.bottom.equalTo(sideBarBackground.snp.bottom).offset(-36)
         }
         
         leaveMeetingButton.addSubview(leaveMeetingImage)
@@ -337,13 +337,3 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         make.top.equalTo(previousView.snp.bottom).offset(isFirstList ? 16 : 0)
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        SideBarViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
