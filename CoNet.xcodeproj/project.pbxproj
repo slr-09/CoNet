@@ -47,6 +47,7 @@
 		518F55E42A68EF7B002D8F0F /* SideBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55E32A68EF7B002D8F0F /* SideBarViewController.swift */; };
 		518F55E72A69173F002D8F0F /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55E62A69173F002D8F0F /* Divider.swift */; };
 		518F55EE2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */; };
+		518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */; };
 		51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64952A532CB300BBA4C0 /* KakaoSDK */; };
 		51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51DA64982A532CF800BBA4C0 /* SnapKit */; };
 		51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2A4672A54804100D134CC /* ColorExtension.swift */; };
@@ -99,6 +100,7 @@
 		518F55E32A68EF7B002D8F0F /* SideBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarViewController.swift; sourceTree = "<group>"; };
 		518F55E62A69173F002D8F0F /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
 		518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPlanListViewController.swift; sourceTree = "<group>"; };
+		518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListCollectionView.swift; sourceTree = "<group>"; };
 		51F2A4672A54804100D134CC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		51F2A4692A548A1000D134CC /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
 		51F2A4702A5497A500D134CC /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */,
+				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				511B35742A6512B100EDC3E0 /* SendEmailButton.swift in Sources */,
 				518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */,
+				518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 				23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */,
 				1ADA54922A62B70700609041 /* GatherViewController.swift in Sources */,
