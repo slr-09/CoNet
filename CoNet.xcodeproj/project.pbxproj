@@ -27,6 +27,7 @@
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
 		23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA18292A694551004EC6A6 /* CalendarView.swift */; };
 		23DA182C2A695541004EC6A6 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */; };
+		23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED93952A6D427A007B0E63 /* DayPlanCell.swift */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
 		51046AA32A5D7DA400AD543D /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */; };
 		51046AA52A5D7E3300AD543D /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */; };
@@ -90,6 +91,7 @@
 		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23DA18292A694551004EC6A6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		23ED93952A6D427A007B0E63 /* DayPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPlanCell.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
 		51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				51B526CB2A6C3988009DBFB4 /* DecidedPlanCell.swift */,
 				51B526CD2A6C4077009DBFB4 /* PastPlanListViewController.swift */,
 				51B526CF2A6C40F1009DBFB4 /* PastPlanCell.swift */,
+				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
 			);
 			path = PlanList;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				511B35742A6512B100EDC3E0 /* SendEmailButton.swift in Sources */,
 				518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */,
 				518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */,
+				23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */,
 				51B526D02A6C40F1009DBFB4 /* PastPlanCell.swift in Sources */,
 				51B526CC2A6C3988009DBFB4 /* DecidedPlanCell.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,

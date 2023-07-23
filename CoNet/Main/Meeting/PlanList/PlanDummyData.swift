@@ -27,6 +27,12 @@ struct PastPlan {
     let isExistHistory: Bool
 }
 
+struct DayPlan {
+    let time: String
+    let planTitle: String
+    let groupName: String
+}
+
 struct PlanDummyData {
     static let watingPlanData: [WaitingPlan] = [
         WaitingPlan(startDate: "2023. 07. 02", finishDate: "2023. 07. 08", title: "iOS 스터디 1차"),
@@ -70,4 +76,9 @@ struct PlanDummyData {
         PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: false),
         PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true),
         PastPlan(date: "2023. 07. 13", time: "21:00", title: "Server 3차 스터디", isExistHistory: true)]
+    
+    static let dayPlanData: [DayPlan] = [
+        DayPlan(time: "14:00", planTitle: "iOS 1차 스터디", groupName: "iOS 스터디"),
+        DayPlan(time: "15:00", planTitle: "iOS 2차 스터디", groupName: "iOS 스터디")
+    ]
 }
