@@ -55,6 +55,25 @@ class HomeViewController: UIViewController {
         $0.font = UIFont.headline2Bold
     }
     
+    let planNumCircle2 = UIImageView().then {
+        $0.image = UIImage(named: "purpleLineCircle")
+    }
+    
+    // 약속 수
+    let waitingPlanNum = UILabel().then {
+        $0.text = "2"
+        $0.textColor = UIColor.purpleMain
+        $0.font = UIFont.body3Bold
+    }
+    
+    // 대기 중 약속 collectionView
+    private lazy var waitingPlanCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.isScrollEnabled = false
+    }
+    
+    // 대기 중 약속 데이터
+    private let waitingPlanData = PlanDummyData.watingPlanData
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -77,6 +96,11 @@ class HomeViewController: UIViewController {
         dayPlanCollectionView.delegate = self
         dayPlanCollectionView.dataSource = self
         dayPlanCollectionView.register(DayPlanCell.self, forCellWithReuseIdentifier: DayPlanCell.registerId)
+        
+        // 대기 중 약속 collectionView
+        waitingPlanCollectionView.delegate = self
+        waitingPlanCollectionView.dataSource = self
+        waitingPlanCollectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
     }
     
     // yearMonth 클릭
@@ -95,8 +119,10 @@ class HomeViewController: UIViewController {
         contentView.addSubview(planNumCircle)
         contentView.addSubview(planNum)
         contentView.addSubview(dayPlanCollectionView)
-//        contentView.addSubview(dayPlanTableView)
         contentView.addSubview(waitingPlanLabel)
+        contentView.addSubview(planNumCircle2)
+        contentView.addSubview(waitingPlanNum)
+        contentView.addSubview(waitingPlanCollectionView)
     }
     
     // layout
@@ -112,11 +138,13 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(safeArea.snp.bottom).offset(0)
         }
         
+        var backgroundHeight = 657 + dayPlanData.count*82 + waitingPlanData.count*92
+        
         // 컴포넌트들이 들어갈 뷰
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(1000) // 높이를 설정해야 스크롤이 됨
+            make.height.equalTo(backgroundHeight) // 높이를 설정해야 스크롤이 됨
         }
         
         // 캘린더 뷰
@@ -136,7 +164,7 @@ class HomeViewController: UIViewController {
         planNumCircle.snp.makeConstraints { make in
             make.width.height.equalTo(20)
             make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
-            make.top.equalTo(calendarView.snp.bottom).offset(39)
+            make.centerY.equalTo(dayPlanLabel.snp.centerY)
         }
         
         // label: 약속 수
@@ -149,15 +177,33 @@ class HomeViewController: UIViewController {
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(dayPlanData.count*92)
-//            make.bottom.equalToSuperview()
+            make.height.equalTo(dayPlanData.count*92-10)
         }
         
         // label: 대기 중 약속
-//        waitingPlanLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(contentView.snp.leading).offset(0)
-//            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(50)
-//        }
+        waitingPlanLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(50)
+        }
+        
+        planNumCircle2.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            make.leading.equalTo(waitingPlanLabel.snp.trailing).offset(6)
+            make.centerY.equalTo(waitingPlanLabel.snp.centerY)
+        }
+        
+        // label: 대기 중인 약속 수
+        waitingPlanNum.snp.makeConstraints { make in
+            make.centerY.equalTo(planNumCircle2.snp.centerY)
+            make.centerX.equalTo(planNumCircle2.snp.centerX)
+        }
+        
+        // collectionView: 대기 중 약속
+        waitingPlanCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(waitingPlanData.count*92)
+        }
     }
 }
 
@@ -169,20 +215,40 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dayPlanData.count
+        var count = 0
+        if collectionView == dayPlanCollectionView { count = dayPlanData.count }
+        else if collectionView == waitingPlanCollectionView { count = waitingPlanData.count }
+        
+        return count
     }
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
-            return UICollectionViewCell()
+        if collectionView == dayPlanCollectionView {
+            // 오늘 약속
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.timeLabel.text = dayPlanData[indexPath.item].time
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
+            
+            return cell
+        } else if collectionView == waitingPlanCollectionView {
+            // 대기 중 약속
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
+            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
+            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+            
+            return cell
         }
         
-        cell.timeLabel.text = dayPlanData[indexPath.item].time
-        cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
-        cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
-        
-        return cell
+        return UICollectionViewCell()
     }
     
     // 셀 크기
