@@ -133,13 +133,3 @@ class PastPlanCell: UICollectionViewCell {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        PastPlanListViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

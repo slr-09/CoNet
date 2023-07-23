@@ -18,11 +18,6 @@ class HomeViewController: UIViewController {
     // 컴포넌트들이 들어갈 뷰
     let contentView = UIView()
     
-    // 알림 버튼
-    let alarmBtn = UIButton().then {
-        $0.setImage(UIImage(named: "bell"), for: .normal)
-    }
-    
     let calendarView = CalendarView().then {
         $0.layer.borderWidth = 0.2
         $0.layer.borderColor = UIColor.gray300?.cgColor
@@ -52,7 +47,6 @@ class HomeViewController: UIViewController {
     let dayPlanTableView = UITableView().then {
         $0.rowHeight = 92
         $0.separatorStyle = .none
-//        $0.backgroundColor = UIColor.red
         $0.register(PlanTableViewCell.self, forCellReuseIdentifier: PlanTableViewCell.identifier)
     }
     
@@ -91,7 +85,6 @@ class HomeViewController: UIViewController {
     func addView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(alarmBtn)
         contentView.addSubview(calendarView)
         contentView.addSubview(dayPlanLabel)
         contentView.addSubview(planNumCircle)
@@ -109,7 +102,7 @@ class HomeViewController: UIViewController {
         scrollView.snp.makeConstraints { make in
             make.leading.equalTo(safeArea.snp.leading).offset(0)
             make.trailing.equalTo(safeArea.snp.trailing).offset(0)
-            make.top.equalTo(safeArea.snp.top).offset(13)
+            make.top.equalTo(safeArea.snp.top).offset(0)
             make.bottom.equalTo(safeArea.snp.bottom).offset(0)
         }
         
@@ -120,17 +113,9 @@ class HomeViewController: UIViewController {
             make.height.equalTo(1000) // 높이를 설정해야 스크롤이 됨
         }
         
-        // 알림 버튼
-        alarmBtn.snp.makeConstraints { make in
-            make.width.equalTo(24)
-            make.height.equalTo(24)
-            make.top.equalTo(contentView.snp.top).offset(0)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
-        }
-        
         // 캘린더 뷰
         calendarView.snp.makeConstraints { make in
-            make.top.equalTo(alarmBtn.snp.bottom).offset(6)
+            make.top.equalTo(contentView.snp.top).offset(43)
             make.leading.equalTo(contentView.snp.leading).offset(0)
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
             make.height.equalTo(448)
@@ -184,12 +169,3 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        HomeViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
