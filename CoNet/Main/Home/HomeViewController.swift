@@ -184,3 +184,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        HomeViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
