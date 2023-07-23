@@ -194,12 +194,12 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 오늘 날짜 계산
         let today = format.string(from: Date())
         
-        if indexPath.item % 7 == 0 {
-            // 일요일 날짜 빨간색으로 설정
-            cell.setSundayColor()
-        } else if calendarDateFormatter.days[indexPath.item] == today {
+        if calendarDateFormatter.days[indexPath.item] == today {
             // 오늘 날짜 보라색으로 설정
             cell.setTodayColor()
+        } else if indexPath.item % 7 == 0 {
+            // 일요일 날짜 빨간색으로 설정
+            cell.setSundayColor()
         } else {
             cell.setWeekdayColor()
         }
