@@ -84,7 +84,7 @@ class HistoryViewController: UIViewController {
         view.addSubview(historyCollectionView)
         historyCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(24)
-            make.top.equalTo(historyLabel).offset(30)
+            make.top.equalTo(historyLabel.snp.bottom).offset(30)
             make.height.equalTo(1000)
         }
     }
@@ -122,12 +122,3 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 }
 
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        HistoryViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
