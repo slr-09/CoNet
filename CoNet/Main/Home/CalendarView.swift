@@ -169,7 +169,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     // 셀 사이즈 설정 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = weekStackView.frame.width / 7
-        return CGSize(width: width, height: 48)
+        return CGSize(width: width, height: 50)
     }
     
     // 위 아래 space zero로 설정
@@ -188,8 +188,17 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 날짜 설정
         cell.configureday(text: calendarDateFormatter.days[indexPath.item])
         
-        // 일요일 날짜 빨간색으로 설정
-        if indexPath.item % 7 == 0 {
+        let format = DateFormatter()
+        format.dateFormat = "dd"
+        
+        // 오늘 날짜 계산
+        let today = format.string(from: Date())
+        
+        if calendarDateFormatter.days[indexPath.item] == today {
+            // 오늘 날짜 보라색으로 설정
+            cell.setTodayColor()
+        } else if indexPath.item % 7 == 0 {
+            // 일요일 날짜 빨간색으로 설정
             cell.setSundayColor()
         } else {
             cell.setWeekdayColor()

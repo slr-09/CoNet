@@ -9,6 +9,10 @@ import SnapKit
 import Then
 import UIKit
 
+class NextViewController {
+    var next = ""
+}
+
 class MyPageViewController: UIViewController {
     // "MY" 타이틀
     let titleLabel = UILabel().then {
@@ -105,6 +109,7 @@ class MyPageViewController: UIViewController {
     
     @objc private func showSideBar(_ sender: UIView) {
         let popupVC = SideBarViewController()
+        popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
         present(popupVC, animated: true, completion: nil)
@@ -114,7 +119,6 @@ class MyPageViewController: UIViewController {
         let nextVC = UserInfoViewController()
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
-        
     }
     
     @objc private func showNoticeViewController(_ sender: UIView) {
@@ -243,4 +247,20 @@ class MyPageViewController: UIViewController {
         make.trailing.equalTo(safeArea.snp.trailing).offset(24)
     }
     
+}
+
+extension MyPageViewController: ModalViewControllerDelegate {
+    func sendDataBack(data: SideBarMenu) {
+        var nextVC: UIViewController
+        
+        switch data {
+        case .wait: nextVC = WaitingPlanListViewController()
+        case .decided: nextVC = DecidedPlanListViewController()
+        case .past: nextVC = PastPlanListViewController()
+        case .history: nextVC = WaitingPlanListViewController()
+        }
+        
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
 }
