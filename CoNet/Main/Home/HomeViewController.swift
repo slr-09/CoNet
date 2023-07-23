@@ -29,11 +29,8 @@ class HomeViewController: UIViewController {
         $0.font = UIFont.headline2Bold
     }
     
-    let planNumCircle = UIView().then {
-        $0.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        $0.layer.cornerRadius = 50
-        $0.layer.borderColor = UIColor.purpleMain?.cgColor
-        $0.layer.borderWidth = 1
+    let planNumCircle = UIImageView().then {
+        $0.image = UIImage(named: "purpleLineCircle")
     }
     
     // 약속 수
@@ -127,17 +124,16 @@ class HomeViewController: UIViewController {
             make.top.equalTo(calendarView.snp.bottom).offset(36)
         }
         
-//        planNumCircle.snp.makeConstraints { make in
-//            make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
-////            make.top.equalTo(alarmBtn.snp.bottom).offset(451)
-//            make.centerY.equalTo(dayPlanLabel.snp.centerY)
-//        }
+        planNumCircle.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
+            make.top.equalTo(calendarView.snp.bottom).offset(39)
+        }
+        
         // label: 약속 수
         planNum.snp.makeConstraints { make in
-            make.width.equalTo(20)
-            make.leading.equalTo(dayPlanLabel.snp.trailing).offset(6)
-            make.centerY.equalTo(dayPlanLabel.snp.centerY)
-//            make.centerX.equalTo(planNumCircle.snp.centerX)
+            make.centerY.equalTo(planNumCircle.snp.centerY)
+            make.centerX.equalTo(planNumCircle.snp.centerX)
         }
         
         // TableView: 특정 날짜 약속
