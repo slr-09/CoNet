@@ -37,6 +37,7 @@ class CalendarView: UIView {
     // 날짜
     lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.identifier)
+        $0.isScrollEnabled = false
     }
     
     let calendarDateFormatter = CalendarDateFormatter()

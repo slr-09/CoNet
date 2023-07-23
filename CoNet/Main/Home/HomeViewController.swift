@@ -138,7 +138,7 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(safeArea.snp.bottom).offset(0)
         }
         
-        var backgroundHeight = 657 + dayPlanData.count*82 + waitingPlanData.count*92
+        let backgroundHeight = 657 + dayPlanData.count*82 + waitingPlanData.count*92
         
         // 컴포넌트들이 들어갈 뷰
         contentView.snp.makeConstraints { make in
