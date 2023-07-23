@@ -12,21 +12,37 @@ import UIKit
 class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
 
-    let imageView = UIImageView(image: UIImage(named: "space"))
-    let titleLabel = UILabel()
-    let starButton = UIButton()
+    let imageView = UIImageView().then {
+        $0.image = UIImage(named: "space")
+    }
+
+    let titleLabel = UILabel().then {
+        $0.numberOfLines = 2
+        $0.text = "제목은 최대 두 줄, 더 길어지면 말 줄임표를 사용"
+        $0.font = UIFont.body1Bold
+    }
+
+    let starButton = UIButton().then {
+        $0.setImage(UIImage(named: "star"), for: .normal)
+    }
+
+    let newImageView = UIImageView().then {
+        $0.image = UIImage(named: "new")
+    }
+
     var onStarButtonTapped: (() -> Void)?
-    
+
     @objc func starButtonTapped() {
         onStarButtonTapped?()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(starButton)
+        contentView.addSubview(newImageView)
 
         imageView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
@@ -40,17 +56,19 @@ class MeetingCell: UICollectionViewCell {
 
         starButton.snp.makeConstraints { make in
             make.top.equalTo(imageView).offset(8)
-            make.right.equalTo(imageView).offset(-8)
+            make.trailing.equalTo(imageView).offset(-8)
         }
-        
-        titleLabel.numberOfLines = 2
-        titleLabel.text = "제목은 최대 두 줄, 더 길어지면 말 줄임표를 사용"
-        titleLabel.font = UIFont.body1Bold
 
-        starButton.setImage(UIImage(named: "star"), for: .normal)
+        newImageView.snp.makeConstraints { make in
+            make.width.equalTo(31)
+            make.height.equalTo(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.leading.equalTo(imageView)
+        }
+
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
