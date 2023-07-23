@@ -262,4 +262,3 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return 10
     }
 }
-
