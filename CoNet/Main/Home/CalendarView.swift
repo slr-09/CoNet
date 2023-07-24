@@ -157,7 +157,7 @@ class CalendarView: UIView {
         yearMonth.setTitle(header, for: .normal)
     }
     
-    // 달 이동 
+    // 달 이동
     func moveMonth(month: Int) {
         let header = calendarDateFormatter.moveMonth(month: month)
         calendarCollectionView.reloadData()
@@ -166,6 +166,7 @@ class CalendarView: UIView {
 }
 
 extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return calendarDateFormatter.days.count
@@ -218,5 +219,31 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         }
         
         return cell
+    }
+    
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+        
+        let home = HomeViewController()
+        
+        let format = DateFormatter()
+        format.dateFormat = "dd"
+        
+        // 오늘 날짜 계산
+        let today = format.string(from: Date())
+        
+        format.dateFormat = "MM"
+        // 오늘 날짜 month 계산
+        let todayMonth = format.string(from: Date())
+        
+        // 달력 month
+        let calendarMonth = calendarDateFormatter.currentMonth()
+        
+        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
+            home.changeDate(month: "", day: "")
+        } else {
+            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
+        }
     }
 }
