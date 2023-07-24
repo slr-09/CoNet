@@ -71,8 +71,10 @@ class MeetingPopUpViewController: UIViewController {
         
         codeTextField.addTarget(self, action: #selector(codeTextFieldDidChange), for: .editingChanged)
         participateButton.addTarget(self, action: #selector(participateButtonTapped), for: .touchUpInside)
+        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         
         infoView.isHidden = true
+        
     }
     
     func applyConstraintsToComponents() {
@@ -133,6 +135,14 @@ class MeetingPopUpViewController: UIViewController {
     @objc func codeTextFieldDidChange() {
         updateGrayLineAndInfoLabel()
     }
+    
+    @objc private func xButtonTapped() {
+        dismiss(animated: true) {
+            if let tabBarController = self.presentingViewController as? TabbarViewController {
+                tabBarController.selectedIndex = 1
+            }
+        }
+    }
         
     @objc func participateButtonTapped() {
         let code = codeTextField.text ?? ""
@@ -160,7 +170,7 @@ class MeetingPopUpViewController: UIViewController {
             participateButton.backgroundColor = UIColor.gray200
         }
     }
-        
+    
     func validateInviteCode(code: String) -> ServerResponse {
         if code.isEmpty {
             infoView.isHidden = true
@@ -203,6 +213,10 @@ class MeetingPopUpViewController: UIViewController {
         let codeRegex = "^[a-zA-Z0-9]{8}$"
         let codePredicate = NSPredicate(format: "SELF MATCHES %@", codeRegex)
         return codePredicate.evaluate(with: code)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
     

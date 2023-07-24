@@ -58,3 +58,12 @@ class TabbarViewController: UITabBarController {
     }
     
 }
+#if canImport(SwiftUI) && DEBUG
+ import SwiftUI
+
+ struct ViewControllerPreview: PreviewProvider {
+     static var previews: some View {
+         TabbarViewController().showPreview(.iPhone14Pro)
+     }
+ }
+ #endif
