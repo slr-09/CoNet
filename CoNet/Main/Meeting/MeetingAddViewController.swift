@@ -63,7 +63,7 @@ class MeetingAddViewController: UIViewController {
     let photoUploadImage = UIImageView().then {
         $0.image = UIImage(named: "imageplus")
         $0.tintColor = UIColor.iconDisabled
-    } // 안나타남
+    }
     let photoUploadLabel = UILabel().then {
         $0.text = "업로드할 이미지를 첨부해주세요.\n1:1의 정방향 이미지를 추천합니다."
         $0.font = UIFont.body3Medium

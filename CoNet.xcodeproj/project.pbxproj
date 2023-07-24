@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */; };
+		1A3AD0152A6D411900975427 /* HistoryAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */; };
 		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
 		1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */; };
 		1ABF8C882A694B3800023A8D /* MeetingInfoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */; };
@@ -76,6 +77,7 @@
 
 /* Begin PBXFileReference section */
 		1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
+		1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAddViewController.swift; sourceTree = "<group>"; };
 		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPopUpViewController.swift; sourceTree = "<group>"; };
 		1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingInfoEditViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A3AD0162A6D413200975427 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		236054F52A593F2E00CA991E /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +343,7 @@
 				236054F82A593F4000CA991E /* Meeting */,
 				236054F52A593F2E00CA991E /* Home */,
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
+				1A3AD0162A6D413200975427 /* History */,
 				51F2A46F2A54973300D134CC /* Login */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
 			);
@@ -501,6 +512,7 @@
 				1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */,
 				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
+				1A3AD0152A6D411900975427 /* HistoryAddViewController.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
 				51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */,
 				23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */,
