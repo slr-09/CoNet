@@ -190,9 +190,11 @@ class MeetingAddViewController: UIViewController {
     }
     
     @objc private func xButtonTapped() {
-        let gatherVC = MeetingViewController()
-        gatherVC.modalPresentationStyle = .fullScreen
-        present(gatherVC, animated: true, completion: nil)
+        dismiss(animated: true) {
+            if let tabBarController = self.presentingViewController as? TabbarViewController {
+                tabBarController.selectedIndex = 1
+            }
+        }
     }
     
     @objc private func textFieldEditingChanged() {
