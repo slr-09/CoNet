@@ -64,15 +64,13 @@ class MeetingMainViewController: UIViewController {
         navigationItem.leftBarButtonItem = leftbarButtonItem
     }
     
+    // 뒤로가기 버튼 동작
     @objc private func backButtonTapped() {
-        // 이미지 버튼이 탭되었을 때 동작할 코드를 여기에 작성
-        print("Image Button Tapped!")
+        navigationController?.popViewController(animated: true)
     }
     
+    // 사이드바 버튼 동작
     @objc private func sidebarButtonTapped() {
-        // 이미지 버튼이 탭되었을 때 동작할 코드를 여기에 작성
-        print("Image Button Tapped!")
-        
         let popupVC = SideBarViewController()
         popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
@@ -134,7 +132,6 @@ extension MeetingMainViewController: ModalViewControllerDelegate {
         navigationController?.pushViewController(nextVC, animated: true)
     }
 }
-
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
