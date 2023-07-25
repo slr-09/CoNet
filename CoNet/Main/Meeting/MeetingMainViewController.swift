@@ -122,10 +122,12 @@ extension MeetingMainViewController: ModalViewControllerDelegate {
         var nextVC: UIViewController
         
         switch data {
+        case .editInfo: nextVC = MeetingInfoEditViewController()
         case .wait: nextVC = WaitingPlanListViewController()
         case .decided: nextVC = DecidedPlanListViewController()
         case .past: nextVC = PastPlanListViewController()
         case .history: nextVC = WaitingPlanListViewController()
+        default: nextVC = WaitingPlanListViewController()
         }
         
         nextVC.hidesBottomBarWhenPushed = true
