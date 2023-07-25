@@ -8,5 +8,5 @@
 import Foundation
 
 enum SideBarMenu {
-    case wait, decided, past, history
+    case editInfo, inviteCode, wait, decided, past, history, delete, out
 }

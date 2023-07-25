@@ -91,8 +91,8 @@ class AuthAPI {
         dataRequest.responseDecodable(of: BaseResponse<PostKakaoLoginResult>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(kakao login) access token: \(response.result?.accessToken)")
-                print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken)")
+                print("DEBUG(kakao login) access token: \(response.result?.accessToken ?? "")")
+                print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken ?? "")")
                 
                 self.keychain.set(response.result!.email, forKey: "email")
                 self.keychain.set(response.result!.email, forKey: "accessToken")
