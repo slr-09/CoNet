@@ -18,6 +18,10 @@ class MonthViewController: UIViewController {
     let popUpView = UIView().then {
         $0.layer.backgroundColor = UIColor.white.cgColor
         $0.layer.cornerRadius = 10
+        $0.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12).cgColor
+        $0.layer.shadowRadius = 4
+        $0.layer.shadowOffset = CGSize(width: 0, height: 0)
+        $0.layer.shadowOpacity = 1
     }
     
     // 이전 해 버튼

@@ -12,21 +12,37 @@ import UIKit
 class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
 
-    let imageView = UIImageView(image: UIImage(named: "space"))
-    let titleLabel = UILabel()
-    let starButton = UIButton()
+    let imageView = UIImageView().then {
+        $0.image = UIImage(named: "space")
+    }
+
+    let titleLabel = UILabel().then {
+        $0.numberOfLines = 2
+        $0.text = "제목은 최대 두 줄, 더 길어지면 말 줄임표를 사용"
+        $0.font = UIFont.body1Bold
+    }
+
+    let starButton = UIButton().then {
+        $0.setImage(UIImage(named: "star"), for: .normal)
+    }
+
+    let newImageView = UIImageView().then {
+        $0.image = UIImage(named: "new")
+    }
+
     var onStarButtonTapped: (() -> Void)?
-    
+
     @objc func starButtonTapped() {
         onStarButtonTapped?()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(starButton)
+        contentView.addSubview(newImageView)
 
         imageView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
@@ -40,17 +56,19 @@ class MeetingCell: UICollectionViewCell {
 
         starButton.snp.makeConstraints { make in
             make.top.equalTo(imageView).offset(8)
-            make.right.equalTo(imageView).offset(-8)
+            make.trailing.equalTo(imageView).offset(-8)
         }
-        
-        titleLabel.numberOfLines = 2
-        titleLabel.text = "제목은 최대 두 줄, 더 길어지면 말 줄임표를 사용"
-        titleLabel.font = UIFont.body1Bold
 
-        starButton.setImage(UIImage(named: "star"), for: .normal)
+        newImageView.snp.makeConstraints { make in
+            make.width.equalTo(31)
+            make.height.equalTo(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.leading.equalTo(imageView)
+        }
+
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -59,7 +77,7 @@ class MeetingCell: UICollectionViewCell {
 class MeetingViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var item: UIStackView!
-    var meetings = [Int](repeating: 0, count: 4)
+    var meetings = [Int](repeating: 0, count: 6)
     var favoritedMeetings = [Int]()
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -194,6 +212,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         applyConstraintsToCollectionView()
 
         setupCollectionView()
+        collectionView.showsVerticalScrollIndicator = false
         self.view.addSubview(peopleButton)
         self.view.addSubview(joinLabel)
         self.view.addSubview(participateButton)
@@ -205,6 +224,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
 
         plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
         participateButton.addTarget(self, action: #selector(didTapparticipateButton), for: .touchUpInside)
+        peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
         
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
             overlayView.frame = self.view.bounds
@@ -241,7 +261,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(plusButton.snp.top).offset(-16)
+            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
     
@@ -252,7 +272,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(plusButton.snp.top).offset(-16)
+            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
 
@@ -361,5 +381,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         let popupVC = MeetingPopUpViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapPeopleButton(_ sender: Any) {
+        let addVC = MeetingAddViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
     }
 }

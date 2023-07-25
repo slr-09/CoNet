@@ -55,6 +55,14 @@ class CalendarDateFormatter {
         
         return getYearMonthText()
     }
+    
+    // 현재 보여주는 달력의 month
+    func currentMonth() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM"
+        
+        return formatter.string(from: nowCalendarDate)
+    }
 }
 
 private extension CalendarDateFormatter {
