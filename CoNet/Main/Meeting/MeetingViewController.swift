@@ -388,7 +388,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }
-    
 }
 #if canImport(SwiftUI) && DEBUG
  import SwiftUI
