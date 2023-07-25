@@ -42,6 +42,16 @@ class MeetingMainViewController: UIViewController {
         layoutContraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
     private func addNavigationBarItem() {
         // 사이드바 버튼 추가
         sidebarButton.addTarget(self, action: #selector(sidebarButtonTapped), for: .touchUpInside)
@@ -62,6 +72,12 @@ class MeetingMainViewController: UIViewController {
     @objc private func sidebarButtonTapped() {
         // 이미지 버튼이 탭되었을 때 동작할 코드를 여기에 작성
         print("Image Button Tapped!")
+        
+        let popupVC = SideBarViewController()
+        popupVC.delegate = self
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        present(popupVC, animated: true, completion: nil)
     }
     
     // 전체 layout constraints
@@ -102,6 +118,23 @@ class MeetingMainViewController: UIViewController {
         }
     }
 }
+
+extension MeetingMainViewController: ModalViewControllerDelegate {
+    func sendDataBack(data: SideBarMenu) {
+        var nextVC: UIViewController
+        
+        switch data {
+        case .wait: nextVC = WaitingPlanListViewController()
+        case .decided: nextVC = DecidedPlanListViewController()
+        case .past: nextVC = PastPlanListViewController()
+        case .history: nextVC = WaitingPlanListViewController()
+        }
+        
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+}
+
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
