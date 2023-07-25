@@ -111,6 +111,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     
     func buttonsDelegate() {
         editMeetingInfoButton.addTarget(self, action: #selector(showEditMeetingInfo), for: .touchUpInside)
+        historyButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
         
         waitingPlanButton.delegate = self
         decidedPlanButton.delegate = self
@@ -128,6 +129,12 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     @objc func showEditMeetingInfo() {
         dismiss(animated: true) {
             self.sideBarListButtonTapped(title: .editInfo)
+        }
+    }
+    
+    @objc func showHistory() {
+        dismiss(animated: true) {
+            self.sideBarListButtonTapped(title: .history)
         }
     }
 
