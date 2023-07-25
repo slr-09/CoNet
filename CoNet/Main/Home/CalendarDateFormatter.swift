@@ -23,6 +23,7 @@ class CalendarDateFormatter {
         
         return yearMonthText
     }
+    
     // 이번 달 날짜로 update
     func updateCurrentMonthDays() {
         days.removeAll()

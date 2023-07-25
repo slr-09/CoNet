@@ -42,6 +42,9 @@ class CalendarView: UIView {
     
     let calendarDateFormatter = CalendarDateFormatter()
     
+    // 해당 달에 약속 있는 날짜
+    var planDates: [Int] = []
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -50,11 +53,24 @@ class CalendarView: UIView {
         
         // 버튼 클릭 이벤트
         btnEvents()
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM"
+        // api 호출
+        getMonthPlanAPI(date: format.string(from: Date()))
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // API: 특정 달 약속 조회
+    func getMonthPlanAPI(date: String) {
+        HomeAPI().getMonthPlan(date: date) { count, dates in
+            print("getMonthPlan count: ", count)
+            self.planDates = dates
+        }
     }
     
     // 현재 달로 update
@@ -145,18 +161,32 @@ class CalendarView: UIView {
     
     // 이전 달로 이동 버튼
     @objc func didClickPrevBtn() {
-        let header = calendarDateFormatter.minusMonth()
+        var header = calendarDateFormatter.minusMonth()
         updateCalendarData() // days 배열 update
         calendarCollectionView.reloadData() // collectionView reload
         yearMonth.setTitle(header, for: .normal) // yearMonth update
+        
+        // 날짜 포맷 변경: yyyy-MM
+        header = header.replacingOccurrences(of: "년 ", with: "-")
+        header = header.replacingOccurrences(of: "일", with: "")
+        
+        // api: 특정 달 약속 조회
+        getMonthPlanAPI(date: header)
     }
     
     // 다음 달로 이동 버튼
     @objc func didClickNextBtn() {
-        let header = calendarDateFormatter.plusMonth()
+        var header = calendarDateFormatter.plusMonth()
         updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
+        
+        // 날짜 포맷 변경: yyyy-MM
+        header = header.replacingOccurrences(of: "년 ", with: "-")
+        header = header.replacingOccurrences(of: "일", with: "")
+        
+        // api: 특정 달 약속 조회
+        getMonthPlanAPI(date: header)
     }
 }
 
@@ -185,8 +215,10 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.identifier, for: indexPath) as? CalendarCollectionViewCell else { return UICollectionViewCell() }
         
+        let cellDay = calendarDateFormatter.days[indexPath.item]
+        
         // 날짜 설정
-        cell.configureday(text: calendarDateFormatter.days[indexPath.item])
+        cell.configureday(text: cellDay)
         
         let format = DateFormatter()
         format.dateFormat = "dd"
@@ -201,7 +233,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 달력 month
         let calendarMonth = calendarDateFormatter.currentMonth()
         
-        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
+        if cellDay == today && todayMonth == calendarMonth {
             // day, month 모두 같을 경우
             // 오늘 날짜 보라색으로 설정
             cell.setTodayColor()
@@ -210,6 +242,11 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
             cell.setSundayColor()
         } else {
             cell.setWeekdayColor()
+        }
+        
+        // 약속 있는 날 표시하기
+        if planDates.contains(Int(cellDay) ?? 0) {
+            cell.configurePlan()
         }
         
         return cell

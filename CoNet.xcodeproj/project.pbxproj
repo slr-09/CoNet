@@ -33,6 +33,8 @@
 		23ED93992A6D5FB9007B0E63 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */; };
 		23ED939D2A6D6485007B0E63 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED939C2A6D6485007B0E63 /* HistoryCell.swift */; };
 		23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */; };
+		23F6F9082A700F4700772AFF /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9072A700F4700772AFF /* HomeAPI.swift */; };
+		23F6F90A2A7011C000772AFF /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9092A7011C000772AFF /* Home.swift */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
 		51046AA32A5D7DA400AD543D /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */; };
 		51046AA52A5D7E3300AD543D /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */; };
@@ -102,6 +104,8 @@
 		23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		23ED939C2A6D6485007B0E63 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryBottomSheetViewController.swift; sourceTree = "<group>"; };
+		23F6F9072A700F4700772AFF /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
+		23F6F9092A7011C000772AFF /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
 		51046AA12A5D7DA400AD543D /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		51046AA42A5D7E3300AD543D /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 				235F5B722A69893F00ADC0D6 /* CalendarDateFormatter.swift */,
 				231E97CE2A6BCA04000BB2AD /* MonthViewController.swift */,
 				231E97D02A6BD3F8000BB2AD /* MonthCollectionViewCell.swift */,
+				23F6F9072A700F4700772AFF /* HomeAPI.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -372,6 +377,7 @@
 				2344286F2A5E99BE006A4D66 /* BaseResponse.swift */,
 				51F2A4732A549A2B00D134CC /* PostRegenerateToken.swift */,
 				234428752A5EF81D006A4D66 /* Login.swift */,
+				23F6F9092A7011C000772AFF /* Home.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -530,11 +536,13 @@
 				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				231E97D12A6BD3F8000BB2AD /* MonthCollectionViewCell.swift in Sources */,
 				518F55E72A69173F002D8F0F /* Divider.swift in Sources */,
+				23F6F90A2A7011C000772AFF /* Home.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				231E97CF2A6BCA04000BB2AD /* MonthViewController.swift in Sources */,
 				51B526CA2A6C3901009DBFB4 /* DecidedPlanListViewController.swift in Sources */,
 				1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */,
 				236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */,
+				23F6F9082A700F4700772AFF /* HomeAPI.swift in Sources */,
 				518F55E42A68EF7B002D8F0F /* SideBarViewController.swift in Sources */,
 				234428762A5EF81D006A4D66 /* Login.swift in Sources */,
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,

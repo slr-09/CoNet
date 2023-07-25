@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
-    
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -46,7 +45,7 @@ class HomeViewController: UIViewController {
         $0.isScrollEnabled = false
     }
     
-    // 오늘 약속 데이터 
+    // 오늘 약속 데이터
     private let dayPlanData = PlanDummyData.dayPlanData
     
     // label: 대기 중 약속
@@ -177,7 +176,7 @@ class HomeViewController: UIViewController {
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(dayPlanData.count*92-10)
+            make.height.equalTo(dayPlanData.count*92 - 10)
         }
         
         // label: 대기 중 약속
@@ -254,7 +253,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 82)
+        return CGSize(width: width, height: 82)
     }
     
     // 셀 사이의 위아래 간격
