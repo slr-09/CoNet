@@ -61,6 +61,7 @@
 		518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */; };
 		518F55F22A6BC172002D8F0F /* WaitingPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */; };
 		519FC3592A700FED002EF91C /* MeetingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519FC3582A700FED002EF91C /* MeetingMainViewController.swift */; };
+		519FC35B2A7016AE002EF91C /* WhiteGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */; };
 		51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B526C32A6C2F76009DBFB4 /* SideBarList.swift */; };
 		51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B526C52A6C324D009DBFB4 /* SideBarMenu.swift */; };
 		51B526C82A6C3893009DBFB4 /* PlanDummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */; };
@@ -134,6 +135,7 @@
 		518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListCollectionView.swift; sourceTree = "<group>"; };
 		518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPlanCell.swift; sourceTree = "<group>"; };
 		519FC3582A700FED002EF91C /* MeetingMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingMainViewController.swift; sourceTree = "<group>"; };
+		519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteGradientView.swift; sourceTree = "<group>"; };
 		51B526C32A6C2F76009DBFB4 /* SideBarList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarList.swift; sourceTree = "<group>"; };
 		51B526C52A6C324D009DBFB4 /* SideBarMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarMenu.swift; sourceTree = "<group>"; };
 		51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDummyData.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
+				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
 			);
 			path = Meeting;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				1ADA54962A65161F00609041 /* MeetingAddViewController.swift in Sources */,
 				23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */,
 				514D73D22A59B42A00404E64 /* UserInfoViewController.swift in Sources */,
+				519FC35B2A7016AE002EF91C /* WhiteGradientView.swift in Sources */,
 				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */,
 				23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */,
