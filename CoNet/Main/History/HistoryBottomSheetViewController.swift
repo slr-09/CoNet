@@ -55,6 +55,15 @@ class HistoryBottomSheetViewController: UIViewController {
         super.viewDidLoad()
 
         layoutConstraints()
+        
+        // 배경 탭
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        background.addGestureRecognizer(tapGesture)
+    }
+    
+    // 배경 탭 시 팝업 닫기
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
     }
     
     func layoutConstraints() {
