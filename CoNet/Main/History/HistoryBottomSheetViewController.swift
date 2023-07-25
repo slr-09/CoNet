@@ -74,7 +74,7 @@ class HistoryBottomSheetViewController: UIViewController {
         bottomSheet.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
-            make.height.equalTo(153)
+            make.height.equalTo(173)
         }
     }
     
