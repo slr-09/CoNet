@@ -389,12 +389,3 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         present(addVC, animated: false, completion: nil)
     }
 }
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         MeetingViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif

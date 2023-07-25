@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class HistoryViewController: UIViewController {
-
     // x 버튼
     let xBtn = UIImageView().then {
         $0.image = UIImage(named: "closeBtn")
@@ -53,7 +52,6 @@ class HistoryViewController: UIViewController {
     }
     
     func backgroundConstraints() {
-        
         let safeArea = view.safeAreaLayoutGuide
         
         // x 버튼
@@ -88,10 +86,17 @@ class HistoryViewController: UIViewController {
             make.height.equalTo(1000)
         }
     }
+    
+    // 수정&삭제 bottom sheet 보여주기
+    @objc func showBottomSheet() {
+        let popupVC = HistoryBottomSheetViewController()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        present(popupVC, animated: true, completion: nil)
+    }
 }
 
 extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
@@ -107,13 +112,16 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
             return UICollectionViewCell()
         }
         
+        // 수정&삭제 bottom sheet 보여주기
+        cell.dots.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
+        
         return cell
     }
     
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 500)
+        return CGSize(width: width, height: 500)
     }
     
     // 셀 사이의 위아래 간격
@@ -121,4 +129,3 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         return 80
     }
 }
-
