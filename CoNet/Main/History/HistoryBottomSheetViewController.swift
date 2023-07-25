@@ -32,11 +32,11 @@ class HistoryBottomSheetViewController: UIViewController {
         $0.image = UIImage(named: "edit")
     }
     
-    // 수정 label
-    let editLabel = UILabel().then {
-        $0.text = "수정"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textHigh
+    // 수정 버튼
+    let editBtn = UIButton().then {
+        $0.setTitle("수정", for: .normal)
+        $0.titleLabel?.font = UIFont.body1Medium
+        $0.setTitleColor(UIColor.textHigh, for: .normal)
     }
     
     // 삭제 이미지
@@ -45,10 +45,10 @@ class HistoryBottomSheetViewController: UIViewController {
     }
     
     // 삭제 label
-    let deleteLabel = UILabel().then {
-        $0.text = "삭제"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.error
+    let deleteBtn = UIButton().then {
+        $0.setTitle("삭제", for: .normal)
+        $0.titleLabel?.font = UIFont.body1Medium
+        $0.setTitleColor(UIColor.error, for: .normal)
     }
     
     override func viewDidLoad() {
@@ -104,10 +104,11 @@ class HistoryBottomSheetViewController: UIViewController {
             make.top.equalTo(bottomSheet.snp.top).offset(46)
         }
         
-        // edit label
-        bottomSheet.addSubview(editLabel)
-        editLabel.snp.makeConstraints { make in
+        // edit button
+        bottomSheet.addSubview(editBtn)
+        editBtn.snp.makeConstraints { make in
             make.height.equalTo(20)
+            make.width.equalTo(28)
             make.leading.equalTo(editImage.snp.trailing).offset(6)
             make.centerY.equalTo(editImage.snp.centerY)
         }
@@ -120,10 +121,11 @@ class HistoryBottomSheetViewController: UIViewController {
             make.top.equalTo(editImage.snp.bottom).offset(26)
         }
         
-        // edit label
-        bottomSheet.addSubview(deleteLabel)
-        deleteLabel.snp.makeConstraints { make in
+        // delete button
+        bottomSheet.addSubview(deleteBtn)
+        deleteBtn.snp.makeConstraints { make in
             make.height.equalTo(24)
+            make.width.equalTo(28)
             make.leading.equalTo(deleteImage.snp.trailing).offset(6)
             make.centerY.equalTo(deleteImage.snp.centerY)
         }

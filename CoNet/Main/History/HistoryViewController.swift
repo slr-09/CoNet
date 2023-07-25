@@ -129,12 +129,3 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         return 80
     }
 }
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        HistoryViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
