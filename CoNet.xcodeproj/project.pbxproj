@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */; };
 		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
+		1A99CFE02A70CE220080091B /* MeetingOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */; };
+		1A99CFE22A70D4650080091B /* MeetingDelPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */; };
 		1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */; };
 		1ABF8C882A694B3800023A8D /* MeetingInfoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */; };
 		1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */; };
@@ -74,6 +76,8 @@
 /* Begin PBXFileReference section */
 		1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
+		1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingOutPopUpViewController.swift; sourceTree = "<group>"; };
+		1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingDelPopUpViewController.swift; sourceTree = "<group>"; };
 		1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPopUpViewController.swift; sourceTree = "<group>"; };
 		1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingInfoEditViewController.swift; sourceTree = "<group>"; };
 		1ADA548C2A5A74D700609041 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,10 @@
 				1ADA54952A65161F00609041 /* MeetingAddViewController.swift */,
 				1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
+				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
+				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
+				1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */,
+				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
 			);
 			path = Meeting;
 			sourceTree = "<group>";
@@ -482,6 +490,7 @@
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
 				1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */,
 				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
+				1A99CFE22A70D4650080091B /* MeetingDelPopUpViewController.swift in Sources */,
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
 				51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */,
@@ -498,6 +507,7 @@
 				1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */,
 				236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */,
 				518F55E42A68EF7B002D8F0F /* SideBarViewController.swift in Sources */,
+				1A99CFE02A70CE220080091B /* MeetingOutPopUpViewController.swift in Sources */,
 				234428762A5EF81D006A4D66 /* Login.swift in Sources */,
 				51F2A4742A549A2B00D134CC /* PostRegenerateToken.swift in Sources */,
 				518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */,
