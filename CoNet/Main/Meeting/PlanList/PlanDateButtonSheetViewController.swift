@@ -2,23 +2,22 @@ import Then
 import UIKit
 
 class PlanDateButtonSheetViewController: UIViewController {
-    // 배경 비쳐보이는 view
-    private let dimmedView: UIView = UIView().then {
-        $0.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8)
+
+    let background = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
-    private let bottomSheetView: UIView = UIView().then {
+    let bottomSheetView: UIView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 20
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         $0.clipsToBounds = true
     }
     
-    // bottomSheet 높이 조절
-    private var bottomSheetViewTopConstraint: NSLayoutConstraint?
-    
-    // 열린 BottomSheet의 기본 높이
-    var defaultHeight: CGFloat = 469
+    let grayLine = UIView().then {
+        $0.layer.backgroundColor = UIColor.iconDisabled?.cgColor
+        $0.layer.cornerRadius = 1.5
+    }
     
     let calendarView = CalendarView()
     
@@ -35,62 +34,30 @@ class PlanDateButtonSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(dimmedView)
+        view.addSubview(background)
         view.addSubview(bottomSheetView)
+        view.addSubview(grayLine)
         view.addSubview(calendarView)
         view.addSubview(applyButton)
         
-        dimmedView.alpha = 0.0
         layoutConstraints()
         
-        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
-        dimmedView.addGestureRecognizer(dimmedTap)
-        dimmedView.isUserInteractionEnabled = true
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        defaultHeight = 469
-        showBottomSheet()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closePopUp))
+        background.addGestureRecognizer(tapGesture)
     }
     
-    private func showBottomSheet() {
-        let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
-        let bottomPadding: CGFloat = view.safeAreaInsets.bottom
-        
-        bottomSheetViewTopConstraint?.constant = (safeAreaHeight + bottomPadding) - defaultHeight
-        
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.dimmedView.alpha = 0.7
-            self.view.layoutIfNeeded()
-        }, completion: nil)
+    @objc func closePopUp() {
+        dismiss(animated: true, completion: nil)
     }
     
-    private func hideBottomSheetAndGoBack() {
-        let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
-        let bottomPadding = view.safeAreaInsets.bottom
-        bottomSheetViewTopConstraint?.constant = safeAreaHeight + bottomPadding
-        
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.dimmedView.alpha = 0.0
-            self.view.layoutIfNeeded()
-        }, completion: { _ in
-            if self.presentingViewController != nil {
-                self.dismiss(animated: false, completion: nil)
-            }
-        })
-    }
-
     private func layoutConstraints() {
-        let safeArea = view.safeAreaLayoutGuide
-        dimmedView.snp.makeConstraints { make in
+        background.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         bottomSheetView.snp.makeConstraints { make in
             make.height.equalTo(469)
-            make.top.equalTo(safeArea.snp.top).offset(290)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.snp.bottom)
         }
         calendarView.snp.makeConstraints { make in
             make.height.equalTo(307)
@@ -104,10 +71,7 @@ class PlanDateButtonSheetViewController: UIViewController {
             make.top.equalTo(calendarView.snp.bottom).offset(22)
             make.leading.equalTo(bottomSheetView.snp.leading).offset(24)
             make.trailing.equalTo(bottomSheetView.snp.trailing).offset(-24)
+            make.bottom.equalTo(view.snp.bottom).offset(-45)
         }
-    }
-    
-    @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
-        hideBottomSheetAndGoBack()
     }
 }
