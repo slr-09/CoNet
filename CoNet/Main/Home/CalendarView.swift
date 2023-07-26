@@ -67,7 +67,7 @@ class CalendarView: UIView {
     
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
-        HomeAPI().getMonthPlan(date: date) { count, dates in
+        HomeAPI.shared.getMonthPlan(date: date) { count, dates in
             print("getMonthPlan count: ", count)
             self.planDates = dates
         }
@@ -168,7 +168,7 @@ class CalendarView: UIView {
         
         // 날짜 포맷 변경: yyyy-MM
         header = header.replacingOccurrences(of: "년 ", with: "-")
-        header = header.replacingOccurrences(of: "일", with: "")
+        header = header.replacingOccurrences(of: "월", with: "")
         
         // api: 특정 달 약속 조회
         getMonthPlanAPI(date: header)
@@ -183,7 +183,7 @@ class CalendarView: UIView {
         
         // 날짜 포맷 변경: yyyy-MM
         header = header.replacingOccurrences(of: "년 ", with: "-")
-        header = header.replacingOccurrences(of: "일", with: "")
+        header = header.replacingOccurrences(of: "월", with: "")
         
         // api: 특정 달 약속 조회
         getMonthPlanAPI(date: header)
