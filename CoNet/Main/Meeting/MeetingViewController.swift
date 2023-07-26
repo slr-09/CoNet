@@ -80,6 +80,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     var meetings = [Int](repeating: 0, count: 6)
     var favoritedMeetings = [Int]()
     
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+        let nextVC = MeetingMainViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
@@ -388,5 +396,4 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }
-    
 }

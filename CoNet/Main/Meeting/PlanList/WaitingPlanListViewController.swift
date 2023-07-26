@@ -49,7 +49,7 @@ class WaitingPlanListViewController: UIViewController {
 extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
+        print("Selected cell at indexPath: \(waitingPlanData[indexPath.item].title)")
     }
     
     // 셀 개수

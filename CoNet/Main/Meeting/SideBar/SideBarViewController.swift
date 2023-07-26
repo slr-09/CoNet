@@ -104,23 +104,39 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
+        closeButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         
         buttonsDelegate()
     }
     
     func buttonsDelegate() {
+        editMeetingInfoButton.addTarget(self, action: #selector(showEditMeetingInfo), for: .touchUpInside)
+        historyButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
+        
         waitingPlanButton.delegate = self
         decidedPlanButton.delegate = self
         pastPlanButton.delegate = self
         historyButton.delegate = self
     }
     
-    // 배경 탭 시 팝업 닫기
+    // 사이드바 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true)
     }
     
     weak var delegate: ModalViewControllerDelegate?
+    
+    @objc func showEditMeetingInfo() {
+        dismiss(animated: true) {
+            self.sideBarListButtonTapped(title: .editInfo)
+        }
+    }
+    
+    @objc func showHistory() {
+        dismiss(animated: true) {
+            self.sideBarListButtonTapped(title: .history)
+        }
+    }
 
     // 이전 ViewController에 값을 전달하는 동작
     func sendDataToPreviousViewController(title: SideBarMenu) {

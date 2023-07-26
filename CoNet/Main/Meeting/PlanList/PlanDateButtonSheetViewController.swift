@@ -2,7 +2,7 @@ import Then
 import UIKit
 
 class PlanDateButtonSheetViewController: UIViewController {
-    
+
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }

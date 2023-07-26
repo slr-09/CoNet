@@ -37,6 +37,7 @@ class CalendarView: UIView {
     // 날짜
     lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.identifier)
+        $0.isScrollEnabled = false
     }
     
     let calendarDateFormatter = CalendarDateFormatter()
@@ -145,8 +146,8 @@ class CalendarView: UIView {
     // 이전 달로 이동 버튼
     @objc func didClickPrevBtn() {
         let header = calendarDateFormatter.minusMonth()
-        updateCalendarData()                     // days 배열 update
-        calendarCollectionView.reloadData()      // collectionView reload
+        updateCalendarData() // days 배열 update
+        calendarCollectionView.reloadData() // collectionView reload
         yearMonth.setTitle(header, for: .normal) // yearMonth update
     }
     
@@ -160,13 +161,12 @@ class CalendarView: UIView {
 }
 
 extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return calendarDateFormatter.days.count
     }
     
-    // 셀 사이즈 설정 
+    // 셀 사이즈 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = weekStackView.frame.width / 7
         return CGSize(width: width, height: 50)
@@ -194,12 +194,20 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 오늘 날짜 계산
         let today = format.string(from: Date())
         
-        if indexPath.item % 7 == 0 {
-            // 일요일 날짜 빨간색으로 설정
-            cell.setSundayColor()
-        } else if calendarDateFormatter.days[indexPath.item] == today {
+        format.dateFormat = "MM"
+        // 오늘 날짜 month 계산
+        let todayMonth = format.string(from: Date())
+        
+        // 달력 month
+        let calendarMonth = calendarDateFormatter.currentMonth()
+        
+        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
+            // day, month 모두 같을 경우
             // 오늘 날짜 보라색으로 설정
             cell.setTodayColor()
+        } else if indexPath.item % 7 == 0 {
+            // 일요일 날짜 빨간색으로 설정
+            cell.setSundayColor()
         } else {
             cell.setWeekdayColor()
         }

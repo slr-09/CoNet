@@ -48,7 +48,6 @@ class MyPageViewController: UIViewController {
     lazy var inquireView = myPageList.arrowView(title: "문의하기", labelFont: UIFont.body1Regular!)
     lazy var termView = myPageList.noArrowView(title: "이용약관")
     lazy var logoutView = myPageList.noArrowView(title: "로그아웃")
-    lazy var sideBar = myPageList.noArrowView(title: "사이드바")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +63,6 @@ class MyPageViewController: UIViewController {
         noticeView.addTarget(self, action: #selector(showNoticeViewController), for: .touchUpInside)
         inquireView.addTarget(self, action: #selector(showInquireViewController), for: .touchUpInside)
         logoutView.addTarget(self, action: #selector(showLogoutPopup), for: .touchUpInside)
-        sideBar.addTarget(self, action: #selector(showSideBar), for: .touchUpInside)
         
         fetchUser()
     }
@@ -105,14 +103,6 @@ class MyPageViewController: UIViewController {
                 print("Failed to convert image data")
             }
         }.resume()
-    }
-    
-    @objc private func showSideBar(_ sender: UIView) {
-        let popupVC = SideBarViewController()
-        popupVC.delegate = self
-        popupVC.modalPresentationStyle = .overCurrentContext
-        popupVC.modalTransitionStyle = .crossDissolve
-        present(popupVC, animated: true, completion: nil)
     }
     
     @objc private func showUserInfoViewController(_ sender: UIView) {
@@ -215,7 +205,6 @@ class MyPageViewController: UIViewController {
         }
         
         myPageListLayoutConstraints(logoutView, previousView: secondShortDivider)
-        myPageListLayoutConstraints(sideBar, previousView: logoutView)
     }
     
     // 리스트의 공통된 constraints
@@ -245,22 +234,5 @@ class MyPageViewController: UIViewController {
         
         make.leading.equalTo(safeArea.snp.leading).offset(24)
         make.trailing.equalTo(safeArea.snp.trailing).offset(24)
-    }
-    
-}
-
-extension MyPageViewController: ModalViewControllerDelegate {
-    func sendDataBack(data: SideBarMenu) {
-        var nextVC: UIViewController
-        
-        switch data {
-        case .wait: nextVC = WaitingPlanListViewController()
-        case .decided: nextVC = DecidedPlanListViewController()
-        case .past: nextVC = PastPlanListViewController()
-        case .history: nextVC = WaitingPlanListViewController()
-        }
-        
-        nextVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
