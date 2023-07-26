@@ -6,17 +6,22 @@ class PlanDateButtonSheetViewController: UIViewController {
     private let dimmedView: UIView = UIView().then {
         $0.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8)
     }
+    
     private let bottomSheetView: UIView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 20
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         $0.clipsToBounds = true
     }
+    
     // bottomSheet 높이 조절
     private var bottomSheetViewTopConstraint: NSLayoutConstraint?
+    
     // 열린 BottomSheet의 기본 높이
-    var defaultHeight: CGFloat = 600
+    var defaultHeight: CGFloat = 469
+    
     let calendarView = CalendarView()
+    
     let applyButton = UIButton().then {
         $0.frame = CGRect(x: 0, y: 0, width: 345, height: 44)
         $0.backgroundColor = UIColor.gray200
@@ -45,7 +50,7 @@ class PlanDateButtonSheetViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        defaultHeight = 600
+        defaultHeight = 469
         showBottomSheet()
     }
     
@@ -82,16 +87,16 @@ class PlanDateButtonSheetViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         bottomSheetView.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(339)
+            make.height.equalTo(469)
+            make.top.equalTo(safeArea.snp.top).offset(290)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         calendarView.snp.makeConstraints { make in
-            make.height.equalTo(448)
+            make.height.equalTo(307)
             make.top.equalTo(bottomSheetView.snp.top).offset(0)
             make.leading.equalTo(bottomSheetView.snp.leading).offset(0)
             make.trailing.equalTo(bottomSheetView.snp.trailing).offset(0)
-            make.bottom.equalTo(applyButton.snp.bottom).offset(22)
         }
         applyButton.snp.makeConstraints { make in
             make.width.equalTo(345)
@@ -99,7 +104,6 @@ class PlanDateButtonSheetViewController: UIViewController {
             make.top.equalTo(calendarView.snp.bottom).offset(22)
             make.leading.equalTo(bottomSheetView.snp.leading).offset(24)
             make.trailing.equalTo(bottomSheetView.snp.trailing).offset(-24)
-            make.bottom.equalTo(safeArea.snp.bottom).offset(45)
         }
     }
     
