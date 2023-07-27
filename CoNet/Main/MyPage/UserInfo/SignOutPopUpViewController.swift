@@ -41,12 +41,20 @@ class SignOutPopUpViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    // 회원 탈퇴 버튼 동작
     @objc func showCompletSignOutViewController(_ sender: UIView) {
-        let nextVC = CompleteSignOutViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
+        MyPageAPI().signout { isSuccess in
+            if isSuccess {
+                let nextVC = CompleteSignOutViewController()
+                self.navigationController?.pushViewController(nextVC, animated: true)
+                
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
+            } else {
+                print("회원 탈퇴 버튼 눌렀는데 false로 옴..")
+            }
+        }
         
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
     }
     
     // 모든 layout Constraints

@@ -45,6 +45,30 @@ class MyPageAPI {
             }
         }
     }
+    
+    // 회원 탈퇴
+    func signout(completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/user/delete"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        
+        AF.request(url,
+                   method: .post,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(signout api) result: \(response.result ?? "뭔가 문제가 있다")")
+                completion(true)
+            case .failure(let error):
+                print("DEBUG(signout api) error: \(error)")
+                completion(false)
+            }
+        }
+    }
 }
 
 struct GetUserResponse: Codable {
