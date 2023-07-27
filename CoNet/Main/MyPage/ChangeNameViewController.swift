@@ -238,10 +238,13 @@ class ChangeNameViewController: UIViewController {
     // 확인 버튼 클릭 시
     @objc func showTabView(_ sender: UIView) {
         if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
-            // TODO: API 연결
-            
-            // 현재 화면 pop
-            navigationController?.popViewController(animated: true)
+            let newName = nameTextField.text ?? ""
+            MyPageAPI().editName(name: newName) { isSuccess in
+                if isSuccess {
+                    // 현재 화면 pop
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
     }
 }

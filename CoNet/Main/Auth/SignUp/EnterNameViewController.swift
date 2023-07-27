@@ -94,10 +94,10 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
     
     // 회원가입 api 요청
     @objc func signUp(_ sender: UIView) {
-        var isButtonAvailable = nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor
+        let isButtonAvailable = nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor
         
         if isButtonAvailable {
-            var name = nameTextField.text ?? ""
+            let name = nameTextField.text ?? ""
             let isOptionTermSelected = termsSelectedStates?[2] ?? false
             
             AuthAPI().signUp(name: name, optionTerm: isOptionTermSelected) { isSuccess in

@@ -125,8 +125,6 @@ class AuthAPI {
             .responseDecodable(of: BaseResponse<PostSignUpResult>.self) { response in
             switch response.result {
             case .success(let response):  // 성공한 경우에
-                guard let result = response.result else { return }
-                
                 // 회원가입 성공 Bool 반환
                 completion(response.code == 1000)
                 
@@ -136,4 +134,3 @@ class AuthAPI {
         }
     }
 }
-

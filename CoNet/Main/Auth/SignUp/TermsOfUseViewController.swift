@@ -14,17 +14,10 @@ class TermsOfUseViewController: UIViewController {
     
     private var buttonSelectedStates: [Bool] = [false, false, false, false]
     
-    let xButton = UIButton().then {
-        $0.setImage(UIImage(named: "closeBtn"), for: .normal)
-    }
+    let xButton = UIButton().then { $0.setImage(UIImage(named: "closeBtn"), for: .normal) }
     
-    let grayLine = UIView().then {
-        $0.backgroundColor = UIColor.gray200
-    }
-    
-    let purpleLine = UIView().then {
-        $0.backgroundColor = UIColor.purpleMain
-    }
+    let grayLine = UIView().then { $0.backgroundColor = UIColor.gray200 }
+    let purpleLine = UIView().then { $0.backgroundColor = UIColor.purpleMain }
     
     let termsLabel = UILabel().then {
         $0.text = "커넷 서비스 이용약관을\n확인해주세요"
@@ -33,9 +26,7 @@ class TermsOfUseViewController: UIViewController {
         $0.numberOfLines = 0
     }
     
-    let button1 = UIButton().then {
-        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-    }
+    let button1 = UIButton().then { $0.setImage(UIImage(named: "checkbox 2"), for: .normal) }
     
     let label1 = UILabel().then {
         $0.text = "모두 동의"
@@ -43,13 +34,9 @@ class TermsOfUseViewController: UIViewController {
         $0.font = UIFont.body1Medium
     }
     
-    let grayLine2 = UIView().then {
-        $0.backgroundColor = UIColor.gray100
-    }
+    let grayLine2 = UIView().then { $0.backgroundColor = UIColor.gray100}
     
-    let button2 = UIButton().then {
-        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-    }
+    let button2 = UIButton().then { $0.setImage(UIImage(named: "checkbox 2"), for: .normal) }
     
     let label21 = UILabel().then {
         $0.text = "[필수] 개인정보 수집 및 이용 동의"
@@ -69,9 +56,7 @@ class TermsOfUseViewController: UIViewController {
         $0.titleLabel?.font = UIFont.body2Medium
     }
     
-    let button3 = UIButton().then {
-        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-    }
+    let button3 = UIButton().then { $0.setImage(UIImage(named: "checkbox 2"), for: .normal) }
     
     let label31 = UILabel().then {
         $0.text = "[필수] 이용약관 동의"
@@ -91,9 +76,7 @@ class TermsOfUseViewController: UIViewController {
         $0.titleLabel?.font = UIFont.body2Medium
     }
     
-    let button4 = UIButton().then {
-        $0.setImage(UIImage(named: "checkbox 2"), for: .normal)
-    }
+    let button4 = UIButton().then { $0.setImage(UIImage(named: "checkbox 2"), for: .normal) }
     
     let label4 = UILabel().then {
         $0.text = "[선택] 푸시 알람 수신 동의"

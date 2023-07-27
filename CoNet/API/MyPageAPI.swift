@@ -46,6 +46,30 @@ class MyPageAPI {
         }
     }
     
+    // 이름 수정
+    func editName(name: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/user/name"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let body: [String: Any] = [
+            "name": name
+        ]
+        
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                // 회원가입 성공 Bool 반환
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(edit name api) error: \(error)")
+            }
+        }
+    }
+    
     // 회원 탈퇴
     func signout(completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/user/delete"
