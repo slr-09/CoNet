@@ -27,8 +27,8 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 즐겨찾기 버튼
-    let starButton = UIImageView().then {
-        $0.image = UIImage(named: "meetingStarOff")
+    let starButton = UIButton().then {
+        $0.setImage(UIImage(named: "meetingStarOff"), for: .normal)
     }
     
     // 모임 이름
@@ -132,6 +132,8 @@ class MeetingMainViewController: UIViewController {
         layoutContraints()
         
         setupCollectionView()
+        
+        starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -180,6 +182,11 @@ class MeetingMainViewController: UIViewController {
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
         present(popupVC, animated: true, completion: nil)
+    }
+    
+    // 즐겨찾기 버튼 클릭
+    @objc private func starButtonTapped() {
+        // TODO: api 연동 후 기능 구현
     }
     
     // 전체 layout constraints
@@ -411,12 +418,3 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
         return 10
     }
 }
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        MeetingMainViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
