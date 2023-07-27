@@ -75,13 +75,3 @@ class PlanDateButtonSheetViewController: UIViewController {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        PlanDateButtonSheetViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
