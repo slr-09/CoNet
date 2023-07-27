@@ -37,18 +37,21 @@ class TimeShareViewController: UIViewController {
         $0.text = "07. 03 월"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
+        $0.textAlignment = .center
     }
 
     let date2 = UILabel().then {
         $0.text = "07. 04 화"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
+        $0.textAlignment = .center
     }
 
     let date3 = UILabel().then {
         $0.text = "07. 05 수"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.textHigh
+        $0.textAlignment = .center
     }
     
     // 다음 날짜로 이동 버튼
@@ -56,10 +59,19 @@ class TimeShareViewController: UIViewController {
         $0.setImage(UIImage(named: "planNextBtn"), for: .normal)
     }
     
+    // 타임테이블
+    let timeTable = TimeTableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         layoutConstraints()
+        timeTableSetting()
+    }
+    
+    func timeTableSetting() {
+        timeTable.timeTableCollectionView.dataSource = self
+        timeTable.timeTableCollectionView.delegate = self
     }
     
     func layoutConstraints() {
@@ -131,5 +143,50 @@ class TimeShareViewController: UIViewController {
             make.leading.equalTo(date3.snp.trailing).offset(9)
             make.top.equalTo(dots.snp.bottom).offset(29)
         }
+        
+        // 타임테이블
+        view.addSubview(timeTable)
+        timeTable.snp.makeConstraints { make in
+            make.leading.equalTo(view.snp.leading).offset(0)
+            make.trailing.equalTo(timeTable.snp.leading).offset(300)
+            make.top.equalTo(prevBtn.snp.bottom).offset(7)
+            make.bottom.equalToSuperview()
+        }
+    }
+}
+
+extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    // 셀 클릭 시 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+        
+        
+    }
+    
+    // 셀 수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        24*3
+    }
+    
+    // 셀 사이즈 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 24)
+    }
+    
+    // 위 아래 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return -1
+    }
+    
+    // 양옆 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
+        
+        return cell
     }
 }
