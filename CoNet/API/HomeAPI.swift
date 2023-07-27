@@ -16,21 +16,16 @@ class HomeAPI {
     // 특정 달 약속 조회
     func getMonthPlan(date: String, completion: @escaping (_ count: Int, _ dates: [Int]) -> Void) {
         // 통신할 API 주소
-        let url = "\(baseUrl)/home/month"
+        let url = "\(baseUrl)/home/month/\(date)"
         
         // HTTP Headers : 요청 헤더
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
         
-        // request body
-        let body: [String: Any] = [
-            "searchDate": date
-        ]
-        
         // Request 생성
-        // JSONEncoding은 에러나서 URLEncoding으로 변경
-        let dataRequest = AF.request(url, method: .get, parameters: body, encoding: URLEncoding.default, headers: headers)
+        // get 인 경우 JSONEncoding 에러 뜨면 URLEncoding으로 변경
+        let dataRequest = AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
         
         // responseData를 호출하면서 데이터 통신 시작
         // response에 데이터 통신의 결과가 담깁니다.
