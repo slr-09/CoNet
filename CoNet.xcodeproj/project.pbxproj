@@ -195,7 +195,6 @@
 				235F5B722A69893F00ADC0D6 /* CalendarDateFormatter.swift */,
 				231E97CE2A6BCA04000BB2AD /* MonthViewController.swift */,
 				231E97D02A6BD3F8000BB2AD /* MonthCollectionViewCell.swift */,
-				23F6F9072A700F4700772AFF /* HomeAPI.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -266,6 +265,7 @@
 		513D6B872A4BFCCC00E9ACDA /* CoNet */ = {
 			isa = PBXGroup;
 			children = (
+				5199BCD22A72409900CE585C /* API */,
 				51F2A4722A549A1900D134CC /* DTO */,
 				51F2A46E2A54972700D134CC /* Main */,
 				51F2A4662A547C5700D134CC /* Extension */,
@@ -360,6 +360,15 @@
 			path = MeetingTable;
 			sourceTree = "<group>";
 		};
+		5199BCD22A72409900CE585C /* API */ = {
+			isa = PBXGroup;
+			children = (
+				23F6F9072A700F4700772AFF /* HomeAPI.swift */,
+				518F55E12A6870CB002D8F0F /* MyPageAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		51B526C22A6C2F65009DBFB4 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,7 +431,6 @@
 			children = (
 				518F55D72A683F27002D8F0F /* Components */,
 				518F55E02A687098002D8F0F /* ViewController */,
-				518F55E12A6870CB002D8F0F /* MyPageAPI.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
