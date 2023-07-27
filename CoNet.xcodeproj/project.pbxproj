@@ -203,16 +203,14 @@
 		236054F82A593F4000CA991E /* Meeting */ = {
 			isa = PBXGroup;
 			children = (
+				5199BCD12A72401000CE585C /* MeetingTable */,
+				5199BCD02A723ECC00CE585C /* MeetingMain */,
 				51B526C22A6C2F65009DBFB4 /* SideBar */,
 				518F55EC2A6BA59A002D8F0F /* PlanList */,
-				236054F92A593F5400CA991E /* MeetingViewController.swift */,
-				1ADA54952A65161F00609041 /* MeetingAddViewController.swift */,
-				1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
 				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
 				1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */,
-				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
 			);
 			path = Meeting;
 			sourceTree = "<group>";
@@ -342,6 +340,24 @@
 				1AC014272A70A75700E3E9C9 /* PlanConfirmViewController.swift */,
 			);
 			path = PlanList;
+			sourceTree = "<group>";
+		};
+		5199BCD02A723ECC00CE585C /* MeetingMain */ = {
+			isa = PBXGroup;
+			children = (
+				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
+			);
+			path = MeetingMain;
+			sourceTree = "<group>";
+		};
+		5199BCD12A72401000CE585C /* MeetingTable */ = {
+			isa = PBXGroup;
+			children = (
+				236054F92A593F5400CA991E /* MeetingViewController.swift */,
+				1ADA54952A65161F00609041 /* MeetingAddViewController.swift */,
+				1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */,
+			);
+			path = MeetingTable;
 			sourceTree = "<group>";
 		};
 		51B526C22A6C2F65009DBFB4 /* SideBar */ = {
