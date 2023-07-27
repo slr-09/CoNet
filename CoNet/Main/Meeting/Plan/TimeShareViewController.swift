@@ -62,6 +62,14 @@ class TimeShareViewController: UIViewController {
     // 타임테이블
     let timeTable = TimeTableView()
     
+    let inputTimeButton = UIButton().then {
+        $0.setTitle("내 시간 입력하기", for: .normal)
+        $0.titleLabel?.textColor = UIColor.white
+        $0.titleLabel?.font = UIFont.body1Medium
+        $0.backgroundColor = UIColor.purpleMain
+        $0.layer.cornerRadius = 12
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -77,6 +85,7 @@ class TimeShareViewController: UIViewController {
     func layoutConstraints() {
         headerConstraintS()
         timetableConstraints()
+        inputTimeConstraints()
     }
 
     // 헤더 - x버튼, 약속 이름 등
@@ -88,13 +97,13 @@ class TimeShareViewController: UIViewController {
         xButton.snp.makeConstraints { make in
             make.height.width.equalTo(24)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.top.equalTo(safeArea.snp.top).offset(40)
+            make.top.equalTo(safeArea.snp.top).offset(30)
         }
         
         // 약속 이름
         view.addSubview(planTitle)
         planTitle.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(41)
+            make.centerY.equalTo(xButton)
             make.centerX.equalTo(view.snp.centerX)
         }
         
@@ -102,7 +111,7 @@ class TimeShareViewController: UIViewController {
         view.addSubview(dots)
         dots.snp.makeConstraints { make in
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.top.equalTo(safeArea.snp.top).offset(40)
+            make.centerY.equalTo(xButton)
         }
     }
     
@@ -144,14 +153,27 @@ class TimeShareViewController: UIViewController {
             make.top.equalTo(dots.snp.bottom).offset(29)
         }
         
-        // 타임테이블
         view.addSubview(timeTable)
+        view.addSubview(inputTimeButton)
+        
+        // 내 시간 입력하기 버튼
+        inputTimeButton.snp.makeConstraints { make in
+            make.height.equalTo(52)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.bottom.equalTo(view.snp.bottom).offset(-15)
+        }
+        
+        // 타임테이블
         timeTable.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(0)
             make.trailing.equalTo(timeTable.snp.leading).offset(300)
             make.top.equalTo(prevBtn.snp.bottom).offset(7)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(inputTimeButton.snp.top).offset(-10)
         }
+    }
+    
+    func inputTimeConstraints() {
+        
     }
 }
 
@@ -181,7 +203,7 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
     
     // 양옆 space zero로 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return .zero
+        return -1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
