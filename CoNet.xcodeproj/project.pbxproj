@@ -289,14 +289,14 @@
 			path = UserInfo;
 			sourceTree = "<group>";
 		};
-		518F55D72A683F27002D8F0F /* Components */ = {
+		518F55D72A683F27002D8F0F /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
 				514D73CF2A59839200404E64 /* MyPageList.swift */,
 				511B35732A6512B100EDC3E0 /* SendEmailButton.swift */,
 				518F55D82A683F68002D8F0F /* PopUpView.swift */,
 			);
-			path = Components;
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 		518F55E02A687098002D8F0F /* ViewController */ = {
@@ -315,7 +315,8 @@
 		518F55E52A691731002D8F0F /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				518F55E62A69173F002D8F0F /* Divider.swift */,
+				5199BCD32A72414200CE585C /* SideBar */,
+				518F55D72A683F27002D8F0F /* MyPage */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -369,6 +370,14 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		5199BCD32A72414200CE585C /* SideBar */ = {
+			isa = PBXGroup;
+			children = (
+				518F55E62A69173F002D8F0F /* Divider.swift */,
+			);
+			path = SideBar;
+			sourceTree = "<group>";
+		};
 		51B526C22A6C2F65009DBFB4 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,8 +402,8 @@
 		51F2A46E2A54972700D134CC /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				23ED93972A6D5FA6007B0E63 /* History */,
 				518F55E52A691731002D8F0F /* Components */,
+				23ED93972A6D5FA6007B0E63 /* History */,
 				51F72C572A592B3E0055E8C4 /* MyPage */,
 				236054F82A593F4000CA991E /* Meeting */,
 				236054F52A593F2E00CA991E /* Home */,
@@ -429,7 +438,6 @@
 		51F72C572A592B3E0055E8C4 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				518F55D72A683F27002D8F0F /* Components */,
 				518F55E02A687098002D8F0F /* ViewController */,
 			);
 			path = MyPage;
