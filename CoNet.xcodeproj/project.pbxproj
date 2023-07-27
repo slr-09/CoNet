@@ -195,6 +195,7 @@
 				235F5B722A69893F00ADC0D6 /* CalendarDateFormatter.swift */,
 				231E97CE2A6BCA04000BB2AD /* MonthViewController.swift */,
 				231E97D02A6BD3F8000BB2AD /* MonthCollectionViewCell.swift */,
+				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -205,7 +206,9 @@
 				5199BCD12A72401000CE585C /* MeetingTable */,
 				5199BCD02A723ECC00CE585C /* MeetingMain */,
 				51B526C22A6C2F65009DBFB4 /* SideBar */,
+				5199BCD92A72432700CE585C /* Plan */,
 				518F55EC2A6BA59A002D8F0F /* PlanList */,
+				23ED93972A6D5FA6007B0E63 /* History */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
 				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
@@ -299,23 +302,11 @@
 			path = MyPage;
 			sourceTree = "<group>";
 		};
-		518F55E02A687098002D8F0F /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				518F55D62A683E15002D8F0F /* UserInfo */,
-				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
-				51046AA82A6147F500AD543D /* ChangeNameViewController.swift */,
-				514D73D32A59D19A00404E64 /* NoticeViewController.swift */,
-				514D73D52A59D2FB00404E64 /* InquireViewController.swift */,
-				518F55DE2A6868C2002D8F0F /* LogoutPopUpViewController.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
 		518F55E52A691731002D8F0F /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				5199BCD32A72414200CE585C /* SideBar */,
+				5199BCDB2A72435800CE585C /* PlanList */,
 				518F55D72A683F27002D8F0F /* MyPage */,
 			);
 			path = Components;
@@ -324,21 +315,11 @@
 		518F55EC2A6BA59A002D8F0F /* PlanList */ = {
 			isa = PBXGroup;
 			children = (
-				51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */,
-				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
-				518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */,
-				518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */,
-				51B526C92A6C3901009DBFB4 /* DecidedPlanListViewController.swift */,
-				51B526CB2A6C3988009DBFB4 /* DecidedPlanCell.swift */,
-				51B526CD2A6C4077009DBFB4 /* PastPlanListViewController.swift */,
-				51B526CF2A6C40F1009DBFB4 /* PastPlanCell.swift */,
-				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
-				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
-				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
+				5199BCD52A72422600CE585C /* WaitingPlan */,
+				5199BCD62A72423A00CE585C /* DecidedPlan */,
+				5199BCD72A72424900CE585C /* PastPlan */,
+				5199BCD82A7242AD00CE585C /* PlanDetail */,
 				1A99CFE32A7233580080091B /* PlanTimePickerViewController.swift */,
-				1AE5C78A2A6F6957001B88D1 /* MakePlanViewController.swift */,
-				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
-				1AC014272A70A75700E3E9C9 /* PlanConfirmViewController.swift */,
 			);
 			path = PlanList;
 			sourceTree = "<group>";
@@ -378,6 +359,70 @@
 			path = SideBar;
 			sourceTree = "<group>";
 		};
+		5199BCD42A7241A800CE585C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				23FE4ECA2A55B03600BBF17E /* SignUp */,
+				51F2A46F2A54973300D134CC /* Login */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		5199BCD52A72422600CE585C /* WaitingPlan */ = {
+			isa = PBXGroup;
+			children = (
+				518F55ED2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift */,
+				518F55F12A6BC172002D8F0F /* WaitingPlanCell.swift */,
+			);
+			path = WaitingPlan;
+			sourceTree = "<group>";
+		};
+		5199BCD62A72423A00CE585C /* DecidedPlan */ = {
+			isa = PBXGroup;
+			children = (
+				51B526C92A6C3901009DBFB4 /* DecidedPlanListViewController.swift */,
+				51B526CB2A6C3988009DBFB4 /* DecidedPlanCell.swift */,
+			);
+			path = DecidedPlan;
+			sourceTree = "<group>";
+		};
+		5199BCD72A72424900CE585C /* PastPlan */ = {
+			isa = PBXGroup;
+			children = (
+				51B526CD2A6C4077009DBFB4 /* PastPlanListViewController.swift */,
+				51B526CF2A6C40F1009DBFB4 /* PastPlanCell.swift */,
+			);
+			path = PastPlan;
+			sourceTree = "<group>";
+		};
+		5199BCD82A7242AD00CE585C /* PlanDetail */ = {
+			isa = PBXGroup;
+			children = (
+				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
+				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
+				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
+			);
+			path = PlanDetail;
+			sourceTree = "<group>";
+		};
+		5199BCD92A72432700CE585C /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				1AE5C78A2A6F6957001B88D1 /* MakePlanViewController.swift */,
+				1AC014272A70A75700E3E9C9 /* PlanConfirmViewController.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		5199BCDB2A72435800CE585C /* PlanList */ = {
+			isa = PBXGroup;
+			children = (
+				51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */,
+				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
+			);
+			path = PlanList;
+			sourceTree = "<group>";
+		};
 		51B526C22A6C2F65009DBFB4 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,12 +448,10 @@
 			isa = PBXGroup;
 			children = (
 				518F55E52A691731002D8F0F /* Components */,
-				23ED93972A6D5FA6007B0E63 /* History */,
-				51F72C572A592B3E0055E8C4 /* MyPage */,
-				236054F82A593F4000CA991E /* Meeting */,
 				236054F52A593F2E00CA991E /* Home */,
-				23FE4ECA2A55B03600BBF17E /* SignUp */,
-				51F2A46F2A54973300D134CC /* Login */,
+				236054F82A593F4000CA991E /* Meeting */,
+				51F72C572A592B3E0055E8C4 /* MyPage */,
+				5199BCD42A7241A800CE585C /* Auth */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
 			);
 			path = Main;
@@ -438,7 +481,12 @@
 		51F72C572A592B3E0055E8C4 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				518F55E02A687098002D8F0F /* ViewController */,
+				518F55D62A683E15002D8F0F /* UserInfo */,
+				51F72C5A2A592C0E0055E8C4 /* MyPageViewController.swift */,
+				51046AA82A6147F500AD543D /* ChangeNameViewController.swift */,
+				514D73D32A59D19A00404E64 /* NoticeViewController.swift */,
+				514D73D52A59D2FB00404E64 /* InquireViewController.swift */,
+				518F55DE2A6868C2002D8F0F /* LogoutPopUpViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
