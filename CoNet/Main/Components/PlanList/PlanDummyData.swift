@@ -82,5 +82,4 @@ struct PlanDummyData {
         DayPlan(time: "15:00", planTitle: "iOS 2차 스터디", groupName: "iOS 스터디")
     ]
     
-
 }

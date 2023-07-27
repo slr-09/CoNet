@@ -17,9 +17,10 @@ class PlanInfoViewController: UIViewController {
         $0.text = "상세 페이지"
         $0.font = UIFont.headline3Bold
         $0.textColor = UIColor.black
+        $0.numberOfLines = 0
     }
     let sideBarButton = UIButton().then {
-        $0.setImage(UIImage(named: "sideBar"), for: .normal)
+        $0.setImage(UIImage(named: "sidebar"), for: .normal)
     }
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
@@ -131,7 +132,7 @@ class PlanInfoViewController: UIViewController {
         self.view.addSubview(member1NameLabel)
         self.view.addSubview(member2ImageView)
         self.view.addSubview(member2NameLabel)
-        self.view.addSubview(member2ImageView)
+        self.view.addSubview(member3ImageView)
         self.view.addSubview(member3NameLabel)
         applyConstraintsToPlanMember()
     }
@@ -150,7 +151,6 @@ class PlanInfoViewController: UIViewController {
         sideBarButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.top.equalTo(safeArea.snp.top).offset(40)
-            make.leading.equalTo(planInfoLabel.snp.trailing).offset(108)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
     }
@@ -166,6 +166,7 @@ class PlanInfoViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         grayLine1.snp.makeConstraints { make in
+            make.height.equalTo(1)
             make.top.equalTo(planNameLabel.snp.bottom).offset(40)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
@@ -183,6 +184,7 @@ class PlanInfoViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         grayLine2.snp.makeConstraints { make in
+            make.height.equalTo(1)
             make.top.equalTo(planDateLabel.snp.bottom).offset(40)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
@@ -196,11 +198,12 @@ class PlanInfoViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planTimeText.snp.makeConstraints { make in
-            make.top.equalTo(planDateLabel.snp.bottom).offset(10)
+            make.top.equalTo(planTimeLabel.snp.bottom).offset(10)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         grayLine3.snp.makeConstraints { make in
-            make.top.equalTo(planDateLabel.snp.bottom).offset(40)
+            make.height.equalTo(1)
+            make.top.equalTo(planTimeLabel.snp.bottom).offset(40)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
@@ -219,24 +222,24 @@ class PlanInfoViewController: UIViewController {
         }
         member1NameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.leading).offset(10)
+            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
         }
         member2ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(member1ImageView.snp.leading).offset(138)
+            make.leading.equalTo(safeArea.snp.leading).offset(204)
         }
         member2NameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member2ImageView.snp.leading).offset(10)
+            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
         member3ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
-            make.top.equalTo(member3ImageView.snp.bottom).offset(10)
+            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        member1NameLabel.snp.makeConstraints { make in
+        member3NameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(member3ImageView)
             make.leading.equalTo(safeArea.snp.leading).offset(76)
         }

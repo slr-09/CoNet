@@ -225,36 +225,40 @@ class LoginViewController: UIViewController {
     }
         
     // MARK: - Login Actions
-
     private func kakaoLogin() {
-        // 카카오톡 실행 가능 여부 확인
         if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+            UserApi.shared.loginWithKakaoTalk { [weak self] oauthToken, error in
                 if let error = error {
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success")
                     print("Kakao id token: (oauthToken.idToken)")
-                        
-                    // api 호출
+                    
                     AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
-                        
-                    // 가입 여부 저장: Bool
+                    
                     let isRegistered = keychain.getBool("kakaoIsRegistered")
-                }
+                    
+                        if isRegistered == true {
+                            let nextVC = TabbarViewController()
+                            self?.navigationController?.pushViewController(nextVC, animated: true)
+                        
+                            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                            sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+                        } else {
+                            let nextVC = TermsOfUseViewController()
+                            self?.navigationController?.pushViewController(nextVC, animated: true)
+                        }
+                    }
             }
         } else {
-            // 카카오 계정으로 로그인
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in
                 if let error = error {
                     print(error)
                 } else {
                     print("Kakao id token: (oauthToken.idToken)")
-                        
-                    // do something
+                    
                     _ = oauthToken
-                        
-                    // api 호출
+                    
                     AuthAPI.shared.kakaoLogin(idToken: String(oauthToken?.idToken ?? ""))
                 }
             }

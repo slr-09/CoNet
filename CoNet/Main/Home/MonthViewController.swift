@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class MonthViewController: UIViewController {
-    
     let background = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -43,6 +42,8 @@ class MonthViewController: UIViewController {
     let monthCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
     }
+    
+    let calendarView = CalendarView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +115,17 @@ class MonthViewController: UIViewController {
 }
 
 extension MonthViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+        
+        calendarView.moveMonth(month: indexPath.item + 1)
+        
+        // 팝업 닫기
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 12
     }
