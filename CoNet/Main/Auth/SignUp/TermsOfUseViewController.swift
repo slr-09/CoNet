@@ -152,8 +152,9 @@ class TermsOfUseViewController: UIViewController {
     }
     
     @objc func showEnterName(_ sender: UIView) {
-        let nextVC = EnterNameViewController()
         if buttonSelectedStates[1] && buttonSelectedStates[2] {
+            let nextVC = EnterNameViewController()
+            nextVC.termsSelectedStates = buttonSelectedStates
             navigationController?.pushViewController(nextVC, animated: true)
         }
     }

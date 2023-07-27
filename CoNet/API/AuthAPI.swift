@@ -108,4 +108,32 @@ class AuthAPI {
             }
         }
     }
+    
+    // signUp - 약관 동의, 이름 입력
+    func signUp(name: String, optionTerm: Bool, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/auth/term-and-name"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let body: [String: Any] = [
+            "name": name,
+            "optionTerm": optionTerm
+        ]
+        
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<PostSignUpResult>.self) { response in
+            switch response.result {
+            case .success(let response):  // 성공한 경우에
+                guard let result = response.result else { return }
+                
+                // 회원가입 성공 Bool 반환
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(sign up api) error: \(error)")
+            }
+        }
+    }
 }
+

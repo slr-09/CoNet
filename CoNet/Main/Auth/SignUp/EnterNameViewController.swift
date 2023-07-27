@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class EnterNameViewController: UIViewController, UITextFieldDelegate {
+    // 이용약관 페이지에서 넘어온 이용약관 동의 여부
+    var termsSelectedStates: [Bool]?
 
     // Component: xmark image (창 끄기)
     let xMarkView = UIImageView().then {
@@ -87,17 +89,32 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         // 클릭 이벤트
         clickEvents()
         
-        nextBtn.addTarget(self, action: #selector(showTabView(_:)), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
     }
     
-    @objc func showTabView(_ sender: UIView) {
-        if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
-            let nextVC = TabbarViewController()
-            navigationController?.pushViewController(nextVC, animated: true)
+    // 회원가입 api 요청
+    @objc func signUp(_ sender: UIView) {
+        var isButtonAvailable = nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor
+        
+        if isButtonAvailable {
+            var name = nameTextField.text ?? ""
+            let isOptionTermSelected = termsSelectedStates?[2] ?? false
             
-            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-            sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+            AuthAPI().signUp(name: name, optionTerm: isOptionTermSelected) { isSuccess in
+                if isSuccess {
+                    self.showTabBarViewController()
+                }
+            }
         }
+    }
+    
+    // TabBarVC로 화면 전환
+    func showTabBarViewController() {
+        let nextVC = TabbarViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
     }
 
     func clickEvents() {
