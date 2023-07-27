@@ -229,8 +229,8 @@ class MeetingMainViewController: UIViewController {
         contentView.addSubview(starButton)
         starButton.snp.makeConstraints { make in
             make.height.width.equalTo(50)
-            make.leading.equalTo(contentView.snp.leading)
-            make.centerY.equalTo(meetingImage.snp.bottom)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.centerY.equalTo(meetingImage.snp.bottom).offset(3)
         }
         
         // 모임 이름
@@ -411,3 +411,12 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
         return 10
     }
 }
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        MeetingMainViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
