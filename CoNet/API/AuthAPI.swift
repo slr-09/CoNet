@@ -80,7 +80,7 @@ class AuthAPI {
     }
     
     // MARK: kakao login
-    func kakaoLogin(idToken: String) {
+    func kakaoLogin(idToken: String, completion: @escaping (_ isRegistered: Bool) -> Void) {
         let url = "\(baseUrl)/auth/login/kakao"
         let headers: HTTPHeaders = ["Content-Type": "application/json"]
         let body: [String: Any] = [
@@ -96,8 +96,12 @@ class AuthAPI {
                 print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken ?? "")")
                 
                 self.keychain.set(response.result!.email, forKey: "email")
-                self.keychain.set(response.result!.email, forKey: "accessToken")
-                self.keychain.set(response.result!.email, forKey: "kakaoIsRegistered")
+                self.keychain.set(response.result!.accessToken, forKey: "accessToken")
+                self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
+                self.keychain.set(response.result!.isRegistered, forKey: "kakaoIsRegistered")
+                
+                completion(response.result!.isRegistered)
+                print(response.result!.isRegistered)
                 
             case .failure(let error):
                 print("DEBUG(kakao login api) error: \(error)")
