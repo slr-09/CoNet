@@ -22,3 +22,11 @@ struct PostKakaoLoginResult: Codable {
     let refreshToken: String
     let isRegistered: Bool
 }
+
+// 회원가입 sign up
+struct PostSignUpResult: Codable {
+    let name: String
+    let email: String
+    let serviceTerm: Bool
+    let optionTerm: Bool
+}

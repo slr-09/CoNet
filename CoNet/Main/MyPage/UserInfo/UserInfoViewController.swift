@@ -143,8 +143,8 @@ class UserInfoViewController: UIViewController {
     
     @objc func showChangeNameViewController(_ sender: UIView) {
         let nextVC = ChangeNameViewController()
+        nextVC.nameTextField.text = self.name
         navigationController?.pushViewController(nextVC, animated: true)
-        
     }
     
     @objc func showPopup(_ sender: UIView) {
