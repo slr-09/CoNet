@@ -6,7 +6,7 @@
 //
 
 import Alamofire
-import Foundation
+import UIKit
 import KeychainSwift
 
 class MyPageAPI {
@@ -46,6 +46,33 @@ class MyPageAPI {
         }
     }
     
+    // 프로필 이미지 수정
+    func editProfileImage(image: UIImage, completion: @escaping (_ imageUrl: String) -> Void) {
+        let url = "\(baseUrl)/user/image"
+        let headers: HTTPHeaders = [
+            "Content-Type": "multipart/form-data",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        guard let image = image.pngData() else { return }
+        
+        // Multipart Form 데이터 생성
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(image, withName: "file", fileName: "\(image).png", mimeType: "image/png")
+        }, to: url, method: .post, headers: headers)
+        .responseDecodable(of: BaseResponse<PostEditProfileImageResponse>.self) { response in
+            switch response.result {
+            case .success(let response):
+                guard let result = response.result else { return }
+                print("DEBUG(edit profile image api): \(response.message)")
+                
+                completion(result.imgUrl)
+                
+            case .failure(let error):
+                print("DEBUG(edit profile image api) error: \(error)")
+            }
+        }
+    }
+    
     // 이름 수정
     func editName(name: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/user/name"
@@ -59,15 +86,15 @@ class MyPageAPI {
         
         AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .responseDecodable(of: BaseResponse<String>.self) { response in
-            switch response.result {
-            case .success(let response):
-                // 회원가입 성공 Bool 반환
-                completion(response.code == 1000)
-                
-            case .failure(let error):
-                print("DEBUG(edit name api) error: \(error)")
+                switch response.result {
+                case .success(let response):
+                    // 회원가입 성공 Bool 반환
+                    completion(response.code == 1000)
+                    
+                case .failure(let error):
+                    print("DEBUG(edit name api) error: \(error)")
+                }
             }
-        }
     }
     
     // 회원 탈퇴
@@ -104,4 +131,8 @@ struct GetUserResponse: Codable {
         case imageUrl = "userImgUrl"
         case social = "platform"
     }
+}
+
+struct PostEditProfileImageResponse: Codable {
+    let name, imgUrl: String
 }
