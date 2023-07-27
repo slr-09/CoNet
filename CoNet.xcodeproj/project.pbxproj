@@ -210,7 +210,6 @@
 				518F55EC2A6BA59A002D8F0F /* PlanList */,
 				23ED93972A6D5FA6007B0E63 /* History */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
-				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
 				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
 				1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */,
 			);
@@ -327,6 +326,7 @@
 		5199BCD02A723ECC00CE585C /* MeetingMain */ = {
 			isa = PBXGroup;
 			children = (
+				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
 				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
 			);
 			path = MeetingMain;
