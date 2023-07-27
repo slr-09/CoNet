@@ -5,6 +5,7 @@
 //  Created by 정아현 on 2023/07/16.
 //
 
+import KeychainSwift
 import SnapKit
 import Then
 import UIKit
@@ -267,10 +268,16 @@ class TermsOfUseViewController: UIViewController {
         }
     }
     
+    // 상단 X 버튼 로그인 화면으로 이동
     @objc private func xButtonTapped() {
-        let loginVC = LoginViewController()
-        loginVC.modalPresentationStyle = .fullScreen
-        present(loginVC, animated: true, completion: nil)
+        logout()
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // 로그아웃
+    private func logout() {
+        let keychain = KeychainSwift()
+        keychain.clear()
     }
     
     @objc private func button1Tapped() {
