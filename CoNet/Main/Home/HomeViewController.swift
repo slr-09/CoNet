@@ -204,6 +204,15 @@ class HomeViewController: UIViewController {
             make.height.equalTo(waitingPlanData.count*92)
         }
     }
+    
+    // change day label
+    func changeDate(month: String, day: String) {
+        if month=="" && day=="" {
+            dayPlanLabel.text = "오늘의 약속"
+        } else {
+            dayPlanLabel.text = month + "월 " + day + "일의 약속"
+        }
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

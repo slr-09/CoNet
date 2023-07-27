@@ -57,6 +57,15 @@ class CalendarDateFormatter {
         return getYearMonthText()
     }
     
+    // 달 이동 
+    func moveMonth(month: Int) -> String {
+        let addMonth = month - Int(currentMonth())!
+        nowCalendarDate = calendar.date(byAdding: DateComponents(month: addMonth), to: nowCalendarDate) ?? Date()
+        updateCurrentMonthDays()
+        
+        return getYearMonthText()
+    }
+    
     // 현재 보여주는 달력의 month
     func currentMonth() -> String {
         let formatter = DateFormatter()
