@@ -22,7 +22,7 @@ class SignOutPopUpViewController: UIViewController {
                                      leftButtonTitle: "취소",
                                      leftButtonAction: #selector(dismissPopUp),
                                      rightButtonTitle: "탈퇴",
-                                     rightButtonAction: #selector(showCompletSignOutViewController))
+                                     rightButtonAction: #selector(signout))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,19 +42,24 @@ class SignOutPopUpViewController: UIViewController {
     }
     
     // 회원 탈퇴 버튼 동작
-    @objc func showCompletSignOutViewController(_ sender: UIView) {
+    @objc func signout(_ sender: UIView) {
         MyPageAPI().signout { isSuccess in
             if isSuccess {
-                let nextVC = CompleteSignOutViewController()
-                self.navigationController?.pushViewController(nextVC, animated: true)
-                
-                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-                sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
+                self.showCompleteSignOutViewController()
             } else {
                 print("회원 탈퇴 버튼 눌렀는데 false로 옴..")
             }
         }
         
+    }
+    
+    // 회원 탈퇴 확인 페이지로
+    private func showCompleteSignOutViewController() {
+        let nextVC = CompleteSignOutViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootVC(CompleteSignOutViewController(), animated: false)
     }
     
     // 모든 layout Constraints
