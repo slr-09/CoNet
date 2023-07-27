@@ -44,7 +44,7 @@ class AuthAPI {
     }
     
     // MARK: apple login
-    func appleLogin() {
+    func appleLogin(completion: @escaping (_ isRegistered: Bool) -> Void) {
         // 통신할 API 주소
         let url = "\(baseUrl)/auth/login/apple"
         
@@ -71,6 +71,7 @@ class AuthAPI {
                 self.keychain.set(response.result!.accessToken, forKey: "accessToken")
                 self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
                 self.keychain.set(response.result!.isRegistered, forKey: "appleIsRegistered")
+                completion(response.result!.isRegistered)
                 
             case .failure(let error):
                 print("DEBUG(apple login api) error: \(error)")

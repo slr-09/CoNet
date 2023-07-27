@@ -302,27 +302,21 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
             // idToken 저장
             keychain.set(tokenStr ?? "", forKey: "idToken")
                 
-            // api 호출
-            AuthAPI.shared.appleLogin()
-                
-            // 가입 여부 저장: Bool
-            let isRegistered = keychain.getBool("appleIsRegistered")
-                
-            // 가입이 되어있는 경우
-            if isRegistered == true {
-                // 홈 탭으로 이동
-                let nextVC = TabbarViewController()
-                navigationController?.pushViewController(nextVC, animated: true)
-                    
-                // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
-                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-                sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
-            }
-            // 가입이 되지 않은 경우
-            else {
-                // 회원가입 탭으로 이동
-                let nextVC = TermsOfUseViewController()
-                navigationController?.pushViewController(nextVC, animated: true)
+            // apple login api 호출
+            AuthAPI.shared.appleLogin { isRegistered in
+                if isRegistered {
+                    // 홈 탭으로 이동
+                    let nextVC = TabbarViewController()
+                    self.navigationController?.pushViewController(nextVC, animated: true)
+                        
+                    // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
+                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                    sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+                } else {
+                    // 회원가입 탭으로 이동
+                    let nextVC = TermsOfUseViewController()
+                    self.navigationController?.pushViewController(nextVC, animated: true)
+                }
             }
         }
     }

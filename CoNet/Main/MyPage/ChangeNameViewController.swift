@@ -79,6 +79,7 @@ class ChangeNameViewController: UIViewController {
         
         // 클릭 이벤트
         clickEvents()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
