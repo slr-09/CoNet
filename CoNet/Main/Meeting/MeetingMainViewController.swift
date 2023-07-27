@@ -231,3 +231,12 @@ extension MeetingMainViewController: ModalViewControllerDelegate {
         navigationController?.pushViewController(nextVC, animated: true)
     }
 }
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        MeetingMainViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif

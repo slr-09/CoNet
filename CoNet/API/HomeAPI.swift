@@ -29,8 +29,8 @@ class HomeAPI {
         ]
         
         // Request 생성
-        // JSONEncoding은 에러나서 URLEncoding으로 변경
-        let dataRequest = AF.request(url, method: .get, parameters: body, encoding: URLEncoding.default, headers: headers)
+        // get 인 경우 JSONEncoding 에러 뜨면 URLEncoding으로 변경 
+        let dataRequest = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
         
         // responseData를 호출하면서 데이터 통신 시작
         // response에 데이터 통신의 결과가 담깁니다.

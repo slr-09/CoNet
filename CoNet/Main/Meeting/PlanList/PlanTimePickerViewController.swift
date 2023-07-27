@@ -100,12 +100,3 @@ class PlanTimePickerViewController: UIViewController {
     }
     
 }
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         PlanTimePickerViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif
