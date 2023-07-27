@@ -55,12 +55,12 @@ class PlanDateButtonSheetViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         bottomSheetView.snp.makeConstraints { make in
-            make.height.equalTo(469)
+            make.height.equalTo(600)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
         }
         calendarView.snp.makeConstraints { make in
-            make.height.equalTo(307)
+            make.height.equalTo(500)
             make.top.equalTo(bottomSheetView.snp.top).offset(0)
             make.leading.equalTo(bottomSheetView.snp.leading).offset(0)
             make.trailing.equalTo(bottomSheetView.snp.trailing).offset(0)
@@ -75,3 +75,13 @@ class PlanDateButtonSheetViewController: UIViewController {
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        PlanDateButtonSheetViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif

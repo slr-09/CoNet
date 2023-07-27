@@ -184,14 +184,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A3AD0162A6D413200975427 /* History */ = {
-			isa = PBXGroup;
-			children = (
-				1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */,
-			);
-			path = History;
-			sourceTree = "<group>";
-		};
 		236054F52A593F2E00CA991E /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +220,7 @@
 		23ED93972A6D5FA6007B0E63 /* History */ = {
 			isa = PBXGroup;
 			children = (
+				1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */,
 				23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */,
 				23ED939C2A6D6485007B0E63 /* HistoryCell.swift */,
 				23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */,
@@ -381,7 +374,6 @@
 				236054F82A593F4000CA991E /* Meeting */,
 				236054F52A593F2E00CA991E /* Home */,
 				23FE4ECA2A55B03600BBF17E /* SignUp */,
-				1A3AD0162A6D413200975427 /* History */,
 				51F2A46F2A54973300D134CC /* Login */,
 				236054EE2A592B0C00CA991E /* TabbarViewController.swift */,
 			);
