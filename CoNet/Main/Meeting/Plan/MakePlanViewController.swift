@@ -80,7 +80,6 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(makePlanLabel)
         applyConstraintsToTopSection()
         
-        planNameTextField.delegate = self
         self.view.addSubview(planNameLabel)
         self.view.addSubview(xnameButton)
         self.view.addSubview(planNameTextField)
@@ -98,10 +97,13 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(makeButton)
         applyConstraintsToMakeButton()
         
-        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
-        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
+        
+        planNameTextField.delegate = self
+        planStartDateField.delegate = self
+        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -198,7 +200,6 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             textCountLabel.text = "\(nameCount)/20"
             xnameButton.isHidden = text.isEmpty
         }
-        
         updateMakeButtonState()
     }
     
@@ -226,12 +227,21 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
 }
 extension MakePlanViewController {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        grayLine1.backgroundColor = UIColor.purpleMain
-        xnameButton.isHidden = false
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = false
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = true
+        }
     }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
-        grayLine1.backgroundColor = UIColor.iconDisabled
-        updateMakeButtonState()
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        }
         xnameButton.isHidden = true
     }
 }
