@@ -6,7 +6,7 @@
 //
 
 import Alamofire
-import Foundation
+import UIKit
 import KeychainSwift
 
 class MyPageAPI {
@@ -26,11 +26,6 @@ class MyPageAPI {
         .responseDecodable(of: BaseResponse<GetUserResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(getUser) code: \(response.code)")
-                print("DEBUG(getUser) message: \(response.message)")
-                print("DEBUG(getUser) name: \(response.result?.name ?? "이름 없음")")
-                print("DEBUG(getUser) imageUrl: \(response.result?.imageUrl ?? "url 없음")")
-                
                 guard let result = response.result else { return }
                 
                 let name = result.name
@@ -42,6 +37,31 @@ class MyPageAPI {
                 
             case .failure(let error):
                 print("DEBUG(get user api) error: \(error)")
+            }
+        }
+    }
+    
+    // 프로필 이미지 수정
+    func editProfileImage(image: UIImage, completion: @escaping (_ imageUrl: String) -> Void) {
+        let url = "\(baseUrl)/user/image"
+        let headers: HTTPHeaders = [
+            "Content-Type": "multipart/form-data",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        guard let image = image.pngData() else { return }
+        
+        // Multipart Form 데이터 생성
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(image, withName: "file", fileName: "\(image).png", mimeType: "image/png")
+        }, to: url, method: .post, headers: headers)
+        .responseDecodable(of: BaseResponse<PostEditProfileImageResponse>.self) { response in
+            switch response.result {
+            case .success(let response):
+                guard let result = response.result else { return }
+                completion(result.imgUrl)
+                
+            case .failure(let error):
+                print("DEBUG(edit profile image api) error: \(error)")
             }
         }
     }
@@ -59,15 +79,15 @@ class MyPageAPI {
         
         AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .responseDecodable(of: BaseResponse<String>.self) { response in
-            switch response.result {
-            case .success(let response):
-                // 회원가입 성공 Bool 반환
-                completion(response.code == 1000)
-                
-            case .failure(let error):
-                print("DEBUG(edit name api) error: \(error)")
+                switch response.result {
+                case .success(let response):
+                    // 회원가입 성공 Bool 반환
+                    completion(response.code == 1000)
+                    
+                case .failure(let error):
+                    print("DEBUG(edit name api) error: \(error)")
+                }
             }
-        }
     }
     
     // 회원 탈퇴
@@ -85,7 +105,6 @@ class MyPageAPI {
         .responseDecodable(of: BaseResponse<String>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(signout api) result: \(response.result ?? "뭔가 문제가 있다")")
                 completion(true)
             case .failure(let error):
                 print("DEBUG(signout api) error: \(error)")
@@ -104,4 +123,8 @@ struct GetUserResponse: Codable {
         case imageUrl = "userImgUrl"
         case social = "platform"
     }
+}
+
+struct PostEditProfileImageResponse: Codable {
+    let name, imgUrl: String
 }
