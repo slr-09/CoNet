@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, FunctionDelegate {
     let myPageList = MyPageList()
     
     // 프로필 이미지 - 현재 기본 이미지로 보여줌
@@ -34,7 +34,9 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
     
     // 이름 변경 버튼 row
     var name: String = ""
-    lazy var changeNameView = myPageList.arrowView(title: name, labelFont: UIFont.headline3Medium!)
+//    lazy var changeNameView = myPageList.arrowView(title: name, labelFont: UIFont.headline3Medium!)
+    let changeNameButton = UIButton().then { $0.backgroundColor = .clear }
+    let changeNameView = ArrowList().then { $0.setTitle("") }
 
     // 구분선
     let divider = UIView().then { $0.backgroundColor = UIColor.gray50 }
@@ -95,28 +97,30 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
         signOutConstraints() // 회원 탈퇴 constraint
         
         editProfileImageButton.addTarget(self, action: #selector(showImagePicker), for: .touchUpInside)
-        changeNameView.addTarget(self, action: #selector(showChangeNameViewController(_:)), for: .touchUpInside)
+        changeNameView.delegate = self
         signOutButton.addTarget(self, action: #selector(showPopup(_:)), for: .touchUpInside)
+    }
+    
+    func didExecuteFunction() {
+        // 실행시킬 함수 내용 구현
+        let nextVC = ChangeNameViewController()
+        nextVC.nameTextField.text = self.name
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func fetchUser() {
         MyPageAPI().getUser { username, imageUrl, email, social in
             // TODO: 이름 변경 후 화면에 안 뜨는 버그 수정
-            DispatchQueue.global().async {
-                self.name = username
-            }
+//            DispatchQueue.global().async {
+//                self.name = username
+//            }
+            self.changeNameView.setTitle(username)
             
-//            let imageURL = URL(string: "https://www.adobe.com/kr/express/feature/image/media_142f9cf5285c2cdcda8375c1041d273a3f0383e5f.png?width=750&format=png&optimize=medium")!
             let url = URL(string: imageUrl)!
             self.loadImage(url: url)
             
             self.emailLabel.text = email
-            
-            if social == "APPLE" {
-                self.linkedSocialImage.image = UIImage(named: "linkedApple")
-            } else {
-                self.linkedSocialImage.image = UIImage(named: "linkedKakao")
-            }
+            self.linkedSocialImage.image = UIImage(named: social == "APPLE" ? "linkedApple" : "linkedKakao")
         }
     }
     
@@ -173,7 +177,8 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
         picker.dismiss(animated: true, completion: nil)
     }
     
-    @objc func showChangeNameViewController(_ sender: UIView) {
+    @objc func showChangeNameViewController(_ sender: UIButton) {
+        print("click")
         let nextVC = ChangeNameViewController()
         nextVC.nameTextField.text = self.name
         navigationController?.pushViewController(nextVC, animated: true)
@@ -218,11 +223,20 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
             verticalPadding(make: make)
         }
         
-        // 이름 변경 버튼 row
-        view.addSubview(changeNameView)
-        changeNameView.snp.makeConstraints { make in
+        view.addSubview(changeNameButton)
+        changeNameButton.snp.makeConstraints { make in
+            make.height.equalTo(24)
             make.width.equalTo(safeArea.snp.width).offset(-48)
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(6)
+            verticalPadding(make: make)
+        }
+        
+        // 이름 변경 버튼 row
+        changeNameButton.addSubview(changeNameView)
+        changeNameView.snp.makeConstraints { make in
+            make.height.equalTo(24)
+            make.width.equalTo(safeArea.snp.width).offset(-48)
+            make.top.equalTo(nameLabel.snp.bottom).offset(6)
             verticalPadding(make: make)
         }
         
