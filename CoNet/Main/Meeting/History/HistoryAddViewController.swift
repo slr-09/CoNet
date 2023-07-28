@@ -9,8 +9,9 @@ import SnapKit
 import Then
 import UIKit
 
-class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var isPhotoUploaded = false
+    var isContentsEntered = false
     
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
@@ -35,15 +36,10 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.textColor = UIColor.textDisabled
     }
     
-    let planNameTextField = UITextField().then {
-        $0.placeholder = "약속 이름 입력"
+    let planNameText = UILabel().then {
+        $0.text = "모임모임"
         $0.font = UIFont.headline3Regular
-        $0.tintColor = UIColor.textDisabled
-        $0.becomeFirstResponder()
-    }
-    
-    let xplanNameButton = UIButton().then {
-        $0.setImage(UIImage(named: "clearBtn"), for: .normal)
+        $0.textColor = UIColor.textDisabled
     }
     
     let grayLine1 = UIView().then {
@@ -56,15 +52,10 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.textColor = UIColor.textDisabled
     }
     
-    let planDateTextField = UITextField().then {
-        $0.placeholder = "약속 날짜 입력"
+    let planDateText = UILabel().then {
+        $0.text = "2023.07.15"
         $0.font = UIFont.headline3Regular
-        $0.tintColor = UIColor.textDisabled
-        $0.becomeFirstResponder()
-    }
-    
-    let calendarButton = UIButton().then {
-        $0.setImage(UIImage(named: "calendar"), for: .normal)
+        $0.textColor = UIColor.textDisabled
     }
     
     let grayLine2 = UIView().then {
@@ -77,17 +68,12 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.textColor = UIColor.textDisabled
     }
     
-    let planTimeTextField = UITextField().then {
-        $0.placeholder = "약속 시간 입력"
+    let planTimeText = UILabel().then {
+        $0.text = "10:00"
         $0.font = UIFont.headline3Regular
-        $0.tintColor = UIColor.textDisabled
-        $0.becomeFirstResponder()
+        $0.textColor = UIColor.textDisabled
     }
-    
-    let clockButton = UIButton().then {
-        $0.setImage(UIImage(named: "clock"), for: .normal)
-    }
-    
+
     let grayLine3 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
     }
@@ -107,10 +93,6 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.font = UIFont.body2Medium
     }
     
-    let member1DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
-    }
-    
     let member2ImageView = UIImageView().then {
         $0.image = UIImage(named: "defaultProfile")
     }
@@ -119,11 +101,7 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
     }
-    
-    let member2DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
-    }
-    
+
     let member3ImageView = UIImageView().then {
         $0.image = UIImage(named: "defaultProfile")
     }
@@ -132,21 +110,7 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
     }
-    
-    let member3DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
-    }
-    
-    let memberAddButton = UIButton().then {
-        $0.setImage(UIImage(named: "addPeople"), for: .normal)
-    }
-    
-    let memberAddLabel = UILabel().then {
-        $0.text = "추가하기"
-        $0.font = UIFont.body2Medium
-        $0.textColor = UIColor.textDisabled
-    }
-    
+
     let photoLabel = UILabel().then {
         $0.text = "사진"
         $0.font = UIFont.body2Bold
@@ -195,7 +159,7 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -206,35 +170,27 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         applyConstraintsToTabs()
         
         self.view.addSubview(planNameLabel)
-        self.view.addSubview(planNameTextField)
-        self.view.addSubview(xplanNameButton)
+        self.view.addSubview(planNameText)
         self.view.addSubview(grayLine1)
         applyConstraintsToPlanName()
         
         self.view.addSubview(planDateLabel)
-        self.view.addSubview(planDateTextField)
-        self.view.addSubview(calendarButton)
+        self.view.addSubview(planDateText)
         self.view.addSubview(grayLine2)
         applyConstraintsToPlanDate()
         
         self.view.addSubview(planTimeLabel)
-        self.view.addSubview(planTimeTextField)
-        self.view.addSubview(clockButton)
+        self.view.addSubview(planTimeText)
         self.view.addSubview(grayLine3)
         applyConstraintsToPlanTime()
         
         self.view.addSubview(memberLabel)
         self.view.addSubview(member1ImageView)
         self.view.addSubview(member1NameLabel)
-        self.view.addSubview(member1DelButton)
         self.view.addSubview(member2ImageView)
         self.view.addSubview(member2NameLabel)
-        self.view.addSubview(member2DelButton)
         self.view.addSubview(member3ImageView)
         self.view.addSubview(member3NameLabel)
-        self.view.addSubview(member3DelButton)
-        self.view.addSubview(memberAddButton)
-        self.view.addSubview(memberAddLabel)
         applyConstraintsToMember()
         
         self.view.addSubview(photoLabel)
@@ -243,12 +199,13 @@ class HistoryAddViewController: UIViewController, UIImagePickerControllerDelegat
         self.view.addSubview(photoAddLabel)
         applyConstraintsToPhoto()
         
+        contentsTextField.delegate = self
         self.view.addSubview(contentsLabel)
         self.view.addSubview(contentsView)
         self.view.addSubview(contentsTextField)
         applyConstraintsToContents()
         
-        xplanNameButton.addTarget(self, action: #selector(xplanNameButtonTapped), for: .touchUpInside)
+        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
         photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
         
         updatePhotoImageViewSize()
@@ -280,19 +237,14 @@ extension HistoryAddViewController {
             make.top.equalTo(backButton.snp.bottom).offset(44)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        planNameTextField.snp.makeConstraints { make in
+        planNameText.snp.makeConstraints { make in
             make.top.equalTo(planNameLabel.snp.bottom).offset(10)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
-        xplanNameButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.top.equalTo(planNameLabel.snp.bottom).offset(12)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-        }
         grayLine1.snp.makeConstraints { make in
             make.height.equalTo(1)
-            make.top.equalTo(planNameTextField.snp.bottom).offset(8)
+            make.top.equalTo(planNameText.snp.bottom).offset(8)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
@@ -304,19 +256,14 @@ extension HistoryAddViewController {
             make.top.equalTo(grayLine1.snp.bottom).offset(26)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        planDateTextField.snp.makeConstraints { make in
+        planDateText.snp.makeConstraints { make in
             make.top.equalTo(planDateLabel.snp.bottom).offset(10)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
-        calendarButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.top.equalTo(planDateLabel.snp.bottom).offset(12)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-        }
         grayLine2.snp.makeConstraints { make in
             make.height.equalTo(1)
-            make.top.equalTo(planDateTextField.snp.bottom).offset(8)
+            make.top.equalTo(planDateText.snp.bottom).offset(8)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
@@ -328,19 +275,14 @@ extension HistoryAddViewController {
             make.top.equalTo(grayLine2.snp.bottom).offset(26)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        planTimeTextField.snp.makeConstraints { make in
+        planTimeText.snp.makeConstraints { make in
             make.top.equalTo(planTimeLabel.snp.bottom).offset(10)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
-        clockButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.top.equalTo(planTimeLabel.snp.bottom).offset(12)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-        }
         grayLine3.snp.makeConstraints { make in
             make.height.equalTo(1)
-            make.top.equalTo(planTimeTextField.snp.bottom).offset(8)
+            make.top.equalTo(planTimeText.snp.bottom).offset(8)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
@@ -362,11 +304,6 @@ extension HistoryAddViewController {
             make.centerY.equalTo(member1ImageView)
             make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
         }
-        member1DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(107)
-        }
         member2ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
             make.centerY.equalTo(member1ImageView)
@@ -377,11 +314,6 @@ extension HistoryAddViewController {
             make.centerY.equalTo(member2ImageView)
             make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
         }
-        member2DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member2ImageView)
-            make.leading.equalTo(member2NameLabel.snp.trailing).offset(4)
-        }
         member3ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
             make.top.equalTo(member1ImageView.snp.bottom).offset(10)
@@ -391,21 +323,6 @@ extension HistoryAddViewController {
             make.width.equalTo(93)
             make.centerY.equalTo(member3ImageView)
             make.leading.equalTo(member3ImageView.snp.trailing).offset(10)
-        }
-        member3DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(member3NameLabel.snp.trailing).offset(4)
-        }
-        memberAddButton.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(member3DelButton.snp.trailing).offset(15)
-        }
-        memberAddLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(memberAddButton)
-            make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
     }
 
@@ -457,10 +374,10 @@ extension HistoryAddViewController {
 
 // MARK: - Button Actions Extensions
 extension HistoryAddViewController {
-    @objc private func xplanNameButtonTapped() {
-        planNameTextField.text = ""
+    @objc private func completionButtonTapped() {
+        // 완료 버튼 후
     }
-
+    
     @objc private func photoAddButtonTapped() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -468,11 +385,25 @@ extension HistoryAddViewController {
         present(imagePicker, animated: true, completion: nil)
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        isContentsEntered = !textField.text!.isEmpty
+        updateCompletionButtonColor()
+    }
+
+    func updateCompletionButtonColor() {
+        if isContentsEntered || isPhotoUploaded {
+            completionButton.setTitleColor(.purpleMain, for: .normal)
+        } else {
+            completionButton.setTitleColor(.textDisabled, for: .normal)
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
             photoImageView.image = pickedImage
             isPhotoUploaded = true
             updatePhotoImageViewSize()
+            updateCompletionButtonColor()
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -516,3 +447,4 @@ extension HistoryAddViewController {
         }
     }
 }
+

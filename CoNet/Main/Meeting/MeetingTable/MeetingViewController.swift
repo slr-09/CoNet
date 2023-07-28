@@ -413,4 +413,3 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         present(addVC, animated: false, completion: nil)
     }
 }
-
