@@ -177,13 +177,6 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
         picker.dismiss(animated: true, completion: nil)
     }
     
-    @objc func showChangeNameViewController(_ sender: UIButton) {
-        print("click")
-        let nextVC = ChangeNameViewController()
-        nextVC.nameTextField.text = self.name
-        navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
     @objc func showPopup(_ sender: UIView) {
         let popupVC = SignOutPopUpViewController()
         popupVC.modalPresentationStyle = .overCurrentContext

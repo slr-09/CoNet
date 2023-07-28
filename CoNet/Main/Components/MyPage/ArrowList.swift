@@ -59,9 +59,10 @@ class ArrowList: UIView {
         
         arrowView.addTarget(self, action: #selector(showChangeNameViewController), for: .touchUpInside)
     }
+    
     weak var delegate: FunctionDelegate?
+    
     @objc func showChangeNameViewController(_ sender: UIButton) {
-        print("click")
         delegate?.didExecuteFunction()
     }
     

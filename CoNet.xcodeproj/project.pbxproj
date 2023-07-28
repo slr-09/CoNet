@@ -10,7 +10,6 @@
 		1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */; };
 		1A3AD0152A6D411900975427 /* HistoryAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */; };
 		1A3AD0182A6E8A2B00975427 /* PlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */; };
-		1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */; };
 		1A99CFE02A70CE220080091B /* MeetingOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */; };
 		1A99CFE22A70D4650080091B /* MeetingDelPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */; };
 		1A99CFE42A7233580080091B /* PlanTimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99CFE32A7233580080091B /* PlanTimePickerViewController.swift */; };
@@ -92,7 +91,6 @@
 		1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCodeViewController.swift; sourceTree = "<group>"; };
 		1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAddViewController.swift; sourceTree = "<group>"; };
 		1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInfoViewController.swift; sourceTree = "<group>"; };
-		1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingOutPopUpViewController.swift; sourceTree = "<group>"; };
 		1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingDelPopUpViewController.swift; sourceTree = "<group>"; };
 		1A99CFE32A7233580080091B /* PlanTimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTimePickerViewController.swift; sourceTree = "<group>"; };
@@ -462,7 +460,6 @@
 			isa = PBXGroup;
 			children = (
 				1AE23DBA2A59837F000D498F /* LoginViewController.swift */,
-				1A76AB9C2A53EC6400C18731 /* KakaoLoginViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -633,7 +630,6 @@
 				51B526C62A6C324D009DBFB4 /* SideBarMenu.swift in Sources */,
 				23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */,
 				235F5B732A69893F00ADC0D6 /* CalendarDateFormatter.swift in Sources */,
-				1A76AB9D2A53EC6400C18731 /* KakaoLoginViewController.swift in Sources */,
 				51B526C82A6C3893009DBFB4 /* PlanDummyData.swift in Sources */,
 				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				231E97D12A6BD3F8000BB2AD /* MonthCollectionViewCell.swift in Sources */,

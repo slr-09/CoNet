@@ -264,7 +264,6 @@ class LoginViewController: UIViewController {
                     
                     AuthAPI.shared.kakaoLogin(idToken: oauthToken?.idToken ?? "") { isRegistered in
                         if isRegistered {
-                            print("왜안댐")
                             // 홈 탭으로 이동
                             let nextVC = TabbarViewController()
                             self.navigationController?.pushViewController(nextVC, animated: true)
@@ -273,7 +272,6 @@ class LoginViewController: UIViewController {
                             let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                             sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
                         } else {
-                            print("왜안댐 22222")
                             // 회원가입 탭으로 이동
                             let nextVC = TermsOfUseViewController()
                             self.navigationController?.pushViewController(nextVC, animated: true)

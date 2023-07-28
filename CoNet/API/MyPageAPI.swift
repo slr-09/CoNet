@@ -26,11 +26,6 @@ class MyPageAPI {
         .responseDecodable(of: BaseResponse<GetUserResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(getUser) code: \(response.code)")
-                print("DEBUG(getUser) message: \(response.message)")
-                print("DEBUG(getUser) name: \(response.result?.name ?? "이름 없음")")
-                print("DEBUG(getUser) imageUrl: \(response.result?.imageUrl ?? "url 없음")")
-                
                 guard let result = response.result else { return }
                 
                 let name = result.name
@@ -63,8 +58,6 @@ class MyPageAPI {
             switch response.result {
             case .success(let response):
                 guard let result = response.result else { return }
-                print("DEBUG(edit profile image api): \(response.message)")
-                
                 completion(result.imgUrl)
                 
             case .failure(let error):
@@ -112,7 +105,6 @@ class MyPageAPI {
         .responseDecodable(of: BaseResponse<String>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(signout api) result: \(response.result ?? "뭔가 문제가 있다")")
                 completion(true)
             case .failure(let error):
                 print("DEBUG(signout api) error: \(error)")

@@ -46,8 +46,6 @@ class SignOutPopUpViewController: UIViewController {
         MyPageAPI().signout { isSuccess in
             if isSuccess {
                 self.showCompleteSignOutViewController()
-            } else {
-                print("회원 탈퇴 버튼 눌렀는데 false로 옴..")
             }
         }
         
