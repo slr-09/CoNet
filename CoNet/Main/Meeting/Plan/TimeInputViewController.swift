@@ -79,9 +79,22 @@ class TimeInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        layoutConstraints()
+        view.backgroundColor = .white
         
+        layoutConstraints()
         timeTableSetting()
+        
+        btnClickEvents()
+    }
+    
+    // 버튼 클릭 이벤트 
+    func btnClickEvents() {
+        prevButton.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
+    }
+    
+    // 이전 버튼 클릭 시 창 끄기
+    @objc func didClickPrevButton() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func timeTableSetting() {
@@ -159,7 +172,7 @@ class TimeInputViewController: UIViewController {
         saveButton.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.snp.bottom).offset(-15)
+            make.bottom.equalTo(view.snp.bottom).offset(-35)
         }
         
         // 타임테이블
@@ -170,19 +183,19 @@ class TimeInputViewController: UIViewController {
             make.bottom.equalTo(saveButton.snp.top).offset(-10)
         }
         
+        // 가능한 시간 없음 버튼
+        view.addSubview(timeImpossibleButton)
+        timeImpossibleButton.snp.makeConstraints { make in
+            make.leading.equalTo(timeTable.snp.trailing).offset(18)
+            make.top.equalTo(nextDayBtn.snp.bottom).offset(507)
+        }
+        
         // 가능한 시간 없음 label
         view.addSubview(timeImpossibleLabel)
         timeImpossibleLabel.snp.makeConstraints { make in
             make.height.equalTo(12)
             make.leading.equalTo(timeTable.snp.trailing).offset(7)
-            make.bottom.equalTo(timeTable.snp.bottom).offset(-16)
-        }
-        
-        // 가능한 시간 없음 버튼
-        view.addSubview(timeImpossibleButton)
-        timeImpossibleButton.snp.makeConstraints { make in
-            make.leading.equalTo(timeTable.snp.trailing).offset(18)
-            make.bottom.equalTo(timeImpossibleLabel.snp.top).offset(-5)
+            make.top.equalTo(timeImpossibleButton.snp.bottom).offset(5)
         }
     }
 }

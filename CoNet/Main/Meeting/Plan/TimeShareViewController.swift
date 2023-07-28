@@ -122,9 +122,24 @@ class TimeShareViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .white
 
         layoutConstraints()
         timeTableSetting()
+        
+        btnClickEvents()
+    }
+    
+    func btnClickEvents() {
+        inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
+    }
+    
+    // 내 시간 입력하기 버튼 클릭 시
+    @objc func didClickInputTimeButton(_ sender: UIView) {
+        // 화면 이동
+        let nextVC = TimeInputViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func timeTableSetting() {
@@ -210,7 +225,7 @@ class TimeShareViewController: UIViewController {
         inputTimeButton.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.snp.bottom).offset(-15)
+            make.bottom.equalTo(view.snp.bottom).offset(-35)
         }
         
         // 타임테이블
