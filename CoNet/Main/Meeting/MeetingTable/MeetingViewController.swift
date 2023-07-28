@@ -131,6 +131,9 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         return CGSize(width: 164, height: 232)
     }
     
+    let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
+    let contentView = UIView().then { $0.backgroundColor = .clear }
+    
     let gatherLabel = UILabel().then {
         $0.text = "모임"
         $0.font = UIFont.headline1
@@ -204,10 +207,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         self.view.backgroundColor = .white
+        view.addSubview(scrollview)
+        scrollview.addSubview(contentView)
         self.view.addSubview(gatherLabel)
         self.view.addSubview(item)
         self.view.addSubview(selectedTabIndicator)
-        
+        applyConstraintsToScrollView()
         applyConstraintsToTabs(stackView: item)
 
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
@@ -252,6 +257,17 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.joinLabel.alpha = 0
             self.addLabel.alpha = 0
             self.overlayView.alpha = 0
+        }
+    }
+    
+    func applyConstraintsToScrollView() {
+        scrollview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollview.contentLayoutGuide)
+            make.width.equalTo(scrollview.frameLayoutGuide)
+            make.height.equalTo(2000)
         }
     }
     
@@ -397,3 +413,4 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         present(addVC, animated: false, completion: nil)
     }
 }
+
