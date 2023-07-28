@@ -14,7 +14,7 @@ class TimeTableViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.gray100?.cgColor
-//        contentView.backgroundColor = .blue
+//        contentView.backgroundColor = UIColor.purpleDisabled
     }
 
     @available(*, unavailable)

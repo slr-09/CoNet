@@ -31,6 +31,7 @@
 		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
 		236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F62A593F3B00CA991E /* HomeViewController.swift */; };
 		236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F92A593F5400CA991E /* MeetingViewController.swift */; };
+		239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */; };
 		23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */; };
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
 		23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA18292A694551004EC6A6 /* CalendarView.swift */; };
@@ -114,6 +115,7 @@
 		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		236054F62A593F3B00CA991E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		236054F92A593F5400CA991E /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
+		239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputViewController.swift; sourceTree = "<group>"; };
 		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23DA18292A694551004EC6A6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 				23DE37C02A7287BD00F1DFE0 /* TimeShareViewController.swift */,
 				23DE37C22A72A40C00F1DFE0 /* TimeTableView.swift */,
 				23DE37C42A72A6A700F1DFE0 /* TimeTableViewCell.swift */,
+				239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */,
 				51A3DA132A72BF4D00CAEE2A /* ArrowList.swift in Sources */,
 				51B526D02A6C40F1009DBFB4 /* PastPlanCell.swift in Sources */,
+				239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */,
 				51B526CC2A6C3988009DBFB4 /* DecidedPlanCell.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
 				1AC014282A70A75700E3E9C9 /* PlanConfirmViewController.swift in Sources */,
