@@ -70,6 +70,7 @@ class CalendarView: UIView {
         planDates = []
         HomeAPI.shared.getMonthPlan(date: date) { count, dates in
             self.planDates = dates
+            self.calendarCollectionView.reloadData()
         }
     }
     
@@ -267,7 +268,6 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
             cell.reloadPlanMark()
         }
         
-        collectionView.reloadData()
         return cell
     }
     
