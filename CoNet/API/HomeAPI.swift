@@ -15,8 +15,11 @@ class HomeAPI {
     
     // 특정 달 약속 조회
     func getMonthPlan(date: String, completion: @escaping (_ count: Int, _ dates: [Int]) -> Void) {
+        
+        let query = URLQueryItem(name: "searchDate", value: date)
+        
         // 통신할 API 주소
-        let url = "\(baseUrl)/home/month/\(date)"
+        let url = "\(baseUrl)/home/month?\(query)"
         
         // HTTP Headers : 요청 헤더
         let headers: HTTPHeaders = [
@@ -32,7 +35,6 @@ class HomeAPI {
         dataRequest.responseDecodable(of: BaseResponse<GetMonthPlanResult>.self) { response in
             switch response.result {
             case .success(let response): // 성공한 경우에
-                print(response.code)
                 print(response.result ?? "getmonthplan result empty")
                 
                 guard let result = response.result else { return }
