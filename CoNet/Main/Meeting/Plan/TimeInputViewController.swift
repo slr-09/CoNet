@@ -76,6 +76,9 @@ class TimeInputViewController: UIViewController {
         $0.layer.cornerRadius = 12
     }
     
+    // 가능한 시간 없음 버튼 클릭 여부 체크
+    var possibleTimeCheck = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -90,11 +93,27 @@ class TimeInputViewController: UIViewController {
     // 버튼 클릭 이벤트 
     func btnClickEvents() {
         prevButton.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
+        timeImpossibleButton.addTarget(self, action: #selector(didClickTimeImpossibleButton), for: .touchUpInside)
     }
     
     // 이전 버튼 클릭 시 창 끄기
     @objc func didClickPrevButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // 가능한 시간 없음 버튼 클릭 시
+    // possibleTimeCheck: true/false
+    @objc func didClickTimeImpossibleButton() {
+        possibleTimeCheck = !possibleTimeCheck
+        timeTable.timeTableCollectionView.reloadData()
+        
+        if possibleTimeCheck {
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossibleSelected"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.purpleMain
+        } else {
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.textDisabled
+        }
     }
     
     func timeTableSetting() {
@@ -172,7 +191,7 @@ class TimeInputViewController: UIViewController {
         saveButton.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.snp.bottom).offset(-35)
+            make.bottom.equalTo(view.snp.bottom).offset(-45)
         }
         
         // 타임테이블
@@ -186,7 +205,7 @@ class TimeInputViewController: UIViewController {
         // 가능한 시간 없음 버튼
         view.addSubview(timeImpossibleButton)
         timeImpossibleButton.snp.makeConstraints { make in
-            make.leading.equalTo(timeTable.snp.trailing).offset(18)
+            make.trailing.equalTo(view.snp.trailing).offset(-33)
             make.top.equalTo(nextDayBtn.snp.bottom).offset(507)
         }
         
@@ -194,7 +213,7 @@ class TimeInputViewController: UIViewController {
         view.addSubview(timeImpossibleLabel)
         timeImpossibleLabel.snp.makeConstraints { make in
             make.height.equalTo(12)
-            make.leading.equalTo(timeTable.snp.trailing).offset(7)
+            make.trailing.equalTo(view.snp.trailing).offset(-22)
             make.top.equalTo(timeImpossibleButton.snp.bottom).offset(5)
         }
     }
@@ -205,7 +224,13 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
-                
+        
+        // 가능한 시간 없은 버튼 체크하지 않은 경우만
+        if !possibleTimeCheck {
+            // change cell background color
+            let cell  = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
+            cell.changeCellColor()
+        }
     }
     
     // 셀 수
@@ -230,6 +255,13 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
+        
+        // 가능한 시간 없음 버튼 클릭 여부 체크
+        if possibleTimeCheck {
+            cell.contentView.backgroundColor = UIColor.gray50
+        } else {
+            cell.contentView.backgroundColor = .white
+        }
         
         return cell
     }
