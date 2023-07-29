@@ -44,7 +44,7 @@ class AuthAPI {
     }
     
     // MARK: apple login
-    func appleLogin() {
+    func appleLogin(completion: @escaping (_ isRegistered: Bool) -> Void) {
         // 통신할 API 주소
         let url = "\(baseUrl)/auth/login/apple"
         
@@ -71,6 +71,7 @@ class AuthAPI {
                 self.keychain.set(response.result!.accessToken, forKey: "accessToken")
                 self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
                 self.keychain.set(response.result!.isRegistered, forKey: "appleIsRegistered")
+                completion(response.result!.isRegistered)
                 
             case .failure(let error):
                 print("DEBUG(apple login api) error: \(error)")
@@ -79,7 +80,7 @@ class AuthAPI {
     }
     
     // MARK: kakao login
-    func kakaoLogin(idToken: String) {
+    func kakaoLogin(idToken: String, completion: @escaping (_ isRegistered: Bool) -> Void) {
         let url = "\(baseUrl)/auth/login/kakao"
         let headers: HTTPHeaders = ["Content-Type": "application/json"]
         let body: [String: Any] = [
@@ -95,11 +96,40 @@ class AuthAPI {
                 print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken ?? "")")
                 
                 self.keychain.set(response.result!.email, forKey: "email")
-                self.keychain.set(response.result!.email, forKey: "accessToken")
-                self.keychain.set(response.result!.email, forKey: "kakaoIsRegistered")
+                self.keychain.set(response.result!.accessToken, forKey: "accessToken")
+                self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
+                self.keychain.set(response.result!.isRegistered, forKey: "kakaoIsRegistered")
+                
+                completion(response.result!.isRegistered)
+                print(response.result!.isRegistered)
                 
             case .failure(let error):
                 print("DEBUG(kakao login api) error: \(error)")
+            }
+        }
+    }
+    
+    // signUp - 약관 동의, 이름 입력
+    func signUp(name: String, optionTerm: Bool, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/auth/term-and-name"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let body: [String: Any] = [
+            "name": name,
+            "optionTerm": optionTerm
+        ]
+        
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<PostSignUpResult>.self) { response in
+            switch response.result {
+            case .success(let response):  // 성공한 경우에
+                // 회원가입 성공 Bool 반환
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(sign up api) error: \(error)")
             }
         }
     }

@@ -63,7 +63,10 @@ class MyPageViewController: UIViewController {
         noticeView.addTarget(self, action: #selector(showNoticeViewController), for: .touchUpInside)
         inquireView.addTarget(self, action: #selector(showInquireViewController), for: .touchUpInside)
         logoutView.addTarget(self, action: #selector(showLogoutPopup), for: .touchUpInside)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchUser()
     }
     

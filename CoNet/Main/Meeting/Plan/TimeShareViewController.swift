@@ -70,11 +70,76 @@ class TimeShareViewController: UIViewController {
         $0.layer.cornerRadius = 12
     }
     
+    // 인원 수 별 색 예시 4개
+    let purpleEx1 = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.borderColor = UIColor.gray100?.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    let purpleEx2 = UIView().then {
+        $0.layer.backgroundColor = UIColor(red: 0.677, green: 0.525, blue: 1, alpha: 0.2).cgColor
+        $0.layer.borderColor = UIColor.gray100?.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    let purpleEx3 = UIView().then {
+        $0.layer.backgroundColor = UIColor(red: 0.741, green: 0.62, blue: 1, alpha: 0.6).cgColor
+        $0.layer.borderColor = UIColor.gray100?.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    let purpleEx4 = UIView().then {
+        $0.layer.backgroundColor = UIColor(red: 0.677, green: 0.525, blue: 1, alpha: 0.8).cgColor
+        $0.layer.borderColor = UIColor.gray100?.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    // label: 인원 수 4개
+    let peopleNum1 = UILabel().then {
+        $0.text = "0"
+        $0.textColor = UIColor.textMedium
+        $0.font = UIFont.overline
+    }
+    
+    let peopleNum2 = UILabel().then {
+        $0.text = "1-3"
+        $0.textColor = UIColor.textMedium
+        $0.font = UIFont.overline
+    }
+    
+    let peopleNum3 = UILabel().then {
+        $0.text = "4-6"
+        $0.textColor = UIColor.textMedium
+        $0.font = UIFont.overline
+    }
+    
+    let peopleNum4 = UILabel().then {
+        $0.text = "7-9"
+        $0.textColor = UIColor.textMedium
+        $0.font = UIFont.overline
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .white
 
         layoutConstraints()
         timeTableSetting()
+        
+        btnClickEvents()
+    }
+    
+    func btnClickEvents() {
+        inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
+    }
+    
+    // 내 시간 입력하기 버튼 클릭 시
+    @objc func didClickInputTimeButton(_ sender: UIView) {
+        // 화면 이동
+        let nextVC = TimeInputViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func timeTableSetting() {
@@ -85,7 +150,7 @@ class TimeShareViewController: UIViewController {
     func layoutConstraints() {
         headerConstraintS()
         timetableConstraints()
-        inputTimeConstraints()
+        colorExample()  // 타임테이블 옆 색 예시
     }
 
     // 헤더 - x버튼, 약속 이름 등
@@ -160,7 +225,7 @@ class TimeShareViewController: UIViewController {
         inputTimeButton.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.snp.bottom).offset(-15)
+            make.bottom.equalTo(view.snp.bottom).offset(-35)
         }
         
         // 타임테이블
@@ -172,8 +237,69 @@ class TimeShareViewController: UIViewController {
         }
     }
     
-    func inputTimeConstraints() {
+    // 타임테이블 옆 색 예시
+    func colorExample() {
+        // 색 view
+        view.addSubview(purpleEx1)
+        purpleEx1.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(33)
+            make.leading.equalTo(timeTable.snp.trailing).offset(10)
+            make.top.equalTo(nextBtn.snp.bottom).offset(13)
+        }
         
+        view.addSubview(purpleEx2)
+        purpleEx2.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(33)
+            make.leading.equalTo(timeTable.snp.trailing).offset(10)
+            make.top.equalTo(purpleEx1.snp.bottom).offset(-1)
+        }
+        
+        view.addSubview(purpleEx3)
+        purpleEx3.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(33)
+            make.leading.equalTo(timeTable.snp.trailing).offset(10)
+            make.top.equalTo(purpleEx2.snp.bottom).offset(-1)
+        }
+        
+        view.addSubview(purpleEx4)
+        purpleEx4.snp.makeConstraints { make in
+            make.width.equalTo(24)
+            make.height.equalTo(33)
+            make.leading.equalTo(timeTable.snp.trailing).offset(10)
+            make.top.equalTo(purpleEx3.snp.bottom).offset(-1)
+        }
+        
+        // 인원 수 label
+        view.addSubview(peopleNum1)
+        peopleNum1.snp.makeConstraints { make in
+            make.height.equalTo(12)
+            make.leading.equalTo(purpleEx1.snp.trailing).offset(6)
+            make.bottom.equalTo(purpleEx1.snp.bottom)
+        }
+        
+        view.addSubview(peopleNum2)
+        peopleNum2.snp.makeConstraints { make in
+            make.height.equalTo(12)
+            make.leading.equalTo(purpleEx1.snp.trailing).offset(6)
+            make.bottom.equalTo(purpleEx2.snp.bottom)
+        }
+        
+        view.addSubview(peopleNum3)
+        peopleNum3.snp.makeConstraints { make in
+            make.height.equalTo(12)
+            make.leading.equalTo(purpleEx1.snp.trailing).offset(6)
+            make.bottom.equalTo(purpleEx3.snp.bottom)
+        }
+        
+        view.addSubview(peopleNum4)
+        peopleNum4.snp.makeConstraints { make in
+            make.height.equalTo(12)
+            make.leading.equalTo(purpleEx1.snp.trailing).offset(6)
+            make.bottom.equalTo(purpleEx4.snp.bottom)
+        }
     }
 }
 
@@ -182,8 +308,7 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
-        
-        
+                
     }
     
     // 셀 수
