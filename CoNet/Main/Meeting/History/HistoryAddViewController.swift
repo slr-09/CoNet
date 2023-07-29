@@ -13,6 +13,9 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     var isPhotoUploaded = false
     var isContentsEntered = false
     
+    let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
+    let contentView = UIView().then { $0.backgroundColor = .clear }
+    
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
     }
@@ -154,55 +157,53 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         $0.tintColor = UIColor.black
         $0.becomeFirstResponder()
     }
-    
-    private let scrollView = UIScrollView().then {
-        $0.showsVerticalScrollIndicator = false
-        $0.showsHorizontalScrollIndicator = false
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.view.addSubview(backButton)
-        self.view.addSubview(historyAddLabel)
-        self.view.addSubview(completionButton)
+        view.addSubview(scrollview)
+        scrollview.addSubview(contentView)
+        contentView.addSubview(backButton)
+        contentView.addSubview(historyAddLabel)
+        contentView.addSubview(completionButton)
+        applyConstraintsToscrollview()
         applyConstraintsToTabs()
         
-        self.view.addSubview(planNameLabel)
-        self.view.addSubview(planNameText)
-        self.view.addSubview(grayLine1)
+        contentView.addSubview(planNameLabel)
+        contentView.addSubview(planNameText)
+        contentView.addSubview(grayLine1)
         applyConstraintsToPlanName()
         
-        self.view.addSubview(planDateLabel)
-        self.view.addSubview(planDateText)
-        self.view.addSubview(grayLine2)
+        contentView.addSubview(planDateLabel)
+        contentView.addSubview(planDateText)
+        contentView.addSubview(grayLine2)
         applyConstraintsToPlanDate()
         
-        self.view.addSubview(planTimeLabel)
-        self.view.addSubview(planTimeText)
-        self.view.addSubview(grayLine3)
+        contentView.addSubview(planTimeLabel)
+        contentView.addSubview(planTimeText)
+        contentView.addSubview(grayLine3)
         applyConstraintsToPlanTime()
         
-        self.view.addSubview(memberLabel)
-        self.view.addSubview(member1ImageView)
-        self.view.addSubview(member1NameLabel)
-        self.view.addSubview(member2ImageView)
-        self.view.addSubview(member2NameLabel)
-        self.view.addSubview(member3ImageView)
-        self.view.addSubview(member3NameLabel)
+        contentView.addSubview(memberLabel)
+        contentView.addSubview(member1ImageView)
+        contentView.addSubview(member1NameLabel)
+        contentView.addSubview(member2ImageView)
+        contentView.addSubview(member2NameLabel)
+        contentView.addSubview(member3ImageView)
+        contentView.addSubview(member3NameLabel)
         applyConstraintsToMember()
         
-        self.view.addSubview(photoLabel)
-        self.view.addSubview(photoImageView)
-        self.view.addSubview(photoAddButton)
-        self.view.addSubview(photoAddLabel)
+        contentView.addSubview(photoLabel)
+        contentView.addSubview(photoImageView)
+        contentView.addSubview(photoAddButton)
+        contentView.addSubview(photoAddLabel)
         applyConstraintsToPhoto()
         
         contentsTextField.delegate = self
-        self.view.addSubview(contentsLabel)
-        self.view.addSubview(contentsView)
-        self.view.addSubview(contentsTextField)
+        contentView.addSubview(contentsLabel)
+        contentView.addSubview(contentsView)
+        contentView.addSubview(contentsTextField)
         applyConstraintsToContents()
         
         completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
@@ -213,12 +214,23 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
 }
 
 extension HistoryAddViewController {
+    private func applyConstraintsToscrollview() {
+        scrollview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollview.contentLayoutGuide)
+            make.width.equalTo(scrollview.frameLayoutGuide)
+            make.height.equalTo(2000)
+        }
+    }
+    
     func applyConstraintsToTabs() {
         let safeArea = view.safeAreaLayoutGuide
         backButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(safeArea.snp.leading).offset(17)
+            make.top.equalTo(contentView.snp.top).offset(41)
+            make.leading.equalTo(contentView.snp.leading).offset(17)
         }
         historyAddLabel.snp.makeConstraints { make in
             make.centerY.equalTo(backButton)
@@ -227,7 +239,7 @@ extension HistoryAddViewController {
         completionButton.snp.makeConstraints { make in
             make.width.equalTo(31)
             make.centerY.equalTo(backButton)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
     }
 
@@ -235,18 +247,18 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         planNameLabel.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(44)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in
             make.top.equalTo(planNameLabel.snp.bottom).offset(10)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
         grayLine1.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.top.equalTo(planNameText.snp.bottom).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
     }
 
@@ -254,18 +266,18 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         planDateLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine1.snp.bottom).offset(26)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planDateText.snp.makeConstraints { make in
             make.top.equalTo(planDateLabel.snp.bottom).offset(10)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
         grayLine2.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.top.equalTo(planDateText.snp.bottom).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
     }
 
@@ -273,18 +285,18 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         planTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine2.snp.bottom).offset(26)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planTimeText.snp.makeConstraints { make in
             make.top.equalTo(planTimeLabel.snp.bottom).offset(10)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
         grayLine3.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.top.equalTo(planTimeText.snp.bottom).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
     }
 
@@ -292,12 +304,12 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         memberLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         member1ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         member1NameLabel.snp.makeConstraints { make in
             make.width.equalTo(93)
@@ -317,7 +329,7 @@ extension HistoryAddViewController {
         member3ImageView.snp.makeConstraints { make in
             make.width.height.equalTo(42)
             make.top.equalTo(member1ImageView.snp.bottom).offset(10)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         member3NameLabel.snp.makeConstraints { make in
             make.width.equalTo(93)
@@ -330,12 +342,12 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         photoLabel.snp.makeConstraints { make in
             make.top.equalTo(member3ImageView.snp.bottom).offset(26)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         photoImageView.snp.makeConstraints { make in
             make.width.height.equalTo(88)
             make.top.equalTo(photoLabel.snp.bottom).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         photoAddButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
@@ -355,14 +367,14 @@ extension HistoryAddViewController {
         let safeArea = view.safeAreaLayoutGuide
         contentsLabel.snp.makeConstraints { make in
             make.top.equalTo(photoImageView.snp.bottom).offset(26)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         contentsView.snp.makeConstraints { make in
             make.width.equalTo(345)
             make.height.equalTo(163)
             make.top.equalTo(contentsLabel.snp.bottom).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
         contentsTextField.snp.makeConstraints { make in
             make.top.equalTo(contentsView.snp.top).offset(25)
@@ -414,13 +426,13 @@ extension HistoryAddViewController {
 
         photoImageView.snp.remakeConstraints { make in
             if isPhotoUploaded {
-                make.width.height.equalToSuperview().offset(-48)
+                make.width.height.equalTo(345)
                 make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(safeArea.snp.leading).offset(24)
+                make.leading.equalTo(contentView.snp.leading).offset(24)
             } else {
                 make.width.height.equalTo(88)
                 make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(safeArea.snp.leading).offset(24)
+                make.leading.equalTo(contentView.snp.leading).offset(24)
             }
         }
         photoAddButton.snp.makeConstraints { make in
@@ -447,4 +459,3 @@ extension HistoryAddViewController {
         }
     }
 }
-
