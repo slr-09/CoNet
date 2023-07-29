@@ -205,6 +205,10 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
+        
+        // change cell background color
+        let cell  = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
+        cell.changeCellColor()
     }
     
     // 셀 수

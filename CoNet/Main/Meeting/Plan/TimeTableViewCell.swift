@@ -22,14 +22,6 @@ class TimeTableViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var isSelected: Bool {
-        didSet {
-            if isSelected {
-                changeCellColor()
-            } 
-        }
-    }
-    
     // 셀 클릭 시 background color 바꾸기
     func changeCellColor() {
         if contentView.backgroundColor == UIColor.white {
