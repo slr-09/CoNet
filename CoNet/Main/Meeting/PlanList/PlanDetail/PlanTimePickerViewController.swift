@@ -42,7 +42,7 @@ class PlanTimePickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .clear
         
         self.view.addSubview(background)
         self.view.addSubview(bottomSheet)
