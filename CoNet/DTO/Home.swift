@@ -19,6 +19,16 @@ struct GetDayPlanResult: Codable {
     let plans: [Plan]
 }
 
+// 대기 중인 약속 조회
+struct GetWaitingPlanResult: Codable {
+    let count: Int
+    let plans: [WaitingPlan]
+}
+
 struct Plan: Codable {
     let date, time, teamName, planName: String
+}
+
+struct WaitingPlan: Codable {
+    let startDate, endDate, teamName, planName: String
 }
