@@ -12,3 +12,13 @@ struct GetMonthPlanResult: Codable {
     let count: Int
     let dates: [Int]
 }
+
+// 특정 날짜 약속 조회
+struct GetDayPlanResult: Codable {
+    let count: Int
+    let plans: [Plan]
+}
+
+struct Plan: Codable {
+    let date, time, teamName, planName: String
+}
