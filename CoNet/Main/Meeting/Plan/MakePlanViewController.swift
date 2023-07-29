@@ -21,7 +21,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
         $0.font = UIFont.body2Bold
-        $0.textColor = UIColor.textDisabled
+        $0.textColor = UIColor.gray300
     }
     let planNameTextField = UITextField().then {
         $0.placeholder = "약속 이름 입력"
@@ -43,7 +43,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     let planStartDateLabel = UILabel().then {
         $0.text = "약속 기간 - 시작일"
         $0.font = UIFont.body2Bold
-        $0.textColor = UIColor.iconDisabled
+        $0.textColor = UIColor.gray300
     }
     let planStartDateField = UITextField().then {
         $0.placeholder = "YYYY.MM.DD"
@@ -57,16 +57,19 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     let grayLine2 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
     }
+    let planStartDateUnderImage = UIImageView().then {
+        $0.image = UIImage(named: "emarkPurple")
+    }
     let planStartDateUnderLabel = UILabel().then {
         $0.text = "약속 기간은 시작일로부터 7일 자동 설정됩니다"
-        $0.font = UIFont.body3Medium
-        $0.textColor = UIColor.iconDisabled
+        $0.font = UIFont.caption
+        $0.textColor = UIColor.textHigh
     }
     let makeButton = UIButton().then {
         $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
         $0.backgroundColor = UIColor.gray200
         $0.setTitleColor(.white, for: .normal)
-        $0.setTitle("만들기", for: .normal)
+        $0.setTitle("다음", for: .normal)
         $0.titleLabel?.font = UIFont.body1Medium
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
@@ -80,7 +83,6 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(makePlanLabel)
         applyConstraintsToTopSection()
         
-        planNameTextField.delegate = self
         self.view.addSubview(planNameLabel)
         self.view.addSubview(xnameButton)
         self.view.addSubview(planNameTextField)
@@ -92,21 +94,20 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(planStartDateField)
         self.view.addSubview(calendarButton)
         self.view.addSubview(grayLine2)
+        self.view.addSubview(planStartDateUnderImage)
         self.view.addSubview(planStartDateUnderLabel)
         applyConstraintsToPlanDate()
         
         self.view.addSubview(makeButton)
         applyConstraintsToMakeButton()
         
-        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
-        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-        super.touchesBegan(touches, with: event)
+        
+        planNameTextField.delegate = self
+        planStartDateField.delegate = self
+        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
     }
     
     func applyConstraintsToTopSection() {
@@ -172,6 +173,11 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
+        planStartDateUnderImage.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+            make.top.equalTo(grayLine2.snp.bottom).offset(8)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
         planStartDateUnderLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine2.snp.bottom).offset(6)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
@@ -198,7 +204,6 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             textCountLabel.text = "\(nameCount)/20"
             xnameButton.isHidden = text.isEmpty
         }
-        
         updateMakeButtonState()
     }
     
@@ -226,12 +231,21 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
 }
 extension MakePlanViewController {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        grayLine1.backgroundColor = UIColor.purpleMain
-        xnameButton.isHidden = false
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = false
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = true
+        }
     }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
-        grayLine1.backgroundColor = UIColor.iconDisabled
-        updateMakeButtonState()
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        }
         xnameButton.isHidden = true
     }
 }

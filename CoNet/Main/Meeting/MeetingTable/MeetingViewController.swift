@@ -1,5 +1,5 @@
 //
-//  GatherViewController.swift
+//  MeetingViewController.swift
 //  CoNet
 //
 //  Created by 정아현 on 2023/07/15.
@@ -65,10 +65,8 @@ class MeetingCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalTo(imageView)
         }
-
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -130,6 +128,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         let _: CGFloat = (collectionView.frame.width / 2) - 17
         return CGSize(width: 164, height: 232)
     }
+    
+    let scrollview = UIScrollView().then {
+        $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
+    }
+    let contentView = UIView().then { $0.backgroundColor = .clear }
     
     let gatherLabel = UILabel().then {
         $0.text = "모임"
@@ -204,27 +208,29 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         self.view.backgroundColor = .white
-        self.view.addSubview(gatherLabel)
-        self.view.addSubview(item)
-        self.view.addSubview(selectedTabIndicator)
-        
+        view.addSubview(scrollview)
+        scrollview.addSubview(contentView)
+        contentView.addSubview(gatherLabel)
+        contentView.addSubview(item)
+        contentView.addSubview(selectedTabIndicator)
+        applyConstraintsToScrollView()
         applyConstraintsToTabs(stackView: item)
 
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
         favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         
-        self.view.addSubview(plusButton)
+        contentView.addSubview(plusButton)
         applyConstraintsToPlusButton()
         
-        self.view.addSubview(collectionView)
+        contentView.addSubview(collectionView)
         applyConstraintsToCollectionView()
 
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
-        self.view.addSubview(peopleButton)
-        self.view.addSubview(joinLabel)
-        self.view.addSubview(participateButton)
-        self.view.addSubview(addLabel)
+        contentView.addSubview(peopleButton)
+        contentView.addSubview(joinLabel)
+        contentView.addSubview(participateButton)
+        contentView.addSubview(addLabel)
 
         applyConstraintsToPlusButton()
         applyConstraintsToPeopleButtonAndJoinLabel()
@@ -237,14 +243,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
             overlayView.frame = self.view.bounds
             overlayView.alpha = 0
-            self.view.addSubview(overlayView)
+            contentView.addSubview(overlayView)
             
             // Adjust the view order here so that the selected elements are above the overlay
-            self.view.bringSubviewToFront(plusButton)
-            self.view.bringSubviewToFront(peopleButton)
-            self.view.bringSubviewToFront(participateButton)
-            self.view.bringSubviewToFront(addLabel)
-            self.view.bringSubviewToFront(joinLabel)
+        contentView.bringSubviewToFront(plusButton)
+        contentView.bringSubviewToFront(peopleButton)
+        contentView.bringSubviewToFront(participateButton)
+        contentView.bringSubviewToFront(addLabel)
+        contentView.bringSubviewToFront(joinLabel)
         
         UIView.animate(withDuration: 0.3) {
             self.peopleButton.alpha = 0
@@ -252,6 +258,17 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.joinLabel.alpha = 0
             self.addLabel.alpha = 0
             self.overlayView.alpha = 0
+        }
+    }
+    
+    func applyConstraintsToScrollView() {
+        scrollview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollview.contentLayoutGuide)
+            make.width.equalTo(scrollview.frameLayoutGuide)
+            make.height.equalTo(2000)
         }
     }
     
@@ -267,8 +284,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
             make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
@@ -278,8 +295,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         favcollectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
             make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
@@ -288,6 +305,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
+        collectionView.isScrollEnabled = false
     }
     
     func setupFavCollectionView() {
@@ -299,12 +317,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     func applyConstraintsToTabs(stackView: UIStackView) {
         gatherLabel.snp.makeConstraints { make in
             let safeArea = view.safeAreaLayoutGuide
-            make.top.equalTo(safeArea.snp.top).offset(38)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.top.equalTo(contentView.snp.top).offset(38)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         item.snp.makeConstraints { make in
             make.top.equalTo(gatherLabel.snp.bottom).offset(24)
-            make.left.equalTo(self.view).offset(24)
+            make.left.equalTo(contentView).offset(24)
         }
         selectedTabIndicator.snp.makeConstraints { make in
             make.top.equalTo(allTab.snp.bottom).offset(4)
