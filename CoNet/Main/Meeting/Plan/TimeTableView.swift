@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class TimeTableView: UIView {
-    
     // 시각 표시
     let hourStackView = UIStackView().then {
         $0.axis = .vertical
@@ -31,25 +30,25 @@ class TimeTableView: UIView {
         hourSetting()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // 시각 stackView setting
     func hourSetting() {
-        for idx in 0...24 {
+        for idx in 0 ... 24 {
             let numLabel = UILabel().then {
                 $0.font = UIFont.overline
                 $0.textColor = UIColor.textMedium
                 $0.text = String(idx) + ":00"
             }
             
-            self.hourStackView.addArrangedSubview(numLabel)
+            hourStackView.addArrangedSubview(numLabel)
         }
     }
     
     func layoutConstraints() {
-        
         // 시각
         addSubview(hourStackView)
         hourStackView.snp.makeConstraints { make in

@@ -76,6 +76,9 @@ class TimeInputViewController: UIViewController {
         $0.layer.cornerRadius = 12
     }
     
+    // 가능한 시간 없음 버튼 클릭 여부 체크
+    var possibleTimeCheck = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -90,11 +93,27 @@ class TimeInputViewController: UIViewController {
     // 버튼 클릭 이벤트 
     func btnClickEvents() {
         prevButton.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
+        timeImpossibleButton.addTarget(self, action: #selector(didClickTimeImpossibleButton), for: .touchUpInside)
     }
     
     // 이전 버튼 클릭 시 창 끄기
     @objc func didClickPrevButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // 가능한 시간 없음 버튼 클릭 시
+    // possibleTimeCheck: true/false
+    @objc func didClickTimeImpossibleButton() {
+        possibleTimeCheck = !possibleTimeCheck
+        timeTable.timeTableCollectionView.reloadData()
+        
+        if possibleTimeCheck {
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossibleSelected"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.purpleMain
+        } else {
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.textDisabled
+        }
     }
     
     func timeTableSetting() {
@@ -206,9 +225,12 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         
-        // change cell background color
-        let cell  = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
-        cell.changeCellColor()
+        // 가능한 시간 없은 버튼 체크하지 않은 경우만
+        if !possibleTimeCheck {
+            // change cell background color
+            let cell  = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
+            cell.changeCellColor()
+        }
     }
     
     // 셀 수
@@ -233,6 +255,13 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
+        
+        // 가능한 시간 없음 버튼 클릭 여부 체크
+        if possibleTimeCheck {
+            cell.contentView.backgroundColor = UIColor.gray50
+        } else {
+            cell.contentView.backgroundColor = .white
+        }
         
         return cell
     }
