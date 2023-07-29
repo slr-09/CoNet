@@ -67,8 +67,8 @@ class CalendarView: UIView {
     
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
+        planDates = []
         HomeAPI.shared.getMonthPlan(date: date) { count, dates in
-            print("getMonthPlan count: ", count)
             self.planDates = dates
         }
     }
@@ -180,11 +180,19 @@ class CalendarView: UIView {
         updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
+        
+        // 날짜 포맷 변경: yyyy-MM
+        header = header.replacingOccurrences(of: "년 ", with: "-")
+        header = header.replacingOccurrences(of: "월", with: "")
+        
+        // api: 특정 달 약속 조회
+        getMonthPlanAPI(date: header)
     }
   
     // 달 이동
     func moveMonth(month: Int) {
         var header = calendarDateFormatter.moveMonth(month: month)
+        updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
         
@@ -255,8 +263,11 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 약속 있는 날 표시하기
         if planDates.contains(Int(cellDay) ?? 0) {
             cell.configurePlan()
+        } else {
+            cell.reloadPlanMark()
         }
         
+        collectionView.reloadData()
         return cell
     }
     
