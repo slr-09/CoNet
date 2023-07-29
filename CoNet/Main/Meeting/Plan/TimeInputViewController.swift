@@ -205,7 +205,6 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
-                
     }
     
     // 셀 수

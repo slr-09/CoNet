@@ -22,6 +22,7 @@ class TimeTableView: UIView {
     // 타임테이블
     let timeTableCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.register(TimeTableViewCell.self, forCellWithReuseIdentifier: TimeTableViewCell.identifier)
+        $0.isScrollEnabled = false
     }
     
     override init(frame: CGRect) {
