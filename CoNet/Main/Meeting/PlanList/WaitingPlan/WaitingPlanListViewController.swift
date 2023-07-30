@@ -81,6 +81,6 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     }
 }
 
-protocol ModalViewControllerDelegate: AnyObject {
+protocol MeetingMainViewControllerDelegate: AnyObject {
     func sendDataBack(data: SideBarMenu)
 }

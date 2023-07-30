@@ -54,7 +54,7 @@ class MeetingDelPopUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .clear
         
         self.view.addSubview(background)
         self.view.addSubview(popUpView)
@@ -143,3 +143,13 @@ class MeetingDelPopUpViewController: UIViewController {
         
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        MeetingDelPopUpViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
