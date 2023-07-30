@@ -113,7 +113,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         historyButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
         
         deleteMeetingButton.addTarget(self, action: #selector(showDeleteMeeting), for: .touchUpInside)
-        leaveMeetingButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
+        leaveMeetingButton.addTarget(self, action: #selector(showLeaveMeeting), for: .touchUpInside)
         
         // custom UIView 사용에 따른 delegate 지정
         buttonsDelegate()
@@ -143,6 +143,10 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     
     @objc func showDeleteMeeting() {
         self.sideBarListButtonTapped(title: .delete)
+    }
+    
+    @objc func showLeaveMeeting() {
+        self.sideBarListButtonTapped(title: .out)
     }
     
     // 이전 ViewController로 데이터를 전달하는 delegate

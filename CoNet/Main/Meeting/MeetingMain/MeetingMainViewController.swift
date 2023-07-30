@@ -368,8 +368,9 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .delete:
             nextVC = MeetingDelPopUpViewController()
             presentViewControllerModaly(nextVC)
-        case .showMainMeeting:
-            popViewController()
+        case .out:
+            nextVC = MeetingOutPopUpViewController()
+            presentViewControllerModaly(nextVC)
         default:
             nextVC = WaitingPlanListViewController()
             pushViewController(nextVC)
