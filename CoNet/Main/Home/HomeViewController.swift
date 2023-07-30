@@ -46,7 +46,7 @@ class HomeViewController: UIViewController {
     }
     
     // 오늘 약속 데이터
-    private let dayPlanData = PlanDummyData.dayPlanData
+    var dayPlanData: [Plan] = []
     
     // label: 대기 중 약속
     let waitingPlanLabel = UILabel().then {
@@ -73,6 +73,8 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 데이터
     private let waitingPlanData = PlanDummyData.watingPlanData
     
+    let calendarDateFormatter = CalendarDateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -88,6 +90,16 @@ class HomeViewController: UIViewController {
         calendarView.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
         
         setupCollectionView()
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        // api: 특정 날짜 약속
+        HomeAPI().getDayPlan(date: format.string(from: Date())) { count, plans in
+            self.planNum.text = String(count)
+            self.dayPlanData = plans
+            self.dayPlanCollectionView.reloadData()
+        }
     }
     
     private func setupCollectionView() {
@@ -100,6 +112,9 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.delegate = self
         waitingPlanCollectionView.dataSource = self
         waitingPlanCollectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
+        
+        // 캘린더 뷰
+        calendarView.calendarCollectionView.delegate = self
     }
     
     // yearMonth 클릭
@@ -207,7 +222,7 @@ class HomeViewController: UIViewController {
     
     // change day label
     func changeDate(month: String, day: String) {
-        if month=="" && day=="" {
+        if month == "" && day == "" {
             dayPlanLabel.text = "오늘의 약속"
         } else {
             dayPlanLabel.text = month + "월 " + day + "일의 약속"
@@ -219,13 +234,51 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
+        
+        if collectionView == calendarView.calendarCollectionView {
+            // 캘린더 날짜
+            let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
+            let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
+            // 날짜 포멧 바꾸기
+            var calendarDate = yeMo + " " + String(calendarDay) + "일"
+
+            let format = DateFormatter()
+            format.dateFormat = "yyyy년 MM월 dd일"
+            let today = format.string(from: Date())
+            
+            // 선택한 날짜가 오늘일 때
+            // 날짜 label 변경
+            if today == calendarDate {
+                changeDate(month: "", day: "")
+            } else {
+                format.dateFormat = "MM"
+                changeDate(month: format.string(from: Date()), day: calendarDay)
+            }
+            
+            // 선택 날짜 포맷 변경
+            calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
+            calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
+            calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
+            
+            // api: 특정 날짜 약속
+            HomeAPI().getDayPlan(date: calendarDate) { count, plans in
+                self.planNum.text = String(count)
+                self.dayPlanData = plans
+                self.dayPlanCollectionView.reloadData()
+            }
+        }
     }
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
-        if collectionView == dayPlanCollectionView { count = dayPlanData.count }
-        else if collectionView == waitingPlanCollectionView { count = waitingPlanData.count }
+        if collectionView == dayPlanCollectionView {    // 오늘 약속
+            count = dayPlanData.count
+        } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
+            count = waitingPlanData.count
+        } else if collectionView == calendarView.calendarCollectionView {   // 캘린더
+            count = calendarDateFormatter.days.count
+        }
         
         return count
     }
@@ -239,8 +292,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {
@@ -262,11 +315,25 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
+        
+        if collectionView == calendarView.calendarCollectionView {  // 캘린더
+            let width = calendarView.weekStackView.frame.width / 7
+            return CGSize(width: width, height: 50)
+        }
+        
         return CGSize(width: width, height: 82)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == calendarView.calendarCollectionView {  // 캘린더
+            return .zero
+        }
         return 10
+    }
+    
+    // 양옆 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
     }
 }

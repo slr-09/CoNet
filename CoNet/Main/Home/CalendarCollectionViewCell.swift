@@ -74,6 +74,13 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             make.bottom.equalTo(self.snp.bottom).offset(-3)
             make.centerX.equalTo(self.snp.centerX)
         }
+        
+        planCircle.isHidden = false
+    }
+    
+    // 약속 표시 숨기기
+    func reloadPlanMark() {
+        planCircle.isHidden = true
     }
     
     // 일요일 빨간색으로 설정
