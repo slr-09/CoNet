@@ -176,7 +176,7 @@ class CalendarView: UIView {
     
     // 다음 달로 이동 버튼
     @objc func didClickNextBtn() {
-        var header = calendarDateFormatter.plusMonth()
+        let header = calendarDateFormatter.plusMonth()
         updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)

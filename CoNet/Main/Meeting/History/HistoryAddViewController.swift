@@ -226,7 +226,6 @@ extension HistoryAddViewController {
     }
     
     func applyConstraintsToTabs() {
-        let safeArea = view.safeAreaLayoutGuide
         backButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.top.equalTo(contentView.snp.top).offset(41)
@@ -244,7 +243,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToPlanName() {
-        let safeArea = view.safeAreaLayoutGuide
         planNameLabel.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(44)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -263,7 +261,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToPlanDate() {
-        let safeArea = view.safeAreaLayoutGuide
         planDateLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine1.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -282,7 +279,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToPlanTime() {
-        let safeArea = view.safeAreaLayoutGuide
         planTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine2.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -301,7 +297,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToMember() {
-        let safeArea = view.safeAreaLayoutGuide
         memberLabel.snp.makeConstraints { make in
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -339,7 +334,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToPhoto() {
-        let safeArea = view.safeAreaLayoutGuide
         photoLabel.snp.makeConstraints { make in
             make.top.equalTo(member3ImageView.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -364,7 +358,6 @@ extension HistoryAddViewController {
     }
 
     func applyConstraintsToContents() {
-        let safeArea = view.safeAreaLayoutGuide
         contentsLabel.snp.makeConstraints { make in
             make.top.equalTo(photoImageView.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -421,7 +414,6 @@ extension HistoryAddViewController {
     }
     
     func updatePhotoImageViewSize() {
-        let safeArea = view.safeAreaLayoutGuide
         photoImageView.clipsToBounds = true
 
         photoImageView.snp.remakeConstraints { make in
