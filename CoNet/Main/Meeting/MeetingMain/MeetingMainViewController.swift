@@ -368,10 +368,16 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .delete:
             nextVC = MeetingDelPopUpViewController()
             presentViewControllerModaly(nextVC)
+        case .showMainMeeting:
+            popViewController()
         default:
             nextVC = WaitingPlanListViewController()
             pushViewController(nextVC)
         }
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
     }
     
     func pushViewController(_ nextVC: UIViewController) {
