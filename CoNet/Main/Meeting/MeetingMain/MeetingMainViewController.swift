@@ -340,26 +340,56 @@ class MeetingMainViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(waitingPlanData.count*92)
+            make.height.equalTo(waitingPlanData.count * 92)
         }
     }
 }
 
-extension MeetingMainViewController: ModalViewControllerDelegate {
+extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     func sendDataBack(data: SideBarMenu) {
         var nextVC: UIViewController
         
         switch data {
-        case .editInfo: nextVC = MeetingInfoEditViewController()
-        case .wait: nextVC = WaitingPlanListViewController()
-        case .decided: nextVC = DecidedPlanListViewController()
-        case .past: nextVC = PastPlanListViewController()
-        case .history: nextVC = HistoryViewController()
-        default: nextVC = WaitingPlanListViewController()
+        case .editInfo:
+            nextVC = MeetingInfoEditViewController()
+            pushViewController(nextVC)
+        case .wait:
+            nextVC = WaitingPlanListViewController()
+            pushViewController(nextVC)
+        case .decided:
+            nextVC = DecidedPlanListViewController()
+            pushViewController(nextVC)
+        case .past:
+            nextVC = PastPlanListViewController()
+            pushViewController(nextVC)
+        case .history:
+            nextVC = HistoryViewController()
+            pushViewController(nextVC)
+        case .delete:
+            nextVC = MeetingDelPopUpViewController()
+            presentViewControllerModaly(nextVC)
+        case .out:
+            nextVC = MeetingOutPopUpViewController()
+            presentViewControllerModaly(nextVC)
+        default:
+            nextVC = WaitingPlanListViewController()
+            pushViewController(nextVC)
         }
-        
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func pushViewController(_ nextVC: UIViewController) {
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func presentViewControllerModaly(_ nextVC: UIViewController) {
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
     }
 }
 
@@ -372,8 +402,11 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
-        if collectionView == dayPlanCollectionView { count = dayPlanData.count }
-        else if collectionView == waitingPlanCollectionView { count = waitingPlanData.count }
+        if collectionView == dayPlanCollectionView {
+            count = dayPlanData.count
+        } else if collectionView == waitingPlanCollectionView {
+            count = waitingPlanData.count
+        }
         
         return count
     }

@@ -280,8 +280,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
         
     func applyConstraintsToCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -291,8 +289,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func applyConstraintsToFavCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        
         favcollectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -316,7 +312,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func applyConstraintsToTabs(stackView: UIStackView) {
         gatherLabel.snp.makeConstraints { make in
-            let safeArea = view.safeAreaLayoutGuide
             make.top.equalTo(contentView.snp.top).offset(38)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
