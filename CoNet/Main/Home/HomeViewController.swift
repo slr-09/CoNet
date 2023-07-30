@@ -46,7 +46,7 @@ class HomeViewController: UIViewController {
     }
     
     // 오늘 약속 데이터
-    private let dayPlanData = PlanDummyData.dayPlanData
+    var dayPlanData: [Plan] = []
     
     // label: 대기 중 약속
     let waitingPlanLabel = UILabel().then {
@@ -90,6 +90,16 @@ class HomeViewController: UIViewController {
         calendarView.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
         
         setupCollectionView()
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        // api: 특정 날짜 약속
+        HomeAPI().getDayPlan(date: format.string(from: Date())) { count, plans in
+            self.planNum.text = String(count)
+            self.dayPlanData = plans
+            self.dayPlanCollectionView.reloadData()
+        }
     }
     
     private func setupCollectionView() {
@@ -230,18 +240,31 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
             let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
             // 날짜 포멧 바꾸기
-            let calendarDate = yeMo + " " + String(calendarDay) + "일"
+            var calendarDate = yeMo + " " + String(calendarDay) + "일"
 
             let format = DateFormatter()
             format.dateFormat = "yyyy년 MM월 dd일"
             let today = format.string(from: Date())
             
             // 선택한 날짜가 오늘일 때
+            // 날짜 label 변경
             if today == calendarDate {
                 changeDate(month: "", day: "")
             } else {
                 format.dateFormat = "MM"
                 changeDate(month: format.string(from: Date()), day: calendarDay)
+            }
+            
+            // 선택 날짜 포맷 변경
+            calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
+            calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
+            calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
+            
+            // api: 특정 날짜 약속
+            HomeAPI().getDayPlan(date: calendarDate) { count, plans in
+                self.planNum.text = String(count)
+                self.dayPlanData = plans
+                self.dayPlanCollectionView.reloadData()
             }
         }
     }
@@ -269,8 +292,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {
