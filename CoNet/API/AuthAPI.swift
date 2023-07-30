@@ -95,10 +95,12 @@ class AuthAPI {
                 print("DEBUG(kakao login) access token: \(response.result?.accessToken ?? "")")
                 print("DEBUG(kakao login) refresh token: \(response.result?.refreshToken ?? "")")
                 
-                self.keychain.set(response.result!.email, forKey: "email")
-                self.keychain.set(response.result!.accessToken, forKey: "accessToken")
-                self.keychain.set(response.result!.refreshToken, forKey: "refreshToken")
-                self.keychain.set(response.result!.isRegistered, forKey: "kakaoIsRegistered")
+                guard let result = response.result else { return }
+                
+                self.keychain.set(result.email, forKey: "email")
+                self.keychain.set(result.accessToken, forKey: "accessToken")
+                self.keychain.set(result.refreshToken, forKey: "refreshToken")
+                self.keychain.set(result.isRegistered, forKey: "kakaoIsRegistered")
                 
                 completion(response.result!.isRegistered)
                 print(response.result!.isRegistered)

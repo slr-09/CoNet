@@ -190,9 +190,7 @@ class MeetingInfoEditViewController: UIViewController {
     }
     
     @objc private func xButtonTapped() {
-        let meetingVC = MeetingViewController()
-        meetingVC.modalPresentationStyle = .fullScreen
-        present(meetingVC, animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func textFieldEditingChanged() {
