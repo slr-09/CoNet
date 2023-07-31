@@ -83,12 +83,14 @@ class WaitingPlanCell: UICollectionViewCell {
         startDateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateView.snp.top)
+            make.centerX.equalToSuperview()
         }
         
         dateView.addSubview(finishDateLabel)
         finishDateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.bottom.equalTo(dateView.snp.bottom)
+            make.centerX.equalToSuperview()
         }
         
         dateView.addSubview(divider)
@@ -98,7 +100,7 @@ class WaitingPlanCell: UICollectionViewCell {
         
         background.addSubview(dateView)
         dateView.snp.makeConstraints { make in
-            make.width.equalTo(startDateLabel.snp.width)
+            make.width.equalTo(88)
             make.height.equalTo(background).offset(-40)
             make.top.equalTo(background.snp.top).offset(20)
             make.leading.equalTo(background.snp.leading).offset(20)

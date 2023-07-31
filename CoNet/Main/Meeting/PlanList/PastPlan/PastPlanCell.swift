@@ -86,19 +86,20 @@ class PastPlanCell: UICollectionViewCell {
         dateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateView.snp.top)
+            make.centerX.equalToSuperview()
         }
         
         dateView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(dateLabel.snp.centerX)
+            make.centerX.equalToSuperview()
         }
         
         background.addSubview(dateView)
         dateView.snp.makeConstraints { make in
             make.height.equalTo(36)
-            make.width.equalTo(dateLabel.snp.width)
+            make.width.equalTo(84)
             make.centerY.equalTo(background.snp.centerY)
             make.leading.equalTo(background.snp.leading).offset(20)
         }
