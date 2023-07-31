@@ -177,11 +177,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     let peopleButton = UIButton().then {
-        $0.setImage(UIImage(named: "add"), for: .normal)
+        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
     }
     
     let participateButton = UIButton().then {
-        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
+        $0.setImage(UIImage(named: "add"), for: .normal)
     }
     
     let joinLabel = UILabel().then {
@@ -399,13 +399,13 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func didTapparticipateButton(_ sender: Any) {
-        let popupVC = MeetingPopUpViewController()
+        let popupVC = MeetingAddViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
     }
     
     @objc func didTapPeopleButton(_ sender: Any) {
-        let addVC = MeetingAddViewController()
+        let addVC = MeetingPopUpViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }
