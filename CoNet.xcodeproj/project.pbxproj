@@ -63,7 +63,6 @@
 		514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D32A59D19A00404E64 /* NoticeViewController.swift */; };
 		514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D52A59D2FB00404E64 /* InquireViewController.swift */; };
 		515E53B82A77B48000536C6D /* ShadowWaitingPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */; };
-		515E53BA2A77B4D500536C6D /* ShadowPlanListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */; };
 		518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */; };
 		518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D82A683F68002D8F0F /* PopUpView.swift */; };
 		518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */; };
@@ -152,7 +151,6 @@
 		514D73D32A59D19A00404E64 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		514D73D52A59D2FB00404E64 /* InquireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquireViewController.swift; sourceTree = "<group>"; };
 		515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowWaitingPlanCell.swift; sourceTree = "<group>"; };
-		515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPlanListCollectionView.swift; sourceTree = "<group>"; };
 		518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutPopUpViewController.swift; sourceTree = "<group>"; };
 		518F55D82A683F68002D8F0F /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignOutViewController.swift; sourceTree = "<group>"; };
@@ -199,15 +197,13 @@
 		236054F52A593F2E00CA991E /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				515E53BB2A77B9A900536C6D /* PlanCell */,
 				236054F62A593F3B00CA991E /* HomeViewController.swift */,
-				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
 				23DA18292A694551004EC6A6 /* CalendarView.swift */,
 				23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */,
 				235F5B722A69893F00ADC0D6 /* CalendarDateFormatter.swift */,
 				231E97CE2A6BCA04000BB2AD /* MonthViewController.swift */,
 				231E97D02A6BD3F8000BB2AD /* MonthCollectionViewCell.swift */,
-				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
-				515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -292,6 +288,16 @@
 				513D6B962A4BFCCE00E9ACDA /* Info.plist */,
 			);
 			path = CoNet;
+			sourceTree = "<group>";
+		};
+		515E53BB2A77B9A900536C6D /* PlanCell */ = {
+			isa = PBXGroup;
+			children = (
+				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
+				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
+				515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */,
+			);
+			path = PlanCell;
 			sourceTree = "<group>";
 		};
 		518F55D62A683E15002D8F0F /* UserInfo */ = {
@@ -438,7 +444,6 @@
 			children = (
 				51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */,
 				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
-				515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */,
 			);
 			path = PlanList;
 			sourceTree = "<group>";
@@ -681,7 +686,6 @@
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
 				518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
-				515E53BA2A77B4D500536C6D /* ShadowPlanListCollectionView.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				23ED93992A6D5FB9007B0E63 /* HistoryViewController.swift in Sources */,
 				518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */,
