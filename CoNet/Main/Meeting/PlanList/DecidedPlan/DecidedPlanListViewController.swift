@@ -48,6 +48,9 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
+        let nextVC = PlanInfoViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // 셀 개수

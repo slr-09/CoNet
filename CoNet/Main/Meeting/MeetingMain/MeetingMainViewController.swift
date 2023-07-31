@@ -131,7 +131,7 @@ class MeetingMainViewController: UIViewController {
         layoutContraints()
         
         setupCollectionView()
-        
+        addMeetingButton.addTarget(self, action: #selector(showMakePlanViewController), for: .touchUpInside)
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
     
@@ -154,6 +154,12 @@ class MeetingMainViewController: UIViewController {
             let url = URL(string: meeting.imgUrl)!
             self.loadImage(url: url)
         }
+    }
+    
+    @objc private func showMakePlanViewController(_ sender: UIView) {
+        let nextVC = MakePlanViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func loadImage(url imageURL: URL) {
