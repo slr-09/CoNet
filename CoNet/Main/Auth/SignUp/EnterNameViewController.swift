@@ -98,7 +98,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         if isButtonAvailable {
             let name = nameTextField.text ?? ""
-            let isOptionTermSelected = termsSelectedStates?[2] ?? false
+            let isOptionTermSelected = termsSelectedStates?[3] ?? false
             
             AuthAPI().signUp(name: name, optionTerm: isOptionTermSelected) { isSuccess in
                 if isSuccess {
