@@ -40,7 +40,6 @@ class InvitationCodeViewController: UIViewController {
         $0.numberOfLines = 0
     }
     let sendButton = UIButton().then {
-        $0.frame = CGRect(x: 0, y: 0, width: 191, height: 54)
         $0.backgroundColor = UIColor.purpleMain
         $0.setTitleColor(.white, for: .normal)
         $0.setTitle("보내기", for: .normal)
@@ -102,6 +101,8 @@ class InvitationCodeViewController: UIViewController {
             make.leading.equalTo(popUpView.snp.leading).offset(33)
         }
         sendButton.snp.makeConstraints { make in
+            make.width.equalTo(191)
+            make.height.equalTo(54)
             make.top.equalTo(purpleLine.snp.bottom).offset(32)
             make.leading.equalTo(popUpView.snp.leading).offset(33)
             make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
@@ -114,3 +115,12 @@ class InvitationCodeViewController: UIViewController {
         }
     }
 }
+#if canImport(SwiftUI) && DEBUG
+ import SwiftUI
+
+ struct ViewControllerPreview: PreviewProvider {
+     static var previews: some View {
+         InvitationCodeViewController().showPreview(.iPhone14Pro)
+     }
+ }
+ #endif
