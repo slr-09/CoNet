@@ -62,6 +62,8 @@
 		514D73D22A59B42A00404E64 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D12A59B42A00404E64 /* UserInfoViewController.swift */; };
 		514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D32A59D19A00404E64 /* NoticeViewController.swift */; };
 		514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514D73D52A59D2FB00404E64 /* InquireViewController.swift */; };
+		515E53B82A77B48000536C6D /* ShadowWaitingPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */; };
+		515E53BA2A77B4D500536C6D /* ShadowPlanListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */; };
 		518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */; };
 		518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D82A683F68002D8F0F /* PopUpView.swift */; };
 		518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */; };
@@ -149,6 +151,8 @@
 		514D73D12A59B42A00404E64 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		514D73D32A59D19A00404E64 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		514D73D52A59D2FB00404E64 /* InquireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquireViewController.swift; sourceTree = "<group>"; };
+		515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowWaitingPlanCell.swift; sourceTree = "<group>"; };
+		515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPlanListCollectionView.swift; sourceTree = "<group>"; };
 		518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutPopUpViewController.swift; sourceTree = "<group>"; };
 		518F55D82A683F68002D8F0F /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignOutViewController.swift; sourceTree = "<group>"; };
@@ -196,7 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				236054F62A593F3B00CA991E /* HomeViewController.swift */,
-				1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */,
 				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
 				23DA18292A694551004EC6A6 /* CalendarView.swift */,
 				23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */,
@@ -204,6 +207,7 @@
 				231E97CE2A6BCA04000BB2AD /* MonthViewController.swift */,
 				231E97D02A6BD3F8000BB2AD /* MonthCollectionViewCell.swift */,
 				23ED93952A6D427A007B0E63 /* DayPlanCell.swift */,
+				515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -217,6 +221,7 @@
 				5199BCD92A72432700CE585C /* Plan */,
 				518F55EC2A6BA59A002D8F0F /* PlanList */,
 				23ED93972A6D5FA6007B0E63 /* History */,
+				1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
 				1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */,
@@ -433,6 +438,7 @@
 			children = (
 				51B526C72A6C3893009DBFB4 /* PlanDummyData.swift */,
 				518F55EF2A6BC102002D8F0F /* PlanListCollectionView.swift */,
+				515E53B92A77B4D500536C6D /* ShadowPlanListCollectionView.swift */,
 			);
 			path = PlanList;
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				231E97CF2A6BCA04000BB2AD /* MonthViewController.swift in Sources */,
 				51B526CA2A6C3901009DBFB4 /* DecidedPlanListViewController.swift in Sources */,
+				515E53B82A77B48000536C6D /* ShadowWaitingPlanCell.swift in Sources */,
 				1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */,
 				1AE5C78B2A6F6957001B88D1 /* MakePlanViewController.swift in Sources */,
 				236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */,
@@ -674,6 +681,7 @@
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
 				518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
+				515E53BA2A77B4D500536C6D /* ShadowPlanListCollectionView.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				23ED93992A6D5FB9007B0E63 /* HistoryViewController.swift in Sources */,
 				518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */,

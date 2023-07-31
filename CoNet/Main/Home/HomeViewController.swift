@@ -68,6 +68,7 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 collectionView
     private lazy var waitingPlanCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.isScrollEnabled = false
+        $0.contentInset = UIEdgeInsets.init(top: 10, left: 0, bottom: 10, right: 0)
     }
     
     // 대기 중 약속 데이터
@@ -111,7 +112,7 @@ class HomeViewController: UIViewController {
         // 대기 중 약속 collectionView
         waitingPlanCollectionView.delegate = self
         waitingPlanCollectionView.dataSource = self
-        waitingPlanCollectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
+        waitingPlanCollectionView.register(ShadowWaitingPlanCell.self, forCellWithReuseIdentifier: ShadowWaitingPlanCell.registerId)
         
         // 캘린더 뷰
         calendarView.calendarCollectionView.delegate = self
@@ -215,7 +216,7 @@ class HomeViewController: UIViewController {
         // collectionView: 대기 중 약속
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.height.equalTo(waitingPlanData.count * 92)
         }
     }
@@ -298,7 +299,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return cell
         } else if collectionView == waitingPlanCollectionView {
             // 대기 중 약속
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShadowWaitingPlanCell.registerId, for: indexPath) as? ShadowWaitingPlanCell else {
                 return UICollectionViewCell()
             }
             
@@ -314,7 +315,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width
+        let width = collectionView.frame.width - 24
         
         if collectionView == calendarView.calendarCollectionView {  // 캘린더
             let width = calendarView.weekStackView.frame.width / 7
