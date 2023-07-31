@@ -73,11 +73,31 @@ class InvitationCodeViewController: UIViewController {
         background.addGestureRecognizer(tapGesture)
         
         xButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
-        sendButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(sendInviteCode), for: .touchUpInside)
     }
     
+    // 팝업 사라지게
     @objc private func dismissPopUp() {
         dismiss(animated: true)
+    }
+    
+    // 초대코드 공유
+    @objc func sendInviteCode(_ sender: UIButton) {
+        // 공유할 콘텐츠를 생성
+        let textToShare = "CoNet 모임 초대 코드\n\(self.codeLabel.text ?? "")"
+        let activityItems = [textToShare]
+        
+        // UIActivityViewController를 생성
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        
+        // 공유 시트가 iPad에서도 정상적으로 표시되도록 처리
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+        }
+        
+        // 공유 시트를 표시
+        present(activityViewController, animated: true, completion: nil)
     }
     
     // 전체 layout
