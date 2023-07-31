@@ -144,7 +144,7 @@ class MeetingMainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
         
-        MeetingAPI().getMeetingDetailInfo(teamId: 9) { meeting in
+        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
             self.meetingName.text = meeting.name
             self.memberNum.text = "\(meeting.memberCount)명"
             
@@ -232,7 +232,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func bookmark() {
-        MeetingAPI().postBookmark(teamId: 9) { isSuccess in
+        MeetingAPI().postBookmark(teamId: 11) { isSuccess in
             if isSuccess {
                 self.isBookmarked = true
                 self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
@@ -241,7 +241,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func deleteBookmark() {
-        MeetingAPI().postDeleteBookmark(teamId: 9) { isSuccess in
+        MeetingAPI().postDeleteBookmark(teamId: 11) { isSuccess in
             if isSuccess {
                 self.isBookmarked = false
                 self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)

@@ -104,6 +104,17 @@ class MeetingAddViewController: UIViewController {
         photoUploadButton.addTarget(self, action: #selector(uploadButtonTapped), for: .touchUpInside)
         gathernameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
+        completionButton.addTarget(self, action: #selector(createMeeting), for: .touchUpInside)
+    }
+    
+    @objc func createMeeting() {
+        guard let newName = gathernameTextField.text else { return }
+        guard let selectedImage = photoImageView.image else { return }
+        MeetingAPI().createMeeting(name: newName, image: selectedImage) { isSuccess in
+            if isSuccess {
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     func applyConstraintsToTopSection() {

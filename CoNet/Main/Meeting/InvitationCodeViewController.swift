@@ -53,7 +53,7 @@ class InvitationCodeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // TODO: team id 연동 필요
-        MeetingAPI().postMeetingInviteCode(teamId: 9) { code, deadline in
+        MeetingAPI().postMeetingInviteCode(teamId: 11) { code, deadline in
             self.codeLabel.text = code
             self.infoLabel.text = "초대 코드 유효 기간 : \(deadline)"
         }

@@ -96,7 +96,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // TODO: team id 연동
-        MeetingAPI().getMeetingDetailInfo(teamId: 9) { meeting in
+        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
             self.meetingNameLabel.text = meeting.name
             self.memberCountLabel.text = "\(meeting.memberCount)명"
         }
