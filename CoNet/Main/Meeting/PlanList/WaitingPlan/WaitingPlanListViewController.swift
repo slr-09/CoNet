@@ -79,6 +79,12 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        // 여기서 좌우 여백 값을 조절합니다.
+//        let leftRightInset: CGFloat = 16.0
+//        return UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
+//    }
 }
 
 protocol MeetingMainViewControllerDelegate: AnyObject {
