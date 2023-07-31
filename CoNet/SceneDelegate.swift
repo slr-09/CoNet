@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         var navigationController: UINavigationController?
 
-        navigationController = UINavigationController(rootViewController: MeetingViewController())
+        navigationController = UINavigationController(rootViewController: HistoryAddViewController())
         navigationController?.navigationBar.isHidden = true
         
         window?.rootViewController = navigationController
