@@ -27,9 +27,8 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 즐겨찾기 버튼
-    let starButton = UIButton().then {
-        $0.setImage(UIImage(named: "meetingStarOff"), for: .normal)
-    }
+    var isBookmarked = false
+    let starButton = UIButton().then { $0.setImage(UIImage(named: "meetingStarOff"), for: .normal) }
     
     // 모임 이름
     let meetingName = UILabel().then {
@@ -149,6 +148,9 @@ class MeetingMainViewController: UIViewController {
             self.meetingName.text = meeting.name
             self.memberNum.text = "\(meeting.memberCount)명"
             
+            self.isBookmarked = meeting.bookmark
+            self.starButton.setImage(UIImage(named: meeting.bookmark ? "meetingStarOn" : "meetingStarOff"), for: .normal)
+            
             let url = URL(string: meeting.imgUrl)!
             self.loadImage(url: url)
         }
@@ -222,9 +224,138 @@ class MeetingMainViewController: UIViewController {
     
     // 즐겨찾기 버튼 클릭
     @objc private func starButtonTapped() {
-        // TODO: api 연동 후 기능 구현
+        if isBookmarked {
+            unBookmark()
+        } else {
+            bookmark()
+        }
     }
     
+    private func bookmark() {
+        self.isBookmarked = true
+        self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
+    }
+    
+    private func unBookmark() {
+        self.isBookmarked = false
+        self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)
+    }
+}
+
+// 사이드바 화면 전환
+extension MeetingMainViewController: MeetingMainViewControllerDelegate {
+    func sendDataBack(data: SideBarMenu) {
+        var nextVC: UIViewController
+        
+        switch data {
+        case .editInfo:
+            nextVC = MeetingInfoEditViewController()
+            pushViewController(nextVC)
+        case .inviteCode:
+            nextVC = InvitationCodeViewController()
+            presentViewControllerModaly(nextVC)
+        case .wait:
+            nextVC = WaitingPlanListViewController()
+            pushViewController(nextVC)
+        case .decided:
+            nextVC = DecidedPlanListViewController()
+            pushViewController(nextVC)
+        case .past:
+            nextVC = PastPlanListViewController()
+            pushViewController(nextVC)
+        case .history:
+            nextVC = HistoryViewController()
+            pushViewController(nextVC)
+        case .delete:
+            nextVC = MeetingDelPopUpViewController()
+            presentViewControllerModaly(nextVC)
+        case .out:
+            nextVC = MeetingOutPopUpViewController()
+            presentViewControllerModaly(nextVC)
+        default:
+            nextVC = WaitingPlanListViewController()
+            pushViewController(nextVC)
+        }
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func pushViewController(_ nextVC: UIViewController) {
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func presentViewControllerModaly(_ nextVC: UIViewController) {
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
+    }
+}
+
+// collectionview 설정
+extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+    }
+    
+    // 셀 개수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var count = 0
+        if collectionView == dayPlanCollectionView {
+            count = dayPlanData.count
+        } else if collectionView == waitingPlanCollectionView {
+            count = waitingPlanData.count
+        }
+        
+        return count
+    }
+    
+    // 셀
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == dayPlanCollectionView {
+            // 오늘 약속
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.timeLabel.text = dayPlanData[indexPath.item].time
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
+            
+            return cell
+        } else if collectionView == waitingPlanCollectionView {
+            // 대기 중 약속
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
+            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
+            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+            
+            return cell
+        }
+        
+        return UICollectionViewCell()
+    }
+    
+    // 셀 크기
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        return CGSize(width: width, height: 82)
+    }
+    
+    // 셀 사이의 위아래 간격
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+}
+
+// layout
+extension MeetingMainViewController {
     // 전체 layout constraints
     private func layoutContraints() {
         scrollviewConstraints()     // 스크롤뷰
@@ -378,115 +509,5 @@ class MeetingMainViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(waitingPlanData.count * 92)
         }
-    }
-}
-
-extension MeetingMainViewController: MeetingMainViewControllerDelegate {
-    func sendDataBack(data: SideBarMenu) {
-        var nextVC: UIViewController
-        
-        switch data {
-        case .editInfo:
-            nextVC = MeetingInfoEditViewController()
-            pushViewController(nextVC)
-        case .inviteCode:
-            nextVC = InvitationCodeViewController()
-            presentViewControllerModaly(nextVC)
-        case .wait:
-            nextVC = WaitingPlanListViewController()
-            pushViewController(nextVC)
-        case .decided:
-            nextVC = DecidedPlanListViewController()
-            pushViewController(nextVC)
-        case .past:
-            nextVC = PastPlanListViewController()
-            pushViewController(nextVC)
-        case .history:
-            nextVC = HistoryViewController()
-            pushViewController(nextVC)
-        case .delete:
-            nextVC = MeetingDelPopUpViewController()
-            presentViewControllerModaly(nextVC)
-        case .out:
-            nextVC = MeetingOutPopUpViewController()
-            presentViewControllerModaly(nextVC)
-        default:
-            nextVC = WaitingPlanListViewController()
-            pushViewController(nextVC)
-        }
-    }
-    
-    func popViewController() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func pushViewController(_ nextVC: UIViewController) {
-        nextVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    func presentViewControllerModaly(_ nextVC: UIViewController) {
-        nextVC.modalPresentationStyle = .overCurrentContext
-        nextVC.modalTransitionStyle = .crossDissolve
-        present(nextVC, animated: true, completion: nil)
-    }
-}
-
-extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    // 각 셀을 클릭했을 때 이벤트 처리
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
-    }
-    
-    // 셀 개수
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var count = 0
-        if collectionView == dayPlanCollectionView {
-            count = dayPlanData.count
-        } else if collectionView == waitingPlanCollectionView {
-            count = waitingPlanData.count
-        }
-        
-        return count
-    }
-    
-    // 셀
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == dayPlanCollectionView {
-            // 오늘 약속
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
-                return UICollectionViewCell()
-            }
-            
-            cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
-            
-            return cell
-        } else if collectionView == waitingPlanCollectionView {
-            // 대기 중 약속
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
-                return UICollectionViewCell()
-            }
-            
-            cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
-            
-            return cell
-        }
-        
-        return UICollectionViewCell()
-    }
-    
-    // 셀 크기
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: 82)
-    }
-    
-    // 셀 사이의 위아래 간격
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
     }
 }
