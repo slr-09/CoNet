@@ -22,7 +22,7 @@ class MeetingMainViewController: UIViewController {
     // 상단 모임 이미지
     let whiteGradientView = WhiteGradientView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     let meetingImage = UIImageView().then {
-        $0.image = UIImage(named: "space")
+        $0.image = UIImage(named: "defaultGrayImage")
         $0.clipsToBounds = true
     }
     
@@ -144,6 +144,42 @@ class MeetingMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        
+        MeetingAPI().getMeetingDetailInfo(teamId: 9) { meeting in
+            self.meetingName.text = meeting.name
+            self.memberNum.text = "\(meeting.memberCount)명"
+            
+            let url = URL(string: meeting.imgUrl)!
+            self.loadImage(url: url)
+        }
+    }
+    
+    private func loadImage(url imageURL: URL) {
+        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
+        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
+            // 에러 처리
+            if let error = error {
+                print("Error loading image: \(error.localizedDescription)")
+                return
+            }
+            
+            // 데이터가 정상적으로 받아와졌는지 확인
+            guard let imageData = data else {
+                print("No image data received")
+                return
+            }
+            
+            // 이미지 데이터를 UIImage로 변환
+            if let image = UIImage(data: imageData, scale: 60) {
+                // UI 업데이트는 메인 큐에서 수행
+                DispatchQueue.main.async {
+                    // 이미지를 UIImageView에 설정
+                    self.meetingImage.image = image
+                }
+            } else {
+                print("Failed to convert image data")
+            }
+        }.resume()
     }
     
     private func setupCollectionView() {
