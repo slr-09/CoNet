@@ -27,7 +27,7 @@ class InvitationCodeViewController: UIViewController {
         $0.numberOfLines = 2
     }
     let codeLabel = UILabel().then {
-        $0.text = "초대코드 발급중"
+        $0.text = "초대코드 불러오는중..."
         $0.font = UIFont.body1Medium
         $0.tintColor = UIColor.black
     }
@@ -35,7 +35,7 @@ class InvitationCodeViewController: UIViewController {
         $0.backgroundColor = UIColor.purpleMain
     }
     let infoLabel = UILabel().then {
-        $0.text = "초대 코드 유효 기간 : 2023. 07. 17. 21:32"
+        $0.text = "초대 코드 유효 기간 : 불러오는중..."
         $0.textColor = .textMedium
         $0.font = UIFont.overline
         $0.numberOfLines = 0
@@ -53,8 +53,9 @@ class InvitationCodeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // TODO: team id 연동 필요
-        MeetingAPI().postMeetingInviteCode(teamId: 1) { code in
+        MeetingAPI().postMeetingInviteCode(teamId: 9) { code, deadline in
             self.codeLabel.text = code
+            self.infoLabel.text = "초대 코드 유효 기간 : \(deadline)"
         }
     }
     

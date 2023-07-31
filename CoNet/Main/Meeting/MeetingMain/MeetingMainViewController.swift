@@ -225,20 +225,28 @@ class MeetingMainViewController: UIViewController {
     // 즐겨찾기 버튼 클릭
     @objc private func starButtonTapped() {
         if isBookmarked {
-            unBookmark()
+            deleteBookmark()
         } else {
             bookmark()
         }
     }
     
     private func bookmark() {
-        self.isBookmarked = true
-        self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
+        MeetingAPI().postBookmark(teamId: 9) { isSuccess in
+            if isSuccess {
+                self.isBookmarked = true
+                self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
+            }
+        }
     }
     
-    private func unBookmark() {
-        self.isBookmarked = false
-        self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)
+    private func deleteBookmark() {
+        MeetingAPI().postDeleteBookmark(teamId: 9) { isSuccess in
+            if isSuccess {
+                self.isBookmarked = false
+                self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)
+            }
+        }
     }
 }
 

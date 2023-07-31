@@ -9,7 +9,7 @@ import Foundation
 
 struct PostMeetingInviteCodeResponse: Codable {
     let teamId: Int
-    let inviteCode: String
+    let inviteCode, codeDeadLine: String
 }
 
 struct GetMeetingDetailInfoResponse: Codable {
