@@ -27,7 +27,7 @@ class InvitationCodeViewController: UIViewController {
         $0.numberOfLines = 2
     }
     let codeLabel = UILabel().then {
-        $0.text = "Xy3zE56j"
+        $0.text = "초대코드 발급중"
         $0.font = UIFont.body1Medium
         $0.tintColor = UIColor.black
     }
@@ -48,6 +48,14 @@ class InvitationCodeViewController: UIViewController {
         $0.titleLabel?.font = UIFont.body1Medium
         $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // TODO: team id 연동 필요
+        MeetingAPI().postMeetingInviteCode(teamId: 1) { code in
+            self.codeLabel.text = code
+        }
     }
     
     override func viewDidLoad() {
