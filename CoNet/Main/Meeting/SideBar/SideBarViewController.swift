@@ -110,6 +110,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         
         closeButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         editMeetingInfoButton.addTarget(self, action: #selector(showEditMeetingInfo), for: .touchUpInside)
+        inviteCodeButton.addTarget(self, action: #selector(showInviteCodePopUp), for: .touchUpInside)
         historyButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
         
         deleteMeetingButton.addTarget(self, action: #selector(showDeleteMeeting), for: .touchUpInside)
@@ -134,6 +135,11 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     // 모임 정보 수정 버튼 동작
     @objc func showEditMeetingInfo() {
         self.sideBarListButtonTapped(title: .editInfo)
+    }
+    
+    // 초대코드 버튼 동작
+    @objc func showInviteCodePopUp() {
+        self.sideBarListButtonTapped(title: .inviteCode)
     }
     
     // 히스토리 버튼 동작

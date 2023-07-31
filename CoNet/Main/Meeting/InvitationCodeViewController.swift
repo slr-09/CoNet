@@ -15,6 +15,7 @@ class InvitationCodeViewController: UIViewController {
     }
     let popUpView = UIView().then {
         $0.backgroundColor = UIColor.white
+        $0.layer.cornerRadius = 10
     }
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
@@ -53,6 +54,26 @@ class InvitationCodeViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
         
+        layoutConstraints()
+        clickEvents()
+    }
+    
+    // 버튼의 click events
+    private func clickEvents() {
+        // 배경 탭
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        background.addGestureRecognizer(tapGesture)
+        
+        xButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+    }
+    
+    @objc private func dismissPopUp() {
+        dismiss(animated: true)
+    }
+    
+    // 전체 layout
+    private func layoutConstraints() {
         self.view.addSubview(background)
         self.view.addSubview(popUpView)
         self.view.addSubview(xButton)
@@ -61,9 +82,15 @@ class InvitationCodeViewController: UIViewController {
         self.view.addSubview(purpleLine)
         self.view.addSubview(infoLabel)
         self.view.addSubview(sendButton)
-        applyConstraintsToComponents()
         
-        // sendButton.addTarget(self, action: #selector(participateButtonTapped), for: .touchUpInside)
+        backgroundConstraints()
+        applyConstraintsToComponents()
+    }
+    
+    func backgroundConstraints() {
+        background.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
     }
     
     func applyConstraintsToComponents() {
@@ -103,14 +130,9 @@ class InvitationCodeViewController: UIViewController {
         }
         sendButton.snp.makeConstraints { make in
             make.top.equalTo(purpleLine.snp.bottom).offset(32)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
-        }
-    }
-    
-    func applyConstraintsTobackground() {
-        background.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(0)
+            make.bottom.equalTo(popUpView.snp.bottom).offset(-32)
+            make.leading.equalTo(popUpView.snp.leading).offset(32)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-32)
         }
     }
 }

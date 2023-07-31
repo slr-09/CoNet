@@ -353,6 +353,9 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .editInfo:
             nextVC = MeetingInfoEditViewController()
             pushViewController(nextVC)
+        case .inviteCode:
+            nextVC = InvitationCodeViewController()
+            presentViewControllerModaly(nextVC)
         case .wait:
             nextVC = WaitingPlanListViewController()
             pushViewController(nextVC)

@@ -86,8 +86,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    // 모임 셀 개수 - 모임 / 즐겨찾기
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
             return favoritedMeetings.count
         } else {
@@ -241,11 +241,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
         
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-            overlayView.frame = self.view.bounds
-            overlayView.alpha = 0
-            contentView.addSubview(overlayView)
+        overlayView.frame = self.view.bounds
+        overlayView.alpha = 0
+        contentView.addSubview(overlayView)
             
-            // Adjust the view order here so that the selected elements are above the overlay
+        // Adjust the view order here so that the selected elements are above the overlay
         contentView.bringSubviewToFront(plusButton)
         contentView.bringSubviewToFront(peopleButton)
         contentView.bringSubviewToFront(participateButton)
