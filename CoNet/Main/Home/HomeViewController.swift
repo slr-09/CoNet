@@ -216,7 +216,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(waitingPlanData.count*92)
+            make.height.equalTo(waitingPlanData.count * 92)
         }
     }
     
