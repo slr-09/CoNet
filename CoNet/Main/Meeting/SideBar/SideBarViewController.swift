@@ -24,14 +24,14 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     
     // 모임정보 - 모임 이름, 모임 정보 수정 버튼, 모임 멤버 수 아이콘, 모임 멤버 수
     var meetingNameLabel = UILabel().then {
-        $0.text = "CoNet"
+        $0.text = "불러오는중"
         $0.font = UIFont.headline1
         $0.textColor = UIColor.textHigh
     }
     let editMeetingInfoButton = UIButton().then { $0.setImage(UIImage(named: "editMeetingInfo"), for: .normal)}
     let memberCountImage = UIImageView().then { $0.image = UIImage(named: "meetingMember") }
     var memberCountLabel = UILabel().then {
-        $0.text = "9명"
+        $0.text = ""
         $0.font = UIFont.body3Medium
         $0.textColor = UIColor.textMedium
     }
@@ -93,6 +93,15 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         $0.textColor = UIColor.error
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // TODO: team id 연동
+        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
+            self.meetingNameLabel.text = meeting.name
+            self.memberCountLabel.text = "\(meeting.memberCount)명"
+        }
+    }
+    
     // MARK: viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +119,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
         
         closeButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         editMeetingInfoButton.addTarget(self, action: #selector(showEditMeetingInfo), for: .touchUpInside)
+        inviteCodeButton.addTarget(self, action: #selector(showInviteCodePopUp), for: .touchUpInside)
         historyButton.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
         
         deleteMeetingButton.addTarget(self, action: #selector(showDeleteMeeting), for: .touchUpInside)
@@ -134,6 +144,11 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     // 모임 정보 수정 버튼 동작
     @objc func showEditMeetingInfo() {
         self.sideBarListButtonTapped(title: .editInfo)
+    }
+    
+    // 초대코드 버튼 동작
+    @objc func showInviteCodePopUp() {
+        self.sideBarListButtonTapped(title: .inviteCode)
     }
     
     // 히스토리 버튼 동작
