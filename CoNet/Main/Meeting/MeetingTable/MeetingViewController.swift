@@ -2,7 +2,7 @@
 //  MeetingViewController.swift
 //  CoNet
 //
-//  Created by 정아현 on 2023/07/15.
+//  Created by 정아현 on 2023/08/01.
 //
 
 import SnapKit
@@ -65,8 +65,10 @@ class MeetingCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalTo(imageView)
         }
+
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -86,8 +88,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    // 모임 셀 개수 - 모임 / 즐겨찾기
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
             return favoritedMeetings.count
         } else {
@@ -124,24 +126,27 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 46
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let _: CGFloat = (collectionView.frame.width / 2) - 17
         return CGSize(width: 164, height: 232)
     }
-    
-    let scrollview = UIScrollView().then {
-        $0.backgroundColor = .clear
-        $0.showsVerticalScrollIndicator = false
-    }
-    let contentView = UIView().then { $0.backgroundColor = .clear }
     
     let gatherLabel = UILabel().then {
         $0.text = "모임"
         $0.font = UIFont.headline1
     }
     
-    let gatherMark = UIImageView().then {
-        $0.image = UIImage(systemName: "gather")
+    let gatherNumCircle = UIImageView().then {
+        $0.image = UIImage(named: "calendarCellSelected")
+    }
+    
+    let gatherNum = UILabel().then {
+        $0.text = "4"
+        $0.textColor = UIColor.purpleMain
+        $0.font = UIFont.body3Bold
     }
     
     let allTab = UIButton().then {
@@ -177,11 +182,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     let peopleButton = UIButton().then {
-        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
+        $0.setImage(UIImage(named: "add"), for: .normal)
     }
     
     let participateButton = UIButton().then {
-        $0.setImage(UIImage(named: "add"), for: .normal)
+        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
     }
     
     let joinLabel = UILabel().then {
@@ -208,29 +213,29 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         self.view.backgroundColor = .white
-        view.addSubview(scrollview)
-        scrollview.addSubview(contentView)
-        contentView.addSubview(gatherLabel)
-        contentView.addSubview(item)
-        contentView.addSubview(selectedTabIndicator)
-        applyConstraintsToScrollView()
+        self.view.addSubview(gatherLabel)
+        self.view.addSubview(gatherNumCircle)
+        self.view.addSubview(gatherNum)
+        self.view.addSubview(item)
+        self.view.addSubview(selectedTabIndicator)
         applyConstraintsToTabs(stackView: item)
 
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
         favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         
-        contentView.addSubview(plusButton)
+        self.view.addSubview(plusButton)
         applyConstraintsToPlusButton()
         
-        contentView.addSubview(collectionView)
+        self.view.addSubview(collectionView)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         applyConstraintsToCollectionView()
 
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
-        contentView.addSubview(peopleButton)
-        contentView.addSubview(joinLabel)
-        contentView.addSubview(participateButton)
-        contentView.addSubview(addLabel)
+        self.view.addSubview(peopleButton)
+        self.view.addSubview(joinLabel)
+        self.view.addSubview(participateButton)
+        self.view.addSubview(addLabel)
 
         applyConstraintsToPlusButton()
         applyConstraintsToPeopleButtonAndJoinLabel()
@@ -241,16 +246,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
         
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-        overlayView.frame = self.view.bounds
-        overlayView.alpha = 0
-        contentView.addSubview(overlayView)
-            
-        // Adjust the view order here so that the selected elements are above the overlay
-        contentView.bringSubviewToFront(plusButton)
-        contentView.bringSubviewToFront(peopleButton)
-        contentView.bringSubviewToFront(participateButton)
-        contentView.bringSubviewToFront(addLabel)
-        contentView.bringSubviewToFront(joinLabel)
+            overlayView.frame = self.view.bounds
+            overlayView.alpha = 0
+            self.view.addSubview(overlayView)
+            self.view.bringSubviewToFront(plusButton)
+            self.view.bringSubviewToFront(peopleButton)
+            self.view.bringSubviewToFront(participateButton)
+            self.view.bringSubviewToFront(addLabel)
+            self.view.bringSubviewToFront(joinLabel)
         
         UIView.animate(withDuration: 0.3) {
             self.peopleButton.alpha = 0
@@ -258,17 +261,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.joinLabel.alpha = 0
             self.addLabel.alpha = 0
             self.overlayView.alpha = 0
-        }
-    }
-    
-    func applyConstraintsToScrollView() {
-        scrollview.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(0)
-        }
-        contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollview.contentLayoutGuide)
-            make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(2000)
         }
     }
     
@@ -280,19 +272,22 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
         
     func applyConstraintsToCollectionView() {
+        let safeArea = view.safeAreaLayoutGuide
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
             make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
     
     func applyConstraintsToFavCollectionView() {
+        let safeArea = view.safeAreaLayoutGuide
+        
         favcollectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
             make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
     }
@@ -301,7 +296,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
-        collectionView.isScrollEnabled = false
     }
     
     func setupFavCollectionView() {
@@ -311,16 +305,26 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func applyConstraintsToTabs(stackView: UIStackView) {
+        let safeArea = view.safeAreaLayoutGuide
         gatherLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(38)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.top.equalTo(safeArea.snp.top).offset(38)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
+        gatherNumCircle.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(gatherLabel)
+            make.leading.equalTo(gatherLabel.snp.trailing).offset(6)
+        }
+        gatherNum.snp.makeConstraints { make in
+            make.centerX.equalTo(gatherNumCircle)
+            make.centerY.equalTo(gatherNumCircle)
         }
         item.snp.makeConstraints { make in
             make.top.equalTo(gatherLabel.snp.bottom).offset(24)
-            make.left.equalTo(contentView).offset(24)
+            make.left.equalTo(self.view).offset(24)
         }
         selectedTabIndicator.snp.makeConstraints { make in
-            make.top.equalTo(allTab.snp.bottom).offset(4)
+            make.top.equalTo(allTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(allTab)
         }
@@ -352,7 +356,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     @objc func didSelectAllTab() {
         selectedTabIndicator.snp.remakeConstraints { make in
-            make.top.equalTo(allTab.snp.bottom).offset(4)
+            make.top.equalTo(allTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(allTab)
         }
@@ -363,7 +367,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
 
     @objc func didSelectFavoriteTab() {
         selectedTabIndicator.snp.remakeConstraints { make in
-            make.top.equalTo(favTab.snp.bottom).offset(4)
+            make.top.equalTo(favTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(favTab)
         }
@@ -399,13 +403,13 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func didTapparticipateButton(_ sender: Any) {
-        let popupVC = MeetingAddViewController()
+        let popupVC = MeetingPopUpViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
     }
     
     @objc func didTapPeopleButton(_ sender: Any) {
-        let addVC = MeetingPopUpViewController()
+        let addVC = MeetingAddViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }
