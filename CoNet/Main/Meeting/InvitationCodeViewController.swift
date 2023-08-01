@@ -58,7 +58,7 @@ class InvitationCodeViewController: UIViewController {
             self.infoLabel.text = "초대 코드 유효 기간 : \(deadline)"
         }
     }
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
