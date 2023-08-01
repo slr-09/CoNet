@@ -203,7 +203,6 @@
 			children = (
 				515E53BB2A77B9A900536C6D /* PlanCell */,
 				236054F62A593F3B00CA991E /* HomeViewController.swift */,
-				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
 				23DA18292A694551004EC6A6 /* CalendarView.swift */,
 				23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */,
 				235F5B722A69893F00ADC0D6 /* CalendarDateFormatter.swift */,
