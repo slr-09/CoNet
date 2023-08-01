@@ -20,6 +20,15 @@ class WaitingPlanCell: UICollectionViewCell {
         
         $0.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
         $0.layer.borderWidth = 1
+        
+//        $0.layer.borderColor = UIColor.clear.cgColor
+//        $0.layer.borderWidth = 1
+//
+//        $0.layer.masksToBounds = false
+//        $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        $0.layer.shadowColor = UIColor.black.cgColor
+//        $0.layer.shadowOpacity = 0.1
+//        $0.layer.shadowRadius = 8 / UIScreen.main.scale
     }
     
     // 날짜View - 시작 날짜, 구분선, 끝 날짜
@@ -83,12 +92,14 @@ class WaitingPlanCell: UICollectionViewCell {
         startDateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateView.snp.top)
+            make.centerX.equalToSuperview()
         }
         
         dateView.addSubview(finishDateLabel)
         finishDateLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.bottom.equalTo(dateView.snp.bottom)
+            make.centerX.equalToSuperview()
         }
         
         dateView.addSubview(divider)
@@ -98,7 +109,7 @@ class WaitingPlanCell: UICollectionViewCell {
         
         background.addSubview(dateView)
         dateView.snp.makeConstraints { make in
-            make.width.equalTo(startDateLabel.snp.width)
+            make.width.equalTo(88)
             make.height.equalTo(background).offset(-40)
             make.top.equalTo(background.snp.top).offset(20)
             make.leading.equalTo(background.snp.leading).offset(20)

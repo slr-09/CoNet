@@ -100,7 +100,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addSubview(makeButton)
         applyConstraintsToMakeButton()
-        
+        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
         
@@ -108,6 +108,10 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         planStartDateField.delegate = self
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    @objc private func popViewController(_: UIView) {
+        navigationController?.popViewController(animated: true)
     }
     
     func applyConstraintsToTopSection() {

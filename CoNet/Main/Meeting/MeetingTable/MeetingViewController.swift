@@ -86,8 +86,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    // 모임 셀 개수 - 모임 / 즐겨찾기
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
             return favoritedMeetings.count
         } else {
@@ -177,11 +177,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     let peopleButton = UIButton().then {
-        $0.setImage(UIImage(named: "add"), for: .normal)
+        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
     }
     
     let participateButton = UIButton().then {
-        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
+        $0.setImage(UIImage(named: "add"), for: .normal)
     }
     
     let joinLabel = UILabel().then {
@@ -241,11 +241,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
         
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-            overlayView.frame = self.view.bounds
-            overlayView.alpha = 0
-            contentView.addSubview(overlayView)
+        overlayView.frame = self.view.bounds
+        overlayView.alpha = 0
+        contentView.addSubview(overlayView)
             
-            // Adjust the view order here so that the selected elements are above the overlay
+        // Adjust the view order here so that the selected elements are above the overlay
         contentView.bringSubviewToFront(plusButton)
         contentView.bringSubviewToFront(peopleButton)
         contentView.bringSubviewToFront(participateButton)
@@ -280,8 +280,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
         
     func applyConstraintsToCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -291,8 +289,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func applyConstraintsToFavCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        
         favcollectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -316,7 +312,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func applyConstraintsToTabs(stackView: UIStackView) {
         gatherLabel.snp.makeConstraints { make in
-            let safeArea = view.safeAreaLayoutGuide
             make.top.equalTo(contentView.snp.top).offset(38)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
@@ -404,13 +399,13 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func didTapparticipateButton(_ sender: Any) {
-        let popupVC = MeetingPopUpViewController()
+        let popupVC = MeetingAddViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
     }
     
     @objc func didTapPeopleButton(_ sender: Any) {
-        let addVC = MeetingAddViewController()
+        let addVC = MeetingPopUpViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }

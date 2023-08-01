@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WaitingPlan {
+struct WaitingPlan2 {
     let startDate: String
     let finishDate: String
     let title: String
@@ -34,19 +34,19 @@ struct DayPlan {
 }
 
 struct PlanDummyData {
-    static let watingPlanData: [WaitingPlan] = [
-        WaitingPlan(startDate: "2023. 07. 02", finishDate: "2023. 07. 08", title: "iOS 스터디 1차"),
-        WaitingPlan(startDate: "2023. 07. 11", finishDate: "2023. 07. 15", title: "Android 스터디 2차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "Server 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차인데 여러 줄이면 어떻게 되나"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
-        WaitingPlan(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차")]
+    static let watingPlanData: [WaitingPlan2] = [
+        WaitingPlan2(startDate: "2023. 07. 02", finishDate: "2023. 07. 08", title: "iOS 스터디 1차"),
+        WaitingPlan2(startDate: "2023. 07. 11", finishDate: "2023. 07. 15", title: "Android 스터디 2차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "Server 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차인데 여러 줄이면 어떻게 되나"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차"),
+        WaitingPlan2(startDate: "2023. 07. 13", finishDate: "2023. 07. 19", title: "iOS 스터디 3차")]
     
     static let decidedPlanData: [DecidedPlan] = [
         DecidedPlan(date: "2023. 07. 08", time: "14:00", title: "iOS 1차 스터디", leftDate: "3일 남았습니다."),

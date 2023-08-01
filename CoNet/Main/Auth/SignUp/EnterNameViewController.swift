@@ -5,6 +5,7 @@
 //  Created by 가은 on 2023/07/05.
 //
 
+import KeychainSwift
 import SnapKit
 import Then
 import UIKit
@@ -14,10 +15,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
     var termsSelectedStates: [Bool]?
 
     // Component: xmark image (창 끄기)
-    let xMarkView = UIImageView().then {
-        $0.image = UIImage(systemName: "xmark")
-        $0.tintColor = UIColor.gray600
-    }
+    let xMarkView = UIButton().then { $0.setImage(UIImage(named: "closeBtn"), for: .normal) }
     
     // Component: top purple bar
     let topBar = UIView().then {
@@ -88,8 +86,18 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         // 클릭 이벤트
         clickEvents()
-        
-        nextBtn.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
+    }
+    
+    // 상단 X 버튼 로그인 화면으로 이동
+    @objc private func xButtonTapped() {
+        logout()
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    // 로그아웃
+    private func logout() {
+        let keychain = KeychainSwift()
+        keychain.clear()
     }
     
     // 회원가입 api 요청
@@ -98,7 +106,7 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
         
         if isButtonAvailable {
             let name = nameTextField.text ?? ""
-            let isOptionTermSelected = termsSelectedStates?[2] ?? false
+            let isOptionTermSelected = termsSelectedStates?[3] ?? false
             
             AuthAPI().signUp(name: name, optionTerm: isOptionTermSelected) { isSuccess in
                 if isSuccess {
@@ -119,11 +127,13 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
 
     func clickEvents() {
         // .editingChanged: editing이 될 때마다 didChangeNameTextField 함수가 호출됩니다.
-        self.nameTextField.addTarget(self, action: #selector(self.didChangeNameTextField(_:)), for: .editingChanged)
+        self.nameTextField.addTarget(self, action: #selector(self.didChangeNameTextField), for: .editingChanged)
         // 텍스트필드 클리어버튼
         self.clearButton.addTarget(self, action: #selector(didClickClearButton), for: .touchUpInside)
         // 완료 버튼
-//        self.nextBtn.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
+        self.nextBtn.addTarget(self, action: #selector(signUp), for: .touchUpInside)
+        // x 버튼
+        self.xMarkView.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
     }
     
     // show UI
@@ -237,7 +247,8 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(52)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
+//            make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
+            make.bottom.equalTo(safeArea.snp.bottom)
         }
         
     }
@@ -291,17 +302,4 @@ class EnterNameViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-    /*
-    // 완료 버튼 클릭 시
-    // 버튼이 활성화된 경우에만 탭바 화면으로 넘어갑니다.
-    @objc func didClickNextButton(_ sender: UIButton) {
-        // 버튼 색으로 활성화 여부 체크
-        if nextBtn.backgroundColor?.cgColor == UIColor.purpleMain?.cgColor {
-            let tabBarVC = TabbarViewController()
-            tabBarVC.modalPresentationStyle = .fullScreen
-            self.present(tabBarVC, animated: false, completion: nil)
-        }
-    }
-     */
 }

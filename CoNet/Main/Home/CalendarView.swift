@@ -67,9 +67,10 @@ class CalendarView: UIView {
     
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
+        planDates = []
         HomeAPI.shared.getMonthPlan(date: date) { count, dates in
-            print("getMonthPlan count: ", count)
             self.planDates = dates
+            self.calendarCollectionView.reloadData()
         }
     }
     
@@ -150,7 +151,7 @@ class CalendarView: UIView {
         addSubview(calendarCollectionView)
         
         calendarCollectionView.dataSource = self
-        calendarCollectionView.delegate = self
+//        calendarCollectionView.delegate = self
         
         calendarCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self).inset(28)
@@ -180,11 +181,19 @@ class CalendarView: UIView {
         updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
+        
+        // 날짜 포맷 변경: yyyy-MM
+        header = header.replacingOccurrences(of: "년 ", with: "-")
+        header = header.replacingOccurrences(of: "월", with: "")
+        
+        // api: 특정 달 약속 조회
+        getMonthPlanAPI(date: header)
     }
   
     // 달 이동
     func moveMonth(month: Int) {
         var header = calendarDateFormatter.moveMonth(month: month)
+        updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
         
@@ -197,7 +206,7 @@ class CalendarView: UIView {
     }
 }
 
-extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -255,34 +264,36 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate, UI
         // 약속 있는 날 표시하기
         if planDates.contains(Int(cellDay) ?? 0) {
             cell.configurePlan()
+        } else {
+            cell.reloadPlanMark()
         }
         
         return cell
     }
     
     // 각 셀을 클릭했을 때 이벤트 처리
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
-        
-        let home = HomeViewController()
-        
-        let format = DateFormatter()
-        format.dateFormat = "dd"
-        
-        // 오늘 날짜 계산
-        let today = format.string(from: Date())
-        
-        format.dateFormat = "MM"
-        // 오늘 날짜 month 계산
-        let todayMonth = format.string(from: Date())
-        
-        // 달력 month
-        let calendarMonth = calendarDateFormatter.currentMonth()
-        
-        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
-            home.changeDate(month: "", day: "")
-        } else {
-            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        print("Selected cell at indexPath: \(indexPath)")
+//
+//        let home = HomeViewController()
+//
+//        let format = DateFormatter()
+//        format.dateFormat = "dd"
+//
+//        // 오늘 날짜 계산
+//        let today = format.string(from: Date())
+//
+//        format.dateFormat = "MM"
+//        // 오늘 날짜 month 계산
+//        let todayMonth = format.string(from: Date())
+//
+//        // 달력 month
+//        let calendarMonth = calendarDateFormatter.currentMonth()
+//
+//        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
+//            home.changeDate(month: "", day: "")
+//        } else {
+//            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
+//        }
+//    }
 }

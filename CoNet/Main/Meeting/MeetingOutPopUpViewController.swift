@@ -10,124 +10,73 @@ import Then
 import UIKit
 
 class MeetingOutPopUpViewController: UIViewController {
-    
+    // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
-    let popUpView = UIView().then {
-        $0.backgroundColor = UIColor.white
-        $0.layer.cornerRadius = 10
-    }
-    let meetingOutLabel = UILabel().then {
-        $0.text = "모임을 나가시겠습니까?"
-        $0.font = UIFont.headline3Bold
-        $0.textColor = UIColor.black
-    }
-    let horizontalDivider = UIView().then {
-        $0.backgroundColor = UIColor.gray100
-    }
-    let verticalDivider = UIView().then {
-        $0.backgroundColor = UIColor.gray100
-    }
-    let cancelButton = UIButton().then {
-        $0.backgroundColor = .clear
-    }
-    let cancelLabel = UILabel().then {
-        $0.text = "취소"
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textMedium
-    }
-    let outButton = UIButton().then {
-        $0.backgroundColor = .clear
-    }
-    let outLabel = UILabel().then {
-        $0.text = "나가기"
-        $0.font = UIFont.body1Bold
-        $0.textColor = UIColor.purpleMain
-    }
     
+    // 팝업
+    let popUp = PopUpView()
+                    .withNoDescription(title: "모임을 나가시겠습니까?",
+                                       leftButtonTitle: "취소",
+                                       leftButtonAction: #selector(dismissPopUp),
+                                       rightButtonTitle: "나가기",
+                                       rightButtonAction: #selector(outMeeting))
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+
+        // background color를 clear로 설정 (default: black)
+        view.backgroundColor = .clear
         
-        self.view.addSubview(background)
-        self.view.addSubview(popUpView)
-        self.view.addSubview(meetingOutLabel)
-        self.view.addSubview(horizontalDivider)
-        self.view.addSubview(verticalDivider)
-        self.view.addSubview(cancelButton)
-        self.view.addSubview(cancelLabel)
-        self.view.addSubview(outButton)
-        self.view.addSubview(outLabel)
-        applyConstraintsToComponents()
-        applyConstraintsTobackground()
+        layoutConstraints()
         
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        outButton.addTarget(self, action: #selector(outButtonTapped), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        background.addGestureRecognizer(tapGesture)
     }
     
-    func applyConstraintsToComponents() {
-        let safeArea = view.safeAreaLayoutGuide
-        
-        popUpView.snp.makeConstraints { make in
-            make.width.equalTo(345)
-            make.height.equalTo(179)
-            make.top.equalTo(safeArea.snp.top).offset(293)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-        }
-        meetingOutLabel.snp.makeConstraints { make in
-            make.top.equalTo(popUpView.snp.top).offset(54)
-            make.leading.equalTo(popUpView.snp.leading).offset(83)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-82)
-        }
-        horizontalDivider.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.top.equalTo(meetingOutLabel.snp.bottom).offset(42)
-            make.leading.equalTo(popUpView.snp.leading).offset(0)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(0)
-        }
-        verticalDivider.snp.makeConstraints { make in
-            make.width.equalTo(1)
-            make.height.equalTo(24)
-            make.top.equalTo(horizontalDivider.snp.bottom).offset(16)
-            make.centerX.equalTo(popUpView)
-        }
-        cancelButton.snp.makeConstraints { make in
-            make.width.equalTo(172)
-            make.height.equalTo(60)
-            make.top.equalTo(meetingOutLabel.snp.bottom).offset(43)
-            make.leading.equalTo(popUpView).offset(0)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-173)
-        }
-        cancelLabel.snp.makeConstraints { make in
-            make.top.equalTo(cancelButton.snp.top).offset(18)
-            make.leading.equalTo(cancelButton.snp.leading).offset(72)
-        }
-        outButton.snp.makeConstraints { make in
-            make.width.equalTo(172)
-            make.height.equalTo(60)
-            make.top.equalTo(meetingOutLabel.snp.bottom).offset(43)
-            make.leading.equalTo(popUpView).offset(173)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(0)
-        }
-        outLabel.snp.makeConstraints { make in
-            make.top.equalTo(outButton.snp.top).offset(20)
-            make.leading.equalTo(outButton.snp.leading).offset(66)
-        }
+    // 배경 탭 시 팝업 닫기
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
     }
     
-    func applyConstraintsTobackground() {
+    // 이전 ViewController로 데이터를 전달하는 delegate
+    weak var delegate: MeetingMainViewControllerDelegate?
+    
+    // 모임 나가기 버튼 동작
+    @objc func outMeeting(_ sender: UIView) {
+        // TODO: 모임 탭으로 이동 구현
+        let nextVC = TabbarViewController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+    }
+    
+    // 모든 layout Constraints
+    private func layoutConstraints() {
+        backgroundConstraints()
+        popUpConstraints()
+    }
+    
+    // 배경 Constraints
+    private func backgroundConstraints() {
+        view.addSubview(background)
         background.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(0)
         }
     }
     
-    @objc private func cancelButtonTapped() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func outButtonTapped() {
-        
+    // 팝업 Constraints
+    private func popUpConstraints() {
+        view.addSubview(popUp)
+        popUp.snp.makeConstraints { make in
+            make.width.equalTo(view.snp.width).offset(-48)
+            make.leading.equalTo(view.snp.leading).offset(24)
+            make.trailing.equalTo(view.snp.trailing).offset(24)
+            
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
+        }
     }
 }

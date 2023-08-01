@@ -110,15 +110,14 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
     
     private func fetchUser() {
         MyPageAPI().getUser { username, imageUrl, email, social in
-            // TODO: 이름 변경 후 화면에 안 뜨는 버그 수정
-//            DispatchQueue.global().async {
-//                self.name = username
-//            }
+            // 이름 설정
             self.changeNameView.setTitle(username)
             
+            // 이미지 설정
             let url = URL(string: imageUrl)!
             self.loadImage(url: url)
             
+            // 이메일, 소셜 계정 설정
             self.emailLabel.text = email
             self.linkedSocialImage.image = UIImage(named: social == "APPLE" ? "linkedApple" : "linkedKakao")
         }

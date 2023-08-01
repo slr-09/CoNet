@@ -76,6 +76,7 @@ class DayPlanCell: UICollectionViewCell {
         background.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.height.equalTo(24)
+            make.width.equalTo(44)
             make.centerY.equalTo(background.snp.centerY)
             make.leading.equalTo(background.snp.leading).offset(20)
         }
