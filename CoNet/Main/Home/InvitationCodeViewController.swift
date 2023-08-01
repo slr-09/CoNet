@@ -115,12 +115,3 @@ class InvitationCodeViewController: UIViewController {
         }
     }
 }
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         InvitationCodeViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif
