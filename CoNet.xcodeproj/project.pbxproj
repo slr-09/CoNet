@@ -196,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				236054F62A593F3B00CA991E /* HomeViewController.swift */,
-				1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */,
 				23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */,
 				23DA18292A694551004EC6A6 /* CalendarView.swift */,
 				23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */,
@@ -217,6 +216,7 @@
 				5199BCD92A72432700CE585C /* Plan */,
 				518F55EC2A6BA59A002D8F0F /* PlanList */,
 				23ED93972A6D5FA6007B0E63 /* History */,
+				1A3AD0122A6958B400975427 /* InvitationCodeViewController.swift */,
 				1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */,
 				1A99CFDF2A70CE220080091B /* MeetingOutPopUpViewController.swift */,
 				1A99CFE12A70D4650080091B /* MeetingDelPopUpViewController.swift */,
