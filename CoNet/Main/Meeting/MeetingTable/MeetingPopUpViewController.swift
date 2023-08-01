@@ -10,40 +10,45 @@ import Then
 import UIKit
 
 class MeetingPopUpViewController: UIViewController {
-    
-    let background = UIView().then {
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-    }
+    // 검은색 배경 - 투명도 50%
+    let background = UIView().then { $0.backgroundColor = UIColor.black.withAlphaComponent(0.5) }
+    // 팝업 하얀색 배경
     let popUpView = UIView().then {
         $0.backgroundColor = UIColor.white
         $0.layer.cornerRadius = 10
     }
-    let xButton = UIButton().then {
-        $0.setImage(UIImage(named: "closeBtn"), for: .normal)
-    }
+    // X 버튼 - 팝업 닫기
+    let xButton = UIButton().then { $0.setImage(UIImage(named: "closeBtn"), for: .normal) }
+    
+    // "전달받은 초대코드를 입력해주세요" label
     let inviteLabel = UILabel().then {
         $0.text = "전달받은 초대코드를\n입력해주세요."
         $0.font = UIFont.headline2Bold
         $0.textColor = UIColor.black
         $0.numberOfLines = 2
     }
+    
+    // 코드 입력 text field
     let codeTextField = UITextField().then {
         $0.placeholder = "초대코드 입력"
         $0.font = UIFont.body1Medium
         $0.tintColor = UIColor.textDisabled
         $0.becomeFirstResponder()
     }
-    let grayLine = UIView().then {
-        $0.backgroundColor = UIColor.gray100
-    }
-    let infoView = UIImageView().then {
-        $0.image = UIImage(named: "emarkRed")
-    }
+    
+    // 회색 text field 하단 선
+    let grayLine = UIView().then { $0.backgroundColor = UIColor.gray100 }
+    
+    // 안내 문구의 ! 아이콘
+    let infoView = UIImageView().then { $0.image = UIImage(named: "emarkRed") }
+    // 안내 문구
     let infoLabel = UILabel().then {
         $0.textColor = .red
         $0.font = UIFont.overline
         $0.numberOfLines = 0
     }
+    
+    // 참여하기 버튼
     let participateButton = UIButton().then {
         $0.frame = CGRect(x: 0, y: 0, width: 191, height: 54)
         $0.backgroundColor = UIColor.gray200
@@ -58,92 +63,37 @@ class MeetingPopUpViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
         
-        self.view.addSubview(background)
-        self.view.addSubview(popUpView)
-        self.view.addSubview(xButton)
-        self.view.addSubview(inviteLabel)
-        self.view.addSubview(codeTextField)
-        self.view.addSubview(grayLine)
-        self.view.addSubview(participateButton)
-        self.view.addSubview(infoView)
-        self.view.addSubview(infoLabel)
-        applyConstraintsToComponents()
-        
-        codeTextField.addTarget(self, action: #selector(codeTextFieldDidChange), for: .editingChanged)
-        participateButton.addTarget(self, action: #selector(participateButtonTapped), for: .touchUpInside)
-        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
+        buttonClicks()
+        layoutConstraints()
         
         infoView.isHidden = true
-        
     }
     
-    func applyConstraintsToComponents() {
-        let safeArea = view.safeAreaLayoutGuide
-        
-        popUpView.snp.makeConstraints { make in
-            make.width.equalTo(257)
-            make.height.equalTo(332)
-            make.top.equalTo(view.snp.top).offset(260)
-            make.leading.equalTo(safeArea.snp.leading).offset(68)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-68)
-        }
-        xButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(popUpView.snp.top).offset(18)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-18)
-        }
-        inviteLabel.snp.makeConstraints { make in
-            make.height.equalTo(52)
-            make.top.equalTo(popUpView.snp.top).offset(66)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(66)
-        }
-        codeTextField.snp.makeConstraints { make in
-            make.top.equalTo(inviteLabel.snp.bottom).offset(66)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
-        }
-        grayLine.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.top.equalTo(inviteLabel.snp.bottom).offset(96)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
-        }
-        infoView.snp.makeConstraints { make in
-            make.width.height.equalTo(8)
-            make.top.equalTo(grayLine.snp.bottom).offset(6)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.centerY.equalTo(infoLabel)
-        }
-        infoLabel.snp.makeConstraints { make in
-            make.top.equalTo(infoView)
-            make.leading.equalTo(popUpView.snp.leading).offset(45)
-        }
-        participateButton.snp.makeConstraints { make in
-            make.top.equalTo(grayLine.snp.bottom).offset(32)
-            make.leading.equalTo(popUpView.snp.leading).offset(33)
-            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
-        }
+    // 버튼 addTarget
+    private func buttonClicks() {
+        codeTextField.addTarget(self, action: #selector(codeTextFieldDidChange), for: .editingChanged)
+        participateButton.addTarget(self, action: #selector(participateMeeting), for: .touchUpInside)
+        xButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
     }
     
-    func applyConstraintsTobackground() {
-        background.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(0)
-        }
+    // 팝업창 닫기
+    @objc private func dismissPopUp() {
+        dismiss(animated: true)
     }
     
+    // 코드가 입력되었을 때, 하단 선 색상 변경
     @objc func codeTextFieldDidChange() {
         updateGrayLineAndInfoLabel()
     }
     
-    @objc private func xButtonTapped() {
+    // 참여하기 버튼 동작
+    @objc private func participateMeeting() {
         dismiss(animated: true) {
-            if let tabBarController = self.presentingViewController as? TabbarViewController {
-                tabBarController.selectedIndex = 1
-            }
+            self.participateButtonTapped()
         }
     }
-        
+    
+    // 참여하기 버튼 동작
     @objc func participateButtonTapped() {
         let code = codeTextField.text ?? ""
         let serverResponse = validateInviteCode(code: code)
@@ -217,6 +167,81 @@ class MeetingPopUpViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+}
+
+// layout
+extension MeetingPopUpViewController {
+    // 전체 layout
+    private func layoutConstraints() {
+        self.view.addSubview(background)
+        self.view.addSubview(popUpView)
+        self.view.addSubview(xButton)
+        self.view.addSubview(inviteLabel)
+        self.view.addSubview(codeTextField)
+        self.view.addSubview(grayLine)
+        self.view.addSubview(participateButton)
+        self.view.addSubview(infoView)
+        self.view.addSubview(infoLabel)
+        
+        backgroundConstraints()
+        applyConstraintsToComponents()
+    }
+    
+    private func backgroundConstraints() {
+        background.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
+    }
+    
+    func applyConstraintsToComponents() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        popUpView.snp.makeConstraints { make in
+            make.width.equalTo(257)
+            make.height.equalTo(332)
+            make.centerY.equalTo(view.snp.centerY)
+            make.leading.equalTo(safeArea.snp.leading).offset(68)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-68)
+        }
+        xButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.top.equalTo(popUpView.snp.top).offset(18)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-18)
+        }
+        inviteLabel.snp.makeConstraints { make in
+            make.height.equalTo(52)
+            make.top.equalTo(popUpView.snp.top).offset(66)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(66)
+        }
+        codeTextField.snp.makeConstraints { make in
+            make.top.equalTo(inviteLabel.snp.bottom).offset(66)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
+        }
+        grayLine.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.top.equalTo(inviteLabel.snp.bottom).offset(96)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-33)
+        }
+        infoView.snp.makeConstraints { make in
+            make.width.height.equalTo(8)
+            make.top.equalTo(grayLine.snp.bottom).offset(6)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.centerY.equalTo(infoLabel)
+        }
+        infoLabel.snp.makeConstraints { make in
+            make.top.equalTo(infoView)
+            make.leading.equalTo(popUpView.snp.leading).offset(45)
+        }
+        participateButton.snp.makeConstraints { make in
+            make.top.equalTo(grayLine.snp.bottom).offset(32)
+            make.bottom.equalTo(popUpView.snp.bottom).offset(-32)
+            make.leading.equalTo(popUpView.snp.leading).offset(33)
+            make.trailing.equalTo(popUpView.snp.trailing).offset(-32)
+        }
     }
 }
     
