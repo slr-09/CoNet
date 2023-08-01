@@ -181,7 +181,7 @@ class ChangeNameViewController: UIViewController {
             make.height.equalTo(52)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
+            make.top.equalTo(nameCondition2.snp.bottom).offset(498)
         }
     }
     

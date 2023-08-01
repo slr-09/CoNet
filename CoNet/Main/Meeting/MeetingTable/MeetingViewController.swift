@@ -139,8 +139,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         $0.font = UIFont.headline1
     }
     
-    let gatherMark = UIImageView().then {
-        $0.image = UIImage(systemName: "gather")
+    let gatherNumCircle = UIImageView().then {
+        $0.image = UIImage(named: "calendarCellSelected")
+    }
+    
+    let gatherNum = UILabel().then {
+        $0.text = "4"
+        $0.textColor = UIColor.purpleMain
+        $0.font = UIFont.body3Bold
     }
     
     let allTab = UIButton().then {
@@ -208,9 +214,10 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         self.view.backgroundColor = .white
         self.view.addSubview(gatherLabel)
+        self.view.addSubview(gatherNumCircle)
+        self.view.addSubview(gatherNum)
         self.view.addSubview(item)
         self.view.addSubview(selectedTabIndicator)
-        
         applyConstraintsToTabs(stackView: item)
 
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
@@ -242,8 +249,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             overlayView.frame = self.view.bounds
             overlayView.alpha = 0
             self.view.addSubview(overlayView)
-            
-            // Adjust the view order here so that the selected elements are above the overlay
             self.view.bringSubviewToFront(plusButton)
             self.view.bringSubviewToFront(peopleButton)
             self.view.bringSubviewToFront(participateButton)
@@ -268,7 +273,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     func applyConstraintsToCollectionView() {
         let safeArea = view.safeAreaLayoutGuide
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
@@ -301,10 +305,19 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func applyConstraintsToTabs(stackView: UIStackView) {
+        let safeArea = view.safeAreaLayoutGuide
         gatherLabel.snp.makeConstraints { make in
-            let safeArea = view.safeAreaLayoutGuide
             make.top.equalTo(safeArea.snp.top).offset(38)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
+        gatherNumCircle.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(gatherLabel)
+            make.leading.equalTo(gatherLabel.snp.trailing).offset(6)
+        }
+        gatherNum.snp.makeConstraints { make in
+            make.centerX.equalTo(gatherNumCircle)
+            make.centerY.equalTo(gatherNumCircle)
         }
         item.snp.makeConstraints { make in
             make.top.equalTo(gatherLabel.snp.bottom).offset(24)
@@ -401,12 +414,3 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         present(addVC, animated: false, completion: nil)
     }
 }
-#if canImport(SwiftUI) && DEBUG
- import SwiftUI
-
- struct ViewControllerPreview: PreviewProvider {
-     static var previews: some View {
-         MeetingViewController().showPreview(.iPhone14Pro)
-     }
- }
- #endif
