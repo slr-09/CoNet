@@ -50,6 +50,9 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(waitingPlanData[indexPath.item].title)")
+        let nextVC = TimeShareViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // 셀 개수
@@ -79,8 +82,14 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        // 여기서 좌우 여백 값을 조절합니다.
+//        let leftRightInset: CGFloat = 16.0
+//        return UIEdgeInsets(top: 0, left: leftRightInset, bottom: 0, right: leftRightInset)
+//    }
 }
 
-protocol ModalViewControllerDelegate: AnyObject {
+protocol MeetingMainViewControllerDelegate: AnyObject {
     func sendDataBack(data: SideBarMenu)
 }

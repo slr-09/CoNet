@@ -76,14 +76,14 @@ class LoginViewController: UIViewController {
     
     private func setupTitleLabel() {
         let titleLabel = UILabel().then {
-            $0.text = "우리들의 모임관리"
+            $0.text = "맞춰가는 시간, 만들어가는 추억"
             $0.font = UIFont.headline3Regular
             $0.textColor = .black
             
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.02
             
-            let attributedText = NSMutableAttributedString(string: "우리들의 모임관리", attributes: [
+            let attributedText = NSMutableAttributedString(string: "맞춰가는 시간, 만들어가는 추억", attributes: [
                 NSAttributedString.Key.kern: -0.45,
                 NSAttributedString.Key.paragraphStyle: paragraphStyle
             ])
@@ -93,7 +93,7 @@ class LoginViewController: UIViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(214)
             make.centerX.equalToSuperview().offset(0.5)
-            make.width.equalTo(126)
+            make.width.equalTo(220)
             make.height.equalTo(22)
         }
     }

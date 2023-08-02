@@ -6,8 +6,8 @@
 //
 
 import Alamofire
-import UIKit
 import KeychainSwift
+import UIKit
 
 class MyPageAPI {
     let keychain = KeychainSwift()
@@ -104,7 +104,7 @@ class MyPageAPI {
                    headers: headers)
         .responseDecodable(of: BaseResponse<String>.self) { response in
             switch response.result {
-            case .success(let response):
+            case .success:
                 completion(true)
             case .failure(let error):
                 print("DEBUG(signout api) error: \(error)")

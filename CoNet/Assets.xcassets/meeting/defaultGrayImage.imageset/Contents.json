@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "gather 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "모임 수2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "모임 수3.png",
+      "filename" : "defaultGrayImage.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
