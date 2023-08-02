@@ -80,8 +80,6 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 데이터
     private let waitingPlanData = PlanDummyData.watingPlanData
     
-    let calendarDateFormatter = CalendarDateFormatter()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -261,11 +259,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             // 캘린더 날짜
             let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
             let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
+            
+            var day = calendarDay
+            if calendarDay.count == 1 {
+                day = "0" + calendarDay
+            }
+            
             // 날짜 포멧 바꾸기
-            var calendarDate = yeMo + " " + String(calendarDay) + "일"
+            var calendarDate = yeMo + " " + day + "일"
 
             let format = DateFormatter()
             format.dateFormat = "yyyy년 MM월 dd일"
+            format.locale = Locale(identifier: "ko_KR")
+            format.timeZone = TimeZone(abbreviation: "KST")
+            
             let today = format.string(from: Date())
             
             // 선택한 날짜가 오늘일 때
@@ -273,8 +280,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if today == calendarDate {
                 changeDate(month: "", day: "")
             } else {
-                format.dateFormat = "MM"
-                changeDate(month: format.string(from: Date()), day: calendarDay)
+                
+                changeDate(month: calendarView.calendarDateFormatter.getMonthText(), day: calendarDay)
             }
             
             // 선택 날짜 포맷 변경
@@ -295,7 +302,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
         } else if collectionView == calendarView.calendarCollectionView {   // 캘린더
-            count = calendarDateFormatter.days.count
+            count = calendarView.calendarDateFormatter.days.count
         }
         
         return count
