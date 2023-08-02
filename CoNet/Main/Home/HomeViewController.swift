@@ -10,6 +10,12 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
+    
+    // logo
+    let logoImage = UIImageView().then {
+        $0.image = UIImage(named: "homeConetLogo")
+    }
+    
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -72,9 +78,7 @@ class HomeViewController: UIViewController {
     }
     
     // 대기 중 약속 데이터
-    private let waitingPlanData = PlanDummyData.watingPlanData
-    
-    let calendarDateFormatter = CalendarDateFormatter()
+    private var waitingPlanData: [WaitingPlan] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,8 +99,20 @@ class HomeViewController: UIViewController {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         
+        dayPlanAPI(date: format.string(from: Date()))
+        
+        // api: 대기 중인 약속
+        HomeAPI().getWaitingPlan { count, plans in
+            self.waitingPlanNum.text = String(count)
+            self.waitingPlanData = plans
+            self.waitingPlanCollectionView.reloadData()
+        }
+    }
+    
+    // 특정 날짜 약속 조회 api 함수
+    func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
-        HomeAPI().getDayPlan(date: format.string(from: Date())) { count, plans in
+        HomeAPI().getDayPlan(date: date) { count, plans in
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
@@ -129,6 +145,7 @@ class HomeViewController: UIViewController {
     func addView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(logoImage)
         contentView.addSubview(calendarView)
         contentView.addSubview(dayPlanLabel)
         contentView.addSubview(planNumCircle)
@@ -162,9 +179,17 @@ class HomeViewController: UIViewController {
             make.height.equalTo(backgroundHeight) // 높이를 설정해야 스크롤이 됨
         }
         
+        // logo
+        logoImage.snp.makeConstraints { make in
+            make.width.equalTo(91)
+            make.height.equalTo(30)
+            make.leading.equalTo(contentView.snp.leading).offset(26)
+            make.top.equalTo(contentView.snp.top).offset(8)
+        }
+        
         // 캘린더 뷰
         calendarView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(43)
+            make.top.equalTo(logoImage.snp.bottom).offset(5)
             make.leading.equalTo(contentView.snp.leading).offset(0)
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
             make.height.equalTo(448)
@@ -240,11 +265,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             // 캘린더 날짜
             let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
             let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
+            
+            var day = calendarDay
+            if calendarDay.count == 1 {
+                day = "0" + calendarDay
+            }
+            
             // 날짜 포멧 바꾸기
-            var calendarDate = yeMo + " " + String(calendarDay) + "일"
+            var calendarDate = yeMo + " " + day + "일"
 
             let format = DateFormatter()
             format.dateFormat = "yyyy년 MM월 dd일"
+            format.locale = Locale(identifier: "ko_KR")
+            format.timeZone = TimeZone(abbreviation: "KST")
+            
             let today = format.string(from: Date())
             
             // 선택한 날짜가 오늘일 때
@@ -252,8 +286,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if today == calendarDate {
                 changeDate(month: "", day: "")
             } else {
-                format.dateFormat = "MM"
-                changeDate(month: format.string(from: Date()), day: calendarDay)
+                
+                changeDate(month: calendarView.calendarDateFormatter.getMonthText(), day: calendarDay)
             }
             
             // 선택 날짜 포맷 변경
@@ -262,11 +296,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
             
             // api: 특정 날짜 약속
-            HomeAPI().getDayPlan(date: calendarDate) { count, plans in
-                self.planNum.text = String(count)
-                self.dayPlanData = plans
-                self.dayPlanCollectionView.reloadData()
-            }
+            dayPlanAPI(date: calendarDate)
         }
     }
     
@@ -278,7 +308,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
         } else if collectionView == calendarView.calendarCollectionView {   // 캘린더
-            count = calendarDateFormatter.days.count
+            count = calendarView.calendarDateFormatter.days.count
         }
         
         return count
@@ -292,9 +322,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return UICollectionViewCell()
             }
             
-            cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
+            cell.timeLabel.text = self.dayPlanData[indexPath.item].time
+            cell.planTitleLabel.text = self.dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = self.dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {
@@ -304,8 +334,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+            cell.finishDateLabel.text = waitingPlanData[indexPath.item].endDate
+            cell.planTitleLabel.text = waitingPlanData[indexPath.item].planName
             
             return cell
         }

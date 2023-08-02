@@ -58,6 +58,9 @@ class CalendarView: UIView {
         format.dateFormat = "yyyy-MM"
         // api 호출
         getMonthPlanAPI(date: format.string(from: Date()))
+        
+        // 년월 설정 
+        yearMonth.setTitle(calendarDateFormatter.getYearMonthText(), for: .normal)
     }
     
     @available(*, unavailable)
