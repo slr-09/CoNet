@@ -10,6 +10,12 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
+    
+    // logo
+    let logoImage = UIImageView().then {
+        $0.image = UIImage(named: "homeConetLogo")
+    }
+    
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -135,6 +141,7 @@ class HomeViewController: UIViewController {
     func addView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(logoImage)
         contentView.addSubview(calendarView)
         contentView.addSubview(dayPlanLabel)
         contentView.addSubview(planNumCircle)
@@ -168,9 +175,17 @@ class HomeViewController: UIViewController {
             make.height.equalTo(backgroundHeight) // 높이를 설정해야 스크롤이 됨
         }
         
+        // logo
+        logoImage.snp.makeConstraints { make in
+            make.width.equalTo(91)
+            make.height.equalTo(30)
+            make.leading.equalTo(safeArea.snp.leading).offset(26)
+            make.top.equalTo(safeArea.snp.top).offset(8)
+        }
+        
         // 캘린더 뷰
         calendarView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(43)
+            make.top.equalTo(logoImage.snp.bottom).offset(5)
             make.leading.equalTo(contentView.snp.leading).offset(0)
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
             make.height.equalTo(448)
