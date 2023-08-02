@@ -177,8 +177,8 @@ class HomeViewController: UIViewController {
         logoImage.snp.makeConstraints { make in
             make.width.equalTo(91)
             make.height.equalTo(30)
-            make.leading.equalTo(safeArea.snp.leading).offset(26)
-            make.top.equalTo(safeArea.snp.top).offset(8)
+            make.leading.equalTo(contentView.snp.leading).offset(26)
+            make.top.equalTo(contentView.snp.top).offset(8)
         }
         
         // 캘린더 뷰
