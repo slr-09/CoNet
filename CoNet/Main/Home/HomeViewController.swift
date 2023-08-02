@@ -95,8 +95,14 @@ class HomeViewController: UIViewController {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         
+        dayPlanAPI(date: format.string(from: Date()))
+        
+    }
+    
+    // 특정 날짜 약속 조회 api 함수
+    func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
-        HomeAPI().getDayPlan(date: format.string(from: Date())) { count, plans in
+        HomeAPI().getDayPlan(date: date) { count, plans in
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
@@ -262,11 +268,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
             
             // api: 특정 날짜 약속
-            HomeAPI().getDayPlan(date: calendarDate) { count, plans in
-                self.planNum.text = String(count)
-                self.dayPlanData = plans
-                self.dayPlanCollectionView.reloadData()
-            }
+            dayPlanAPI(date: calendarDate)
         }
     }
     
@@ -292,9 +294,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return UICollectionViewCell()
             }
             
-            cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
+            cell.timeLabel.text = self.dayPlanData[indexPath.item].time
+            cell.planTitleLabel.text = self.dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = self.dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {
