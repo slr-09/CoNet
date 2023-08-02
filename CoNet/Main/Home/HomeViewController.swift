@@ -78,7 +78,7 @@ class HomeViewController: UIViewController {
     }
     
     // 대기 중 약속 데이터
-    private let waitingPlanData = PlanDummyData.watingPlanData
+    private var waitingPlanData: [WaitingPlan] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,6 +101,12 @@ class HomeViewController: UIViewController {
         
         dayPlanAPI(date: format.string(from: Date()))
         
+        // api: 대기 중인 약속
+        HomeAPI().getWaitingPlan { count, plans in
+            self.waitingPlanNum.text = String(count)
+            self.waitingPlanData = plans
+            self.waitingPlanCollectionView.reloadData()
+        }
     }
     
     // 특정 날짜 약속 조회 api 함수
@@ -328,8 +334,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+            cell.finishDateLabel.text = waitingPlanData[indexPath.item].endDate
+            cell.planTitleLabel.text = waitingPlanData[indexPath.item].planName
             
             return cell
         }
