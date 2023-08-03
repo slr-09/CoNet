@@ -11,8 +11,8 @@ import UIKit
 
 class HistoryViewController: UIViewController {
     // x 버튼
-    let xBtn = UIImageView().then {
-        $0.image = UIImage(named: "closeBtn")
+    let xBtn = UIButton().then {
+        $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
     
     // label: 히스토리
@@ -39,6 +39,13 @@ class HistoryViewController: UIViewController {
 
         layoutConstraints()
         collectionViewSetting()
+        
+        xBtn.addTarget(self, action: #selector(didClickXButton), for: .touchUpInside)
+    }
+    
+    // x 버튼
+    @objc func didClickXButton() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     // history collectionView setting
@@ -128,12 +135,3 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         return 80
     }
 }
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        HistoryViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
