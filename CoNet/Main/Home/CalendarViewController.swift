@@ -208,6 +208,17 @@ class CalendarViewController: UIViewController {
         // api: 특정 달 약속 조회
         getMonthPlanAPI(date: header)
     }
+    
+//    // 특정 날짜 약속 조회 api 함수
+//    func dayPlanAPI(date: String) {
+//        // api: 특정 날짜 약속
+//        HomeAPI().getDayPlan(date: date) { count, plans in
+//            self.homeVC?.dayPlanApi(count: count, plans: plans)
+////            self.planNum.text = String(count)
+////            self.dayPlanData = plans
+////            self.dayPlanCollectionView.reloadData()
+//        }
+//    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

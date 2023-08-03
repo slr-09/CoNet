@@ -10,7 +10,6 @@ import Then
 import UIKit
 
 class HomeViewController: UIViewController {
-    
     // logo
     let logoImage = UIImageView().then {
         $0.image = UIImage(named: "homeConetLogo")
@@ -82,6 +81,8 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 데이터
     private var waitingPlanData: [WaitingPlan] = []
     
+    var backgroundHeight = 2000
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,6 +104,8 @@ class HomeViewController: UIViewController {
         
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
+        format.locale = Locale(identifier: "ko_KR")
+        format.timeZone = TimeZone(abbreviation: "KST")
         
         dayPlanAPI(date: format.string(from: Date()))
         
@@ -121,8 +124,19 @@ class HomeViewController: UIViewController {
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
+            self.backgroundHeight = 660 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
+            self.layoutConstraints()
         }
     }
+    
+//    func dayPlanApi(count: Int, plans: [Plan]) {
+//        planNum.text = String(count)
+//        dayPlanData = plans
+//        backgroundHeight = 660 + dayPlanData.count*82 + waitingPlanData.count*92
+//        print("height", backgroundHeight)
+//        dayPlanCollectionView.reloadData()
+//        layoutConstraints()
+//    }
     
     private func setupCollectionView() {
         // 오늘 약속 collectionView
@@ -176,8 +190,6 @@ class HomeViewController: UIViewController {
             make.top.equalTo(safeArea.snp.top).offset(0)
             make.bottom.equalTo(safeArea.snp.bottom).offset(0)
         }
-        
-        let backgroundHeight = 657 + dayPlanData.count*82 + waitingPlanData.count*92
         
         // 컴포넌트들이 들어갈 뷰
         contentView.snp.makeConstraints { make in
@@ -257,7 +269,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(waitingPlanData.count * 92)
+            make.height.equalTo(waitingPlanData.count*92)
         }
     }
     
@@ -318,7 +330,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
-        if collectionView == dayPlanCollectionView {    // 오늘 약속
+        if collectionView == dayPlanCollectionView { // 오늘 약속
             count = dayPlanData.count
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
@@ -332,15 +344,17 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("check")
         if collectionView == dayPlanCollectionView {
+            print("yes")
             // 오늘 약속
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
                 return UICollectionViewCell()
             }
             
-            cell.timeLabel.text = self.dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = self.dayPlanData[indexPath.item].planName
-            cell.groupNameLabel.text = self.dayPlanData[indexPath.item].teamName
+            cell.timeLabel.text = dayPlanData[indexPath.item].time
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {

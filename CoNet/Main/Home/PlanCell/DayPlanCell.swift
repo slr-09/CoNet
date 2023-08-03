@@ -9,7 +9,7 @@ import Then
 import UIKit
 
 class DayPlanCell: UICollectionViewCell {
-    static let registerId = "\(PastPlanCell.self)"
+    static let registerId = "\(DayPlanCell.self)"
     
     // 배경
     let background = UIView().then {
