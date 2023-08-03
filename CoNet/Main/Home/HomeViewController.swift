@@ -29,6 +29,8 @@ class HomeViewController: UIViewController {
         $0.layer.borderColor = UIColor.gray300?.cgColor
     }
     
+    let calendarVC = CalendarViewController()
+    
     // label: 오늘의 약속
     let dayPlanLabel = UILabel().then {
         $0.text = "오늘의 약속"
@@ -92,7 +94,10 @@ class HomeViewController: UIViewController {
         addView()
         layoutConstraints()
         
-        calendarView.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
+        // HomeViewController의 인스턴스를 CalendarViewController의 프로퍼티에 할당
+        calendarVC.homeVC = self
+        
+        calendarVC.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
         
         setupCollectionView()
         
@@ -131,7 +136,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.register(ShadowWaitingPlanCell.self, forCellWithReuseIdentifier: ShadowWaitingPlanCell.registerId)
         
         // 캘린더 뷰
-        calendarView.calendarCollectionView.delegate = self
+//        calendarVC.calendarCollectionView.delegate = self
     }
     
     // yearMonth 클릭
@@ -146,7 +151,9 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logoImage)
-        contentView.addSubview(calendarView)
+//        contentView.addSubview(calendarView)
+        addChild(calendarVC)
+        contentView.addSubview(calendarVC.view)
         contentView.addSubview(dayPlanLabel)
         contentView.addSubview(planNumCircle)
         contentView.addSubview(planNum)
@@ -188,7 +195,15 @@ class HomeViewController: UIViewController {
         }
         
         // 캘린더 뷰
-        calendarView.snp.makeConstraints { make in
+//        calendarView.snp.makeConstraints { make in
+//            make.top.equalTo(logoImage.snp.bottom).offset(5)
+//            make.leading.equalTo(contentView.snp.leading).offset(0)
+//            make.trailing.equalTo(contentView.snp.trailing).offset(0)
+//            make.height.equalTo(448)
+//        }
+        
+        calendarVC.didMove(toParent: self)
+        calendarVC.view.snp.makeConstraints { make in
             make.top.equalTo(logoImage.snp.bottom).offset(5)
             make.leading.equalTo(contentView.snp.leading).offset(0)
             make.trailing.equalTo(contentView.snp.trailing).offset(0)
@@ -198,7 +213,7 @@ class HomeViewController: UIViewController {
         // label: 오늘의 약속
         dayPlanLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.top.equalTo(calendarView.snp.bottom).offset(36)
+            make.top.equalTo(calendarVC.view.snp.bottom).offset(36)
         }
         
         planNumCircle.snp.makeConstraints { make in
@@ -261,43 +276,43 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         
-        if collectionView == calendarView.calendarCollectionView {
-            // 캘린더 날짜
-            let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
-            let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
-            
-            var day = calendarDay
-            if calendarDay.count == 1 {
-                day = "0" + calendarDay
-            }
-            
-            // 날짜 포멧 바꾸기
-            var calendarDate = yeMo + " " + day + "일"
-
-            let format = DateFormatter()
-            format.dateFormat = "yyyy년 MM월 dd일"
-            format.locale = Locale(identifier: "ko_KR")
-            format.timeZone = TimeZone(abbreviation: "KST")
-            
-            let today = format.string(from: Date())
-            
-            // 선택한 날짜가 오늘일 때
-            // 날짜 label 변경
-            if today == calendarDate {
-                changeDate(month: "", day: "")
-            } else {
-                
-                changeDate(month: calendarView.calendarDateFormatter.getMonthText(), day: calendarDay)
-            }
-            
-            // 선택 날짜 포맷 변경
-            calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
-            calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
-            calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
-            
-            // api: 특정 날짜 약속
-            dayPlanAPI(date: calendarDate)
-        }
+//        if collectionView == calendarVC.calendarCollectionView {
+//            // 캘린더 날짜
+//            let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
+//            let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
+//
+//            var day = calendarDay
+//            if calendarDay.count == 1 {
+//                day = "0" + calendarDay
+//            }
+//
+//            // 날짜 포멧 바꾸기
+//            var calendarDate = yeMo + " " + day + "일"
+//
+//            let format = DateFormatter()
+//            format.dateFormat = "yyyy년 MM월 dd일"
+//            format.locale = Locale(identifier: "ko_KR")
+//            format.timeZone = TimeZone(abbreviation: "KST")
+//
+//            let today = format.string(from: Date())
+//
+//            // 선택한 날짜가 오늘일 때
+//            // 날짜 label 변경
+//            if today == calendarDate {
+//                changeDate(month: "", day: "")
+//            } else {
+//
+//                changeDate(month: calendarView.calendarDateFormatter.getMonthText(), day: calendarDay)
+//            }
+//
+//            // 선택 날짜 포맷 변경
+//            calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
+//            calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
+//            calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
+//
+//            // api: 특정 날짜 약속
+//            dayPlanAPI(date: calendarDate)
+//        }
     }
     
     // 셀 개수
@@ -307,9 +322,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             count = dayPlanData.count
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
-        } else if collectionView == calendarView.calendarCollectionView {   // 캘린더
-            count = calendarView.calendarDateFormatter.days.count
         }
+//        else if collectionView == calendarView.calendarCollectionView {   // 캘린더
+//            count = calendarView.calendarDateFormatter.days.count
+//        }
         
         return count
     }
@@ -347,19 +363,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width - 24
         
-        if collectionView == calendarView.calendarCollectionView {  // 캘린더
-            let width = calendarView.weekStackView.frame.width / 7
-            return CGSize(width: width, height: 50)
-        }
+//        if collectionView == calendarView.calendarCollectionView {  // 캘린더
+//            let width = calendarView.weekStackView.frame.width / 7
+//            return CGSize(width: width, height: 50)
+//        }
         
         return CGSize(width: width, height: 82)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView == calendarView.calendarCollectionView {  // 캘린더
-            return .zero
-        }
+//        if collectionView == calendarView.calendarCollectionView {  // 캘린더
+//            return .zero
+//        }
         return 10
     }
     
