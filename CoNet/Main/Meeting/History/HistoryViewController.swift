@@ -114,9 +114,6 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
             return UICollectionViewCell()
         }
         
-        // 수정&삭제 bottom sheet 보여주기
-        cell.dots.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
-        
         return cell
     }
     
@@ -131,3 +128,12 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         return 80
     }
 }
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        HistoryViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
