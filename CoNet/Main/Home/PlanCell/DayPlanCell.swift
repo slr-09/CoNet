@@ -9,7 +9,7 @@ import Then
 import UIKit
 
 class DayPlanCell: UICollectionViewCell {
-    static let registerId = "\(PastPlanCell.self)"
+    static let registerId = "\(DayPlanCell.self)"
     
     // 배경
     let background = UIView().then {
@@ -17,8 +17,14 @@ class DayPlanCell: UICollectionViewCell {
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
         
-        $0.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
+        $0.layer.borderColor = UIColor.clear.cgColor
         $0.layer.borderWidth = 1
+
+        $0.layer.masksToBounds = false
+        $0.layer.shadowOffset = CGSize(width: 0, height: 4)
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOpacity = 0.15
+        $0.layer.shadowRadius = 16 / UIScreen.main.scale
     }
     
     // 시간
