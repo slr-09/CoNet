@@ -11,8 +11,8 @@ import UIKit
 
 class HistoryViewController: UIViewController {
     // x 버튼
-    let xBtn = UIImageView().then {
-        $0.image = UIImage(named: "closeBtn")
+    let xBtn = UIButton().then {
+        $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
     
     // label: 히스토리
@@ -39,6 +39,13 @@ class HistoryViewController: UIViewController {
 
         layoutConstraints()
         collectionViewSetting()
+        
+        xBtn.addTarget(self, action: #selector(didClickXButton), for: .touchUpInside)
+    }
+    
+    // x 버튼
+    @objc func didClickXButton() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     // history collectionView setting
@@ -113,9 +120,6 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HistoryCell.identifier, for: indexPath) as? HistoryCell else {
             return UICollectionViewCell()
         }
-        
-        // 수정&삭제 bottom sheet 보여주기
-        cell.dots.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
         
         return cell
     }
