@@ -81,9 +81,10 @@ class CalendarViewController: UIViewController {
     
     // yearMonth 클릭
     @objc func didClickYearBtn(_ sender: UIView) {
-        let popupVC = MonthViewController()
+        let popupVC = MonthViewController(year: calendarDateFormatter.currentYear())
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
+        
         // 데이터 받는 부분
         popupVC.calendarClosure = { year, month in
             self.moveMonth(year: year, month: month)
