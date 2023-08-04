@@ -84,8 +84,9 @@ class CalendarViewController: UIViewController {
         let popupVC = MonthViewController()
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
-        popupVC.calendarClosure = { month in
-            self.moveMonth(month: month)
+        // 데이터 받는 부분
+        popupVC.calendarClosure = { year, month in
+            self.moveMonth(year: year, month: month)
         }
         present(popupVC, animated: true, completion: nil)
     }
@@ -207,8 +208,8 @@ class CalendarViewController: UIViewController {
     }
   
     // 달 이동
-    func moveMonth(month: Int) {
-        var header = calendarDateFormatter.moveMonth(month: month)
+    func moveMonth(year: Int, month: Int) {
+        var header = calendarDateFormatter.moveDate(year: year, month: month)
         updateCalendarData()
         calendarCollectionView.reloadData()
         yearMonth.setTitle(header, for: .normal)
