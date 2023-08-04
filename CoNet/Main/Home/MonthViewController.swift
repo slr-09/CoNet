@@ -43,7 +43,16 @@ class MonthViewController: UIViewController {
         $0.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
     }
     
-    let calendarView = CalendarView()
+    var calendarClosure: ((Int, Int) -> Void)?
+    
+    init(year: String) {
+        self.year.text = year
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,14 +62,31 @@ class MonthViewController: UIViewController {
         
         layoutConstraints()
         
+        btnEvents()
+    }
+    
+    func btnEvents() {
         // 배경 탭
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
+        
+        prevBtn.addTarget(self, action: #selector(didClickPrevBtn), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(didClickNextBtn), for: .touchUpInside)
     }
     
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    // 이전 해 이동 버튼
+    @objc func didClickPrevBtn() {
+        year.text = String((Int(year.text!) ?? 0) - 1)
+    }
+    
+    // 다음 해 이동 버튼
+    @objc func didClickNextBtn() {
+        year.text = String((Int(year.text!) ?? 0) + 1)
     }
     
     func layoutConstraints() {
@@ -119,7 +145,8 @@ extension MonthViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         
-        calendarView.moveMonth(month: indexPath.item + 1)
+        // 데이터 전달
+        calendarClosure?(Int(year.text!) ?? 0, indexPath.item + 1)
         
         // 팝업 닫기
         dismiss(animated: true, completion: nil)

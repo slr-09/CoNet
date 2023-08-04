@@ -14,6 +14,9 @@ class CalendarDateFormatter {
     private(set) var days = [String]() // 달력에 표시할 날짜를 담을 배열
     
     init() {
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        
         configureCalendar()
     }
     
@@ -22,6 +25,16 @@ class CalendarDateFormatter {
         let yearMonthText = dateFormatter.string(from: nowCalendarDate)
         
         return yearMonthText
+    }
+    
+    // month text
+    func getMonthText() -> String {
+        let format = DateFormatter()
+        format.dateFormat = "M"
+        format.locale = Locale(identifier: "ko_KR")
+        format.timeZone = TimeZone(abbreviation: "KST")
+        
+        return format.string(from: nowCalendarDate)
     }
     
     // 이번 달 날짜로 update
@@ -66,10 +79,27 @@ class CalendarDateFormatter {
         return getYearMonthText()
     }
     
+    func moveDate(year: Int, month: Int) -> String {
+        let addYear = year - Int(currentYear())!
+        let addMonth = month - Int(currentMonth())!
+        
+        nowCalendarDate = calendar.date(byAdding: DateComponents(year: addYear,month: addMonth), to: nowCalendarDate) ?? Date()
+        updateCurrentMonthDays()
+        
+        return getYearMonthText()
+    }
+    
     // 현재 보여주는 달력의 month
     func currentMonth() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM"
+        
+        return formatter.string(from: nowCalendarDate)
+    }
+        
+    func currentYear() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
         
         return formatter.string(from: nowCalendarDate)
     }
