@@ -98,8 +98,6 @@ class HomeViewController: UIViewController {
         // HomeViewController의 인스턴스를 CalendarViewController의 프로퍼티에 할당
         calendarVC.homeVC = self
         
-        calendarVC.yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
-        
         setupCollectionView()
         
         let format = DateFormatter()
@@ -153,13 +151,13 @@ class HomeViewController: UIViewController {
 //        calendarVC.calendarCollectionView.delegate = self
     }
     
-    // yearMonth 클릭
-    @objc func didClickYearBtn(_ sender: UIView) {
-        let popupVC = MonthViewController()
-        popupVC.modalPresentationStyle = .overCurrentContext
-        popupVC.modalTransitionStyle = .crossDissolve
-        present(popupVC, animated: true, completion: nil)
-    }
+//    // yearMonth 클릭
+//    @objc func didClickYearBtn(_ sender: UIView) {
+//        let popupVC = MonthViewController()
+//        popupVC.modalPresentationStyle = .overCurrentContext
+//        popupVC.modalTransitionStyle = .crossDissolve
+//        present(popupVC, animated: true, completion: nil)
+//    }
     
     func addView() {
         view.addSubview(scrollView)

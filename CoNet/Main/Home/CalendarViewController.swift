@@ -67,6 +67,7 @@ class CalendarViewController: UIViewController {
         
         // 년월 설정
         yearMonth.setTitle(calendarDateFormatter.getYearMonthText(), for: .normal)
+        yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
     }
     
     // API: 특정 달 약속 조회
@@ -76,6 +77,17 @@ class CalendarViewController: UIViewController {
             self.planDates = dates
             self.calendarCollectionView.reloadData()
         }
+    }
+    
+    // yearMonth 클릭
+    @objc func didClickYearBtn(_ sender: UIView) {
+        let popupVC = MonthViewController()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.calendarClosure = { month in
+            self.moveMonth(month: month)
+        }
+        present(popupVC, animated: true, completion: nil)
     }
     
     // 현재 달로 update
@@ -208,17 +220,6 @@ class CalendarViewController: UIViewController {
         // api: 특정 달 약속 조회
         getMonthPlanAPI(date: header)
     }
-    
-//    // 특정 날짜 약속 조회 api 함수
-//    func dayPlanAPI(date: String) {
-//        // api: 특정 날짜 약속
-//        HomeAPI().getDayPlan(date: date) { count, plans in
-//            self.homeVC?.dayPlanApi(count: count, plans: plans)
-////            self.planNum.text = String(count)
-////            self.dayPlanData = plans
-////            self.dayPlanCollectionView.reloadData()
-//        }
-//    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

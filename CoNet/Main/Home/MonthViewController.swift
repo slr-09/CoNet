@@ -43,7 +43,7 @@ class MonthViewController: UIViewController {
         $0.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
     }
     
-    let calendarView = CalendarView()
+    var calendarClosure: ((Int) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,7 +119,8 @@ extension MonthViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         
-        calendarView.moveMonth(month: indexPath.item + 1)
+        // 데이터 전달
+        calendarClosure?(indexPath.item + 1)
         
         // 팝업 닫기
         dismiss(animated: true, completion: nil)
