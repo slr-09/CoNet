@@ -62,11 +62,11 @@ class PlanAPI {
         ]
         
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: BaseResponse<GetPlansAtMeetingResult<[DecidedPlanInfo]>>.self) { response in
+            .responseDecodable(of: BaseResponse<[DecidedPlanInfo]>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let count = response.result?.count else { return }
-                    guard let serverPlans = response.result?.plans else { return }
+                    guard let serverPlans = response.result else { return }
                     completion(count, serverPlans)
                     
                 case .failure(let error):
