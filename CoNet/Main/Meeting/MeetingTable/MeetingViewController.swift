@@ -343,6 +343,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     func getAllMeetings() {
         MeetingAPI().getMeeting { meetings in
             self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
             self.collectionView.reloadData()
         }
     }
@@ -350,6 +351,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     func getBookmarkedMeetings() {
         MeetingAPI().getBookmark { meetings in
             self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
             self.collectionView.reloadData()
         }
     }
