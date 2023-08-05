@@ -86,8 +86,15 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    func updateFavoritedMeetings() {
+        MeetingAPI().getBookmark { meetings in
+            self.favoritedMeetings = meetings.filter { $0.bookmark }
+            self.favcollectionView.reloadData()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+        if collectionView == favcollectionView {
             return favoritedMeetings.count
         } else {
             return meetings.count
@@ -151,41 +158,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
             }
         }
-        
+
         if meetings[indexPath.item].isNew {
             cell.newImageView.image = UIImage(named: "new")
         }
         
         return cell
-        
-        /*
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
-
-        let meetingIndex: Int
-
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
-            meetingIndex = favoritedMeetings[indexPath.row]
-        } else {
-            meetingIndex = indexPath.row
-        }
-
-        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
-
-        cell.onStarButtonTapped = {
-            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-                self.favoritedMeetings.remove(at: index)
-            } else {
-                self.favoritedMeetings.append(meetingIndex)
-            }
-
-            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
-
-            collectionView.reloadData()
-        }
-        return cell
-         */
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -283,12 +261,15 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // UIRefreshControl을 UICollectionView에 추가
         collectionView.refreshControl = refreshControl
+        favcollectionView.refreshControl = refreshControl
         
         // UIRefreshControl의 새로고침 동작 설정
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
+        
+        setupFavCollectionView()
         
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
         favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
@@ -312,6 +293,10 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.gatherNum.text = "\(meetings.count)"
             self.collectionView.reloadData()
         }
+        MeetingAPI().getBookmark { meetings in
+            self.favoritedMeetings = meetings.filter { $0.bookmark }
+            self.favcollectionView.reloadData()
+        }
     }
 
     func setupCollectionView() {
@@ -333,6 +318,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.meetings = meetings
             self.gatherNum.text = "\(meetings.count)"
             self.collectionView.reloadData()
+        }
+        
+        MeetingAPI().getBookmark { meetings in
+            self.favoritedMeetings = meetings.filter { $0.bookmark }
+            self.favcollectionView.reloadData()
         }
         
         // 새로고침 완료 후 refreshControl.endRefreshing()을 호출하여 새로고침 상태를 종료
@@ -359,7 +349,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        collectionView.reloadData()
+        updateFavoritedMeetings()
     }
     
     @objc func didTapPlusButton() {
