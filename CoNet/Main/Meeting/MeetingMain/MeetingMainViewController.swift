@@ -34,6 +34,7 @@ class MeetingMainViewController: UIViewController {
     
     // 모임 이름
     let meetingName = UILabel().then {
+        $0.numberOfLines = 0
         $0.text = "iOS 스터디"
         $0.font = UIFont.headline1
         $0.textColor = UIColor.textHigh
@@ -438,7 +439,7 @@ extension MeetingMainViewController {
         // 모임 이름
         contentView.addSubview(meetingName)
         meetingName.snp.makeConstraints { make in
-            make.height.equalTo(36)
+            make.width.equalTo(240)
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.top.equalTo(starButton.snp.bottom).offset(12)
         }
@@ -456,7 +457,7 @@ extension MeetingMainViewController {
         contentView.addSubview(memberImage)
         memberImage.snp.makeConstraints { make in
             make.width.height.equalTo(16)
-            make.top.equalTo(meetingName.snp.bottom).offset(6)
+            make.top.equalTo(meetingName.snp.bottom).offset(8)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         
