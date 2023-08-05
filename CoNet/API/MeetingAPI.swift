@@ -42,6 +42,7 @@ class MeetingAPI {
         .responseDecodable(of: BaseResponse<PostCreateMeetingResponse>.self) { response in
             switch response.result {
             case .success(let response):
+                print("DEBUG(모임 생성 api) success response: \(response)")
                 completion(response.code == 1000)
                 
             case .failure(let error):
@@ -50,7 +51,7 @@ class MeetingAPI {
         }
     }
     
-    // 모임 초대코드 발급
+    // 모임 참여
     func postParticipateMeeting(code: String, completion: @escaping (_ isSuccess: Bool, _ status: ParticipateMeetingStatus) -> Void) {
         let url = "\(baseUrl)/team/participate"
         let headers: HTTPHeaders = [
