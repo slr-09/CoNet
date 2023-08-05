@@ -45,4 +45,25 @@ class PlanAPI {
                 }
             }
     }
+    
+    // 팀 내 확정된 약속 조회
+    func getDecidedPlansAtMeeting(meetingId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlans]) -> Void) {
+        let url = "\(baseUrl)/team/plan/fixed?teamId=\(meetingId)"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<GetWaitingPlansAtMeetingResult>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let count = response.result?.count else { return }
+                    guard let serverPlans = response.result?.plans else { return }
+                    completion(count, serverPlans)
+                    
+                case .failure(let error):
+                    print("DEBUG(팀 내 확정된 약속 api) error: \(error)")
+                }
+            }
+    }
 }
