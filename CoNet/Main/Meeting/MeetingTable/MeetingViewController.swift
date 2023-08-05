@@ -88,7 +88,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+        if collectionView == favcollectionView {
             return favoritedMeetings.count
         } else {
             return meetings.count
@@ -98,8 +98,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as? MeetingCell else {
             return UICollectionViewCell()
-        }
+        } 
         
+//        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+//            meetingIndex = favoritedMeetings[indexPath.row]
+//        } else {
+//            meetingIndex = indexPath.row
+//        }
+      
         // url로 image 불러오기 (with KingFisher)
         let url = URL(string: meetings[indexPath.item].imgUrl)!
         cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "uploadImageWithNoDescription"))
@@ -139,35 +145,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         return cell
-        
-        /*
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
-
-        let meetingIndex: Int
-
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
-            meetingIndex = favoritedMeetings[indexPath.row]
-        } else {
-            meetingIndex = indexPath.row
-        }
-
-        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
-
-        cell.onStarButtonTapped = {
-            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-                self.favoritedMeetings.remove(at: index)
-            } else {
-                self.favoritedMeetings.append(meetingIndex)
-            }
-
-            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
-
-            collectionView.reloadData()
-        }
-        return cell
-         */
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -265,12 +242,15 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // UIRefreshControl을 UICollectionView에 추가
         collectionView.refreshControl = refreshControl
+        favcollectionView.refreshControl = refreshControl
         
         // UIRefreshControl의 새로고침 동작 설정
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
+        
+        setupFavCollectionView()
         
         allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
         favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
@@ -289,11 +269,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        MeetingAPI().getMeeting { meetings in
-            self.meetings = meetings
-            self.gatherNum.text = "\(meetings.count)"
-            self.collectionView.reloadData()
-        }
+        getAllMeetings()
     }
 
     func setupCollectionView() {
@@ -311,37 +287,55 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     // UIRefreshControl의 새로고침 동작을 처리하는 메서드
     @objc func refreshData() {
         // 여기에 새로고침을 수행하는 코드를 작성
-        MeetingAPI().getMeeting { meetings in
-            self.meetings = meetings
-            self.gatherNum.text = "\(meetings.count)"
-            self.collectionView.reloadData()
-        }
+        getAllMeetings()
+        getBookmarkedMeetings()
         
         // 새로고침 완료 후 refreshControl.endRefreshing()을 호출하여 새로고침 상태를 종료
         refreshControl.endRefreshing()
     }
     
     @objc func didSelectAllTab() {
+        getAllMeetings()
+        
         selectedTabIndicator.snp.remakeConstraints { make in
             make.top.equalTo(allTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(allTab)
         }
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
 
     @objc func didSelectFavoriteTab() {
+        getBookmarkedMeetings()
+        
         selectedTabIndicator.snp.remakeConstraints { make in
             make.top.equalTo(favTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(favTab)
         }
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        collectionView.reloadData()
+    }
+    
+    func getAllMeetings() {
+        MeetingAPI().getMeeting { meetings in
+            self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func getBookmarkedMeetings() {
+        MeetingAPI().getBookmark { meetings in
+            self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
+            self.collectionView.reloadData()
+        }
     }
     
     @objc func didTapPlusButton() {

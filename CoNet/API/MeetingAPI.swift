@@ -255,6 +255,38 @@ class MeetingAPI {
             }
     }
     
+    // 북마크 조회
+    func getBookmark(completion: @escaping (_ bookmarks: [MeetingDetailInfo]) -> Void) {
+        let url = "\(baseUrl)/team/bookmark"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<[GetMeetingResponse]>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let teams = response.result else { return }
+                    
+                    var bookmarks: [MeetingDetailInfo] = []
+                    for team in teams {
+                        let bookmark = MeetingDetailInfo(id: team.teamId,
+                                                        name: team.teamName,
+                                                        imgUrl: team.teamImgUrl,
+                                                        memberCount: team.teamMemberCount,
+                                                        isNew: team.isNew,
+                                                        bookmark: team.bookmark)
+                        bookmarks.append(bookmark)
+                    }
+                    completion(bookmarks)
+                    
+                case .failure(let error):
+                    print("DEBUG(edit name api) error: \(error)")
+                }
+            }
+    }
+    
     // 북마크
     func postBookmark(teamId: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/bookmark"
