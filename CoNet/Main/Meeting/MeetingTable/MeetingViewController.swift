@@ -154,8 +154,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         if meetings[indexPath.item].isNew {
             cell.newImageView.image = UIImage(named: "new")
-        } else {
-            cell.newImageView.image = UIImage(named: "")
         }
         
         return cell
