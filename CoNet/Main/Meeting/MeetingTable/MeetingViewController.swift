@@ -137,33 +137,42 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.starButton.setImage(UIImage(named: "star"), for: .normal)
         }
         
+        if meetings[indexPath.item].isNew {
+            cell.newImageView.image = UIImage(named: "new")
+        } else {
+            cell.newImageView.image = UIImage(named: "")
+        }
+        
         return cell
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
+        
+        /*
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
 
-//        let meetingIndex: Int
-//
-//        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
-//            meetingIndex = favoritedMeetings[indexPath.row]
-//        } else {
-//            meetingIndex = indexPath.row
-//        }
-//
-//        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-//        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
-//
-//        cell.onStarButtonTapped = {
-//            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-//                self.favoritedMeetings.remove(at: index)
-//            } else {
-//                self.favoritedMeetings.append(meetingIndex)
-//            }
-//
-//            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-//            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
-//
-//            collectionView.reloadData()
-//        }
-//        return cell
+        let meetingIndex: Int
+
+        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+            meetingIndex = favoritedMeetings[indexPath.row]
+        } else {
+            meetingIndex = indexPath.row
+        }
+
+        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
+        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
+
+        cell.onStarButtonTapped = {
+            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
+                self.favoritedMeetings.remove(at: index)
+            } else {
+                self.favoritedMeetings.append(meetingIndex)
+            }
+
+            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
+            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
+
+            collectionView.reloadData()
+        }
+        return cell
+         */
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -279,6 +288,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewWillAppear(animated)
         MeetingAPI().getMeeting { meetings in
             self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
             self.collectionView.reloadData()
         }
     }
