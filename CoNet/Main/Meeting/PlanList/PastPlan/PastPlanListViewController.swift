@@ -8,13 +8,16 @@
 import UIKit
 
 class PastPlanListViewController: UIViewController {
+    var meetingId: Int = 0
+    
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
 
 //    static func instance() -> ViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let pastPlanData = PlanDummyData.pastPlanData
+    private var plansCount: Int = 0
+    private var pastPlanData: [PastPlanInfo] = []
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -24,6 +27,12 @@ class PastPlanListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getPastPlansAtMeeting(meetingId: meetingId) { count, plans in
+            self.plansCount = count
+            self.pastPlanData = plans
+            self.mainView.reload()
+        }
     }
     
     override func viewDidLoad() {
@@ -63,8 +72,8 @@ extension PastPlanListViewController: UICollectionViewDelegate, UICollectionView
         
         cell.dateLabel.text = pastPlanData[indexPath.item].date
         cell.timeLabel.text = pastPlanData[indexPath.item].time
-        cell.planTitleLabel.text = pastPlanData[indexPath.item].title
-        if pastPlanData[indexPath.item].isExistHistory {
+        cell.planTitleLabel.text = pastPlanData[indexPath.item].planName
+        if pastPlanData[indexPath.item].isRegisteredToHistory {
             cell.historyImage.image = UIImage(named: "existHistory")
         } else {
             cell.historyImage.image = UIImage(named: "")
