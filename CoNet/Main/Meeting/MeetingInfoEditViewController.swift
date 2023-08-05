@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingInfoEditViewController: UIViewController {
+    var meetingId: Int = 0
+    
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
@@ -100,10 +102,61 @@ class MeetingInfoEditViewController: UIViewController {
         self.view.addSubview(photoUploadButton)
         applyConstraintsToGatherphoto()
         
+        completionButton.addTarget(self, action: #selector(updateMeeting), for: .touchUpInside)
         xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         photoUploadButton.addTarget(self, action: #selector(uploadButtonTapped), for: .touchUpInside)
         meetingnameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
+            self.meetingnameTextField.text = meeting.name
+            guard let url = URL(string: meeting.imgUrl) else { return }
+            self.loadImage(url: url)
+            self.photoImageView.alpha = 0.8
+        }
+    }
+    
+    @objc private func updateMeeting() {
+        guard let name = meetingnameTextField.text else { return }
+        guard let image = photoImageView.image else { return }
+        
+        MeetingAPI().updateMeeting(id: meetingId, name: name, image: image) { isSuccess in
+            if isSuccess {
+                print("DEBUG (모임 수정 api): isSuccess true")
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    private func loadImage(url imageURL: URL) {
+        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
+        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
+            // 에러 처리
+            if let error = error {
+                print("Error loading image: \(error.localizedDescription)")
+                return
+            }
+            
+            // 데이터가 정상적으로 받아와졌는지 확인
+            guard let imageData = data else {
+                print("No image data received")
+                return
+            }
+            
+            // 이미지 데이터를 UIImage로 변환
+            if let image = UIImage(data: imageData, scale: 60) {
+                // UI 업데이트는 메인 큐에서 수행
+                DispatchQueue.main.async {
+                    // 이미지를 UIImageView에 설정
+                    self.photoImageView.image = image
+                }
+            } else {
+                print("Failed to convert image data")
+            }
+        }.resume()
     }
     
     func applyConstraintsToTopSection() {
