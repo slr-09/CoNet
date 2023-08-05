@@ -145,6 +145,32 @@ class MeetingAPI {
         }
     }
     
+    // 모임 나가기
+    func leaveMeeting(id: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/leave"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let body: [String: Any] = [
+            "teamId": id
+        ]
+        
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<String>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    print("DEBUG(모임 나가기 api): 성공 모임 id \(id)")
+                    print("DEBUG(모임 나가기 api): 성공 \(response.code)")
+                    print("DEBUG(모임 나가기 api): 성공 \(response.message)")
+                    completion(response.code == 1000)
+                    
+                case .failure(let error):
+                    print("DEBUG(모임 나가기 api) error: \(error)")
+                }
+            }
+    }
+    
     // 내가 속한 모임 전체 조회
     func getMeeting(completion: @escaping (_ meetings: [MeetingDetailInfo]) -> Void) {
         let url = "\(baseUrl)/team"
