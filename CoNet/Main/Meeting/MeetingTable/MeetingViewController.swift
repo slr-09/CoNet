@@ -176,13 +176,15 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 46
+        return 20
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let _: CGFloat = (collectionView.frame.width / 2) - 17
         return CGSize(width: 164, height: 232)
     }
+    
+    let refreshControl = UIRefreshControl()
     
     let gatherLabel = UILabel().then {
         $0.text = "모임"
@@ -265,7 +267,13 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.view.backgroundColor = .white
         
         layoutConstriants()
-
+        
+        // UIRefreshControl을 UICollectionView에 추가
+        collectionView.refreshControl = refreshControl
+        
+        // UIRefreshControl의 새로고침 동작 설정
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
         
@@ -303,6 +311,19 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         favcollectionView.dataSource = self
         favcollectionView.delegate = self
         favcollectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
+    }
+    
+    // UIRefreshControl의 새로고침 동작을 처리하는 메서드
+    @objc func refreshData() {
+        // 여기에 새로고침을 수행하는 코드를 작성
+        MeetingAPI().getMeeting { meetings in
+            self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
+            self.collectionView.reloadData()
+        }
+        
+        // 새로고침 완료 후 refreshControl.endRefreshing()을 호출하여 새로고침 상태를 종료
+        refreshControl.endRefreshing()
     }
     
     @objc func didSelectAllTab() {
