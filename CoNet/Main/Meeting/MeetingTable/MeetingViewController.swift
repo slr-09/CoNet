@@ -86,13 +86,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
-    func updateFavoritedMeetings() {
-        MeetingAPI().getBookmark { meetings in
-            self.favoritedMeetings = meetings.filter { $0.bookmark }
-            self.favcollectionView.reloadData()
-        }
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == favcollectionView {
             return favoritedMeetings.count
@@ -105,6 +98,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as? MeetingCell else {
             return UICollectionViewCell()
         }
+        
+//        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+//            meetingIndex = favoritedMeetings[indexPath.row]
+//        } else {
+//            meetingIndex = indexPath.row
+//        }
         
         let url = URL(string: meetings[indexPath.item].imgUrl)!
         // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
@@ -288,15 +287,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        MeetingAPI().getMeeting { meetings in
-            self.meetings = meetings
-            self.gatherNum.text = "\(meetings.count)"
-            self.collectionView.reloadData()
-        }
-        MeetingAPI().getBookmark { meetings in
-            self.favoritedMeetings = meetings.filter { $0.bookmark }
-            self.favcollectionView.reloadData()
-        }
+        getAllMeetings()
     }
 
     func setupCollectionView() {
@@ -314,42 +305,53 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     // UIRefreshControl의 새로고침 동작을 처리하는 메서드
     @objc func refreshData() {
         // 여기에 새로고침을 수행하는 코드를 작성
-        MeetingAPI().getMeeting { meetings in
-            self.meetings = meetings
-            self.gatherNum.text = "\(meetings.count)"
-            self.collectionView.reloadData()
-        }
-        
-        MeetingAPI().getBookmark { meetings in
-            self.favoritedMeetings = meetings.filter { $0.bookmark }
-            self.favcollectionView.reloadData()
-        }
+        getAllMeetings()
+        getBookmarkedMeetings()
         
         // 새로고침 완료 후 refreshControl.endRefreshing()을 호출하여 새로고침 상태를 종료
         refreshControl.endRefreshing()
     }
     
     @objc func didSelectAllTab() {
+        getAllMeetings()
+        
         selectedTabIndicator.snp.remakeConstraints { make in
             make.top.equalTo(allTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(allTab)
         }
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
 
     @objc func didSelectFavoriteTab() {
+        getBookmarkedMeetings()
+        
         selectedTabIndicator.snp.remakeConstraints { make in
             make.top.equalTo(favTab.snp.bottom).offset(2)
             make.height.equalTo(2)
             make.left.right.equalTo(favTab)
         }
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        updateFavoritedMeetings()
+    }
+    
+    func getAllMeetings() {
+        MeetingAPI().getMeeting { meetings in
+            self.meetings = meetings
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func getBookmarkedMeetings() {
+        MeetingAPI().getBookmark { meetings in
+            self.meetings = meetings
+            self.collectionView.reloadData()
+        }
     }
     
     @objc func didTapPlusButton() {
