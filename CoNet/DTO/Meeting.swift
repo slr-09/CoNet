@@ -12,6 +12,11 @@ struct PostMeetingInviteCodeResponse: Codable {
     let inviteCode, codeDeadLine: String
 }
 
+struct PostParticipateMeetingResponse: Codable {
+    let userName, teamName: String
+    let status: Bool
+}
+
 struct GetMeetingDetailInfoResponse: Codable {
     let teamName, teamImgUrl: String
     let teamMemberCount: Int
