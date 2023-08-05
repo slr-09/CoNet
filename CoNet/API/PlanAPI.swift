@@ -17,7 +17,8 @@ struct GetWaitingPlansAtMeetingResult: Codable {
 
 struct WaitingPlans: Codable {
     let planId: Int
-    let startDate, endDate, teamName, planName: String
+    let startDate, endDate, planName: String
+    let teamName: String?
 }
 
 class PlanAPI {

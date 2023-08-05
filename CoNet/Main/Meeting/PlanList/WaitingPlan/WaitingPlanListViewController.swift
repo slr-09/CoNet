@@ -16,17 +16,8 @@ class WaitingPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let waitingPlanData = PlanDummyData.watingPlanData
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = false
-    }
+    private var plansCount: Int = 0
+    private var waitingPlanData: [WaitingPlans] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +30,22 @@ class WaitingPlanListViewController: UIViewController {
         setupCollectionView()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getWaitingPlansAtMeeting(meetingId: 11) { count, plans in
+            self.plansCount = count
+            self.waitingPlanData = plans
+            self.mainView.reload()
+        }
+    }
+    
     private func setupCollectionView() {
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
@@ -49,7 +56,7 @@ class WaitingPlanListViewController: UIViewController {
 extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(waitingPlanData[indexPath.item].title)")
+        print("Selected cell at indexPath: \(waitingPlanData[indexPath.item].planName)")
         let nextVC = TimeShareViewController()
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
@@ -57,7 +64,7 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return waitingPlanData.count
+        return plansCount
     }
     
     // 셀
@@ -65,9 +72,10 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
             return UICollectionViewCell()
         }
+        
         cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-        cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-        cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+        cell.finishDateLabel.text = waitingPlanData[indexPath.item].endDate
+        cell.planTitleLabel.text = waitingPlanData[indexPath.item].planName
         
         return cell
     }

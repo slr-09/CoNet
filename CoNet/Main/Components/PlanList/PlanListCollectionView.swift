@@ -41,4 +41,8 @@ class PlanListCollectionView: UIView {
             make.centerY.equalToSuperview()
         }
     }
+    
+    func reload() {
+        collectionView.reloadData()
+    }
 }
