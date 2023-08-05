@@ -15,6 +15,10 @@ struct PostCreateMeetingResponse: Codable {
     let inviteCode: String
 }
 
+struct PostUpdateMeetingResponse: Codable {
+    let name, imgUrl: String
+}
+
 struct BadRequestResponse: Codable {
     let code, status: Int
     let message, timestamp: String
@@ -111,6 +115,33 @@ class MeetingAPI {
                     print("DEBUG(edit name api) error: \(error)")
                 }
             }
+    }
+    
+    // 모임 수정
+    func updateMeeting(id: Int, name: String, image: UIImage, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/update"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let request = "{\"teamId\":\(id), \"teamName\":\"\(name)\"}"
+        guard let image = image.pngData() else { return }
+        
+        // Multipart Form 데이터 생성
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(image, withName: "file", fileName: "\(image).png", mimeType: "image/png")
+            multipartFormData.append(request.data(using: .utf8)!, withName: "request", mimeType: "application/json")
+        }, to: url, method: .post, headers: headers)
+        .responseDecodable(of: BaseResponse<PostUpdateMeetingResponse>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(모임 수정 api) success response: \(response)")
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(모임 수정 api) error: \(error)")
+            }
+        }
     }
     
     // 모임 상세 정보 조회
