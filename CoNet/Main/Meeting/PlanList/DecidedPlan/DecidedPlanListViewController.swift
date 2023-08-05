@@ -8,13 +8,16 @@
 import UIKit
 
 class DecidedPlanListViewController: UIViewController {
+    var meetingId: Int = 0
+    
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
 
 //    static func instance() -> ViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    private let decidedPlanData = PlanDummyData.decidedPlanData
+    var plansCount: Int = 0
+    private var decidedPlanData: [DecidedPlanInfo] = []
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -24,6 +27,12 @@ class DecidedPlanListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getDecidedPlansAtMeeting(meetingId: meetingId) { count, plans in
+            self.plansCount = count
+            self.decidedPlanData = plans
+            self.mainView.reload()
+        }
     }
     
     override func viewDidLoad() {
@@ -63,10 +72,11 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
             return UICollectionViewCell()
         }
+        
         cell.dateLabel.text = decidedPlanData[indexPath.item].date
         cell.timeLabel.text = decidedPlanData[indexPath.item].time
-        cell.leftDateLabel.text = decidedPlanData[indexPath.item].leftDate
-        cell.planTitleLabel.text = decidedPlanData[indexPath.item].title
+        cell.leftDateLabel.text = "\(decidedPlanData[indexPath.item].dday)일 남았습니다."
+        cell.planTitleLabel.text = decidedPlanData[indexPath.item].planName
         
         return cell
     }

@@ -66,6 +66,8 @@
 		515E53B82A77B48000536C6D /* ShadowWaitingPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */; };
 		515E53BD2A77CF9400536C6D /* MeetingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53BC2A77CF9400536C6D /* MeetingAPI.swift */; };
 		515E53BF2A77D16D00536C6D /* Meeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53BE2A77D16D00536C6D /* Meeting.swift */; };
+		517C28C62A7E8F0600D2CE50 /* PlanAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */; };
+		517C28C92A7EBBB000D2CE50 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 517C28C82A7EBBB000D2CE50 /* Kingfisher */; };
 		518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */; };
 		518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D82A683F68002D8F0F /* PopUpView.swift */; };
 		518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */; };
@@ -157,6 +159,7 @@
 		515E53B72A77B48000536C6D /* ShadowWaitingPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowWaitingPlanCell.swift; sourceTree = "<group>"; };
 		515E53BC2A77CF9400536C6D /* MeetingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAPI.swift; sourceTree = "<group>"; };
 		515E53BE2A77D16D00536C6D /* Meeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meeting.swift; sourceTree = "<group>"; };
+		517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanAPI.swift; sourceTree = "<group>"; };
 		518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutPopUpViewController.swift; sourceTree = "<group>"; };
 		518F55D82A683F68002D8F0F /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignOutViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				517C28C92A7EBBB000D2CE50 /* Kingfisher in Frameworks */,
 				51F2A46D2A54960200D134CC /* KeychainSwift in Frameworks */,
 				51DA64962A532CB300BBA4C0 /* KakaoSDK in Frameworks */,
 				51DA64992A532CF800BBA4C0 /* SnapKit in Frameworks */,
@@ -374,6 +378,7 @@
 				518F55E12A6870CB002D8F0F /* MyPageAPI.swift */,
 				51F2A4702A5497A500D134CC /* AuthAPI.swift */,
 				515E53BC2A77CF9400536C6D /* MeetingAPI.swift */,
+				517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -546,6 +551,7 @@
 				51F2A46C2A54960200D134CC /* KeychainSwift */,
 				231EA9CF2A587DE700138628 /* Then */,
 				23B681D92A5FF9580039A67B /* FSCalendar */,
+				517C28C82A7EBBB000D2CE50 /* Kingfisher */,
 			);
 			productName = CoNet;
 			productReference = 513D6B852A4BFCCC00E9ACDA /* CoNet.app */;
@@ -581,6 +587,7 @@
 				51F2A46B2A54960200D134CC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				231EA9CE2A587DE700138628 /* XCRemoteSwiftPackageReference "Then" */,
 				23B681D82A5FF9580039A67B /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				517C28C72A7EBBAF00D2CE50 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 513D6B862A4BFCCC00E9ACDA /* Products */;
 			projectDirPath = "";
@@ -708,6 +715,7 @@
 				239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */,
 				51B526CC2A6C3988009DBFB4 /* DecidedPlanCell.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,
+				517C28C62A7E8F0600D2CE50 /* PlanAPI.swift in Sources */,
 				1AC014282A70A75700E3E9C9 /* PlanConfirmViewController.swift in Sources */,
 				23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */,
 			);
@@ -943,6 +951,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		517C28C72A7EBBAF00D2CE50 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		51DA64942A532CB300BBA4C0 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -979,6 +995,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 23B681D82A5FF9580039A67B /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		517C28C82A7EBBB000D2CE50 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 517C28C72A7EBBAF00D2CE50 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		51DA64952A532CB300BBA4C0 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;

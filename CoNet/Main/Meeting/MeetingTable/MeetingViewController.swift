@@ -5,6 +5,7 @@
 //  Created by 정아현 on 2023/08/01.
 //
 
+import Kingfisher
 import SnapKit
 import Then
 import UIKit
@@ -97,49 +98,29 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as? MeetingCell else {
             return UICollectionViewCell()
-        }
+        } 
         
 //        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
 //            meetingIndex = favoritedMeetings[indexPath.row]
 //        } else {
 //            meetingIndex = indexPath.row
 //        }
-        
+      
+        // url로 image 불러오기 (with KingFisher)
         let url = URL(string: meetings[indexPath.item].imgUrl)!
-        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            // 에러 처리
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            // 데이터가 정상적으로 받아와졌는지 확인
-            guard let imageData = data else {
-                print("No image data received")
-                return
-            }
-            
-            // 이미지 데이터를 UIImage로 변환
-            if let image = UIImage(data: imageData, scale: 60) {
-                // UI 업데이트는 메인 큐에서 수행
-                DispatchQueue.main.async {
-                    // 이미지를 UIImageView에 설정
-                    cell.imageView.image = image
-                }
-            } else {
-                print("Failed to convert image data")
-            }
-        }.resume()
+        cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "uploadImageWithNoDescription"))
         
+        // 모임 이름
         cell.titleLabel.text = meetings[indexPath.item].name
         
+        // 북마크 여부
         if meetings[indexPath.item].bookmark {
             cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
         } else {
             cell.starButton.setImage(UIImage(named: "star"), for: .normal)
         }
         
+        // 북마크 기능
         cell.onStarButtonTapped = {
             if cell.starButton.currentImage == UIImage(named: "fullstar") {
                 // 북마크 되어 있을 때
@@ -157,7 +138,8 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
             }
         }
-
+        
+        // new 태그
         if meetings[indexPath.item].isNew {
             cell.newImageView.image = UIImage(named: "new")
         }

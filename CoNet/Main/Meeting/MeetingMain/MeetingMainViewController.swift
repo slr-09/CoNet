@@ -278,14 +278,11 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .inviteCode:
             showInvitationCodeVC()
         case .wait:
-            nextVC = WaitingPlanListViewController()
-            pushViewController(nextVC)
+            showWaitingPlansVC()
         case .decided:
-            nextVC = DecidedPlanListViewController()
-            pushViewController(nextVC)
+            showDecidedPlansVC()
         case .past:
-            nextVC = PastPlanListViewController()
-            pushViewController(nextVC)
+            showPastPlansVC()
         case .history:
             nextVC = HistoryViewController()
             pushViewController(nextVC)
@@ -312,6 +309,27 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
+    }
+    
+    func showWaitingPlansVC() {
+        let nextVC = WaitingPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showDecidedPlansVC() {
+        let nextVC = DecidedPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showPastPlansVC() {
+        let nextVC = PastPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showdeleteMeetingVC() {
