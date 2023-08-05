@@ -22,7 +22,7 @@ class MeetingMainViewController: UIViewController {
     // 상단 모임 이미지
     let whiteGradientView = WhiteGradientView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     let meetingImage = UIImageView().then {
-        $0.image = UIImage(named: "defaultGrayImage")
+        $0.image = UIImage(named: "uploadImage")
         $0.clipsToBounds = true
     }
     

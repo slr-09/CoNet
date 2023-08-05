@@ -13,7 +13,7 @@ class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
 
     let imageView = UIImageView().then {
-        $0.image = UIImage(named: "space")
+        $0.image = UIImage(named: "uploadImageWithNoDescription")
     }
 
     let titleLabel = UILabel().then {
@@ -77,8 +77,8 @@ class MeetingCell: UICollectionViewCell {
 class MeetingViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var item: UIStackView!
-    var meetings = [Int](repeating: 0, count: 6)
-    var favoritedMeetings = [Int]()
+    var meetings: [MeetingDetailInfo] = []
+    var favoritedMeetings: [MeetingDetailInfo] = []
     
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -89,7 +89,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
             return favoritedMeetings.count
         } else {
@@ -98,37 +97,78 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
-
-        let meetingIndex: Int
-
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
-            meetingIndex = favoritedMeetings[indexPath.row]
-        } else {
-            meetingIndex = indexPath.row
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as? MeetingCell else {
+            return UICollectionViewCell()
         }
-
-        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
-
-        cell.onStarButtonTapped = {
-            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-                self.favoritedMeetings.remove(at: index)
-            } else {
-                self.favoritedMeetings.append(meetingIndex)
+        
+        let url = URL(string: meetings[indexPath.item].imgUrl)!
+        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            // 에러 처리
+            if let error = error {
+                print("Error loading image: \(error.localizedDescription)")
+                return
             }
             
-            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
-
-            collectionView.reloadData()
+            // 데이터가 정상적으로 받아와졌는지 확인
+            guard let imageData = data else {
+                print("No image data received")
+                return
+            }
+            
+            // 이미지 데이터를 UIImage로 변환
+            if let image = UIImage(data: imageData, scale: 60) {
+                // UI 업데이트는 메인 큐에서 수행
+                DispatchQueue.main.async {
+                    // 이미지를 UIImageView에 설정
+                    cell.imageView.image = image
+                }
+            } else {
+                print("Failed to convert image data")
+            }
+        }.resume()
+        
+        cell.titleLabel.text = meetings[indexPath.item].name
+        
+        if meetings[indexPath.item].bookmark {
+            cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
+        } else {
+            cell.starButton.setImage(UIImage(named: "star"), for: .normal)
         }
+        
         return cell
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
+
+//        let meetingIndex: Int
+//
+//        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+//            meetingIndex = favoritedMeetings[indexPath.row]
+//        } else {
+//            meetingIndex = indexPath.row
+//        }
+//
+//        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
+//        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
+//
+//        cell.onStarButtonTapped = {
+//            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
+//                self.favoritedMeetings.remove(at: index)
+//            } else {
+//                self.favoritedMeetings.append(meetingIndex)
+//            }
+//
+//            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
+//            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
+//
+//            collectionView.reloadData()
+//        }
+//        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 46
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let _: CGFloat = (collectionView.frame.width / 2) - 17
         return CGSize(width: 164, height: 232)
@@ -213,47 +253,17 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         self.view.backgroundColor = .white
-        self.view.addSubview(gatherLabel)
-        self.view.addSubview(gatherNumCircle)
-        self.view.addSubview(gatherNum)
-        self.view.addSubview(item)
-        self.view.addSubview(selectedTabIndicator)
-        applyConstraintsToTabs(stackView: item)
-
-        allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
-        favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         
-        self.view.addSubview(plusButton)
-        applyConstraintsToPlusButton()
-        
-        self.view.addSubview(collectionView)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
-        applyConstraintsToCollectionView()
+        layoutConstriants()
 
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
-        self.view.addSubview(peopleButton)
-        self.view.addSubview(joinLabel)
-        self.view.addSubview(participateButton)
-        self.view.addSubview(addLabel)
-
-        applyConstraintsToPlusButton()
-        applyConstraintsToPeopleButtonAndJoinLabel()
-        applyConstraintsToPartButtonAndAddLabel()
-
+        
+        allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
+        favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
         participateButton.addTarget(self, action: #selector(didTapparticipateButton), for: .touchUpInside)
         peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
-        
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-            overlayView.frame = self.view.bounds
-            overlayView.alpha = 0
-            self.view.addSubview(overlayView)
-            self.view.bringSubviewToFront(plusButton)
-            self.view.bringSubviewToFront(peopleButton)
-            self.view.bringSubviewToFront(participateButton)
-            self.view.bringSubviewToFront(addLabel)
-            self.view.bringSubviewToFront(joinLabel)
         
         UIView.animate(withDuration: 0.3) {
             self.peopleButton.alpha = 0
@@ -264,31 +274,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
-    func applyConstraintsToPlusButton() {
-        plusButton.snp.makeConstraints { make in
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-            make.right.equalTo(self.view).offset(-24)
-        }
-    }
-        
-    func applyConstraintsToCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
-        }
-    }
-    
-    func applyConstraintsToFavCollectionView() {
-        let safeArea = view.safeAreaLayoutGuide
-        
-        favcollectionView.snp.makeConstraints { make in
-            make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        MeetingAPI().getMeeting { meetings in
+            self.meetings = meetings
+            self.collectionView.reloadData()
         }
     }
 
@@ -302,56 +292,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         favcollectionView.dataSource = self
         favcollectionView.delegate = self
         favcollectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
-    }
-    
-    func applyConstraintsToTabs(stackView: UIStackView) {
-        let safeArea = view.safeAreaLayoutGuide
-        gatherLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(38)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-        }
-        gatherNumCircle.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.centerY.equalTo(gatherLabel)
-            make.leading.equalTo(gatherLabel.snp.trailing).offset(6)
-        }
-        gatherNum.snp.makeConstraints { make in
-            make.centerX.equalTo(gatherNumCircle)
-            make.centerY.equalTo(gatherNumCircle)
-        }
-        item.snp.makeConstraints { make in
-            make.top.equalTo(gatherLabel.snp.bottom).offset(24)
-            make.left.equalTo(self.view).offset(24)
-        }
-        selectedTabIndicator.snp.makeConstraints { make in
-            make.top.equalTo(allTab.snp.bottom).offset(2)
-            make.height.equalTo(2)
-            make.left.right.equalTo(allTab)
-        }
-    }
-    
-    func applyConstraintsToPeopleButtonAndJoinLabel() {
-        peopleButton.snp.makeConstraints { make in
-            make.bottom.equalTo(plusButton.snp.top).offset(-14)
-            make.centerX.equalTo(plusButton)
-        }
-        
-        joinLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(peopleButton)
-            make.right.equalTo(peopleButton.snp.left).offset(-11)
-        }
-    }
-
-    func applyConstraintsToPartButtonAndAddLabel() {
-        participateButton.snp.makeConstraints { make in
-            make.bottom.equalTo(peopleButton.snp.top).offset(-14)
-            make.centerX.equalTo(plusButton)
-        }
-        
-        addLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(participateButton)
-            make.right.equalTo(participateButton.snp.left).offset(-11)
-        }
     }
     
     @objc func didSelectAllTab() {
@@ -412,5 +352,121 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         let addVC = MeetingPopUpViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
+    }
+}
+
+// layout
+extension MeetingViewController {
+    private func layoutConstriants() {
+        self.view.addSubview(gatherLabel)
+        self.view.addSubview(gatherNumCircle)
+        self.view.addSubview(gatherNum)
+        self.view.addSubview(item)
+        self.view.addSubview(selectedTabIndicator)
+        applyConstraintsToTabs(stackView: item)
+        
+        self.view.addSubview(plusButton)
+        applyConstraintsToPlusButton()
+        
+        self.view.addSubview(collectionView)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+        applyConstraintsToCollectionView()
+        
+        self.view.addSubview(peopleButton)
+        self.view.addSubview(joinLabel)
+        self.view.addSubview(participateButton)
+        self.view.addSubview(addLabel)
+
+        applyConstraintsToPlusButton()
+        applyConstraintsToPeopleButtonAndJoinLabel()
+        applyConstraintsToPartButtonAndAddLabel()
+        
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        overlayView.frame = self.view.bounds
+        overlayView.alpha = 0
+        self.view.addSubview(overlayView)
+        self.view.bringSubviewToFront(plusButton)
+        self.view.bringSubviewToFront(peopleButton)
+        self.view.bringSubviewToFront(participateButton)
+        self.view.bringSubviewToFront(addLabel)
+        self.view.bringSubviewToFront(joinLabel)
+    }
+    
+    func applyConstraintsToPlusButton() {
+        plusButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            make.right.equalTo(self.view).offset(-24)
+        }
+    }
+        
+    func applyConstraintsToCollectionView() {
+        let safeArea = view.safeAreaLayoutGuide
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
+        }
+    }
+    
+    func applyConstraintsToFavCollectionView() {
+        let safeArea = view.safeAreaLayoutGuide
+        
+        favcollectionView.snp.makeConstraints { make in
+            make.top.equalTo(selectedTabIndicator.snp.bottom).offset(16)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
+            make.bottom.equalTo(plusButton.snp.bottom).offset(16)
+        }
+    }
+    
+    func applyConstraintsToTabs(stackView: UIStackView) {
+        let safeArea = view.safeAreaLayoutGuide
+        gatherLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeArea.snp.top).offset(38)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
+        gatherNumCircle.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(gatherLabel)
+            make.leading.equalTo(gatherLabel.snp.trailing).offset(6)
+        }
+        gatherNum.snp.makeConstraints { make in
+            make.centerX.equalTo(gatherNumCircle)
+            make.centerY.equalTo(gatherNumCircle)
+        }
+        item.snp.makeConstraints { make in
+            make.top.equalTo(gatherLabel.snp.bottom).offset(24)
+            make.left.equalTo(self.view).offset(24)
+        }
+        selectedTabIndicator.snp.makeConstraints { make in
+            make.top.equalTo(allTab.snp.bottom).offset(2)
+            make.height.equalTo(2)
+            make.left.right.equalTo(allTab)
+        }
+    }
+    
+    func applyConstraintsToPeopleButtonAndJoinLabel() {
+        peopleButton.snp.makeConstraints { make in
+            make.bottom.equalTo(plusButton.snp.top).offset(-14)
+            make.centerX.equalTo(plusButton)
+        }
+        
+        joinLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(peopleButton)
+            make.right.equalTo(peopleButton.snp.left).offset(-11)
+        }
+    }
+
+    func applyConstraintsToPartButtonAndAddLabel() {
+        participateButton.snp.makeConstraints { make in
+            make.bottom.equalTo(peopleButton.snp.top).offset(-14)
+            make.centerX.equalTo(plusButton)
+        }
+        
+        addLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(participateButton)
+            make.right.equalTo(participateButton.snp.left).offset(-11)
+        }
     }
 }

@@ -144,8 +144,40 @@ class MeetingAPI {
         }
     }
     
+    // 내가 속한 모임 전체 조회
+    func getMeeting(completion: @escaping (_ meetings: [MeetingDetailInfo]) -> Void) {
+        let url = "\(baseUrl)/team"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<[GetMeetingResponse]>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let teams = response.result else { return }
+                    
+                    var meetings: [MeetingDetailInfo] = []
+                    for team in teams {
+                        let meeting = MeetingDetailInfo(id: team.teamId,
+                                                        name: team.teamName,
+                                                        imgUrl: team.teamImgUrl,
+                                                        memberCount: team.teamMemberCount,
+                                                        isNew: team.isNew,
+                                                        bookmark: team.bookmark)
+                        meetings.append(meeting)
+                    }
+                    completion(meetings)
+                    
+                case .failure(let error):
+                    print("DEBUG(edit name api) error: \(error)")
+                }
+            }
+    }
+    
     // 모임 상세 정보 조회
-    func getMeetingDetailInfo(teamId: Int, completion: @escaping (_ meeting: Meeting) -> Void) {
+    func getMeetingDetailInfo(teamId: Int, completion: @escaping (_ meeting: MeetingSimpleInfo) -> Void) {
         let url = "\(baseUrl)/team/detail?teamId=\(teamId)"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -161,7 +193,7 @@ class MeetingAPI {
                     guard let count = response.result?.teamMemberCount else { return }
                     guard let bookmark = response.result?.bookmark else { return }
                     
-                    let meeting = Meeting(name: name, imgUrl: imgUrl, memberCount: count, bookmark: bookmark)
+                    let meeting = MeetingSimpleInfo(name: name, imgUrl: imgUrl, memberCount: count, bookmark: bookmark)
                     completion(meeting)
                     
                 case .failure(let error):

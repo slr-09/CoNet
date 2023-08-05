@@ -24,8 +24,22 @@ struct GetMeetingDetailInfoResponse: Codable {
     let bookmark: Bool
 }
 
-struct Meeting {
+struct MeetingSimpleInfo {
     let name, imgUrl: String
     let memberCount: Int
     let bookmark: Bool
+}
+
+struct GetMeetingResponse: Codable {
+    let teamId: Int
+    let teamName, teamImgUrl: String
+    let teamMemberCount: Int
+    let isNew, bookmark: Bool
+}
+
+struct MeetingDetailInfo {
+    let id: Int
+    let name, imgUrl: String
+    let memberCount: Int
+    let isNew, bookmark: Bool
 }

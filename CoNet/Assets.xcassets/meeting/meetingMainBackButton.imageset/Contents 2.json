@@ -5,12 +5,11 @@
       "scale" : "1x"
     },
     {
-      "filename" : "deleteMeeting 2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "deleteMeeting.png",
+      "filename" : "meetingMainBackButton.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
