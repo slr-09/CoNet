@@ -109,6 +109,7 @@ class MeetingAPI {
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
+                    print("DEBUG(모임 초대코드 발급 api): \(result)")
                     completion(result.inviteCode, result.codeDeadLine)
                     
                 case .failure(let error):
