@@ -278,8 +278,7 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .inviteCode:
             showInvitationCodeVC()
         case .wait:
-            nextVC = WaitingPlanListViewController()
-            pushViewController(nextVC)
+            showWaitingPlansVC()
         case .decided:
             nextVC = DecidedPlanListViewController()
             pushViewController(nextVC)
@@ -312,6 +311,13 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
+    }
+    
+    func showWaitingPlansVC() {
+        let nextVC = WaitingPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showdeleteMeetingVC() {

@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class WaitingPlanListViewController: UIViewController {
+    var meetingId: Int = 0
+    
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
 
 //    static func instance() -> ViewController {
@@ -39,7 +41,7 @@ class WaitingPlanListViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
         
-        PlanAPI().getWaitingPlansAtMeeting(meetingId: 11) { count, plans in
+        PlanAPI().getWaitingPlansAtMeeting(meetingId: meetingId) { count, plans in
             self.plansCount = count
             self.waitingPlanData = plans
             self.mainView.reload()
