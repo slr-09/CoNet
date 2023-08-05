@@ -10,15 +10,23 @@ import Foundation
 import KeychainSwift
 import UIKit
 
-struct GetWaitingPlansAtMeetingResult: Codable {
+struct GetPlansAtMeetingResult<T: Codable>: Codable {
     let count: Int
-    let plans: [WaitingPlans]
+    let plans: T?
 }
 
-struct WaitingPlans: Codable {
+struct WaitingPlanInfo: Codable {
     let planId: Int
     let startDate, endDate, planName: String
     let teamName: String?
+}
+
+struct DecidedPlanInfo: Codable {
+    let planId: Int
+    let date, time: String
+    let teamName: String?
+    let planName: String
+    let dday: Int
 }
 
 class PlanAPI {
@@ -26,14 +34,14 @@ class PlanAPI {
     let baseUrl = "http://15.164.196.172:9000"
     
     // 팀 내 대기중인 약속 조회
-    func getWaitingPlansAtMeeting(meetingId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlans]) -> Void) {
+    func getWaitingPlansAtMeeting(meetingId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlanInfo]) -> Void) {
         let url = "\(baseUrl)/team/plan/waiting?teamId=\(meetingId)"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
         
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: BaseResponse<GetWaitingPlansAtMeetingResult>.self) { response in
+            .responseDecodable(of: BaseResponse<GetPlansAtMeetingResult<[WaitingPlanInfo]>>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let count = response.result?.count else { return }
@@ -47,14 +55,14 @@ class PlanAPI {
     }
     
     // 팀 내 확정된 약속 조회
-    func getDecidedPlansAtMeeting(meetingId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlans]) -> Void) {
+    func getDecidedPlansAtMeeting(meetingId: Int, completion: @escaping (_ count: Int, _ plans: [DecidedPlanInfo]) -> Void) {
         let url = "\(baseUrl)/team/plan/fixed?teamId=\(meetingId)"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
         
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: BaseResponse<GetWaitingPlansAtMeetingResult>.self) { response in
+            .responseDecodable(of: BaseResponse<GetPlansAtMeetingResult<[DecidedPlanInfo]>>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let count = response.result?.count else { return }

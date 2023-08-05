@@ -19,7 +19,7 @@ class WaitingPlanListViewController: UIViewController {
 //    }
     
     private var plansCount: Int = 0
-    private var waitingPlanData: [WaitingPlans] = []
+    private var waitingPlanData: [WaitingPlanInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
