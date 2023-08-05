@@ -14,6 +14,8 @@ protocol SideBarListButtonDelegate: AnyObject {
 }
 
 class SideBarViewController: UIViewController, SideBarListButtonDelegate {
+    var meetingId: Int = 0
+    
     // 배경 - black 투명도 30%
     let background = UIView().then { $0.backgroundColor = UIColor.black.withAlphaComponent(0.5) }
     // 사이드 바 하얀 배경
@@ -24,9 +26,12 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     
     // 모임정보 - 모임 이름, 모임 정보 수정 버튼, 모임 멤버 수 아이콘, 모임 멤버 수
     var meetingNameLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
         $0.text = "불러오는중"
         $0.font = UIFont.headline1
         $0.textColor = UIColor.textHigh
+        $0.preferredMaxLayoutWidth = 196
     }
     let editMeetingInfoButton = UIButton().then { $0.setImage(UIImage(named: "editMeetingInfo"), for: .normal)}
     let memberCountImage = UIImageView().then { $0.image = UIImage(named: "meetingMember") }
@@ -95,8 +100,7 @@ class SideBarViewController: UIViewController, SideBarListButtonDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: team id 연동
-        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
+        MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
             self.meetingNameLabel.text = meeting.name
             self.memberCountLabel.text = "\(meeting.memberCount)명"
         }
@@ -216,7 +220,6 @@ extension SideBarViewController {
     private func meetingInfoConstraints() {
         sideBarBackground.addSubview(meetingNameLabel)
         meetingNameLabel.snp.makeConstraints { make in
-            make.height.equalTo(36)
             make.top.equalTo(closeButton.snp.bottom).offset(36)
             make.leading.equalTo(sideBarBackground.snp.leading).offset(18)
         }
@@ -231,7 +234,7 @@ extension SideBarViewController {
         sideBarBackground.addSubview(memberCountImage)
         memberCountImage.snp.makeConstraints { make in
             make.width.height.equalTo(12)
-            make.top.equalTo(meetingNameLabel.snp.bottom).offset(4)
+            make.top.equalTo(meetingNameLabel.snp.bottom).offset(8)
             make.leading.equalTo(sideBarBackground.snp.leading).offset(18)
         }
         

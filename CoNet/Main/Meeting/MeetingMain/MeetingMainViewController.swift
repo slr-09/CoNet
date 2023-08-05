@@ -232,6 +232,7 @@ class MeetingMainViewController: UIViewController {
     // 사이드바 버튼 동작
     @objc private func sidebarButtonTapped() {
         let popupVC = SideBarViewController()
+        popupVC.meetingId = meetingId
         popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
