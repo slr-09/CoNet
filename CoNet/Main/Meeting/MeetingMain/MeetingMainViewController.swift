@@ -290,8 +290,7 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
             nextVC = HistoryViewController()
             pushViewController(nextVC)
         case .delete:
-            nextVC = MeetingDelPopUpViewController()
-            presentViewControllerModaly(nextVC)
+            showdeleteMeetingVC()
         case .out:
             showMeetingOutVC()
         default:
@@ -309,6 +308,14 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showInvitationCodeVC() {
         let nextVC = InvitationCodeViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
+    }
+    
+    func showdeleteMeetingVC() {
+        let nextVC = MeetingDelPopUpViewController()
         nextVC.meetingId = self.meetingId
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve

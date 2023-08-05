@@ -11,10 +11,9 @@ import UIKit
 
 class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
+    var meetingId: Int = 0
 
-    let imageView = UIImageView().then {
-        $0.image = UIImage(named: "uploadImageWithNoDescription")
-    }
+    let imageView = UIImageView().then { $0.image = UIImage(named: "uploadImageWithNoDescription") }
 
     let titleLabel = UILabel().then {
         $0.numberOfLines = 2
@@ -22,23 +21,21 @@ class MeetingCell: UICollectionViewCell {
         $0.font = UIFont.body1Bold
     }
 
-    let starButton = UIButton().then {
-        $0.setImage(UIImage(named: "star"), for: .normal)
-    }
-
-    let newImageView = UIImageView().then {
-        $0.image = UIImage(named: "new")
-    }
-
-    var onStarButtonTapped: (() -> Void)?
-
-    @objc func starButtonTapped() {
-        onStarButtonTapped?()
-    }
+    let starButton = UIButton()
+    let newImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        layoutConstraints()
+        starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func layoutConstraints() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(starButton)
@@ -65,12 +62,12 @@ class MeetingCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalTo(imageView)
         }
-
-        starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    var onStarButtonTapped: (() -> Void)?
+    
+    @objc func starButtonTapped() {
+        onStarButtonTapped?()
     }
 }
 
@@ -135,6 +132,24 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
         } else {
             cell.starButton.setImage(UIImage(named: "star"), for: .normal)
+        }
+        
+        cell.onStarButtonTapped = {
+            if cell.starButton.currentImage == UIImage(named: "fullstar") {
+                // 북마크 되어 있을 때
+                MeetingAPI().postDeleteBookmark(teamId: self.meetings[indexPath.item].id) { isSuccess in
+                    if isSuccess {
+                        cell.starButton.setImage(UIImage(named: "star"), for: .normal)
+                    }
+                }
+            } else {
+                // 북마크 되어 있지 않을 때
+                MeetingAPI().postBookmark(teamId: self.meetings[indexPath.item].id) { isSuccess in
+                    if isSuccess {
+                        cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
+                    }
+                }
+            }
         }
         
         if meetings[indexPath.item].isNew {
