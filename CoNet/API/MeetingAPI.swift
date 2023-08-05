@@ -15,6 +15,11 @@ struct PostCreateMeetingResponse: Codable {
     let inviteCode: String
 }
 
+struct BadRequestResponse: Codable {
+    let code, status: Int
+    let message, timestamp: String
+}
+
 class MeetingAPI {
     let keychain = KeychainSwift()
     let baseUrl = "http://15.164.196.172:9000"
@@ -43,6 +48,44 @@ class MeetingAPI {
                 print("DEBUG(create meeting api) error: \(error)")
             }
         }
+    }
+    
+    // 모임 초대코드 발급
+    func postParticipateMeeting(code: String, completion: @escaping (_ isSuccess: Bool, _ status: ParticipateMeetingStatus) -> Void) {
+        let url = "\(baseUrl)/team/participate"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        let body: [String: Any] = [
+            "inviteCode": code
+        ]
+        
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .responseData { response in
+                switch response.result {
+                case .success:
+                    let decoder = JSONDecoder()
+                    guard let statusCode = response.response?.statusCode else { return }
+                    guard let data = response.value else { return }
+                    switch statusCode {
+                    case 200:
+                        print("DEBUG 모임 참여 api: status 200")
+                        completion(true, .valid)
+                    default:
+                        guard let data = try? decoder.decode(BadRequestResponse.self, from: data) else { return }
+                        print("DEBUG 모임 참여 api message: \(data.message)")
+                        switch data.code {
+                        case 5501: completion(false, .isNotExist)
+                        case 5502: completion(false, .expired)
+                        case 5503: completion(false, .alreadyJoined)
+                        default: completion(false, .invalidFormat)
+                        }
+                    }
+                case .failure(let error):
+                    print("DEBUG 모임 참여 api: \(error)")
+                }
+            }
     }
     
     // 모임 초대코드 발급

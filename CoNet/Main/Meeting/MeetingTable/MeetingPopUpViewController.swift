@@ -88,53 +88,43 @@ class MeetingPopUpViewController: UIViewController {
     
     // 참여하기 버튼 동작
     @objc private func participateMeeting() {
-        dismiss(animated: true) {
-            self.participateButtonTapped()
+        // 버튼 활성화 시, 동작
+        if participateButton.backgroundColor == UIColor.purpleMain {
+            postParticipate()
         }
     }
     
-    // 참여하기 버튼 동작
-    @objc func participateButtonTapped() {
+    // 모임 참여 api 요청
+    private func postParticipate() {
         let code = codeTextField.text ?? ""
-        let serverResponse = validateInviteCode(code: code)
-            
-        switch serverResponse {
-        case .valid:
-            infoView.isHidden = true
-            infoLabel.isHidden = true
-            participateButton.backgroundColor = UIColor.purpleMain
-        case .invalidFormat:
-            infoLabel.text = "올바른 초대코드를 입력해주세요."
-            infoView.isHidden = false
-            infoLabel.isHidden = false
-            participateButton.backgroundColor = UIColor.gray200
-        case .nonExistent:
-            infoLabel.text = "존재하지 않는 초대코드입니다."
-            infoView.isHidden = false
-            infoLabel.isHidden = false
-            participateButton.backgroundColor = UIColor.gray200
-        case .alreadyJoined:
-            infoLabel.text = "이미 참여 중인 모임의 초대코드입니다."
-            infoView.isHidden = false
-            infoLabel.isHidden = false
-            participateButton.backgroundColor = UIColor.gray200
+        
+        MeetingAPI().postParticipateMeeting(code: code) { isSuccess, status in
+            if isSuccess {
+                self.dismissPopUp()
+            } else {
+                print("DEBUG wow false")
+                switch status {
+                case .valid:
+                    self.updateInfoViewWithStatusCode(text: "", isHidden: true)
+                case .invalidFormat:
+                    self.updateInfoViewWithStatusCode(text: "올바른 초대코드를 입력해주세요.", isHidden: false)
+                case .isNotExist:
+                    self.updateInfoViewWithStatusCode(text: "존재하지 않는 초대코드입니다.", isHidden: false)
+                case .alreadyJoined:
+                    self.updateInfoViewWithStatusCode(text: "이미 참여 중인 모임의 초대코드입니다.", isHidden: false)
+                case .expired:
+                    self.updateInfoViewWithStatusCode(text: "유효기간이 만료된 초대코드입니다.", isHidden: false)
+                }
+            }
         }
     }
     
-    func validateInviteCode(code: String) -> ServerResponse {
-        if code.isEmpty {
-            infoView.isHidden = true
-            return .invalidFormat
-        }
-        
-        let isValidFormat = isValidInviteCodeFormat(code: code)
-        if isValidFormat {
-            return .valid
-        } else if code == "12345678" {
-            return .alreadyJoined
-        } else {
-            return .nonExistent
-        }
+    // status code에 맞게 Info view 업데이트
+    private func updateInfoViewWithStatusCode(text: String, isHidden: Bool) {
+        infoLabel.text = text
+        infoView.isHidden = isHidden
+        infoLabel.isHidden = isHidden
+        participateButton.backgroundColor = isHidden ? UIColor.purpleMain : UIColor.gray200
     }
         
     func updateGrayLineAndInfoLabel() {
@@ -245,9 +235,6 @@ extension MeetingPopUpViewController {
     }
 }
     
-enum ServerResponse {
-    case valid
-    case invalidFormat
-    case nonExistent
-    case alreadyJoined
+enum ParticipateMeetingStatus {
+    case valid, invalidFormat, isNotExist, alreadyJoined, expired
 }
