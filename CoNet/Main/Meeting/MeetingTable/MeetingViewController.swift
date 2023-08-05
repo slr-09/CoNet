@@ -85,6 +85,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         print("Selected cell at indexPath: \(indexPath)")
         let nextVC = MeetingMainViewController()
         nextVC.hidesBottomBarWhenPushed = true
+        nextVC.meetingId = meetings[indexPath.item].id
         navigationController?.pushViewController(nextVC, animated: true)
     }
     

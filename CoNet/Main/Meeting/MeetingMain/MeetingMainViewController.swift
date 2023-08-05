@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingMainViewController: UIViewController {
+    var meetingId: Int = 0
+    
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
     
@@ -141,7 +143,7 @@ class MeetingMainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
         
-        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
+        MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
             self.meetingName.text = meeting.name
             self.memberNum.text = "\(meeting.memberCount)명"
             
@@ -245,7 +247,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func bookmark() {
-        MeetingAPI().postBookmark(teamId: 11) { isSuccess in
+        MeetingAPI().postBookmark(teamId: meetingId) { isSuccess in
             if isSuccess {
                 self.isBookmarked = true
                 self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
@@ -254,7 +256,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func deleteBookmark() {
-        MeetingAPI().postDeleteBookmark(teamId: 11) { isSuccess in
+        MeetingAPI().postDeleteBookmark(teamId: meetingId) { isSuccess in
             if isSuccess {
                 self.isBookmarked = false
                 self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)
