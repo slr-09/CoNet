@@ -238,7 +238,7 @@ class HomeViewController: UIViewController {
         // collectionView: 오늘의 약속
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.height.equalTo(dayPlanData.count*100 - 10)
         }
         

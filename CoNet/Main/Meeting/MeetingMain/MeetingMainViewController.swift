@@ -599,7 +599,7 @@ extension MeetingMainViewController {
         contentView.addSubview(dayPlanCollectionView)
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.height.equalTo(dayPlanData.count * 92 - 10)
         }
         
@@ -628,7 +628,7 @@ extension MeetingMainViewController {
         contentView.addSubview(waitingPlanCollectionView)
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.height.equalTo(waitingPlanData.count * 100 - 10)
         }
     }
