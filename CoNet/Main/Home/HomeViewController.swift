@@ -81,8 +81,6 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 데이터
     private var waitingPlanData: [WaitingPlan] = []
     
-    var backgroundHeight = 2000
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,11 +110,18 @@ class HomeViewController: UIViewController {
             self.waitingPlanNum.text = String(count)
             self.waitingPlanData = plans
             self.waitingPlanCollectionView.reloadData()
-            self.backgroundHeight = 660 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
             self.layoutConstraints()
         }
+        
+        updateContentSize()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateContentSize()
+    }
+//
     // 특정 날짜 약속 조회 api 함수
     func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
@@ -124,9 +129,26 @@ class HomeViewController: UIViewController {
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
-            self.backgroundHeight = 660 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
             self.layoutConstraints()
         }
+    }
+    
+    // view height update
+    func updateContentSize() {
+        var contentHeight: CGFloat = 670
+        var dayCollectionHeight: CGFloat = 0
+        for collectionView in [dayPlanCollectionView, waitingPlanCollectionView] {
+            collectionView.layoutIfNeeded()
+            if collectionView == dayPlanCollectionView {
+                dayCollectionHeight += collectionView.contentSize.height+10
+            }
+            contentHeight += collectionView.contentSize.height
+        }
+        
+        dayPlanCollectionView.frame.size.height = dayCollectionHeight
+        
+        contentView.frame.size.height = contentHeight
+        scrollView.contentSize = contentView.frame.size
     }
     
     private func setupCollectionView() {
@@ -175,7 +197,7 @@ class HomeViewController: UIViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(backgroundHeight) // 높이를 설정해야 스크롤이 됨
+            make.height.equalTo(2000) // 높이를 설정해야 스크롤이 됨
         }
         
         // logo
@@ -217,13 +239,13 @@ class HomeViewController: UIViewController {
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(dayPlanData.count*92 - 10)
+            make.height.equalTo(dayPlanData.count*100 - 10)
         }
         
         // label: 대기 중 약속
         waitingPlanLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(50)
+            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(40)
         }
         
         planNumCircle2.snp.makeConstraints { make in
@@ -242,7 +264,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(waitingPlanData.count*92 - 10)
+            make.height.equalTo(waitingPlanData.count*100 - 10)
         }
     }
     
