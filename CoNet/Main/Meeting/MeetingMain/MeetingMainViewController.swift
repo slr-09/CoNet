@@ -143,6 +143,16 @@ class MeetingMainViewController: UIViewController {
         
         dayPlanAPI(date: format.string(from: Date()))
         
+        // api: 대기 중인 약속
+        MeetingMainAPI().getMeetingWaitingPlan(teamId: meetingId) { count, plans in
+            self.waitingPlanNum.text = String(count)
+            self.waitingPlanData = plans
+            self.waitingPlanCollectionView.reloadData()
+//            self.backgroundHeight = 1000 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
+            self.layoutContraints()
+        }
+        
+        updateContentSize()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -163,15 +173,11 @@ class MeetingMainViewController: UIViewController {
             guard let url = URL(string: meeting.imgUrl) else { return }
             self.meetingImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImage"))
         }
-        
-        // api: 대기 중인 약속
-        MeetingMainAPI().getMeetingWaitingPlan(teamId: meetingId) { count, plans in
-            self.waitingPlanNum.text = String(count)
-            self.waitingPlanData = plans
-            self.waitingPlanCollectionView.reloadData()
-            self.backgroundHeight = 1000 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
-            self.layoutContraints()
-        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateContentSize()
     }
     
     // 특정 날짜 약속 조회 api 함수
@@ -181,7 +187,26 @@ class MeetingMainViewController: UIViewController {
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
+            self.layoutContraints()
         }
+    }
+    
+    // view height update
+    func updateContentSize() {
+        var contentHeight: CGFloat = 1100
+        var dayCollectionHeight: CGFloat = 0
+        for collectionView in [dayPlanCollectionView, waitingPlanCollectionView] {
+            collectionView.layoutIfNeeded()
+            if collectionView == dayPlanCollectionView {
+                dayCollectionHeight += collectionView.contentSize.height+10
+            }
+            contentHeight += collectionView.contentSize.height
+        }
+        
+        dayPlanCollectionView.frame.size.height = dayCollectionHeight
+        
+        contentView.frame.size.height = contentHeight
+        scrollview.contentSize = contentView.frame.size
     }
     
     @objc private func showMakePlanViewController(_ sender: UIView) {
@@ -457,7 +482,7 @@ extension MeetingMainViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollview.contentLayoutGuide)
             make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(backgroundHeight)
+            make.height.equalTo(2000)
         }
     }
     
