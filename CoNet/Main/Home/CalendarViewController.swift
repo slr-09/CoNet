@@ -46,6 +46,7 @@ class CalendarViewController: UIViewController {
     var planDates: [Int] = []
     
     weak var homeVC: HomeViewController?
+    weak var meetingMainVC: MeetingMainViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -252,17 +253,27 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         // 날짜 label 변경
         if today == calendarDate {
             homeVC?.changeDate(month: "", day: "")
+            meetingMainVC?.dayPlanLabel.text = "오늘의 약속"
         } else {
             homeVC?.changeDate(month: calendarDateFormatter.getMonthText(), day: calendarDay)
+            meetingMainVC?.dayPlanLabel.text = calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"
         }
-
+        
         // 선택 날짜 포맷 변경
         calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
 
-        // api: 특정 날짜 약속
-        homeVC?.dayPlanAPI(date: calendarDate)
+        if let parentVC = parent {
+            if parentVC is HomeViewController {
+                // 부모 뷰컨트롤러가 HomeViewController
+                // api: 특정 날짜 약속
+                homeVC?.dayPlanAPI(date: calendarDate)
+            } else if parentVC is MeetingMainViewController {
+                // 부모 뷰컨트롤러가 MeetingMainViewController
+                meetingMainVC?.dayPlanAPI(date: calendarDate)
+            }
+        }
     }
     
     // 셀 수

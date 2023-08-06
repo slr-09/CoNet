@@ -47,6 +47,8 @@ class CalendarMeetingMainViewController: UIViewController {
     
     weak var meetingMainVC: MeetingMainViewController?
     
+    var meetingId: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -73,7 +75,8 @@ class CalendarMeetingMainViewController: UIViewController {
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
         planDates = []
-        HomeAPI.shared.getMonthPlan(date: date) { _, dates in
+        let meetingMain = MeetingMainViewController()
+        MeetingMainAPI().getMeetingMonthPlan(teamId: meetingMain.meetingId, searchDate: date) { _, dates in
             self.planDates = dates
             self.calendarCollectionView.reloadData()
         }
@@ -91,6 +94,11 @@ class CalendarMeetingMainViewController: UIViewController {
         }
         present(popupVC, animated: true, completion: nil)
     }
+    
+//    func getMeetingId(meetingId: Int) {
+//        self.meetingId = meetingId
+//        print("id",self.meetingId)
+//    }
     
     // 현재 달로 update
     func updateCalendarData() {
@@ -251,18 +259,18 @@ extension CalendarMeetingMainViewController: UICollectionViewDataSource, UIColle
         // 선택한 날짜가 오늘일 때
         // 날짜 label 변경
         if today == calendarDate {
-            meetingMainVC?.changeDate(month: "", day: "")
+            meetingMainVC?.dayPlanLabel.text = "오늘의 약속"
         } else {
-            meetingMainVC?.changeDate(month: calendarDateFormatter.getMonthText(), day: calendarDay)
+            meetingMainVC?.dayPlanLabel.text = calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"
         }
 
         // 선택 날짜 포맷 변경
         calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
-
+        print(calendarDate)
         // api: 특정 날짜 약속
-//        meetingMainVC?.dayPlanAPI(date: calendarDate)
+        meetingMainVC?.dayPlanAPI(date: calendarDate)
     }
     
     // 셀 수

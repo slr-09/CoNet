@@ -63,7 +63,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 캘린더뷰
-    let calendarVC = CalendarMeetingMainViewController()
+    let calendarVC = CalendarViewController()
     
     // label: 오늘의 약속
     let dayPlanLabel = UILabel().then {
@@ -88,7 +88,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 오늘 약속 데이터
-    private var dayPlanData = PlanDummyData.dayPlanData
+    private var dayPlanData: [Plan] = []
     
     // label: 대기 중 약속
     let waitingPlanLabel = UILabel().then {
@@ -113,7 +113,9 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 대기 중 약속 데이터
-    private let waitingPlanData = PlanDummyData.watingPlanData
+    private var waitingPlanData: [MeetingWaitingPlan] = []
+    
+    var backgroundHeight = 2000
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,6 +135,14 @@ class MeetingMainViewController: UIViewController {
         setupCollectionView()
         addMeetingButton.addTarget(self, action: #selector(showMakePlanViewController), for: .touchUpInside)
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        format.locale = Locale(identifier: "ko_KR")
+        format.timeZone = TimeZone(abbreviation: "KST")
+        
+        dayPlanAPI(date: format.string(from: Date()))
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -153,14 +163,23 @@ class MeetingMainViewController: UIViewController {
             guard let url = URL(string: meeting.imgUrl) else { return }
             self.meetingImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImage"))
         }
+        
+        // api: 대기 중인 약속
+        MeetingMainAPI().getMeetingWaitingPlan(teamId: meetingId) { count, plans in
+            self.waitingPlanNum.text = String(count)
+            self.waitingPlanData = plans
+            self.waitingPlanCollectionView.reloadData()
+            self.backgroundHeight = 1000 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
+            self.layoutContraints()
+        }
     }
     
     // 특정 날짜 약속 조회 api 함수
-    private func dayPlanAPI(date: String) {
+    func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
-        HomeAPI().getDayPlan(date: date) { count, plans in
+        MeetingMainAPI().getMeetingDayPlan(teamId: meetingId, searchDate: date) { count, plans in
             self.planNum.text = String(count)
-//            self.dayPlanData = plans
+            self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
         }
     }
@@ -268,14 +287,14 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showMeetingInfoEditVC() {
         let nextVC = MeetingInfoEditViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showInvitationCodeVC() {
         let nextVC = InvitationCodeViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
@@ -283,35 +302,35 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showWaitingPlansVC() {
         let nextVC = WaitingPlanListViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showDecidedPlansVC() {
         let nextVC = DecidedPlanListViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showPastPlansVC() {
         let nextVC = PastPlanListViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showHistoryVC() {
         let nextVC = HistoryViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func showdeleteMeetingVC() {
         let nextVC = MeetingDelPopUpViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
@@ -319,7 +338,7 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showMeetingOutVC() {
         let nextVC = MeetingOutPopUpViewController()
-        nextVC.meetingId = self.meetingId
+        nextVC.meetingId = meetingId
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
@@ -340,14 +359,15 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         present(nextVC, animated: true, completion: nil)
     }
     
-    // change day label
-    func changeDate(month: String, day: String) {
-        if month == "" && day == "" {
-            dayPlanLabel.text = "오늘의 약속"
-        } else {
-            dayPlanLabel.text = month + "월 " + day + "일의 약속"
-        }
-    }
+//    // change day label
+//    func changeDate(month: String, day: String) {
+//        print(month, day)
+//        if month == "" && day == "" {
+//            dayPlanLabel.text = "오늘의 약속"
+//        } else {
+//            dayPlanLabel.text = month + "월 " + day + "일의 약속"
+//        }
+//    }
 }
 
 // collectionview 설정
@@ -360,7 +380,7 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
-        if collectionView == dayPlanCollectionView {    // 오늘 약속
+        if collectionView == dayPlanCollectionView { // 오늘 약속
             count = dayPlanData.count
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
@@ -378,8 +398,8 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
             }
             
             cell.timeLabel.text = dayPlanData[indexPath.item].time
-            cell.planTitleLabel.text = dayPlanData[indexPath.item].planTitle
-            cell.groupNameLabel.text = dayPlanData[indexPath.item].groupName
+            cell.planTitleLabel.text = dayPlanData[indexPath.item].planName
+            cell.groupNameLabel.text = dayPlanData[indexPath.item].teamName
             
             return cell
         } else if collectionView == waitingPlanCollectionView {
@@ -389,8 +409,8 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
             }
             
             cell.startDateLabel.text = waitingPlanData[indexPath.item].startDate
-            cell.finishDateLabel.text = waitingPlanData[indexPath.item].finishDate
-            cell.planTitleLabel.text = waitingPlanData[indexPath.item].title
+            cell.finishDateLabel.text = waitingPlanData[indexPath.item].endDate
+            cell.planTitleLabel.text = waitingPlanData[indexPath.item].planName
             
             return cell
         }
@@ -419,10 +439,10 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
 extension MeetingMainViewController {
     // 전체 layout constraints
     private func layoutContraints() {
-        scrollviewConstraints()     // 스크롤뷰
-        imageConstraints()          // 상단 이미지
-        headerConstraints()         // 모임 정보
-        calendarViewConstraints()   // 캘린더 뷰
+        scrollviewConstraints() // 스크롤뷰
+        imageConstraints() // 상단 이미지
+        headerConstraints() // 모임 정보
+        calendarViewConstraints() // 캘린더 뷰
         meetingPlanView()
     }
     
@@ -437,7 +457,7 @@ extension MeetingMainViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollview.contentLayoutGuide)
             make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(2000)
+            make.height.equalTo(backgroundHeight)
         }
     }
     
@@ -540,7 +560,7 @@ extension MeetingMainViewController {
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(dayPlanData.count*92 - 10)
+            make.height.equalTo(dayPlanData.count * 92 - 10)
         }
         
         // label: 대기 중 약속

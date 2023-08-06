@@ -14,10 +14,10 @@ class MeetingMainAPI {
 
     // 팀 내 특정 달 약속 조회
     func getMeetingMonthPlan(teamId: Int, searchDate: String, completion: @escaping (_ count: Int, _ dates: [Int]) -> Void) {
+//        print("id",teamId)
         let url = "\(baseUrl)/team/plan/month?teamId=\(teamId)&searchDate=\(searchDate)"
         
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
 
@@ -40,7 +40,6 @@ class MeetingMainAPI {
         let url = "\(baseUrl)/team/plan/day?teamId=\(teamId)&searchDate=\(searchDate)"
         
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
 
@@ -59,20 +58,21 @@ class MeetingMainAPI {
     }
     
     // 팀 내 대기 중 약속 조회
-    func getMeetingWaitingPlan(teamId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlan]) -> Void) {
-        let url = "\(baseUrl)/team/plan/day?teamId=\(teamId)"
+    func getMeetingWaitingPlan(teamId: Int, completion: @escaping (_ count: Int, _ plans: [MeetingWaitingPlan]) -> Void) {
+        let url = "\(baseUrl)/team/plan/waiting?teamId=\(teamId)"
         
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
 
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: BaseResponse<GetWaitingPlanResult>.self) { response in
+            .responseDecodable(of: BaseResponse<GetMeetingWaitingPlanResult>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
                     print("DEBUG(get meeting waiting plan api): \(result)")
+                    
+                    print("wowowow", result.count)
                     completion(result.count, result.plans)
 
                 case .failure(let error):
