@@ -50,8 +50,7 @@ class HistoryCell: UICollectionViewCell {
     
     // 내용
     let contents = UILabel().then {
-        $0.numberOfLines = 100
-        $0.text = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요."
+        $0.numberOfLines = 5
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.textHigh
     }

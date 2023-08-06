@@ -99,19 +99,34 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
             return UICollectionViewCell()
         }
         
+        cell.date.text = data[indexPath.item].date
+        cell.planTitle.text = data[indexPath.item].title
+        cell.memberNum.text = data[indexPath.item].memberCount
+        if let image = data[indexPath.item].image {
+            cell.historyImage.image = image
+        }
+        if let description = data[indexPath.item].description {
+            cell.contents.text = description
+        }
+        
         return cell
     }
     
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize(width: width, height: 500)
+        var height = CGFloat(200)
+        if data[indexPath.item].image != nil {
+            height += width
+        }
+        
+        return CGSize(width: width, height: height)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // 원래 80인데 40으로 함
-        return 40
+        return 20
     }
 }
 
