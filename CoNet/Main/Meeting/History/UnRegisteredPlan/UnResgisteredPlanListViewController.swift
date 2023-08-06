@@ -17,7 +17,7 @@ class UnResgisteredPlanListViewController: UIViewController {
 //    }
     
     private var plansCount: Int = 0
-    private var pastPlanData = PlanDummyData.pastPlanData
+    private var pastPlanData: [PastPlanInfo] = []
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -27,6 +27,12 @@ class UnResgisteredPlanListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getUnRegisteredPastPlansAtMeeting(meetingId: meetingId) { plans in
+            self.plansCount = plans.count
+            self.pastPlanData = plans
+            self.mainView.reload()
+        }
     }
     
     override func viewDidLoad() {
@@ -67,7 +73,7 @@ extension UnResgisteredPlanListViewController: UICollectionViewDelegate, UIColle
         
         cell.dateLabel.text = pastPlanData[indexPath.item].date
         cell.timeLabel.text = pastPlanData[indexPath.item].time
-        cell.planTitleLabel.text = pastPlanData[indexPath.item].title
+        cell.planTitleLabel.text = pastPlanData[indexPath.item].planName
         
         return cell
     }
