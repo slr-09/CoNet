@@ -34,4 +34,27 @@ class PlanTimeAPI {
                 }
             }
     }
+    
+    // 나의 가능한 시간 조회
+    func getMyPossibleTime(planId: Int, completion: @escaping (_ planId: Int, _ userId: Int, _ possibleTime: [PossibleTime]) -> Void) {
+        let url = "\(baseUrl)/team/plan/user-time?planId=\(planId)"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<GetMyPossibleTimeResult>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("DEBUG(getMyPossibleTime api): \(result)")
+                    
+                    completion(result.planId, result.userId, result.possibleTime)
+
+                case .failure(let error):
+                    print("DEBUG(getMyPossibleTime api) error: \(error)")
+                }
+            }
+    }
 }

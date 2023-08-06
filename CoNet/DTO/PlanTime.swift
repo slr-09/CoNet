@@ -25,3 +25,14 @@ struct PossibleMember: Codable {
     let memberNames: [String]
     let memberIds: [Int]
 }
+
+// 나의 가능한 시간 조회
+struct GetMyPossibleTimeResult: Codable {
+    let planId, userId: Int
+    let possibleTime: [PossibleTime]
+}
+
+struct PossibleTime: Codable {
+    let date: String
+    let time: [Int]
+}
