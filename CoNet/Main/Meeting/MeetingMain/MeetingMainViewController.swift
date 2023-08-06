@@ -284,8 +284,7 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .past:
             showPastPlansVC()
         case .history:
-            nextVC = HistoryViewController()
-            pushViewController(nextVC)
+            showHistoryVC()
         case .delete:
             showdeleteMeetingVC()
         case .out:
@@ -327,6 +326,13 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showPastPlansVC() {
         let nextVC = PastPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showHistoryVC() {
+        let nextVC = HistoryViewController()
         nextVC.meetingId = self.meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)

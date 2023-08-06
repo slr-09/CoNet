@@ -11,6 +11,8 @@ import Then
 import UIKit
 
 class HistoryViewController: UIViewController {
+    var meetingId: Int = 0
+    
     // 추가 버튼
     let addBtn = UIButton().then {
         $0.setTitle("추가", for: .normal)
@@ -48,7 +50,7 @@ class HistoryViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
         
-        HistoryAPI().getHistory(meetingId: 1) { histories in
+        HistoryAPI().getHistory(meetingId: meetingId) { histories in
             self.histories = histories
             self.historyCollectionView.reloadData()
         }
