@@ -152,10 +152,11 @@ class MeetingMainViewController: UIViewController {
             self.layoutContraints()
         }
         
+        // view height 동적 설정
         updateContentSize()
         
-        // calendarViewController에서 데이터 받기
-        NotificationCenter.default.addObserver(self, selector: #selector(dayLabelReceived(notification:)), name: NSNotification.Name("clickDayLabel"), object: nil)
+        // 데이터 교환
+        dataExchange()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -194,13 +195,19 @@ class MeetingMainViewController: UIViewController {
         }
     }
     
-    @objc func dayLabelReceived(notification: Notification) {
+    func dataExchange() {
+        // calendarViewController에서 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMeetingMain"), object: nil)
+        
+        // calendarVC에 meetingId 넘기기
+        NotificationCenter.default.post(name: NSNotification.Name("ToCalendarVC"), object: nil, userInfo: ["meetingId": meetingId])
+    }
+    
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
         if let data = notification.userInfo?["dayPlanlabel"] as? String {
-            print("Received data from child: \(data)")
             dayPlanLabel.text = data
         }
         if let data = notification.userInfo?["clickDate"] as? String {
-            print("Received data from child: \(data)")
             dayPlanAPI(date: data)
         }
     }

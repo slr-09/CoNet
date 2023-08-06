@@ -14,7 +14,7 @@ class MeetingMainAPI {
 
     // 팀 내 특정 달 약속 조회
     func getMeetingMonthPlan(teamId: Int, searchDate: String, completion: @escaping (_ count: Int, _ dates: [Int]) -> Void) {
-//        print("id",teamId)
+        
         let url = "\(baseUrl)/team/plan/month?teamId=\(teamId)&searchDate=\(searchDate)"
         
         let headers: HTTPHeaders = [
