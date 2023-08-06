@@ -5,6 +5,7 @@
 //  Created by 가은 on 2023/07/23.
 //
 
+import Kingfisher
 import SnapKit
 import Then
 import UIKit
@@ -17,7 +18,7 @@ class HistoryViewController: UIViewController {
         $0.setTitleColor(UIColor.purpleMain, for: .normal)
     }
     
-    let data = HistoryData.data
+    var histories: [GetHistoryResult] = []
     
     // collectionView: history
     let historyCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -46,6 +47,11 @@ class HistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        
+        HistoryAPI().getHistory(meetingId: 1) { histories in
+            self.histories = histories
+            self.historyCollectionView.reloadData()
+        }
     }
     
     private func addNavigationBarItem() {
@@ -92,21 +98,25 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
+        return histories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HistoryCell.identifier, for: indexPath) as? HistoryCell else {
             return UICollectionViewCell()
         }
+        cell.date.text = histories[indexPath.item].planDate
+        cell.planTitle.text = histories[indexPath.item].planName
+        cell.memberNum.text = "\(histories[indexPath.item].planMemberNum)명"
         
-        cell.date.text = data[indexPath.item].date
-        cell.planTitle.text = data[indexPath.item].title
-        cell.memberNum.text = data[indexPath.item].memberCount
-        if let image = data[indexPath.item].image {
-            cell.historyImage.image = image
+        if let url = URL(string: histories[indexPath.item].historyImgUrl ?? "") {
+            cell.historyImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImageWithNoDescription"))
+            cell.historyImage.snp.makeConstraints { make in
+                make.height.equalTo(collectionView.frame.width)
+            }
         }
-        if let description = data[indexPath.item].description {
+        
+        if let description = histories[indexPath.item].historyDescription {
             cell.contents.text = description
         }
         
@@ -117,7 +127,7 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         var height = CGFloat(200)
-        if data[indexPath.item].image != nil {
+        if histories[indexPath.item].historyImgUrl != nil {
             height += width
         }
         
@@ -129,16 +139,4 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
         // 원래 80인데 20으로 함
         return 20
     }
-}
-
-struct History {
-    let date, title, memberCount: String
-    let image: UIImage?
-    let description: String?
-}
-
-struct HistoryData {
-    static let data: [History] = [History(date: "2023. 08. 10", title: "iOS 스터디 3차", memberCount: "3명", image: UIImage(named: "space"), description: nil),
-                                  History(date: "2023. 08. 02", title: "iOS 스터디 2차", memberCount: "2명", image: nil, description: "아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!! 아이오에스 스터디를 했습니다. 와!!"),
-                                  History(date: "2023. 08. 10", title: "iOS 스터디 3차", memberCount: "3명", image: UIImage(named: "space"), description: "내용내용내용")]
 }
