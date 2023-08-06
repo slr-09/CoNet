@@ -10,6 +10,10 @@ import Then
 import UIKit
 
 class PlanInfoViewController: UIViewController {
+    var planId: Int = 17
+    private var plansCount: Int = 0
+    private var planDetail: [PlanDetail] = []
+    
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
     }
@@ -139,6 +143,11 @@ class PlanInfoViewController: UIViewController {
         sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getPlanDetail()
+    }
+    
     func applyConstraintsToTopSection() {
         let safeArea = view.safeAreaLayoutGuide
         backButton.snp.makeConstraints { make in
@@ -247,6 +256,14 @@ class PlanInfoViewController: UIViewController {
         }
     }
     
+    func getPlanDetail() {
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.plansCount = plans.count
+            self.planDetail = plans
+            // reload해야하는게 뭘까...
+        }
+    }
+
     func showPlanEditDelBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
