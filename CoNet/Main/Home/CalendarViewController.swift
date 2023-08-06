@@ -253,10 +253,12 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         // 날짜 label 변경
         if today == calendarDate {
             homeVC?.changeDate(month: "", day: "")
-            meetingMainVC?.dayPlanLabel.text = "오늘의 약속"
+            NotificationCenter.default.post(name: NSNotification.Name("clickDayLabel"), object: nil, userInfo: ["dayPlanlabel": "오늘의 약속"])
+//            meetingMainVC?.dayPlanLabel.text = "오늘의 약속"
         } else {
             homeVC?.changeDate(month: calendarDateFormatter.getMonthText(), day: calendarDay)
-            meetingMainVC?.dayPlanLabel.text = calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"
+            NotificationCenter.default.post(name: NSNotification.Name("clickDayLabel"), object: nil, userInfo: ["dayPlanlabel": calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"])
+//            meetingMainVC?.dayPlanLabel.text = calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"
         }
         
         // 선택 날짜 포맷 변경

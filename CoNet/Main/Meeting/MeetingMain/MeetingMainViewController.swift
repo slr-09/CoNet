@@ -153,6 +153,9 @@ class MeetingMainViewController: UIViewController {
         }
         
         updateContentSize()
+        
+        // calendarViewController에서 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dayLabelReceived(notification:)), name: NSNotification.Name("clickDayLabel"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -188,6 +191,13 @@ class MeetingMainViewController: UIViewController {
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
             self.layoutContraints()
+        }
+    }
+    
+    @objc func dayLabelReceived(notification: Notification) {
+        if let data = notification.userInfo?["dayPlanlabel"] as? String {
+            print("Received data from child: \(data)")
+            dayPlanLabel.text = data
         }
     }
     
