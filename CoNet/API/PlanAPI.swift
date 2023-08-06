@@ -44,6 +44,11 @@ struct PlanDetail: Codable {
     let historyImgURL, historyDescription: String?
 }
 
+struct PlanEditResponse: Codable {
+    let code, status: Int
+    let message, result: String
+}
+
 class PlanAPI {
     let keychain = KeychainSwift()
     let baseUrl = "http://15.164.196.172:9000"
@@ -152,5 +157,44 @@ class PlanAPI {
                     print("DEBUG(약속 상세 정보 조회 api) error: \(error)")
             }
         }
+    }
+    
+    // 약속 상세 수정
+    func updatePlan(planId: Int, planName: String, date: String?, time: String, members: [String]?, isRegisteredToHistory: Bool, historyDescription: String?, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/plan/update-fixed"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        
+        var requestBody: [String: Any] = [
+            "planId": planId,
+            "planName": planName,
+            "time": time,
+            "isRegisteredToHistory": isRegisteredToHistory
+        ]
+        if let date = date {
+            requestBody["date"] = date
+        }
+
+        if let members = members {
+            requestBody["members"] = members
+        }
+
+        if let historyDescription = historyDescription {
+            requestBody["historyDescription"] = historyDescription
+        }
+
+        AF.request(url, method: .post, parameters: requestBody, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<PlanEditResponse>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    print("DEBUG(약속 상세 수정 api) success response: \(response)")
+                    completion(response.code == 1000)
+                    
+                case .failure(let error):
+                    print("DEBUG(약속 상세 수정 api) error: \(error)")
+                }
+            }
     }
 }
