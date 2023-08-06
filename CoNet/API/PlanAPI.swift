@@ -49,6 +49,20 @@ struct PlanEditResponse: Codable {
     let message, result: String
 }
 
+struct CreatePlanResponse: Codable {
+    let code, status: Int
+    let message: String
+    let result: Result
+}
+
+struct Result: Codable {
+    let planID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case planID = "planId"
+    }
+}
+
 class PlanAPI {
     let keychain = KeychainSwift()
     let baseUrl = "http://15.164.196.172:9000"
@@ -197,4 +211,31 @@ class PlanAPI {
                 }
             }
     }
+    
+    func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/plan/create"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+        
+        let parameters: Parameters = [
+            "teamId": teamId,
+            "planName": planName,
+            "planStartPeriod": planStartPeriod
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<CreatePlanResponse>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 생성 api) success response: \(response)")
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(create plan api) error: \(error)")
+            }
+        }
+    }
+
 }
