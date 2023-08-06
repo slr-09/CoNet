@@ -46,9 +46,7 @@ class HistoryCell: UICollectionViewCell {
     }
     
     // 이미지
-    let historyImage = UIImageView().then {
-        $0.backgroundColor = UIColor.gray200
-    }
+    let historyImage = UIImageView()
     
     // 내용
     let contents = UILabel().then {
@@ -111,7 +109,7 @@ class HistoryCell: UICollectionViewCell {
         historyImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(planTitle.snp.bottom).offset(12)
-            make.height.equalTo(historyImage.snp.width)
+//            make.height.equalTo(historyImage.snp.width)
         }
         
         background.addSubview(contents)
