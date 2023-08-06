@@ -254,11 +254,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         if today == calendarDate {
             homeVC?.changeDate(month: "", day: "")
             NotificationCenter.default.post(name: NSNotification.Name("clickDayLabel"), object: nil, userInfo: ["dayPlanlabel": "오늘의 약속"])
-//            meetingMainVC?.dayPlanLabel.text = "오늘의 약속"
         } else {
             homeVC?.changeDate(month: calendarDateFormatter.getMonthText(), day: calendarDay)
             NotificationCenter.default.post(name: NSNotification.Name("clickDayLabel"), object: nil, userInfo: ["dayPlanlabel": calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"])
-//            meetingMainVC?.dayPlanLabel.text = calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"
         }
         
         // 선택 날짜 포맷 변경
@@ -274,6 +272,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
             } else if parentVC is MeetingMainViewController {
                 // 부모 뷰컨트롤러가 MeetingMainViewController
                 meetingMainVC?.dayPlanAPI(date: calendarDate)
+                NotificationCenter.default.post(name: NSNotification.Name("clickDayLabel"), object: nil, userInfo: ["clickDate": calendarDate])
             }
         }
     }

@@ -88,7 +88,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 오늘 약속 데이터
-    private var dayPlanData: [Plan] = []
+    private var dayPlanData: [MeetingDayPlan] = []
     
     // label: 대기 중 약속
     let waitingPlanLabel = UILabel().then {
@@ -198,6 +198,10 @@ class MeetingMainViewController: UIViewController {
         if let data = notification.userInfo?["dayPlanlabel"] as? String {
             print("Received data from child: \(data)")
             dayPlanLabel.text = data
+        }
+        if let data = notification.userInfo?["clickDate"] as? String {
+            print("Received data from child: \(data)")
+            dayPlanAPI(date: data)
         }
     }
     
@@ -456,6 +460,10 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width - 24
+        
+        if collectionView == dayPlanCollectionView {
+            return CGSize(width: width, height: 66)
+        }
         return CGSize(width: width, height: 82)
     }
     
