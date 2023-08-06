@@ -154,7 +154,7 @@ class CalendarView: UIView {
         addSubview(calendarCollectionView)
         
         calendarCollectionView.dataSource = self
-//        calendarCollectionView.delegate = self
+        calendarCollectionView.delegate = self
         
         calendarCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self).inset(28)
@@ -240,7 +240,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
         cell.configureday(text: cellDay)
         
         let format = DateFormatter()
-        format.dateFormat = "dd"
+        format.dateFormat = "d"
         
         // 오늘 날짜 계산
         let today = format.string(from: Date())
@@ -263,39 +263,24 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
             cell.setWeekdayColor()
         }
         
-        // 약속 있는 날 표시하기
-        if planDates.contains(Int(cellDay) ?? 0) {
-            cell.configurePlan()
-        } else {
-            cell.reloadPlanMark()
-        }
-        
         return cell
     }
     
     // 각 셀을 클릭했을 때 이벤트 처리
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("Selected cell at indexPath: \(indexPath)")
-//
-//        let home = HomeViewController()
-//
-//        let format = DateFormatter()
-//        format.dateFormat = "dd"
-//
-//        // 오늘 날짜 계산
-//        let today = format.string(from: Date())
-//
-//        format.dateFormat = "MM"
-//        // 오늘 날짜 month 계산
-//        let todayMonth = format.string(from: Date())
-//
-//        // 달력 month
-//        let calendarMonth = calendarDateFormatter.currentMonth()
-//
-//        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
-//            home.changeDate(month: "", day: "")
-//        } else {
-//            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+
+        // 달력 년,월
+        var calendarDate = calendarDateFormatter.getYearMonthText()
+        // 형식 변환
+        calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
+        calendarDate = calendarDate.replacingOccurrences(of: "월", with: "-")
+        
+        // 클릭한 날짜 (일)
+        let clickDay = calendarDateFormatter.days[indexPath.item]
+        
+        // 클릭한 날짜 (yyyy-MM-dd)
+        let clickDate = calendarDate + clickDay
+        
+    }
 }

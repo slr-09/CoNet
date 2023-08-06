@@ -18,6 +18,7 @@ class HomeViewController: UIViewController {
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
     }
     
     // 컴포넌트들이 들어갈 뷰
@@ -238,7 +239,7 @@ class HomeViewController: UIViewController {
         // collectionView: 오늘의 약속
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.height.equalTo(dayPlanData.count*100 - 10)
         }
         
