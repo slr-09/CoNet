@@ -7,8 +7,3 @@
 
 import Foundation
 
-// 팀 내 특정 달 약속 조회
-struct GetMeetingMonthPlanResult: Codable {
-    let count: Int
-    let dates: [Int]
-}
