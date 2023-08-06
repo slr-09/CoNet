@@ -306,7 +306,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.configureday(text: cellDay)
         
         let format = DateFormatter()
-        format.dateFormat = "dd"
+        format.dateFormat = "d"
         
         // 오늘 날짜 계산
         let today = format.string(from: Date())
