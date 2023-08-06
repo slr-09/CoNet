@@ -238,6 +238,10 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             makeButton.backgroundColor = UIColor.gray200
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
 extension MakePlanViewController {
     func textFieldDidBeginEditing(_ textField: UITextField) {

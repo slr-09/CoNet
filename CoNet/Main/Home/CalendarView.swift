@@ -209,7 +209,7 @@ class CalendarView: UIView {
     }
 }
 
-extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -218,8 +218,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
     
     // 셀 사이즈 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = weekStackView.frame.width / 7
-        return CGSize(width: width, height: 50)
+        return CGSize(width: 30, height: 50)
     }
     
     // 위 아래 space zero로 설정
