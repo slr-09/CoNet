@@ -66,6 +66,7 @@ class HistoryViewController: UIViewController {
     // 추가 버튼
     @objc func addHistory() {
         let nextVC = UnResgisteredPlanListViewController()
+        nextVC.meetingId = self.meetingId
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
