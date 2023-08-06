@@ -115,8 +115,6 @@ class MeetingMainViewController: UIViewController {
     // 대기 중 약속 데이터
     private var waitingPlanData: [MeetingWaitingPlan] = []
     
-    var backgroundHeight = 2000
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -148,7 +146,6 @@ class MeetingMainViewController: UIViewController {
             self.waitingPlanNum.text = String(count)
             self.waitingPlanData = plans
             self.waitingPlanCollectionView.reloadData()
-//            self.backgroundHeight = 1000 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
             self.layoutContraints()
         }
         
@@ -238,7 +235,7 @@ class MeetingMainViewController: UIViewController {
         // 대기 중 약속 collectionView
         waitingPlanCollectionView.delegate = self
         waitingPlanCollectionView.dataSource = self
-        waitingPlanCollectionView.register(WaitingPlanCell.self, forCellWithReuseIdentifier: WaitingPlanCell.registerId)
+        waitingPlanCollectionView.register(ShadowWaitingPlanCell.self, forCellWithReuseIdentifier: ShadowWaitingPlanCell.registerId)
     }
     
     private func addNavigationBarItem() {
@@ -443,7 +440,7 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
             return cell
         } else if collectionView == waitingPlanCollectionView {
             // 대기 중 약속
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaitingPlanCell.registerId, for: indexPath) as? WaitingPlanCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShadowWaitingPlanCell.registerId, for: indexPath) as? ShadowWaitingPlanCell else {
                 return UICollectionViewCell()
             }
             
@@ -610,7 +607,7 @@ extension MeetingMainViewController {
         contentView.addSubview(waitingPlanLabel)
         waitingPlanLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(50)
+            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(40)
         }
 
         contentView.addSubview(planNumCircle2)
@@ -632,7 +629,7 @@ extension MeetingMainViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(waitingPlanData.count * 92)
+            make.height.equalTo(waitingPlanData.count * 100 - 10)
         }
     }
 }
