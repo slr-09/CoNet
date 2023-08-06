@@ -112,6 +112,8 @@ class HomeViewController: UIViewController {
             self.waitingPlanNum.text = String(count)
             self.waitingPlanData = plans
             self.waitingPlanCollectionView.reloadData()
+            self.backgroundHeight = 660 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
+            self.layoutConstraints()
         }
     }
     
@@ -267,7 +269,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(waitingPlanData.count*92)
+            make.height.equalTo(waitingPlanData.count*92 - 10)
         }
     }
     

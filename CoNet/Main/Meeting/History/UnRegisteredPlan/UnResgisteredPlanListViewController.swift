@@ -1,13 +1,13 @@
 //
-//  DecidedPlanListViewController.swift
+//  UnResgisteredPlanListViewController.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/23.
+//  Created by 이안진 on 2023/08/06.
 //
 
 import UIKit
 
-class DecidedPlanListViewController: UIViewController {
+class UnResgisteredPlanListViewController: UIViewController {
     var meetingId: Int = 0
     
     private lazy var mainView = PlanListCollectionView.init(frame: self.view.frame)
@@ -16,8 +16,8 @@ class DecidedPlanListViewController: UIViewController {
 //        return ViewController.init(nibName: nil, bundle: nil)
 //    }
     
-    var plansCount: Int = 0
-    private var decidedPlanData: [DecidedPlanInfo] = []
+    private var plansCount: Int = 0
+    private var pastPlanData: [PastPlanInfo] = []
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -28,9 +28,9 @@ class DecidedPlanListViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
         
-        PlanAPI().getDecidedPlansAtMeeting(meetingId: meetingId) { count, plans in
-            self.plansCount = count
-            self.decidedPlanData = plans
+        PlanAPI().getUnRegisteredPastPlansAtMeeting(meetingId: meetingId) { plans in
+            self.plansCount = plans.count
+            self.pastPlanData = plans
             self.mainView.reload()
         }
     }
@@ -38,7 +38,7 @@ class DecidedPlanListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "확정된 약속"
+        navigationItem.title = "등록되지 않은 지난 약속"
         
         view = mainView
         
@@ -49,34 +49,31 @@ class DecidedPlanListViewController: UIViewController {
     private func setupCollectionView() {
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
-        mainView.collectionView.register(DecidedPlanCell.self, forCellWithReuseIdentifier: DecidedPlanCell.registerId)
+        mainView.collectionView.register(UnRegisteredPlanCell.self, forCellWithReuseIdentifier: UnRegisteredPlanCell.registerId)
     }
 }
 
-extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension UnResgisteredPlanListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
-        let nextVC = PlanInfoViewController()
-        nextVC.hidesBottomBarWhenPushed = true
+        let nextVC = HistoryAddViewController()
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return decidedPlanData.count
+        return pastPlanData.count
     }
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DecidedPlanCell.registerId, for: indexPath) as? DecidedPlanCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UnRegisteredPlanCell.registerId, for: indexPath) as? UnRegisteredPlanCell else {
             return UICollectionViewCell()
         }
         
-        cell.dateLabel.text = decidedPlanData[indexPath.item].date
-        cell.timeLabel.text = decidedPlanData[indexPath.item].time
-        cell.leftDateLabel.text = "\(decidedPlanData[indexPath.item].dday)일 남았습니다."
-        cell.planTitleLabel.text = decidedPlanData[indexPath.item].planName
+        cell.dateLabel.text = pastPlanData[indexPath.item].date
+        cell.timeLabel.text = pastPlanData[indexPath.item].time
+        cell.planTitleLabel.text = pastPlanData[indexPath.item].planName
         
         return cell
     }
@@ -84,7 +81,7 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize.init(width: width, height: 110)
+        return CGSize.init(width: width, height: 88)
     }
     
     // 셀 사이의 위아래 간격

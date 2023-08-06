@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingOutPopUpViewController: UIViewController {
+    var meetingId: Int = 0
+    
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -45,6 +47,14 @@ class MeetingOutPopUpViewController: UIViewController {
     
     // 모임 나가기 버튼 동작
     @objc func outMeeting(_ sender: UIView) {
+        MeetingAPI().leaveMeeting(id: meetingId) { isSuccess in
+            if isSuccess {
+                self.showMeetingVC()
+            }
+        }
+    }
+    
+    private func showMeetingVC() {
         // TODO: 모임 탭으로 이동 구현
         let nextVC = TabbarViewController()
         self.navigationController?.pushViewController(nextVC, animated: true)

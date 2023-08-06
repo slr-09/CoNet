@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         var navigationController: UINavigationController?
-
+        
         navigationController = UINavigationController(rootViewController: LoginViewController())
         navigationController?.navigationBar.isHidden = true
         
@@ -32,7 +32,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 화면을 띄움
         window?.makeKeyAndVisible()
-        
     }
     
     func changeRootVC(_ viewController: UIViewController, animated: Bool) {

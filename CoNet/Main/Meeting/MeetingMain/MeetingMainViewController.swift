@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingMainViewController: UIViewController {
+    var meetingId: Int = 0
+    
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
     
@@ -22,7 +24,7 @@ class MeetingMainViewController: UIViewController {
     // 상단 모임 이미지
     let whiteGradientView = WhiteGradientView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     let meetingImage = UIImageView().then {
-        $0.image = UIImage(named: "defaultGrayImage")
+        $0.image = UIImage(named: "uploadImage")
         $0.clipsToBounds = true
     }
     
@@ -32,6 +34,7 @@ class MeetingMainViewController: UIViewController {
     
     // 모임 이름
     let meetingName = UILabel().then {
+        $0.numberOfLines = 0
         $0.text = "iOS 스터디"
         $0.font = UIFont.headline1
         $0.textColor = UIColor.textHigh
@@ -141,15 +144,14 @@ class MeetingMainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
         
-        MeetingAPI().getMeetingDetailInfo(teamId: 11) { meeting in
+        MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
             self.meetingName.text = meeting.name
             self.memberNum.text = "\(meeting.memberCount)명"
             
             self.isBookmarked = meeting.bookmark
             self.starButton.setImage(UIImage(named: meeting.bookmark ? "meetingStarOn" : "meetingStarOff"), for: .normal)
-            
-            let url = URL(string: meeting.imgUrl)!
-            self.loadImage(url: url)
+            guard let url = URL(string: meeting.imgUrl) else { return }
+            self.meetingImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImage"))
         }
     }
     
@@ -167,34 +169,6 @@ class MeetingMainViewController: UIViewController {
         let nextVC = MakePlanViewController()
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    private func loadImage(url imageURL: URL) {
-        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
-        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
-            // 에러 처리
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            // 데이터가 정상적으로 받아와졌는지 확인
-            guard let imageData = data else {
-                print("No image data received")
-                return
-            }
-            
-            // 이미지 데이터를 UIImage로 변환
-            if let image = UIImage(data: imageData, scale: 60) {
-                // UI 업데이트는 메인 큐에서 수행
-                DispatchQueue.main.async {
-                    // 이미지를 UIImageView에 설정
-                    self.meetingImage.image = image
-                }
-            } else {
-                print("Failed to convert image data")
-            }
-        }.resume()
     }
     
     private func setupCollectionView() {
@@ -229,6 +203,7 @@ class MeetingMainViewController: UIViewController {
     // 사이드바 버튼 동작
     @objc private func sidebarButtonTapped() {
         let popupVC = SideBarViewController()
+        popupVC.meetingId = meetingId
         popupVC.delegate = self
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
@@ -245,7 +220,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func bookmark() {
-        MeetingAPI().postBookmark(teamId: 11) { isSuccess in
+        MeetingAPI().postBookmark(teamId: meetingId) { isSuccess in
             if isSuccess {
                 self.isBookmarked = true
                 self.starButton.setImage(UIImage(named: "meetingStarOn"), for: .normal)
@@ -254,7 +229,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     private func deleteBookmark() {
-        MeetingAPI().postDeleteBookmark(teamId: 11) { isSuccess in
+        MeetingAPI().postDeleteBookmark(teamId: meetingId) { isSuccess in
             if isSuccess {
                 self.isBookmarked = false
                 self.starButton.setImage(UIImage(named: "meetingStarOff"), for: .normal)
@@ -270,33 +245,84 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         
         switch data {
         case .editInfo:
-            nextVC = MeetingInfoEditViewController()
-            pushViewController(nextVC)
+            showMeetingInfoEditVC()
         case .inviteCode:
-            nextVC = InvitationCodeViewController()
-            presentViewControllerModaly(nextVC)
+            showInvitationCodeVC()
         case .wait:
-            nextVC = WaitingPlanListViewController()
-            pushViewController(nextVC)
+            showWaitingPlansVC()
         case .decided:
-            nextVC = DecidedPlanListViewController()
-            pushViewController(nextVC)
+            showDecidedPlansVC()
         case .past:
-            nextVC = PastPlanListViewController()
-            pushViewController(nextVC)
+            showPastPlansVC()
         case .history:
-            nextVC = HistoryViewController()
-            pushViewController(nextVC)
+            showHistoryVC()
         case .delete:
-            nextVC = MeetingDelPopUpViewController()
-            presentViewControllerModaly(nextVC)
+            showdeleteMeetingVC()
         case .out:
-            nextVC = MeetingOutPopUpViewController()
-            presentViewControllerModaly(nextVC)
+            showMeetingOutVC()
         default:
             nextVC = WaitingPlanListViewController()
             pushViewController(nextVC)
         }
+    }
+    
+    func showMeetingInfoEditVC() {
+        let nextVC = MeetingInfoEditViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showInvitationCodeVC() {
+        let nextVC = InvitationCodeViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
+    }
+    
+    func showWaitingPlansVC() {
+        let nextVC = WaitingPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showDecidedPlansVC() {
+        let nextVC = DecidedPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showPastPlansVC() {
+        let nextVC = PastPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showHistoryVC() {
+        let nextVC = HistoryViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showdeleteMeetingVC() {
+        let nextVC = MeetingDelPopUpViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
+    }
+    
+    func showMeetingOutVC() {
+        let nextVC = MeetingOutPopUpViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
     }
     
     func popViewController() {
@@ -445,7 +471,7 @@ extension MeetingMainViewController {
         // 모임 이름
         contentView.addSubview(meetingName)
         meetingName.snp.makeConstraints { make in
-            make.height.equalTo(36)
+            make.width.equalTo(240)
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.top.equalTo(starButton.snp.bottom).offset(12)
         }
@@ -463,7 +489,7 @@ extension MeetingMainViewController {
         contentView.addSubview(memberImage)
         memberImage.snp.makeConstraints { make in
             make.width.height.equalTo(16)
-            make.top.equalTo(meetingName.snp.bottom).offset(6)
+            make.top.equalTo(meetingName.snp.bottom).offset(8)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         

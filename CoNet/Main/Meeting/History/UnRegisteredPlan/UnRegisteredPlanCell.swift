@@ -1,16 +1,16 @@
 //
-//  DecidedPlanCell.swift
+//  UnRegisteredPlanCell.swift
 //  CoNet
 //
-//  Created by 이안진 on 2023/07/23.
+//  Created by 이안진 on 2023/08/06.
 //
 
 import SnapKit
 import Then
 import UIKit
 
-class DecidedPlanCell: UICollectionViewCell {
-    static let registerId = "\(DecidedPlanCell.self)"
+class UnRegisteredPlanCell: UICollectionViewCell {
+    static let registerId = "\(UnRegisteredPlanCell.self)"
     
     // 배경
     let background = UIView().then {
@@ -38,17 +38,12 @@ class DecidedPlanCell: UICollectionViewCell {
     // 세로 구분선
     let verticalDivider = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
-    // 남은 날짜
-    let leftDateLabel = UILabel().then {
-        $0.text = "3일 남았습니다."
-        $0.font = UIFont.body1Medium
-        $0.textColor = UIColor.textMedium
-    }
-    
     // 약속 이름
+    // TODO: line height 24
     let planTitleLabel = UILabel().then {
         $0.numberOfLines = 2
-        $0.text = "제목은 최대 두 줄, 더 늘어나면 말줄임표로"
+        $0.text = "제목제목제목제목제목제목제목제목제목제목"
+//        $0.text = "제목은 최대 두 줄, 더 늘어나면 말줄임표로"
         $0.font = UIFont.body1Medium
         $0.textColor = UIColor.textHigh
         $0.lineBreakMode = .byWordWrapping
@@ -91,7 +86,7 @@ class DecidedPlanCell: UICollectionViewCell {
         timeLabel.snp.makeConstraints { make in
             make.height.equalTo(16)
             make.top.equalTo(dateLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(dateLabel.snp.centerX)
+            make.centerX.equalToSuperview()
         }
         
         background.addSubview(dateView)
@@ -114,19 +109,12 @@ class DecidedPlanCell: UICollectionViewCell {
     }
     
     private func planTitleConstraints() {
-        background.addSubview(leftDateLabel)
-        leftDateLabel.snp.makeConstraints { make in
-            make.height.equalTo(18)
-            make.top.equalTo(background.snp.top).offset(20)
-            make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
-        }
-        
         background.addSubview(planTitleLabel)
         planTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(48)
+            make.centerY.equalTo(verticalDivider.snp.centerY)
             make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
-            make.trailing.equalTo(background.snp.trailing).offset(-20)
-            make.bottom.equalTo(background.snp.bottom).offset(-20)
+            make.trailing.equalTo(background.snp.trailing).offset(-64)
         }
     }
 }

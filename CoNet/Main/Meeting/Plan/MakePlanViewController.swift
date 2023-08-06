@@ -69,7 +69,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
         $0.backgroundColor = UIColor.gray200
         $0.setTitleColor(.white, for: .normal)
-        $0.setTitle("다음", for: .normal)
+        $0.setTitle("만들기", for: .normal)
         $0.titleLabel?.font = UIFont.body1Medium
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
@@ -183,8 +183,9 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planStartDateUnderLabel.snp.makeConstraints { make in
+            make.height.equalTo(16)
             make.top.equalTo(grayLine2.snp.bottom).offset(6)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.equalTo(safeArea.snp.leading).offset(41)
         }
     }
     
@@ -193,7 +194,6 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         makeButton.snp.makeConstraints { make in
             make.width.equalTo(345)
             make.height.equalTo(52)
-            make.top.equalTo(planStartDateUnderLabel.snp.bottom).offset(435)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
             make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
@@ -202,11 +202,17 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func textFieldEditingChanged(_ textField: UITextField) {
         if textField == planNameTextField {
-            guard let text = textField.text else { return }
-            let nameCount = text.count
-
-            textCountLabel.text = "\(nameCount)/20"
-            xnameButton.isHidden = text.isEmpty
+            if let text = textField.text {
+                let maxLength = 20
+                var newText = text
+                if text.count > maxLength {
+                    let index = text.index(text.startIndex, offsetBy: maxLength)
+                    newText = String(text[..<index])
+                }
+                textCountLabel.text = "\(newText.count)/20"
+                xnameButton.isHidden = newText.isEmpty
+                textField.text = newText
+            }
         }
         updateMakeButtonState()
     }

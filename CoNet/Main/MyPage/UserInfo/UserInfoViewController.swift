@@ -114,41 +114,13 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
             self.changeNameView.setTitle(username)
             
             // 이미지 설정
-            let url = URL(string: imageUrl)!
-            self.loadImage(url: url)
+            guard let url = URL(string: imageUrl) else { return }
+            self.profileImage.kf.setImage(with: url)
             
             // 이메일, 소셜 계정 설정
             self.emailLabel.text = email
             self.linkedSocialImage.image = UIImage(named: social == "APPLE" ? "linkedApple" : "linkedKakao")
         }
-    }
-    
-    private func loadImage(url imageURL: URL) {
-        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
-        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
-            // 에러 처리
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            // 데이터가 정상적으로 받아와졌는지 확인
-            guard let imageData = data else {
-                print("No image data received")
-                return
-            }
-            
-            // 이미지 데이터를 UIImage로 변환
-            if let image = UIImage(data: imageData, scale: 100) {
-                // UI 업데이트는 메인 큐에서 수행
-                DispatchQueue.main.async {
-                    // 이미지를 UIImageView에 설정
-                    self.profileImage.image = image
-                }
-            } else {
-                print("Failed to convert image data")
-            }
-        }.resume()
     }
     
     @objc func showImagePicker(_ sender: UIView) {
@@ -166,7 +138,8 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
             // 이미지 선택 완료 후에 사용할 코드 작성
             // selectedImage 변수에 선택한 이미지가 저장됨
             MyPageAPI().editProfileImage(image: selectedImage) { imageUrl in
-                self.loadImage(url: URL(string: imageUrl)!)
+                guard let url = URL(string: imageUrl) else { return }
+                self.profileImage.kf.setImage(with: url)
                 picker.dismiss(animated: true, completion: nil)
             }
         }

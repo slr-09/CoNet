@@ -35,6 +35,14 @@ class LoginViewController: UIViewController {
         print("DEBUG(loginVC) keychain에 저장된 모든 Key: \(KeychainSwift().allKeys)")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AuthAPI().regenerateToken { isSuccess in
+            print("Login VC isSuccess \(isSuccess)")
+        }
+    }
+    
     @objc func showSignUp(_ sender: UIView) {
         let nextVC = TermsOfUseViewController()
         navigationController?.pushViewController(nextVC, animated: true)
