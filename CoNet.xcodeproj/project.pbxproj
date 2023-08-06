@@ -68,6 +68,9 @@
 		515E53BF2A77D16D00536C6D /* Meeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515E53BE2A77D16D00536C6D /* Meeting.swift */; };
 		517C28C62A7E8F0600D2CE50 /* PlanAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */; };
 		517C28C92A7EBBB000D2CE50 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 517C28C82A7EBBB000D2CE50 /* Kingfisher */; };
+		517C28CB2A7F3C2000D2CE50 /* UnResgisteredPlanListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517C28CA2A7F3C2000D2CE50 /* UnResgisteredPlanListViewController.swift */; };
+		517C28CE2A7F3C4500D2CE50 /* UnRegisteredPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517C28CD2A7F3C4500D2CE50 /* UnRegisteredPlanCell.swift */; };
+		517C28D02A7F402600D2CE50 /* HistoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517C28CF2A7F402600D2CE50 /* HistoryAPI.swift */; };
 		518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */; };
 		518F55D92A683F68002D8F0F /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55D82A683F68002D8F0F /* PopUpView.swift */; };
 		518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */; };
@@ -160,6 +163,9 @@
 		515E53BC2A77CF9400536C6D /* MeetingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingAPI.swift; sourceTree = "<group>"; };
 		515E53BE2A77D16D00536C6D /* Meeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meeting.swift; sourceTree = "<group>"; };
 		517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanAPI.swift; sourceTree = "<group>"; };
+		517C28CA2A7F3C2000D2CE50 /* UnResgisteredPlanListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnResgisteredPlanListViewController.swift; sourceTree = "<group>"; };
+		517C28CD2A7F3C4500D2CE50 /* UnRegisteredPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnRegisteredPlanCell.swift; sourceTree = "<group>"; };
+		517C28CF2A7F402600D2CE50 /* HistoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAPI.swift; sourceTree = "<group>"; };
 		518F55D42A683780002D8F0F /* SignOutPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutPopUpViewController.swift; sourceTree = "<group>"; };
 		518F55D82A683F68002D8F0F /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		518F55DC2A685F2A002D8F0F /* CompleteSignOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignOutViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +245,7 @@
 		23ED93972A6D5FA6007B0E63 /* History */ = {
 			isa = PBXGroup;
 			children = (
+				517C28CC2A7F3C2700D2CE50 /* UnRegisteredPlan */,
 				1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */,
 				23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */,
 				23ED939C2A6D6485007B0E63 /* HistoryCell.swift */,
@@ -311,6 +318,15 @@
 			path = PlanCell;
 			sourceTree = "<group>";
 		};
+		517C28CC2A7F3C2700D2CE50 /* UnRegisteredPlan */ = {
+			isa = PBXGroup;
+			children = (
+				517C28CA2A7F3C2000D2CE50 /* UnResgisteredPlanListViewController.swift */,
+				517C28CD2A7F3C4500D2CE50 /* UnRegisteredPlanCell.swift */,
+			);
+			path = UnRegisteredPlan;
+			sourceTree = "<group>";
+		};
 		518F55D62A683E15002D8F0F /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,6 +395,7 @@
 				51F2A4702A5497A500D134CC /* AuthAPI.swift */,
 				515E53BC2A77CF9400536C6D /* MeetingAPI.swift */,
 				517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */,
+				517C28CF2A7F402600D2CE50 /* HistoryAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -642,6 +659,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				517C28CB2A7F3C2000D2CE50 /* UnResgisteredPlanListViewController.swift in Sources */,
 				23DA182C2A695541004EC6A6 /* CalendarCollectionViewCell.swift in Sources */,
 				1ADA548D2A5A74D700609041 /* TermsOfUseViewController.swift in Sources */,
 				1AE23DBB2A59837F000D498F /* LoginViewController.swift in Sources */,
@@ -704,6 +722,7 @@
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
 				518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
+				517C28CE2A7F3C4500D2CE50 /* UnRegisteredPlanCell.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				515E53BD2A77CF9400536C6D /* MeetingAPI.swift in Sources */,
 				23ED93992A6D5FB9007B0E63 /* HistoryViewController.swift in Sources */,
@@ -712,6 +731,7 @@
 				23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */,
 				51A3DA132A72BF4D00CAEE2A /* ArrowList.swift in Sources */,
 				51B526D02A6C40F1009DBFB4 /* PastPlanCell.swift in Sources */,
+				517C28D02A7F402600D2CE50 /* HistoryAPI.swift in Sources */,
 				239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */,
 				51B526CC2A6C3988009DBFB4 /* DecidedPlanCell.swift in Sources */,
 				51F2A4682A54804100D134CC /* ColorExtension.swift in Sources */,

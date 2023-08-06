@@ -46,14 +46,11 @@ class HistoryCell: UICollectionViewCell {
     }
     
     // 이미지
-    let historyImage = UIImageView().then {
-        $0.backgroundColor = UIColor.gray200
-    }
+    let historyImage = UIImageView()
     
     // 내용
     let contents = UILabel().then {
-        $0.numberOfLines = 100
-        $0.text = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요."
+        $0.numberOfLines = 5
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.textHigh
     }
@@ -111,7 +108,7 @@ class HistoryCell: UICollectionViewCell {
         historyImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(planTitle.snp.bottom).offset(12)
-            make.height.equalTo(historyImage.snp.width)
+//            make.height.equalTo(historyImage.snp.width)
         }
         
         background.addSubview(contents)

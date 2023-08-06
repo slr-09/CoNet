@@ -16,16 +16,6 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
     
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
-    
-    let historyAddLabel = UILabel().then {
-        $0.text = "히스토리 등록하기"
-        $0.font = UIFont.headline3Bold
-        $0.adjustsFontSizeToFitWidth = true
-    }
-    
     let completionButton = UIButton().then {
         $0.setTitle("완료", for: .normal)
         $0.titleLabel?.font = UIFont.headline3Medium
@@ -162,13 +152,44 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        // navigation bar title "iOS 스터디"로 지정
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "히스토리 등록하기"
+        
+        // 네비게이션 바 item 추가 - 뒤로가기, 사이드바 버튼
+        addNavigationBarItem()
+        
+        layoutConstraints()
+        
+        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
+        photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
+        
+        updatePhotoImageViewSize()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    private func addNavigationBarItem() {
+        // 사이드바 버튼 추가
+        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: completionButton)
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+}
+
+extension HistoryAddViewController {
+    private func layoutConstraints() {
         view.addSubview(scrollview)
         scrollview.addSubview(contentView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(historyAddLabel)
-        contentView.addSubview(completionButton)
         applyConstraintsToscrollview()
-        applyConstraintsToTabs()
         
         contentView.addSubview(planNameLabel)
         contentView.addSubview(planNameText)
@@ -205,15 +226,8 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         contentView.addSubview(contentsView)
         contentView.addSubview(contentsTextField)
         applyConstraintsToContents()
-        
-        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
-        photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
-        
-        updatePhotoImageViewSize()
     }
-}
-
-extension HistoryAddViewController {
+    
     private func applyConstraintsToscrollview() {
         scrollview.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(0)
@@ -224,27 +238,13 @@ extension HistoryAddViewController {
             make.height.equalTo(2000)
         }
     }
-    
-    func applyConstraintsToTabs() {
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(contentView.snp.top).offset(41)
-            make.leading.equalTo(contentView.snp.leading).offset(17)
-        }
-        historyAddLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(93)
-        }
-        completionButton.snp.makeConstraints { make in
-            make.width.equalTo(31)
-            make.centerY.equalTo(backButton)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
-        }
-    }
 
     func applyConstraintsToPlanName() {
+        // 안전 영역
+        let safeArea = view.safeAreaLayoutGuide
+        
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(contentView.snp.top).offset(24)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in

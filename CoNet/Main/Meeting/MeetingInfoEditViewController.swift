@@ -114,7 +114,7 @@ class MeetingInfoEditViewController: UIViewController {
         MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
             self.meetingnameTextField.text = meeting.name
             guard let url = URL(string: meeting.imgUrl) else { return }
-            self.loadImage(url: url)
+            self.photoImageView.kf.setImage(with: url)
             self.photoImageView.alpha = 0.8
         }
     }
@@ -129,34 +129,6 @@ class MeetingInfoEditViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
             }
         }
-    }
-    
-    private func loadImage(url imageURL: URL) {
-        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
-        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
-            // 에러 처리
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            // 데이터가 정상적으로 받아와졌는지 확인
-            guard let imageData = data else {
-                print("No image data received")
-                return
-            }
-            
-            // 이미지 데이터를 UIImage로 변환
-            if let image = UIImage(data: imageData, scale: 60) {
-                // UI 업데이트는 메인 큐에서 수행
-                DispatchQueue.main.async {
-                    // 이미지를 UIImageView에 설정
-                    self.photoImageView.image = image
-                }
-            } else {
-                print("Failed to convert image data")
-            }
-        }.resume()
     }
     
     func applyConstraintsToTopSection() {

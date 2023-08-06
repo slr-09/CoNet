@@ -150,9 +150,8 @@ class MeetingMainViewController: UIViewController {
             
             self.isBookmarked = meeting.bookmark
             self.starButton.setImage(UIImage(named: meeting.bookmark ? "meetingStarOn" : "meetingStarOff"), for: .normal)
-            
-            let url = URL(string: meeting.imgUrl)!
-            self.loadImage(url: url)
+            guard let url = URL(string: meeting.imgUrl) else { return }
+            self.meetingImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImage"))
         }
     }
     
@@ -170,34 +169,6 @@ class MeetingMainViewController: UIViewController {
         let nextVC = MakePlanViewController()
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    private func loadImage(url imageURL: URL) {
-        // URLSession을 사용하여 URL에서 데이터를 비동기로 가져옵니다.
-        URLSession.shared.dataTask(with: imageURL) { (data, _, error) in
-            // 에러 처리
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            // 데이터가 정상적으로 받아와졌는지 확인
-            guard let imageData = data else {
-                print("No image data received")
-                return
-            }
-            
-            // 이미지 데이터를 UIImage로 변환
-            if let image = UIImage(data: imageData, scale: 60) {
-                // UI 업데이트는 메인 큐에서 수행
-                DispatchQueue.main.async {
-                    // 이미지를 UIImageView에 설정
-                    self.meetingImage.image = image
-                }
-            } else {
-                print("Failed to convert image data")
-            }
-        }.resume()
     }
     
     private func setupCollectionView() {
@@ -284,8 +255,7 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         case .past:
             showPastPlansVC()
         case .history:
-            nextVC = HistoryViewController()
-            pushViewController(nextVC)
+            showHistoryVC()
         case .delete:
             showdeleteMeetingVC()
         case .out:
@@ -327,6 +297,13 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
     
     func showPastPlansVC() {
         let nextVC = PastPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    func showHistoryVC() {
+        let nextVC = HistoryViewController()
         nextVC.meetingId = self.meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)

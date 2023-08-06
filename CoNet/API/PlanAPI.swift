@@ -102,4 +102,25 @@ class PlanAPI {
                 }
             }
     }
+    
+    // 팀 내 지난 약속 조회
+    func getUnRegisteredPastPlansAtMeeting(meetingId: Int, completion: @escaping (_ plans: [PastPlanInfo]) -> Void) {
+        let url = "\(baseUrl)/team/plan/non-history?teamId=\(meetingId)"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<[PastPlanInfo]>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let serverPlans = response.result else { return }
+                    print(serverPlans)
+                    completion(serverPlans)
+                    
+                case .failure(let error):
+                    print("DEBUG(팀 내 지난 약속 api) error: \(error)")
+                }
+            }
+    }
 }
