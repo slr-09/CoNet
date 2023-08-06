@@ -60,7 +60,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 캘린더뷰
-    let calendarVC = CalendarViewController()
+    let calendarVC = CalendarMeetingMainViewController()
     
     // label: 오늘의 약속
     let dayPlanLabel = UILabel().then {
@@ -85,7 +85,7 @@ class MeetingMainViewController: UIViewController {
     }
     
     // 오늘 약속 데이터
-    private let dayPlanData = PlanDummyData.dayPlanData
+    private var dayPlanData = PlanDummyData.dayPlanData
     
     // label: 대기 중 약속
     let waitingPlanLabel = UILabel().then {
@@ -312,6 +312,15 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         nextVC.modalPresentationStyle = .overCurrentContext
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
+    }
+    
+    // change day label
+    func changeDate(month: String, day: String) {
+        if month == "" && day == "" {
+            dayPlanLabel.text = "오늘의 약속"
+        } else {
+            dayPlanLabel.text = month + "월 " + day + "일의 약속"
+        }
     }
 }
 

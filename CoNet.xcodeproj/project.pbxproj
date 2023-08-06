@@ -32,6 +32,7 @@
 		236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054EE2A592B0C00CA991E /* TabbarViewController.swift */; };
 		236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F62A593F3B00CA991E /* HomeViewController.swift */; };
 		236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F92A593F5400CA991E /* MeetingViewController.swift */; };
+		2387E7522A7F611C0003044E /* CalendarMeetingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387E7512A7F611C0003044E /* CalendarMeetingMainViewController.swift */; };
 		239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */; };
 		23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */; };
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
@@ -121,6 +122,7 @@
 		236054EE2A592B0C00CA991E /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		236054F62A593F3B00CA991E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		236054F92A593F5400CA991E /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
+		2387E7512A7F611C0003044E /* CalendarMeetingMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMeetingMainViewController.swift; sourceTree = "<group>"; };
 		239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputViewController.swift; sourceTree = "<group>"; };
 		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23C9BF702A7C126A00B3D9C9 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 		5199BCD02A723ECC00CE585C /* MeetingMain */ = {
 			isa = PBXGroup;
 			children = (
+				2387E7512A7F611C0003044E /* CalendarMeetingMainViewController.swift */,
 				519FC3582A700FED002EF91C /* MeetingMainViewController.swift */,
 				519FC35A2A7016AE002EF91C /* WhiteGradientView.swift */,
 			);
@@ -696,6 +699,7 @@
 				514D73D02A59839200404E64 /* MyPageList.swift in Sources */,
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
 				518F55D52A683780002D8F0F /* SignOutPopUpViewController.swift in Sources */,
+				2387E7522A7F611C0003044E /* CalendarMeetingMainViewController.swift in Sources */,
 				236054F72A593F3B00CA991E /* HomeViewController.swift in Sources */,
 				236054EF2A592B0C00CA991E /* TabbarViewController.swift in Sources */,
 				515E53BD2A77CF9400536C6D /* MeetingAPI.swift in Sources */,
