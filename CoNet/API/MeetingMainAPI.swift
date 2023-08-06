@@ -58,4 +58,27 @@ class MeetingMainAPI {
             }
     }
     
+    // 팀 내 대기 중 약속 조회
+    func getMeetingWaitingPlan(teamId: Int, completion: @escaping (_ count: Int, _ plans: [WaitingPlan]) -> Void) {
+        let url = "\(baseUrl)/team/plan/day?teamId=\(teamId)"
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<GetWaitingPlanResult>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("DEBUG(get meeting waiting plan api): \(result)")
+                    completion(result.count, result.plans)
+
+                case .failure(let error):
+                    print("DEBUG(get meeting waiting plan api) error: \(error)")
+                }
+            }
+    }
+
 }
