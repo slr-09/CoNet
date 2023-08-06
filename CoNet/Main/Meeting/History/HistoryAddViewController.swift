@@ -84,6 +84,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member1NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
     
     let member2ImageView = UIImageView().then {
@@ -93,6 +94,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member2NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
 
     let member3ImageView = UIImageView().then {
@@ -102,8 +104,20 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member3NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
-
+    
+    let grayLine4 = UIView().then {
+        $0.backgroundColor = UIColor.gray50
+    }
+    
+    let historyLabel = UILabel().then {
+        $0.text = "히스토리"
+        $0.font = UIFont.headline3Bold
+        $0.textColor = UIColor.black
+        $0.adjustsFontSizeToFitWidth = true
+    }
+    
     let photoLabel = UILabel().then {
         $0.text = "사진"
         $0.font = UIFont.body2Bold
@@ -214,6 +228,10 @@ extension HistoryAddViewController {
         contentView.addSubview(member3ImageView)
         contentView.addSubview(member3NameLabel)
         applyConstraintsToMember()
+        
+        contentView.addSubview(grayLine4)
+        contentView.addSubview(historyLabel)
+        applyConstraintsToHistory()
         
         contentView.addSubview(photoLabel)
         contentView.addSubview(photoImageView)
@@ -333,9 +351,22 @@ extension HistoryAddViewController {
         }
     }
 
+    func applyConstraintsToHistory() {
+        grayLine4.snp.makeConstraints { make in
+            make.width.equalTo(393)
+            make.height.equalTo(12)
+            make.top.equalTo(member3ImageView.snp.bottom).offset(32)
+        }
+        historyLabel.snp.makeConstraints { make in
+            make.width.equalTo(62)
+            make.top.equalTo(grayLine4.snp.bottom).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+        }
+    }
+    
     func applyConstraintsToPhoto() {
         photoLabel.snp.makeConstraints { make in
-            make.top.equalTo(member3ImageView.snp.bottom).offset(26)
+            make.top.equalTo(historyLabel.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         photoImageView.snp.makeConstraints { make in
@@ -394,7 +425,7 @@ extension HistoryAddViewController {
         isContentsEntered = !textField.text!.isEmpty
         updateCompletionButtonColor()
     }
-
+    
     func updateCompletionButtonColor() {
         if isContentsEntered || isPhotoUploaded {
             completionButton.setTitleColor(.purpleMain, for: .normal)
@@ -415,7 +446,7 @@ extension HistoryAddViewController {
     
     func updatePhotoImageViewSize() {
         photoImageView.clipsToBounds = true
-
+        
         photoImageView.snp.remakeConstraints { make in
             if isPhotoUploaded {
                 make.width.height.equalTo(345)
