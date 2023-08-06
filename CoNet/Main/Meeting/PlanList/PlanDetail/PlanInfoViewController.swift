@@ -135,6 +135,8 @@ class PlanInfoViewController: UIViewController {
         self.view.addSubview(member3ImageView)
         self.view.addSubview(member3NameLabel)
         applyConstraintsToPlanMember()
+        
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
     }
     
     func applyConstraintsToTopSection() {
@@ -244,4 +246,15 @@ class PlanInfoViewController: UIViewController {
             make.leading.equalTo(safeArea.snp.leading).offset(76)
         }
     }
+    
+    func showPlanEditDelBottomSheet() {
+        let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        present(bottomSheetViewController, animated: true, completion: nil)
+    }
+
+    @objc private func sideBarButtonTapped() {
+        showPlanEditDelBottomSheet()
+    }
+
 }
