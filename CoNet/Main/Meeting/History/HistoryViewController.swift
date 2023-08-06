@@ -57,7 +57,8 @@ class HistoryViewController: UIViewController {
     
     // 추가 버튼
     @objc func addHistory() {
-        self.navigationController?.popViewController(animated: true)
+        let nextVC = UnResgisteredPlanListViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // history collectionView setting
@@ -125,7 +126,7 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        // 원래 80인데 40으로 함
+        // 원래 80인데 20으로 함
         return 20
     }
 }
