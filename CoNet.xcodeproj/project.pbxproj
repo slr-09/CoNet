@@ -35,6 +35,8 @@
 		236054FA2A593F5400CA991E /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236054F92A593F5400CA991E /* MeetingViewController.swift */; };
 		2387E7542A7F84F50003044E /* MeetingMainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387E7532A7F84F50003044E /* MeetingMainAPI.swift */; };
 		2387E7582A7FCCEA0003044E /* MeetingMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387E7572A7FCCEA0003044E /* MeetingMain.swift */; };
+		2387E75A2A8014890003044E /* PlanTimeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387E7592A8014890003044E /* PlanTimeAPI.swift */; };
+		2387E75C2A8018430003044E /* PlanTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387E75B2A8018430003044E /* PlanTime.swift */; };
 		239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */; };
 		23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */; };
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
@@ -132,6 +134,8 @@
 		236054F92A593F5400CA991E /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
 		2387E7532A7F84F50003044E /* MeetingMainAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingMainAPI.swift; sourceTree = "<group>"; };
 		2387E7572A7FCCEA0003044E /* MeetingMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingMain.swift; sourceTree = "<group>"; };
+		2387E7592A8014890003044E /* PlanTimeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTimeAPI.swift; sourceTree = "<group>"; };
+		2387E75B2A8018430003044E /* PlanTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTime.swift; sourceTree = "<group>"; };
 		239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputViewController.swift; sourceTree = "<group>"; };
 		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23C9BF702A7C126A00B3D9C9 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +407,7 @@
 				517C28C52A7E8F0600D2CE50 /* PlanAPI.swift */,
 				517C28CF2A7F402600D2CE50 /* HistoryAPI.swift */,
 				2387E7532A7F84F50003044E /* MeetingMainAPI.swift */,
+				2387E7592A8014890003044E /* PlanTimeAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -537,6 +542,7 @@
 				23F6F9092A7011C000772AFF /* Home.swift */,
 				515E53BE2A77D16D00536C6D /* Meeting.swift */,
 				2387E7572A7FCCEA0003044E /* MeetingMain.swift */,
+				2387E75B2A8018430003044E /* PlanTime.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -699,6 +705,7 @@
 				1A99CFE22A70D4650080091B /* MeetingDelPopUpViewController.swift in Sources */,
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
 				519FC3592A700FED002EF91C /* MeetingMainViewController.swift in Sources */,
+				2387E75C2A8018430003044E /* PlanTime.swift in Sources */,
 				1A3AD0152A6D411900975427 /* HistoryAddViewController.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
 				23C9BF712A7C126A00B3D9C9 /* CalendarViewController.swift in Sources */,
@@ -728,6 +735,7 @@
 				518F55DD2A685F2A002D8F0F /* CompleteSignOutViewController.swift in Sources */,
 				1A99CFE42A7233580080091B /* PlanTimePickerViewController.swift in Sources */,
 				518F55EE2A6BA5AE002D8F0F /* WaitingPlanListViewController.swift in Sources */,
+				2387E75A2A8014890003044E /* PlanTimeAPI.swift in Sources */,
 				23DE37C32A72A40C00F1DFE0 /* TimeTableView.swift in Sources */,
 				514D73D02A59839200404E64 /* MyPageList.swift in Sources */,
 				514D73D62A59D2FB00404E64 /* InquireViewController.swift in Sources */,
