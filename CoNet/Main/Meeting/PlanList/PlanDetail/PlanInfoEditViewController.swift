@@ -10,6 +10,10 @@ import Then
 import UIKit
 
 class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
+    var planId: Int = 17
+    private var plansCount: Int = 0
+    private var planDetail: [PlanDetail] = []
+    
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
     }
@@ -196,6 +200,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         calendarButton.addTarget(self, action: #selector(didTapcalendarButton), for: .touchUpInside)
         clockButton.addTarget(self, action: #selector(didTapclockButton), for: .touchUpInside)
         memberAddButton.addTarget(self, action: #selector(didTapmemberAddButton), for: .touchUpInside)
+        completionButton.addTarget(self, action: #selector(updatePlan), for: .touchUpInside)
         
         planNameTextField.delegate = self
         planDateTextField.delegate = self
@@ -203,6 +208,19 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    @objc private func updatePlan() {
+        guard let name = planNameTextField.text else { return }
+        guard let date = planDateTextField.text else { return }
+        guard let time = planTimeTextField.text else { return }
+        
+        // 밑에서 members에 뭐를 넣어야할까..?
+        /* PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: ) { isSuccess in
+            if isSuccess {
+                print("DEBUG (약속 수정 api): isSuccess true")
+            }
+        } */
     }
     
     func applyConstraintsToTopSection() {
