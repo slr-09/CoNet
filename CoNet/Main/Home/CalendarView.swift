@@ -218,7 +218,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
     
     // 셀 사이즈 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 30, height: 50)
+        return CGSize(width: 48, height: 36)
     }
     
     // 위 아래 space zero로 설정

@@ -10,6 +10,7 @@ import Then
 import UIKit
 
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
+    var meetingId: Int = 0
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
     }
@@ -112,6 +113,17 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func popViewController(_: UIView) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    // api 연동
+    @objc func createMeeting() {
+        guard let newName = planNameTextField.text else { return }
+        guard let newStartDate = planStartDateField.text else { return }
+        PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: newStartDate) { isSuccess in
+            if isSuccess {
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     func applyConstraintsToTopSection() {
