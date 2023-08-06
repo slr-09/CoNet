@@ -154,7 +154,7 @@ class CalendarView: UIView {
         addSubview(calendarCollectionView)
         
         calendarCollectionView.dataSource = self
-//        calendarCollectionView.delegate = self
+        calendarCollectionView.delegate = self
         
         calendarCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self).inset(28)
@@ -218,7 +218,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
     
     // 셀 사이즈 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 30, height: 50)
+        return CGSize(width: 48, height: 36)
     }
     
     // 위 아래 space zero로 설정
@@ -263,39 +263,32 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
             cell.setWeekdayColor()
         }
         
-        // 약속 있는 날 표시하기
-        if planDates.contains(Int(cellDay) ?? 0) {
-            cell.configurePlan()
-        } else {
-            cell.reloadPlanMark()
-        }
-        
         return cell
     }
     
     // 각 셀을 클릭했을 때 이벤트 처리
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("Selected cell at indexPath: \(indexPath)")
-//
-//        let home = HomeViewController()
-//
-//        let format = DateFormatter()
-//        format.dateFormat = "dd"
-//
-//        // 오늘 날짜 계산
-//        let today = format.string(from: Date())
-//
-//        format.dateFormat = "MM"
-//        // 오늘 날짜 month 계산
-//        let todayMonth = format.string(from: Date())
-//
-//        // 달력 month
-//        let calendarMonth = calendarDateFormatter.currentMonth()
-//
-//        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
-//            home.changeDate(month: "", day: "")
-//        } else {
-//            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+
+        let home = HomeViewController()
+
+        let format = DateFormatter()
+        format.dateFormat = "dd"
+
+        // 오늘 날짜 계산
+        let today = format.string(from: Date())
+
+        format.dateFormat = "MM"
+        // 오늘 날짜 month 계산
+        let todayMonth = format.string(from: Date())
+
+        // 달력 month
+        let calendarMonth = calendarDateFormatter.currentMonth()
+
+        if calendarDateFormatter.days[indexPath.item] == today && todayMonth == calendarMonth {
+            home.changeDate(month: "", day: "")
+        } else {
+            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
+        }
+    }
 }
