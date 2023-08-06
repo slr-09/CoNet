@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class TimeShareViewController: UIViewController {
+    var planId: Int = 0
+    
     // x 버튼
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
@@ -129,10 +131,24 @@ class TimeShareViewController: UIViewController {
         timeTableSetting()
         
         btnClickEvents()
+        
+        getMemberPossibleTimeAPI()
+    }
+    
+    // 구성원 시간 조회
+    func getMemberPossibleTimeAPI() {
+        PlanTimeAPI().getMemberPossibleTime(planId: planId) { teamId, planId, planName, planStartPeriod, planEndPeriod, possibleMemberDateTime in
+            self.planTitle.text = planName
+        }
     }
     
     func btnClickEvents() {
+        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
+    }
+    
+    @objc private func xButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     // 내 시간 입력하기 버튼 클릭 시
