@@ -10,6 +10,10 @@ import Then
 import UIKit
 
 class PlanInfoViewController: UIViewController {
+    var planId: Int = 17
+    private var plansCount: Int = 0
+    private var planDetail: [PlanDetail] = []
+    
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
     }
@@ -137,6 +141,11 @@ class PlanInfoViewController: UIViewController {
         applyConstraintsToPlanMember()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getPlanDetail()
+    }
+    
     func applyConstraintsToTopSection() {
         let safeArea = view.safeAreaLayoutGuide
         backButton.snp.makeConstraints { make in
@@ -242,6 +251,14 @@ class PlanInfoViewController: UIViewController {
         member3NameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(member3ImageView)
             make.leading.equalTo(safeArea.snp.leading).offset(76)
+        }
+    }
+    
+    func getPlanDetail() {
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.plansCount = plans.count
+            self.planDetail = plans
+            // reload해야하는게 뭘까...
         }
     }
 }
