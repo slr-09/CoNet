@@ -139,6 +139,8 @@ class PlanInfoViewController: UIViewController {
         self.view.addSubview(member3ImageView)
         self.view.addSubview(member3NameLabel)
         applyConstraintsToPlanMember()
+        
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -261,4 +263,15 @@ class PlanInfoViewController: UIViewController {
             // reload해야하는게 뭘까...
         }
     }
+
+    func showPlanEditDelBottomSheet() {
+        let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        present(bottomSheetViewController, animated: true, completion: nil)
+    }
+
+    @objc private func sideBarButtonTapped() {
+        showPlanEditDelBottomSheet()
+    }
+
 }
