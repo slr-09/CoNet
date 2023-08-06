@@ -18,6 +18,7 @@ class HomeViewController: UIViewController {
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
     }
     
     // 컴포넌트들이 들어갈 뷰

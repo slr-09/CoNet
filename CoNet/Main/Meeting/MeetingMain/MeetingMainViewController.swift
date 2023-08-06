@@ -12,7 +12,10 @@ import UIKit
 class MeetingMainViewController: UIViewController {
     var meetingId: Int = 0
     
-    let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
+    let scrollview = UIScrollView().then {
+        $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
+    }
     let contentView = UIView().then { $0.backgroundColor = .clear }
     
     // 사이드바 버튼
