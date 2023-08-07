@@ -232,6 +232,7 @@ class MeetingMainViewController: UIViewController {
     
     @objc private func showMakePlanViewController(_ sender: UIView) {
         let nextVC = MakePlanViewController()
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }

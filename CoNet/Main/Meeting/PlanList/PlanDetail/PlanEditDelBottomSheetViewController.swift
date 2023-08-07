@@ -147,13 +147,3 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        PlanEditDelBottomSheetViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

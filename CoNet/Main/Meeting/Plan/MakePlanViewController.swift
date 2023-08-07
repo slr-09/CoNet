@@ -11,14 +11,14 @@ import UIKit
 
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
     var meetingId: Int = 0
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
-    let makePlanLabel = UILabel().then {
-        $0.text = "약속 만들기"
-        $0.font = UIFont.headline3Bold
-        $0.textColor = UIColor.black
-    }
+//    let backButton = UIButton().then {
+//        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
+//    }
+//    let makePlanLabel = UILabel().then {
+//        $0.text = "약속 만들기"
+//        $0.font = UIFont.headline3Bold
+//        $0.textColor = UIColor.black
+//    }
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
         $0.font = UIFont.body2Bold
@@ -82,9 +82,12 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.view.addSubview(backButton)
-        self.view.addSubview(makePlanLabel)
-        applyConstraintsToTopSection()
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "약속 만들기"
+        
+//        self.view.addSubview(backButton)
+//        self.view.addSubview(makePlanLabel)
+//        applyConstraintsToTopSection()
         
         self.view.addSubview(planNameLabel)
         self.view.addSubview(xnameButton)
@@ -103,7 +106,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addSubview(makeButton)
         applyConstraintsToMakeButton()
-        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+//        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
         makeButton.addTarget(self, action: #selector(makeButtonTapped), for: .touchUpInside)
@@ -117,38 +120,24 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
     @objc private func popViewController(_: UIView) {
         navigationController?.popViewController(animated: true)
-    }
-    
-    // api 연동
-    @objc func createMeeting() {
-        guard let newName = planNameTextField.text else { return }
-        guard let newStartDate = planStartDateField.text else { return }
-        PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: newStartDate) { isSuccess in
-            if isSuccess {
-                self.dismiss(animated: true)
-            }
-        }
-    }
-    
-    func applyConstraintsToTopSection() {
-        let safeArea = view.safeAreaLayoutGuide
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(safeArea.snp.leading).offset(17)
-        }
-        makePlanLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(backButton.snp.trailing).offset(116)
-        }
     }
     
     func applyConstraintsToPlanName() {
         let safeArea = view.safeAreaLayoutGuide
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(safeArea.snp.top).offset(20)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planNameTextField.snp.makeConstraints { make in
@@ -214,7 +203,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(52)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
+            make.bottom.equalTo(safeArea.snp.bottom).offset(-12)
         }
     }
     
@@ -257,7 +246,10 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func makeButtonTapped() {
         if makeButton.backgroundColor == UIColor.purpleMain {
-            PlanAPI().createPlan(teamId: meetingId, planName: planNameLabel.text ?? "", planStartPeriod: date) { isSuccess in
+            guard let newName = planNameTextField.text else { return }
+            guard let newStartDate = planStartDateField.text else { return }
+            let date = newStartDate.replacingOccurrences(of: ".", with: "-")
+            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { isSuccess in
                 print("is", isSuccess)
             }
         }
@@ -299,3 +291,13 @@ extension MakePlanViewController {
         xnameButton.isHidden = true
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        MakePlanViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif

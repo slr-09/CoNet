@@ -54,9 +54,7 @@ struct PlanEditResponse: Codable {
 }
 
 struct CreatePlanResponse: Codable {
-    let code, status: Int
-    let message: String
-    let result: Result
+    let planId: Int
 }
 
 struct Result: Codable {
@@ -223,13 +221,13 @@ class PlanAPI {
                     print("DEBUG(약속 상세 수정 api) error: \(error)")
                 }
             }
-}
-
+    }
+    
+    // 약속 생성
     func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/create"
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+            "Content-Type": "application/json"
         ]
         
         let parameters: Parameters = [
@@ -242,7 +240,7 @@ class PlanAPI {
         .responseDecodable(of: BaseResponse<CreatePlanResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(약속 생성 api) success response: \(response)")
+                print("DEBUG(약속 생성 api) success response: \(response.message)")
                 completion(response.code == 1000)
                 
             case .failure(let error):
