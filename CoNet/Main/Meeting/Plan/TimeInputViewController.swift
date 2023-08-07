@@ -123,6 +123,9 @@ class TimeInputViewController: UIViewController {
             self.possibleTime = possibleTime
             self.hasRegisteredTime = hasRegisteredTime
             self.hasPossibleTime = hasPossibleTime
+            if hasRegisteredTime && !hasPossibleTime {
+                self.possibleTimeCheck = true
+            }
             print("pp", possibleTime)
             self.timeTable.timeTableCollectionView.reloadData()
         }
@@ -175,6 +178,11 @@ class TimeInputViewController: UIViewController {
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
         possibleTimeCheck = !possibleTimeCheck
+        if possibleTimeCheck {
+            hasRegisteredTime = true
+            hasPossibleTime = false
+        }
+        
         timeTable.timeTableCollectionView.reloadData()
         
         if possibleTimeCheck {
@@ -346,20 +354,14 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
         
         // 가능한 시간 없음 버튼 클릭 여부 체크
-        if hasRegisteredTime && !hasPossibleTime {
+        if possibleTimeCheck {
             cell.contentView.backgroundColor = UIColor.gray50
-            return cell
-        }
-//        else {
-//            cell.contentView.backgroundColor = .white
-//        }
-        
-        if possibleTime.count == 0 {
-            return cell
-        }
-        
-        if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
-            cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
+        } else if hasRegisteredTime && hasPossibleTime {
+            if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
+                cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
+            } else {
+                cell.contentView.backgroundColor = .white
+            }
         }
         
         return cell
