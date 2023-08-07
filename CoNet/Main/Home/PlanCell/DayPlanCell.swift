@@ -37,6 +37,8 @@ class DayPlanCell: UICollectionViewCell {
     // 세로 구분선
     let verticalDivider = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
+    let planInfo = UIView()
+    
     // 약속 이름
     let planTitleLabel = UILabel().then {
         $0.numberOfLines = 1
@@ -99,18 +101,23 @@ class DayPlanCell: UICollectionViewCell {
     }
     
     private func planTitleConstraints() {
-        background.addSubview(planTitleLabel)
-        planTitleLabel.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.top.equalTo(background.snp.top).offset(20)
+        background.addSubview(planInfo)
+        planInfo.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalTo(background).inset(20)
             make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
         }
         
-        background.addSubview(groupNameLabel)
+        planInfo.addSubview(planTitleLabel)
+        planTitleLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            make.top.leading.equalToSuperview()
+        }
+        
+        planInfo.addSubview(groupNameLabel)
         groupNameLabel.snp.makeConstraints { make in
             make.height.equalTo(18)
             make.top.equalTo(planTitleLabel.snp.bottom).offset(4)
-            make.leading.equalTo(verticalDivider.snp.trailing).offset(20)
+            make.leading.equalToSuperview()
         }
     }
 }

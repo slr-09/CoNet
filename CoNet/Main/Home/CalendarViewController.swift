@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class CalendarViewController: UIViewController {
+    var meetingId = 0
+    
     // MARK: UIComponents
 
     // 이전 달로 이동 버튼
@@ -46,6 +48,7 @@ class CalendarViewController: UIViewController {
     var planDates: [Int] = []
     
     weak var homeVC: HomeViewController?
+    weak var meetingMainVC: MeetingMainViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +63,8 @@ class CalendarViewController: UIViewController {
         // 버튼 클릭 이벤트
         btnEvents()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByMeetingMain(notification:)), name: NSNotification.Name("ToCalendarVC"), object: nil)
+        
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM"
         // api 호출
@@ -73,9 +78,30 @@ class CalendarViewController: UIViewController {
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
         planDates = []
-        HomeAPI.shared.getMonthPlan(date: date) { _, dates in
-            self.planDates = dates
-            self.calendarCollectionView.reloadData()
+        if let parentVC = parent {
+            if parentVC is HomeViewController {
+                // 부모 뷰컨트롤러가 HomeViewController
+                HomeAPI.shared.getMonthPlan(date: date) { _, dates in
+                    self.planDates = dates
+                    self.calendarCollectionView.reloadData()
+                }
+            } else if parentVC is MeetingMainViewController {
+                // 부모 뷰컨트롤러가 MeetingMainViewController
+                MeetingMainAPI().getMeetingMonthPlan(teamId: meetingId, searchDate: date) { count, dates in
+                    self.planDates = dates
+                    self.calendarCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    @objc func dataReceivedByMeetingMain(notification: Notification) {
+        if let data = notification.userInfo?["meetingId"] as? Int {
+            self.meetingId = data
+            let format = DateFormatter()
+            format.dateFormat = "yyyy-MM"
+            // api 호출
+            getMonthPlanAPI(date: format.string(from: Date()))
         }
     }
     
@@ -252,17 +278,28 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         // 날짜 label 변경
         if today == calendarDate {
             homeVC?.changeDate(month: "", day: "")
+            NotificationCenter.default.post(name: NSNotification.Name("ToMeetingMain"), object: nil, userInfo: ["dayPlanlabel": "오늘의 약속"])
         } else {
             homeVC?.changeDate(month: calendarDateFormatter.getMonthText(), day: calendarDay)
+            NotificationCenter.default.post(name: NSNotification.Name("ToMeetingMain"), object: nil, userInfo: ["dayPlanlabel": calendarDateFormatter.getMonthText() + "월 " + calendarDay + "일의 약속"])
         }
-
+        
         // 선택 날짜 포맷 변경
         calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
         calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
 
-        // api: 특정 날짜 약속
-        homeVC?.dayPlanAPI(date: calendarDate)
+        if let parentVC = parent {
+            if parentVC is HomeViewController {
+                // 부모 뷰컨트롤러가 HomeViewController
+                // api: 특정 날짜 약속
+                homeVC?.dayPlanAPI(date: calendarDate)
+            } else if parentVC is MeetingMainViewController {
+                // 부모 뷰컨트롤러가 MeetingMainViewController
+                meetingMainVC?.dayPlanAPI(date: calendarDate)
+                NotificationCenter.default.post(name: NSNotification.Name("ToMeetingMain"), object: nil, userInfo: ["clickDate": calendarDate])
+            }
+        }
     }
     
     // 셀 수
@@ -295,7 +332,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.configureday(text: cellDay)
         
         let format = DateFormatter()
-        format.dateFormat = "dd"
+        format.dateFormat = "d"
         
         // 오늘 날짜 계산
         let today = format.string(from: Date())

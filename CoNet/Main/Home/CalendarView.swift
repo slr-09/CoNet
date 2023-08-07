@@ -154,7 +154,7 @@ class CalendarView: UIView {
         addSubview(calendarCollectionView)
         
         calendarCollectionView.dataSource = self
-//        calendarCollectionView.delegate = self
+        calendarCollectionView.delegate = self
         
         calendarCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self).inset(28)
@@ -240,7 +240,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
         cell.configureday(text: cellDay)
         
         let format = DateFormatter()
-        format.dateFormat = "dd"
+        format.dateFormat = "d"
         
         // 오늘 날짜 계산
         let today = format.string(from: Date())
@@ -263,17 +263,11 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
             cell.setWeekdayColor()
         }
         
-        // 약속 있는 날 표시하기
-        if planDates.contains(Int(cellDay) ?? 0) {
-            cell.configurePlan()
-        } else {
-            cell.reloadPlanMark()
-        }
-        
         return cell
     }
     
     // 각 셀을 클릭했을 때 이벤트 처리
+
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        print("Selected cell at indexPath: \(indexPath)")
 //
@@ -298,6 +292,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
 //            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
 //        }
 //    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
 
@@ -320,5 +315,6 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
         NotificationCenter.default.post(name: NSNotification.Name("ToMakePlanVC"), object: nil, userInfo: ["date": clickDate])
         
         NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
+
     }
 }
