@@ -31,5 +31,6 @@ struct Plan: Codable {
 }
 
 struct WaitingPlan: Codable {
+    let planId: Int
     let startDate, endDate, teamName, planName: String
 }

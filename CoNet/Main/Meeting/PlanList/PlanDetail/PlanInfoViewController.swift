@@ -239,7 +239,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-            self.member1NameLabel.text = plans.members[0].name
+//            self.member1NameLabel.text = plans.members[0].name
         }
     }
 
@@ -335,13 +335,13 @@ extension PlanInfoViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollview.contentLayoutGuide)
             make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(2000)
+            make.height.equalTo(1000)
         }
     }
     
     func applyConstraintsToPlanName() {
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(24)
+            make.top.equalTo(contentView.snp.top).offset(12)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in
