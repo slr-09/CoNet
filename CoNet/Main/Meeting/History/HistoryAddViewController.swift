@@ -195,6 +195,13 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.planNameText.text = plans.planName
+            self.planDateText.text = plans.date
+            self.planTimeText.text = plans.time
+            self.member1NameLabel.text = plans.members[0].name
+        }
     }
     
     private func addNavigationBarItem() {
@@ -440,7 +447,7 @@ extension HistoryAddViewController {
         guard let image = photoImageView.image else { return }
         guard let description = contentsTextView.text else { return }
         HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
-            print("히스토리 성공!")
+            self.navigationController?.popViewController(animated: true)
         }
     }
     

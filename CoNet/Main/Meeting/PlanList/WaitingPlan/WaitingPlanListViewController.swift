@@ -103,4 +103,5 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
 
 protocol MeetingMainViewControllerDelegate: AnyObject {
     func sendDataBack(data: SideBarMenu)
+    func sendIntDataBack(data: Int)
 }

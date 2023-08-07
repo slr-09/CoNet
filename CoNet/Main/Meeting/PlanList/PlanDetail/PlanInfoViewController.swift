@@ -14,13 +14,9 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
     
-    var dataStatus: [dataStatus] = []
-    
-    struct dataStatus {
-        var isPhotoUploaded = false
-        var isTextUploaded = false
-        var ishistoryExisted = false
-    }
+    var isPhotoUploaded = false
+    var isTextUploaded = false
+    var ishistoryExisted = false
     
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
@@ -212,16 +208,29 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "상세 페이지"
+        
+        // 사이드바 버튼 추가
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: sideBarButton)
+        navigationItem.rightBarButtonItem = barButtonItem
+        
         layoutConstraints()
         historyExists()
         photoImageViewUpdate()
         textUpdate()
-        
-        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        
         getPlanDetail()
     }
     
@@ -230,20 +239,40 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-            self.member1NameLabel.text = plans.members[0]
+//            self.member1NameLabel.text = plans.members[0].name
         }
     }
 
     func showPlanEditDelBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.delegate = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
         present(bottomSheetViewController, animated: true, completion: nil)
     }
 
     @objc private func sideBarButtonTapped() {
         showPlanEditDelBottomSheet()
     }
+}
 
+extension PlanInfoViewController: PlanInfoViewControllerDelegate {
+    func sendDataBack(data: String) {
+        if data == "pop" {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let popUpVC = DeletePlanPopUpViewController()
+            popUpVC.planId = planId
+            popUpVC.delegate = self
+            popUpVC.modalPresentationStyle = .overCurrentContext
+            popUpVC.modalTransitionStyle = .crossDissolve
+            present(popUpVC, animated: true, completion: nil)
+        }
+    }
+}
+
+protocol PlanInfoViewControllerDelegate: AnyObject {
+    func sendDataBack(data: String)
 }
 
 extension PlanInfoViewController {
@@ -311,7 +340,7 @@ extension PlanInfoViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollview.contentLayoutGuide)
             make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(2000)
+            make.height.equalTo(1000)
         }
     }
     
@@ -513,6 +542,7 @@ extension PlanInfoViewController {
         }
     }
 }
+
 extension PlanInfoViewController {
     @objc private func photoAddButtonTapped() {
         let imagePicker = UIImagePickerController()

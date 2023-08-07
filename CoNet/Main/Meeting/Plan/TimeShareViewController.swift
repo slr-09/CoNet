@@ -253,6 +253,8 @@ class TimeShareViewController: UIViewController {
     @objc func didClickInputTimeButton(_ sender: UIView) {
         // 화면 이동
         let nextVC = TimeInputViewController()
+        nextVC.planId = planId
+        nextVC.date = date
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
