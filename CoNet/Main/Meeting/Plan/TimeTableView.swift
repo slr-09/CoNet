@@ -26,6 +26,9 @@ class TimeTableView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        if let layout = timeTableCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+        }
         layoutConstraints()
         hourSetting()
     }
