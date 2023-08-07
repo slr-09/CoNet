@@ -26,7 +26,8 @@ struct GetWaitingPlanResult: Codable {
 }
 
 struct Plan: Codable {
-    let date, time, teamName, planName: String
+    let planId: Int
+    let time, teamName, planName: String
 }
 
 struct WaitingPlan: Codable {

@@ -232,6 +232,8 @@ class MeetingMainViewController: UIViewController {
     
     @objc private func showMakePlanViewController(_ sender: UIView) {
         let nextVC = MakePlanViewController()
+        nextVC.delegate = self
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -305,6 +307,13 @@ class MeetingMainViewController: UIViewController {
 
 // 사이드바 화면 전환
 extension MeetingMainViewController: MeetingMainViewControllerDelegate {
+    func sendIntDataBack(data: Int) {
+        let nextVC = TimeShareViewController()
+        nextVC.planId = data
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
     func sendDataBack(data: SideBarMenu) {
         var nextVC: UIViewController
         
@@ -404,16 +413,6 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
     }
-    
-//    // change day label
-//    func changeDate(month: String, day: String) {
-//        print(month, day)
-//        if month == "" && day == "" {
-//            dayPlanLabel.text = "오늘의 약속"
-//        } else {
-//            dayPlanLabel.text = month + "월 " + day + "일의 약속"
-//        }
-//    }
 }
 
 // collectionview 설정

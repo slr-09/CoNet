@@ -11,14 +11,7 @@ import UIKit
 
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
     var meetingId: Int = 0
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
-    let makePlanLabel = UILabel().then {
-        $0.text = "약속 만들기"
-        $0.font = UIFont.headline3Bold
-        $0.textColor = UIColor.black
-    }
+    
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
         $0.font = UIFont.body2Bold
@@ -82,10 +75,129 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.view.addSubview(backButton)
-        self.view.addSubview(makePlanLabel)
-        applyConstraintsToTopSection()
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "약속 만들기"
         
+        layoutConstraints()
+        
+        xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
+        makeButton.addTarget(self, action: #selector(makeButtonTapped), for: .touchUpInside)
+        
+        planNameTextField.delegate = self
+        planStartDateField.delegate = self
+        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        
+        // calendarViewController에서 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
+        if var data = notification.userInfo?["date"] as? String {
+            date = data
+            data = data.replacingOccurrences(of: "-", with: ".")
+            planStartDateField.text = data
+        }
+        updateMakeButtonState()
+    }
+    
+    @objc private func textFieldEditingChanged(_ textField: UITextField) {
+        if textField == planNameTextField {
+            if let text = textField.text {
+                let maxLength = 20
+                var newText = text
+                if text.count > maxLength {
+                    let index = text.index(text.startIndex, offsetBy: maxLength)
+                    newText = String(text[..<index])
+                }
+                textCountLabel.text = "\(newText.count)/20"
+                xnameButton.isHidden = newText.isEmpty
+                textField.text = newText
+            }
+        }
+        updateMakeButtonState()
+    }
+    
+    @objc private func xnameButtonTapped() {
+        planNameTextField.text = ""
+        planNameTextField.sendActions(for: .editingChanged)
+    }
+    
+    @objc private func calendarButtonTapped() {
+        let bottomSheetVC = PlanDateButtonSheetViewController()
+        bottomSheetVC.modalPresentationStyle = .overCurrentContext
+        bottomSheetVC.modalTransitionStyle = .crossDissolve
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
+    // 이전 ViewController로 데이터를 전달하는 delegate
+    weak var delegate: MeetingMainViewControllerDelegate?
+    
+    @objc private func makeButtonTapped() {
+        if makeButton.backgroundColor == UIColor.purpleMain {
+            guard let newName = planNameTextField.text else { return }
+            guard let newStartDate = planStartDateField.text else { return }
+            let date = newStartDate.replacingOccurrences(of: ".", with: "-")
+            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { planId, isSuccess in
+                if isSuccess {
+                    self.navigationController?.popViewController(animated: true)
+                    self.delegate?.sendIntDataBack(data: planId)
+                }
+            }
+        }
+    }
+    
+    private func updateMakeButtonState() {
+        let isPlanNameFilled = !(planNameTextField.text?.isEmpty ?? true)
+        let isPlanStartDateFilled = !(planStartDateField.text?.isEmpty ?? true)
+        
+        if isPlanNameFilled && isPlanStartDateFilled {
+            makeButton.backgroundColor = UIColor.purpleMain
+        } else {
+            makeButton.backgroundColor = UIColor.gray200
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+}
+
+extension MakePlanViewController {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = false
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = true
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        }
+        xnameButton.isHidden = true
+    }
+}
+
+// layout
+extension MakePlanViewController {
+    func layoutConstraints() {
         self.view.addSubview(planNameLabel)
         self.view.addSubview(xnameButton)
         self.view.addSubview(planNameTextField)
@@ -103,52 +215,12 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addSubview(makeButton)
         applyConstraintsToMakeButton()
-        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
-        xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
-        calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
-        makeButton.addTarget(self, action: #selector(makeButtonTapped), for: .touchUpInside)
-        
-        planNameTextField.delegate = self
-        planStartDateField.delegate = self
-        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
-        planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
-        
-        // calendarViewController에서 데이터 받기
-        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
-    }
-    
-    @objc private func popViewController(_: UIView) {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    // api 연동
-    @objc func createMeeting() {
-        guard let newName = planNameTextField.text else { return }
-        guard let newStartDate = planStartDateField.text else { return }
-        PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: newStartDate) { isSuccess in
-            if isSuccess {
-                self.dismiss(animated: true)
-            }
-        }
-    }
-    
-    func applyConstraintsToTopSection() {
-        let safeArea = view.safeAreaLayoutGuide
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(safeArea.snp.leading).offset(17)
-        }
-        makePlanLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(backButton.snp.trailing).offset(116)
-        }
     }
     
     func applyConstraintsToPlanName() {
         let safeArea = view.safeAreaLayoutGuide
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(safeArea.snp.top).offset(20)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planNameTextField.snp.makeConstraints { make in
@@ -214,88 +286,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(52)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.bottom.equalTo(safeArea.snp.bottom).offset(-46)
+            make.bottom.equalTo(safeArea.snp.bottom).offset(-12)
         }
-    }
-    
-    @objc func dataReceivedByCalendarVC(notification: Notification) {
-        if var data = notification.userInfo?["date"] as? String {
-            date = data
-            data = data.replacingOccurrences(of: "-", with: ".")
-            planStartDateField.text = data
-        }
-        updateMakeButtonState()
-    }
-    
-    @objc private func textFieldEditingChanged(_ textField: UITextField) {
-        if textField == planNameTextField {
-            if let text = textField.text {
-                let maxLength = 20
-                var newText = text
-                if text.count > maxLength {
-                    let index = text.index(text.startIndex, offsetBy: maxLength)
-                    newText = String(text[..<index])
-                }
-                textCountLabel.text = "\(newText.count)/20"
-                xnameButton.isHidden = newText.isEmpty
-                textField.text = newText
-            }
-        }
-        updateMakeButtonState()
-    }
-    
-    @objc private func xnameButtonTapped() {
-        planNameTextField.text = ""
-        planNameTextField.sendActions(for: .editingChanged)
-    }
-    
-    @objc private func calendarButtonTapped() {
-        let bottomSheetVC = PlanDateButtonSheetViewController()
-        bottomSheetVC.modalPresentationStyle = .overFullScreen
-        self.present(bottomSheetVC, animated: false, completion: nil)
-    }
-    
-    @objc private func makeButtonTapped() {
-        if makeButton.backgroundColor == UIColor.purpleMain {
-            PlanAPI().createPlan(teamId: meetingId, planName: planNameLabel.text ?? "", planStartPeriod: date) { isSuccess in
-                print("is", isSuccess)
-            }
-        }
-    }
-    
-    private func updateMakeButtonState() {
-        let isPlanNameFilled = !(planNameTextField.text?.isEmpty ?? true)
-        let isPlanStartDateFilled = !(planStartDateField.text?.isEmpty ?? true)
-        
-        if isPlanNameFilled && isPlanStartDateFilled {
-            makeButton.backgroundColor = UIColor.purpleMain
-        } else {
-            makeButton.backgroundColor = UIColor.gray200
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-}
-extension MakePlanViewController {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.purpleMain
-            xnameButton.isHidden = false
-        } else if textField == planStartDateField {
-            grayLine2.backgroundColor = UIColor.purpleMain
-            xnameButton.isHidden = true
-        }
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.iconDisabled
-        } else if textField == planStartDateField {
-            grayLine2.backgroundColor = UIColor.iconDisabled
-        }
-        xnameButton.isHidden = true
     }
 }
