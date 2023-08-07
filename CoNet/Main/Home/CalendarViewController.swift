@@ -85,7 +85,7 @@ class CalendarViewController: UIViewController {
                     self.planDates = dates
                     self.calendarCollectionView.reloadData()
                 }
-            } else if parentVC is MeetingMainViewController {
+            } else if parentVC is MeetingMainViewController {3
                 // 부모 뷰컨트롤러가 MeetingMainViewController
                 MeetingMainAPI().getMeetingMonthPlan(teamId: meetingId, searchDate: date) { count, dates in
                     self.planDates = dates

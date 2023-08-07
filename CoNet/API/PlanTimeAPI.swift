@@ -1,0 +1,82 @@
+//
+//  TimeAPI.swift
+//  CoNet
+//
+//  Created by 가은 on 2023/08/07.
+//
+
+import Alamofire
+import Foundation
+import KeychainSwift
+
+class PlanTimeAPI {
+    let baseUrl = "http://15.164.196.172:9000"
+    
+    // 구성원의 가능한 시간 조회 
+    func getMemberPossibleTime(planId: Int, completion: @escaping (_ teamId: Int, _ planId: Int, _ planName: String, _ planStartPeriod: String, _ planEndPeriod: String, _ sectionMemberCounts: [SectionMemberCounts], _ possibleMemberDateTime: [PossibleMemberDateTime]) -> Void) {
+        let url = "\(baseUrl)/team/plan/member-time?planId=\(planId)"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<GetMemberPossibleTimeResult>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("DEBUG(getMemberPossibleTime api): \(result)")
+                    
+                    completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planEndPeriod, result.sectionMemberCounts, result.possibleMemberDateTime)
+
+                case .failure(let error):
+                    print("DEBUG(getMemberPossibleTime api) error: \(error)")
+                }
+            }
+    }
+    
+    // 나의 가능한 시간 조회
+    func getMyPossibleTime(planId: Int, completion: @escaping (_ planId: Int, _ userId: Int, _ possibleTime: [PossibleTime]) -> Void) {
+        let url = "\(baseUrl)/team/plan/user-time?planId=\(planId)"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<GetMyPossibleTimeResult>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("DEBUG(getMyPossibleTime api): \(result)")
+                    
+                    completion(result.planId, result.userId, result.possibleTime)
+
+                case .failure(let error):
+                    print("DEBUG(getMyPossibleTime api) error: \(error)")
+                }
+            }
+    }
+    
+    // 나의 가능한 시간 저장
+    func postMyPossibleTime() {
+        let url = "\(baseUrl)/team/plan/time"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+        ]
+
+        AF.request(url, method: .post, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<String>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("DEBUG(postMyPossibleTime api): \(result)")
+                    
+
+                case .failure(let error):
+                    print("DEBUG(postMyPossibleTime api) error: \(error)")
+                }
+            }
+    }
+}

@@ -32,4 +32,17 @@ class TimeTableViewCell: UICollectionViewCell {
         
     }
     
+    // 인원수에 따른 셀 색
+    func showCellColor(section: Int) {
+        if section == 0 {
+            contentView.layer.backgroundColor = UIColor.grayWhite?.cgColor
+        } else if section == 1 {
+            contentView.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.2).cgColor
+        } else if section == 2 {
+            contentView.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5).cgColor
+        } else if section == 3 {
+            contentView.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.8).cgColor
+        }
+    }
+    
 }

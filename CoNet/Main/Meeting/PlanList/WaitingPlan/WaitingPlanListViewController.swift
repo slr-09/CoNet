@@ -60,6 +60,7 @@ extension WaitingPlanListViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(waitingPlanData[indexPath.item].planName)")
         let nextVC = TimeShareViewController()
+        nextVC.planId = waitingPlanData[indexPath.item].planId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
