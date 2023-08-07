@@ -11,7 +11,7 @@ import UIKit
 
 class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var isPhotoUploaded = false
-    var isContentsEntered = false
+    var isTextUploaded = false
     
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
@@ -160,13 +160,18 @@ class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegat
         $0.layer.borderWidth = 1
     }
     
-    let contentsTextField = UITextField().then {
-        $0.placeholder = "내용을 입력하세요."
+    let contentsText = UILabel().then {
+        $0.text = "내용이 입력되었다!내용이 입력되었다!"
         $0.font = UIFont.body2Medium
-        $0.tintColor = UIColor.black
-        $0.becomeFirstResponder()
-        $0.contentVerticalAlignment = .top
-        $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        $0.textColor = UIColor.black
+        $0.adjustsFontSizeToFitWidth = true
+    }
+    
+    let nocontentsText = UILabel().then {
+        $0.text = "내용 없음"
+        $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
+        $0.adjustsFontSizeToFitWidth = true
     }
 
     override func viewDidLoad() {
@@ -411,7 +416,14 @@ extension UnRegisteredPlanDetailViewController {
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
-        contentsTextField.snp.makeConstraints { make in
+        contentsText.snp.makeConstraints { make in
+            make.width.equalTo(295)
+            make.top.equalTo(contentsView.snp.top).offset(25)
+            make.leading.equalTo(contentsView.snp.leading).offset(25)
+            make.trailing.equalTo(contentsView.snp.trailing).offset(-25)
+        }
+        nocontentsText.snp.makeConstraints { make in
+            make.width.equalTo(295)
             make.top.equalTo(contentsView.snp.top).offset(25)
             make.leading.equalTo(contentsView.snp.leading).offset(25)
             make.trailing.equalTo(contentsView.snp.trailing).offset(-25)
@@ -432,10 +444,6 @@ extension UnRegisteredPlanDetailViewController {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        isContentsEntered = !textField.text!.isEmpty
-    }
-    
     func PhotoImageViewUpdate() {
         if isPhotoUploaded {
             noPhotoImageView.isHidden = true
@@ -447,6 +455,16 @@ extension UnRegisteredPlanDetailViewController {
             noPhotoView.isHidden = false
             noPhotoLabel.isHidden = false
             PhotoImageView.isHidden = true
+        }
+    }
+    
+    func TextUpdate() {
+        if isTextUploaded {
+            nocontentsText.isHidden = true
+            contentsText.isHidden = false
+        } else {
+            nocontentsText.isHidden = false
+            contentsText.isHidden = true
         }
     }
 }
