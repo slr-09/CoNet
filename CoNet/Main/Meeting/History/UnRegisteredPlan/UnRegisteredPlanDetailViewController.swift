@@ -177,13 +177,7 @@ class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
-        // navigation bar title "iOS 스터디"로 지정
-        navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "히스토리 등록하기"
-        
-        // 네비게이션 바 item 추가 - 뒤로가기, 사이드바 버튼
-        addNavigationBarItem()
+    
         
         layoutConstraints()
         photoImageViewUpdate()
@@ -244,11 +238,6 @@ extension UnRegisteredPlanDetailViewController {
         contentView.addSubview(historyLabel)
         applyConstraintsToHistory()
         
-        contentView.addSubview(photoLabel)
-        contentView.addSubview(noPhotoImageView)
-        contentView.addSubview(noPhotoView)
-        contentView.addSubview(noPhotoLabel)
-        applyConstraintsToPhoto()
         
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)

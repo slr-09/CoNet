@@ -209,6 +209,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         self.view.backgroundColor = .white
         
         layoutConstraints()
+        historyExists()
         photoImageViewUpdate()
         textUpdate()
         
@@ -297,6 +298,7 @@ extension PlanInfoViewController {
         
         contentView.addSubview(photoLabel)
         contentView.addSubview(noPhotoImageView)
+        contentView.addSubview(photoImageView)
         contentView.addSubview(noPhotoView)
         contentView.addSubview(noPhotoLabel)
         applyConstraintsToPhoto()
@@ -333,6 +335,7 @@ extension PlanInfoViewController {
             make.top.equalTo(planNameLabel.snp.bottom).offset(10)
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.trailing.equalTo(contentView.snp.trailing).offset(-24)
+            make.bottom.equalTo(grayLine1.snp.top).offset(-1)
         }
         grayLine1.snp.makeConstraints { make in
             make.height.equalTo(1)
@@ -430,7 +433,7 @@ extension PlanInfoViewController {
     
     func applyConstraintsToPhoto() {
         photoLabel.snp.makeConstraints { make in
-            make.top.equalTo(historyLabel.snp.bottom).offset(26)
+            make.top.equalTo(grayLine4.snp.bottom).offset(69)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         noPhotoImageView.snp.makeConstraints { make in
@@ -460,7 +463,7 @@ extension PlanInfoViewController {
     
     func applyConstraintsToContents() {
         contentsLabel.snp.makeConstraints { make in
-            make.top.equalTo(noPhotoImageView.snp.bottom).offset(26)
+            make.top.equalTo(grayLine4.snp.bottom).offset(205)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         contentsView.snp.makeConstraints { make in
@@ -488,17 +491,17 @@ extension PlanInfoViewController {
         historyAddButton.snp.makeConstraints { make in
             make.width.equalTo(160)
             make.height.equalTo(40)
-            make.top.equalTo(historyLabel.snp.bottom).offset(20)
+            make.top.equalTo(grayLine4.snp.bottom).offset(63)
             make.leading.equalTo(24)
         }
         historyAddView.snp.makeConstraints { make in
             make.width.height.equalTo(16)
-            make.top.equalTo(historyAddButton.snp.top).offset(12)
+            make.centerY.equalTo(historyAddButton)
             make.leading.equalTo(historyAddButton.snp.leading).offset(20)
         }
         historyAddLabel.snp.makeConstraints { make in
             make.width.equalTo(98)
-            make.top.equalTo(historyAddButton.snp.top).offset(12)
+            make.centerY.equalTo(historyAddButton)
             make.leading.equalTo(historyAddButton.snp.leading).offset(42)
         }
     }
@@ -514,9 +517,13 @@ extension PlanInfoViewController {
     
     func historyExists() {
         if ishistoryExisted {
-            self.historyAddButton.isHidden = true
-        } else {
             self.historyAddButton.isHidden = false
+            self.historyAddView.isHidden = false
+            self.historyAddLabel.isHidden = false
+        } else {
+            self.historyAddButton.isHidden = true
+            self.historyAddView.isHidden = true
+            self.historyAddLabel.isHidden = true
             photoImageViewUpdate()
             textUpdate()
         }
