@@ -64,12 +64,19 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
         
-        editButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(showPlanEditVC), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
     }
     
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func showPlanEditVC() {
+        let bottomSheetViewController = PlanInfoEditViewController()
+        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
+        present(bottomSheetViewController, animated: true, completion: nil)
     }
     
     func layoutConstraints() {

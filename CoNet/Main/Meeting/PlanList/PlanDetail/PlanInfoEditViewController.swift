@@ -14,12 +14,10 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
     
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
+    let backButton = UIButton().then { $0.setImage(UIImage(named: "prevBtn"), for: .normal) }
     
     let planInfoLabel = UILabel().then {
-        $0.text = "상세 페이지"
+        $0.text = "약속 수정하기"
         $0.font = UIFont.headline3Bold
         $0.textColor = UIColor.black
         $0.numberOfLines = 0
@@ -196,6 +194,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(memberAddLabel)
         applyConstraintsToPlanMember()
         
+        backButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(didTapcalendarButton), for: .touchUpInside)
         clockButton.addTarget(self, action: #selector(didTapclockButton), for: .touchUpInside)
@@ -208,6 +207,10 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc private func updatePlan() {
