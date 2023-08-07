@@ -42,18 +42,14 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let xnameButton = UIButton().then {
-        $0.setImage(UIImage(named: "clearBtn"), for: .normal)
-    }
+    let xnameButton = UIButton().then { $0.setImage(UIImage(named: "clearBtn"), for: .normal) }
     
     let textCountLabel = UILabel().then {
         $0.font = UIFont.caption
         $0.textColor = UIColor.textDisabled
     }
     
-    let grayLine1 = UIView().then {
-        $0.backgroundColor = UIColor.iconDisabled
-    }
+    let grayLine1 = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
     let planDateLabel = UILabel().then {
         $0.text = "약속 날짜"
@@ -68,13 +64,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let calendarButton = UIButton().then {
-        $0.setImage(UIImage(named: "calendar"), for: .normal)
-    }
+    let calendarButton = UIButton().then { $0.setImage(UIImage(named: "calendar"), for: .normal) }
     
-    let grayLine2 = UIView().then {
-        $0.backgroundColor = UIColor.iconDisabled
-    }
+    let grayLine2 = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
     let planTimeLabel = UILabel().then {
         $0.text = "약속 시간"
@@ -89,9 +81,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let clockButton = UIButton().then {
-        $0.setImage(UIImage(named: "clock"), for: .normal)
-    }
+    let clockButton = UIButton().then { $0.setImage(UIImage(named: "clock"), for: .normal) }
     
     let grayLine3 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
@@ -207,6 +197,16 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.planNameTextField.text = plans.planName
+            self.planDateTextField.text = plans.date
+            self.planTimeTextField.text = plans.time
+            self.member1NameLabel.text = plans.members[0].name
+        }
     }
     
     @objc func dismissPopUp() {

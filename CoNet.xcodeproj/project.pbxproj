@@ -466,10 +466,10 @@
 			children = (
 				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
 				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
+				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
 				1AA197BC2A7F7430001064F8 /* PlanEditDelBottomSheetViewController.swift */,
 				1A99CFE32A7233580080091B /* PlanTimePickerViewController.swift */,
 				1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */,
-				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
 				512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */,
 			);
 			path = PlanDetail;
