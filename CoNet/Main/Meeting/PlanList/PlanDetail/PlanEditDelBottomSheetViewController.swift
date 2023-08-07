@@ -116,7 +116,7 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         editButton.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
-            make.top.equalTo(grayRectangle.snp.bottom).offset(33)
+            make.top.equalTo(grayRectangle.snp.bottom).offset(28)
         }
         editView.snp.makeConstraints { make in
             make.width.height.equalTo(24)

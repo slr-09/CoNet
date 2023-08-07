@@ -285,11 +285,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView == dayPlanCollectionView {
             print("Selected 오늘 cell at indexPath: \(indexPath)")
             let nextVC = PlanInfoViewController()
+            nextVC.planId = dayPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
             print("Selected 대기 cell at indexPath: \(indexPath.item)")
             let nextVC = TimeShareViewController()
+            nextVC.planId = waitingPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
         }
