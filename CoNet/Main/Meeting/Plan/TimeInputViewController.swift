@@ -8,6 +8,8 @@
 import UIKit
 
 class TimeInputViewController: UIViewController {
+    var planId: Int = 0
+    
     // 이전 화면 버튼
     let prevButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
@@ -80,11 +82,23 @@ class TimeInputViewController: UIViewController {
     // 가능한 시간 없음 버튼 클릭 여부 체크
     var possibleTimeCheck = false
     
+    /* 나의 가능한 시간 조회 시
+     * hasRegisteredTime: false, hasPossibleTime: false -> 입력한 적 없는 초기 상태
+     * hasRegisteredTime: true, hasPossibleTime: false -> 가능한 시간 없음 버튼 클릭 상태
+     * hasRegisteredTime: true, hasPossibleTime: true -> 시간 있음
+     */
+    var hasRegisteredTime = false
+    var hasPossibleTime = false
+    
+    // 현재 페이지
     var page: Int = 0
     
     var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
     
     let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    // 가능한 시간 저장할 배열
+    var possibleTime: [PossibleTime] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +113,19 @@ class TimeInputViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        getMyPossibleTimeAPI()
         updateTimeTable()
+    }
+    
+    func getMyPossibleTimeAPI() {
+        // 내가 입력한 시간 조회 api
+        PlanTimeAPI().getMyPossibleTime(planId: planId) { _, _, hasRegisteredTime, hasPossibleTime, possibleTime in
+            self.possibleTime = possibleTime
+            self.hasRegisteredTime = hasRegisteredTime
+            self.hasPossibleTime = hasPossibleTime
+            print("pp", possibleTime)
+            self.timeTable.timeTableCollectionView.reloadData()
+        }
     }
     
     // 이전, 다음 버튼 ishidden 속성
@@ -320,10 +346,20 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
         
         // 가능한 시간 없음 버튼 클릭 여부 체크
-        if possibleTimeCheck {
+        if hasRegisteredTime && !hasPossibleTime {
             cell.contentView.backgroundColor = UIColor.gray50
-        } else {
-            cell.contentView.backgroundColor = .white
+            return cell
+        }
+//        else {
+//            cell.contentView.backgroundColor = .white
+//        }
+        
+        if possibleTime.count == 0 {
+            return cell
+        }
+        
+        if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
+            cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
         }
         
         return cell
