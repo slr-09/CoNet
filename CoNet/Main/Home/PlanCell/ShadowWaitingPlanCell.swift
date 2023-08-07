@@ -53,7 +53,6 @@ class ShadowWaitingPlanCell: UICollectionViewCell {
     let verticalDivider = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
     // 약속 이름
-    // TODO: line height 24
     let planTitleLabel = UILabel().then {
         $0.numberOfLines = 2
         $0.text = "제목은 최대 두 줄, 더 늘어나면 말줄임표로"

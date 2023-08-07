@@ -33,11 +33,6 @@ class HistoryCell: UICollectionViewCell {
         $0.textColor = UIColor.textHigh
     }
     
-    // 우측 점 3개 버튼
-    let dots = UIButton().then {
-        $0.setImage(UIImage(named: "dots"), for: .normal)
-    }
-    
     // 멤머 이미지
     let userImage = UIImageView().then {
         $0.image = UIImage(named: "meetingMember")
@@ -51,15 +46,11 @@ class HistoryCell: UICollectionViewCell {
     }
     
     // 이미지
-    let historyImage = UIImageView().then {
-        $0.backgroundColor = UIColor.gray200
-//        $0.image = UIImage(named: "calendarPlanMark")
-    }
+    let historyImage = UIImageView()
     
     // 내용
     let contents = UILabel().then {
-        $0.numberOfLines = 3
-        $0.text = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요."
+        $0.numberOfLines = 5
         $0.font = UIFont.body2Medium
         $0.textColor = UIColor.textHigh
     }
@@ -96,14 +87,6 @@ class HistoryCell: UICollectionViewCell {
             make.top.equalTo(date.snp.bottom).offset(4)
         }
         
-        // 3 dots
-        background.addSubview(dots)
-        dots.snp.makeConstraints { make in
-            make.height.width.equalTo(24)
-            make.trailing.equalToSuperview()
-            make.centerY.equalTo(date.snp.centerY)
-        }
-        
         // 멤버 수
         background.addSubview(memberNum)
         memberNum.snp.makeConstraints { make in
@@ -125,7 +108,7 @@ class HistoryCell: UICollectionViewCell {
         historyImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(planTitle.snp.bottom).offset(12)
-            make.height.equalTo(historyImage.snp.width)
+//            make.height.equalTo(historyImage.snp.width)
         }
         
         background.addSubview(contents)

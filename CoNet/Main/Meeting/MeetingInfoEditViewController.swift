@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingInfoEditViewController: UIViewController {
+    var meetingId: Int = 0
+    
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
     }
@@ -100,10 +102,33 @@ class MeetingInfoEditViewController: UIViewController {
         self.view.addSubview(photoUploadButton)
         applyConstraintsToGatherphoto()
         
+        completionButton.addTarget(self, action: #selector(updateMeeting), for: .touchUpInside)
         xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         photoUploadButton.addTarget(self, action: #selector(uploadButtonTapped), for: .touchUpInside)
         meetingnameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
+            self.meetingnameTextField.text = meeting.name
+            guard let url = URL(string: meeting.imgUrl) else { return }
+            self.photoImageView.kf.setImage(with: url)
+            self.photoImageView.alpha = 0.8
+        }
+    }
+    
+    @objc private func updateMeeting() {
+        guard let name = meetingnameTextField.text else { return }
+        guard let image = photoImageView.image else { return }
+        
+        MeetingAPI().updateMeeting(id: meetingId, name: name, image: image) { isSuccess in
+            if isSuccess {
+                print("DEBUG (모임 수정 api): isSuccess true")
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     func applyConstraintsToTopSection() {

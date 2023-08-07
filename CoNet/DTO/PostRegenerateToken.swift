@@ -14,5 +14,5 @@ struct PostRegenerateTokenResponse: Codable {
 }
 
 struct PostRegenerateTokenResult: Codable {
-    let accessToken, refreshToken, email: String
+    let email, accessToken, refreshToken, isRegistered: String
 }

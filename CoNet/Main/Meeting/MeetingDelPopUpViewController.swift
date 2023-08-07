@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class MeetingDelPopUpViewController: UIViewController {
+    var meetingId: Int = 0
+    
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -46,6 +48,14 @@ class MeetingDelPopUpViewController: UIViewController {
     
     // 모임 삭제 버튼 동작
     @objc func deleteMeeting(_ sender: UIView) {
+        MeetingAPI().deleteMeeting(id: meetingId) { isSuccess in
+            if isSuccess {
+                self.showMeetingVC()
+            }
+        }
+    }
+    
+    private func showMeetingVC() {
         // TODO: 모임 탭으로 이동 구현
         let nextVC = TabbarViewController()
         self.navigationController?.pushViewController(nextVC, animated: true)

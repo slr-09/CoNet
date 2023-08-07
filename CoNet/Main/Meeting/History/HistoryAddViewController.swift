@@ -9,22 +9,14 @@ import SnapKit
 import Then
 import UIKit
 
-class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class HistoryAddViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    var planId: Int = 0
+    
     var isPhotoUploaded = false
     var isContentsEntered = false
     
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
-    
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
-    
-    let historyAddLabel = UILabel().then {
-        $0.text = "히스토리 등록하기"
-        $0.font = UIFont.headline3Bold
-        $0.adjustsFontSizeToFitWidth = true
-    }
     
     let completionButton = UIButton().then {
         $0.setTitle("완료", for: .normal)
@@ -94,6 +86,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member1NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
     
     let member2ImageView = UIImageView().then {
@@ -103,6 +96,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member2NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
 
     let member3ImageView = UIImageView().then {
@@ -112,8 +106,20 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let member3NameLabel = UILabel().then {
         $0.text = "참여자 이름"
         $0.font = UIFont.body2Medium
+        $0.textColor = UIColor.textDisabled
     }
-
+    
+    let grayLine4 = UIView().then {
+        $0.backgroundColor = UIColor.gray50
+    }
+    
+    let historyLabel = UILabel().then {
+        $0.text = "히스토리"
+        $0.font = UIFont.headline3Bold
+        $0.textColor = UIColor.black
+        $0.adjustsFontSizeToFitWidth = true
+    }
+    
     let photoLabel = UILabel().then {
         $0.text = "사진"
         $0.font = UIFont.body2Bold
@@ -151,24 +157,66 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         $0.layer.borderWidth = 1
     }
     
-    let contentsTextField = UITextField().then {
-        $0.placeholder = "내용을 입력하세요."
+    private lazy var contentsTextView: UITextView = UITextView().then {
+        $0.text = "내용을 입력하세요."
         $0.font = UIFont.body2Medium
-        $0.tintColor = UIColor.black
-        $0.becomeFirstResponder()
+        $0.textColor = UIColor.gray100
+        $0.isScrollEnabled = false
+        $0.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        $0.layer.borderWidth = 0
+        $0.delegate = self
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        // navigation bar title "iOS 스터디"로 지정
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "히스토리 등록하기"
+        
+        // 네비게이션 바 item 추가 - 뒤로가기, 사이드바 버튼
+        addNavigationBarItem()
+        
+        layoutConstraints()
+        
+        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
+        photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
+        
+        updatePhotoImageViewSize()
+        updateContentsTextViewAppearance()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.planNameText.text = plans.planName
+            self.planDateText.text = plans.date
+            self.planTimeText.text = plans.time
+            self.member1NameLabel.text = plans.members[0].name
+        }
+    }
+    
+    private func addNavigationBarItem() {
+        // 사이드바 버튼 추가
+        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: completionButton)
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+}
+
+extension HistoryAddViewController {
+    private func layoutConstraints() {
         view.addSubview(scrollview)
         scrollview.addSubview(contentView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(historyAddLabel)
-        contentView.addSubview(completionButton)
         applyConstraintsToscrollview()
-        applyConstraintsToTabs()
         
         contentView.addSubview(planNameLabel)
         contentView.addSubview(planNameText)
@@ -194,26 +242,22 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         contentView.addSubview(member3NameLabel)
         applyConstraintsToMember()
         
+        contentView.addSubview(grayLine4)
+        contentView.addSubview(historyLabel)
+        applyConstraintsToHistory()
+        
         contentView.addSubview(photoLabel)
         contentView.addSubview(photoImageView)
         contentView.addSubview(photoAddButton)
         contentView.addSubview(photoAddLabel)
         applyConstraintsToPhoto()
         
-        contentsTextField.delegate = self
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)
-        contentView.addSubview(contentsTextField)
+        contentView.addSubview(contentsTextView)
         applyConstraintsToContents()
-        
-        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
-        photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
-        
-        updatePhotoImageViewSize()
     }
-}
-
-extension HistoryAddViewController {
+    
     private func applyConstraintsToscrollview() {
         scrollview.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(0)
@@ -224,27 +268,13 @@ extension HistoryAddViewController {
             make.height.equalTo(2000)
         }
     }
-    
-    func applyConstraintsToTabs() {
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(contentView.snp.top).offset(41)
-            make.leading.equalTo(contentView.snp.leading).offset(17)
-        }
-        historyAddLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(93)
-        }
-        completionButton.snp.makeConstraints { make in
-            make.width.equalTo(31)
-            make.centerY.equalTo(backButton)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
-        }
-    }
 
     func applyConstraintsToPlanName() {
+        // 안전 영역
+        let safeArea = view.safeAreaLayoutGuide
+        
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(contentView.snp.top).offset(24)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in
@@ -333,9 +363,22 @@ extension HistoryAddViewController {
         }
     }
 
+    func applyConstraintsToHistory() {
+        grayLine4.snp.makeConstraints { make in
+            make.width.equalTo(393)
+            make.height.equalTo(12)
+            make.top.equalTo(member3ImageView.snp.bottom).offset(32)
+        }
+        historyLabel.snp.makeConstraints { make in
+            make.width.equalTo(62)
+            make.top.equalTo(grayLine4.snp.bottom).offset(24)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+        }
+    }
+    
     func applyConstraintsToPhoto() {
         photoLabel.snp.makeConstraints { make in
-            make.top.equalTo(member3ImageView.snp.bottom).offset(26)
+            make.top.equalTo(historyLabel.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         photoImageView.snp.makeConstraints { make in
@@ -369,7 +412,7 @@ extension HistoryAddViewController {
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
-        contentsTextField.snp.makeConstraints { make in
+        contentsTextView.snp.makeConstraints { make in
             make.top.equalTo(contentsView.snp.top).offset(25)
             make.leading.equalTo(contentsView.snp.leading).offset(25)
             make.trailing.equalTo(contentsView.snp.trailing).offset(-25)
@@ -379,8 +422,33 @@ extension HistoryAddViewController {
 
 // MARK: - Button Actions Extensions
 extension HistoryAddViewController {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if contentsTextView.textColor == UIColor.gray100 {
+            contentsTextView.text = nil
+            contentsTextView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        updateContentsTextViewAppearance()
+        isContentsEntered = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        updateCompletionButtonColor()
+    }
+
+    private func updateContentsTextViewAppearance() {
+        let fixedWidth = contentsTextView.frame.size.width
+        let newSize = contentsTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        contentsTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+    }
+    
     @objc private func completionButtonTapped() {
         // 완료 버튼 후
+        print("wow wow")
+        guard let image = photoImageView.image else { return }
+        guard let description = contentsTextView.text else { return }
+        HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc private func photoAddButtonTapped() {
@@ -394,7 +462,7 @@ extension HistoryAddViewController {
         isContentsEntered = !textField.text!.isEmpty
         updateCompletionButtonColor()
     }
-
+    
     func updateCompletionButtonColor() {
         if isContentsEntered || isPhotoUploaded {
             completionButton.setTitleColor(.purpleMain, for: .normal)
@@ -415,7 +483,7 @@ extension HistoryAddViewController {
     
     func updatePhotoImageViewSize() {
         photoImageView.clipsToBounds = true
-
+        
         photoImageView.snp.remakeConstraints { make in
             if isPhotoUploaded {
                 make.width.height.equalTo(345)

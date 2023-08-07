@@ -5,16 +5,16 @@
 //  Created by 정아현 on 2023/08/01.
 //
 
+import Kingfisher
 import SnapKit
 import Then
 import UIKit
 
 class MeetingCell: UICollectionViewCell {
     static let identifier = "MeetingCell"
+    var meetingId: Int = 0
 
-    let imageView = UIImageView().then {
-        $0.image = UIImage(named: "space")
-    }
+    let imageView = UIImageView().then { $0.image = UIImage(named: "uploadImageWithNoDescription") }
 
     let titleLabel = UILabel().then {
         $0.numberOfLines = 2
@@ -22,23 +22,21 @@ class MeetingCell: UICollectionViewCell {
         $0.font = UIFont.body1Bold
     }
 
-    let starButton = UIButton().then {
-        $0.setImage(UIImage(named: "star"), for: .normal)
-    }
-
-    let newImageView = UIImageView().then {
-        $0.image = UIImage(named: "new")
-    }
-
-    var onStarButtonTapped: (() -> Void)?
-
-    @objc func starButtonTapped() {
-        onStarButtonTapped?()
-    }
+    let starButton = UIButton()
+    let newImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        layoutConstraints()
+        starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func layoutConstraints() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(starButton)
@@ -65,32 +63,32 @@ class MeetingCell: UICollectionViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalTo(imageView)
         }
-
-        starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    var onStarButtonTapped: (() -> Void)?
+    
+    @objc func starButtonTapped() {
+        onStarButtonTapped?()
     }
 }
 
 class MeetingViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var item: UIStackView!
-    var meetings = [Int](repeating: 0, count: 6)
-    var favoritedMeetings = [Int]()
+    var meetings: [MeetingDetailInfo] = []
+    var favoritedMeetings: [MeetingDetailInfo] = []
     
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         let nextVC = MeetingMainViewController()
         nextVC.hidesBottomBarWhenPushed = true
+        nextVC.meetingId = meetings[indexPath.item].id
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+        if collectionView == favcollectionView {
             return favoritedMeetings.count
         } else {
             return meetings.count
@@ -98,41 +96,67 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as! MeetingCell
-
-        let meetingIndex: Int
-
-        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
-            meetingIndex = favoritedMeetings[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeetingCell.identifier, for: indexPath) as? MeetingCell else {
+            return UICollectionViewCell()
+        } 
+        
+//        if selectedTabIndicator.frame.origin.x == favTab.frame.origin.x {
+//            meetingIndex = favoritedMeetings[indexPath.row]
+//        } else {
+//            meetingIndex = indexPath.row
+//        }
+      
+        // url로 image 불러오기 (with KingFisher)
+        let url = URL(string: meetings[indexPath.item].imgUrl)!
+        cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "uploadImageWithNoDescription"))
+        
+        // 모임 이름
+        cell.titleLabel.text = meetings[indexPath.item].name
+        
+        // 북마크 여부
+        if meetings[indexPath.item].bookmark {
+            cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
         } else {
-            meetingIndex = indexPath.row
+            cell.starButton.setImage(UIImage(named: "star"), for: .normal)
         }
-
-        let imageName = favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-        cell.starButton.setImage(UIImage(named: imageName), for: .normal)
-
+        
+        // 북마크 기능
         cell.onStarButtonTapped = {
-            if let index = self.favoritedMeetings.firstIndex(of: meetingIndex) {
-                self.favoritedMeetings.remove(at: index)
+            if cell.starButton.currentImage == UIImage(named: "fullstar") {
+                // 북마크 되어 있을 때
+                MeetingAPI().postDeleteBookmark(teamId: self.meetings[indexPath.item].id) { isSuccess in
+                    if isSuccess {
+                        cell.starButton.setImage(UIImage(named: "star"), for: .normal)
+                    }
+                }
             } else {
-                self.favoritedMeetings.append(meetingIndex)
+                // 북마크 되어 있지 않을 때
+                MeetingAPI().postBookmark(teamId: self.meetings[indexPath.item].id) { isSuccess in
+                    if isSuccess {
+                        cell.starButton.setImage(UIImage(named: "fullstar"), for: .normal)
+                    }
+                }
             }
-            
-            let newImageName = self.favoritedMeetings.contains(meetingIndex) ? "fullstar" : "star"
-            cell.starButton.setImage(UIImage(named: newImageName), for: .normal)
-
-            collectionView.reloadData()
         }
+        
+        // new 태그
+        if meetings[indexPath.item].isNew {
+            cell.newImageView.image = UIImage(named: "new")
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 46
+        return 20
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let _: CGFloat = (collectionView.frame.width / 2) - 17
         return CGSize(width: 164, height: 232)
     }
+    
+    let refreshControl = UIRefreshControl()
     
     let gatherLabel = UILabel().then {
         $0.text = "모임"
@@ -182,11 +206,11 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     let peopleButton = UIButton().then {
-        $0.setImage(UIImage(named: "add"), for: .normal)
+        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
     }
     
     let participateButton = UIButton().then {
-        $0.setImage(UIImage(named: "gatherPeople"), for: .normal)
+        $0.setImage(UIImage(named: "add"), for: .normal)
     }
     
     let joinLabel = UILabel().then {
@@ -213,47 +237,26 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         self.view.backgroundColor = .white
-        self.view.addSubview(gatherLabel)
-        self.view.addSubview(gatherNumCircle)
-        self.view.addSubview(gatherNum)
-        self.view.addSubview(item)
-        self.view.addSubview(selectedTabIndicator)
-        applyConstraintsToTabs(stackView: item)
-
-        allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
-        favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         
-        self.view.addSubview(plusButton)
-        applyConstraintsToPlusButton()
+        layoutConstriants()
         
-        self.view.addSubview(collectionView)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
-        applyConstraintsToCollectionView()
-
+        // UIRefreshControl을 UICollectionView에 추가
+        collectionView.refreshControl = refreshControl
+        favcollectionView.refreshControl = refreshControl
+        
+        // UIRefreshControl의 새로고침 동작 설정
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
-        self.view.addSubview(peopleButton)
-        self.view.addSubview(joinLabel)
-        self.view.addSubview(participateButton)
-        self.view.addSubview(addLabel)
-
-        applyConstraintsToPlusButton()
-        applyConstraintsToPeopleButtonAndJoinLabel()
-        applyConstraintsToPartButtonAndAddLabel()
-
+        
+        setupFavCollectionView()
+        
+        allTab.addTarget(self, action: #selector(didSelectAllTab), for: .touchUpInside)
+        favTab.addTarget(self, action: #selector(didSelectFavoriteTab), for: .touchUpInside)
         plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
         participateButton.addTarget(self, action: #selector(didTapparticipateButton), for: .touchUpInside)
         peopleButton.addTarget(self, action: #selector(didTapPeopleButton), for: .touchUpInside)
-        
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-            overlayView.frame = self.view.bounds
-            overlayView.alpha = 0
-            self.view.addSubview(overlayView)
-            self.view.bringSubviewToFront(plusButton)
-            self.view.bringSubviewToFront(peopleButton)
-            self.view.bringSubviewToFront(participateButton)
-            self.view.bringSubviewToFront(addLabel)
-            self.view.bringSubviewToFront(joinLabel)
         
         UIView.animate(withDuration: 0.3) {
             self.peopleButton.alpha = 0
@@ -262,6 +265,152 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.addLabel.alpha = 0
             self.overlayView.alpha = 0
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getAllMeetings()
+    }
+
+    func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
+    }
+    
+    func setupFavCollectionView() {
+        favcollectionView.dataSource = self
+        favcollectionView.delegate = self
+        favcollectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
+    }
+    
+    // UIRefreshControl의 새로고침 동작을 처리하는 메서드
+    @objc func refreshData() {
+        // 여기에 새로고침을 수행하는 코드를 작성
+        getAllMeetings()
+        getBookmarkedMeetings()
+        
+        // 새로고침 완료 후 refreshControl.endRefreshing()을 호출하여 새로고침 상태를 종료
+        refreshControl.endRefreshing()
+    }
+    
+    @objc func didSelectAllTab() {
+        getAllMeetings()
+        
+        selectedTabIndicator.snp.remakeConstraints { make in
+            make.top.equalTo(allTab.snp.bottom).offset(2)
+            make.height.equalTo(2)
+            make.left.right.equalTo(allTab)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    @objc func didSelectFavoriteTab() {
+        getBookmarkedMeetings()
+        
+        selectedTabIndicator.snp.remakeConstraints { make in
+            make.top.equalTo(favTab.snp.bottom).offset(2)
+            make.height.equalTo(2)
+            make.left.right.equalTo(favTab)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func getAllMeetings() {
+        MeetingAPI().getMeeting { meetings in
+            self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func getBookmarkedMeetings() {
+        MeetingAPI().getBookmark { meetings in
+            self.meetings = meetings
+            self.gatherNum.text = "\(meetings.count)"
+            self.collectionView.reloadData()
+        }
+    }
+    
+    @objc func didTapPlusButton() {
+        if plusButton.currentImage == UIImage(named: "plus") {
+            plusButton.setImage(UIImage(named: "x"), for: .normal)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.peopleButton.alpha = 1
+                self.participateButton.alpha = 1
+                self.joinLabel.alpha = 1
+                self.addLabel.alpha = 1
+                self.overlayView.alpha = 0.8
+            }
+        } else {
+            plusButton.setImage(UIImage(named: "plus"), for: .normal)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.peopleButton.alpha = 0
+                self.participateButton.alpha = 0
+                self.joinLabel.alpha = 0
+                self.addLabel.alpha = 0
+                self.overlayView.alpha = 0
+                
+            }
+        }
+    }
+    
+    @objc func didTapparticipateButton(_ sender: Any) {
+        let popupVC = MeetingAddViewController()
+        popupVC.modalPresentationStyle = .overFullScreen
+        present(popupVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapPeopleButton(_ sender: Any) {
+        let addVC = MeetingPopUpViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+}
+
+// layout
+extension MeetingViewController {
+    private func layoutConstriants() {
+        self.view.addSubview(gatherLabel)
+        self.view.addSubview(gatherNumCircle)
+        self.view.addSubview(gatherNum)
+        self.view.addSubview(item)
+        self.view.addSubview(selectedTabIndicator)
+        applyConstraintsToTabs(stackView: item)
+        
+        self.view.addSubview(plusButton)
+        applyConstraintsToPlusButton()
+        
+        self.view.addSubview(collectionView)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+        applyConstraintsToCollectionView()
+        
+        self.view.addSubview(peopleButton)
+        self.view.addSubview(joinLabel)
+        self.view.addSubview(participateButton)
+        self.view.addSubview(addLabel)
+
+        applyConstraintsToPlusButton()
+        applyConstraintsToPeopleButtonAndJoinLabel()
+        applyConstraintsToPartButtonAndAddLabel()
+        
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        overlayView.frame = self.view.bounds
+        overlayView.alpha = 0
+        self.view.addSubview(overlayView)
+        self.view.bringSubviewToFront(plusButton)
+        self.view.bringSubviewToFront(peopleButton)
+        self.view.bringSubviewToFront(participateButton)
+        self.view.bringSubviewToFront(addLabel)
+        self.view.bringSubviewToFront(joinLabel)
     }
     
     func applyConstraintsToPlusButton() {
@@ -290,18 +439,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
             make.bottom.equalTo(plusButton.snp.bottom).offset(16)
         }
-    }
-
-    func setupCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
-    }
-    
-    func setupFavCollectionView() {
-        favcollectionView.dataSource = self
-        favcollectionView.delegate = self
-        favcollectionView.register(MeetingCell.self, forCellWithReuseIdentifier: MeetingCell.identifier)
     }
     
     func applyConstraintsToTabs(stackView: UIStackView) {
@@ -352,65 +489,5 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             make.centerY.equalTo(participateButton)
             make.right.equalTo(participateButton.snp.left).offset(-11)
         }
-    }
-    
-    @objc func didSelectAllTab() {
-        selectedTabIndicator.snp.remakeConstraints { make in
-            make.top.equalTo(allTab.snp.bottom).offset(2)
-            make.height.equalTo(2)
-            make.left.right.equalTo(allTab)
-        }
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    @objc func didSelectFavoriteTab() {
-        selectedTabIndicator.snp.remakeConstraints { make in
-            make.top.equalTo(favTab.snp.bottom).offset(2)
-            make.height.equalTo(2)
-            make.left.right.equalTo(favTab)
-        }
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-        collectionView.reloadData()
-    }
-    
-    @objc func didTapPlusButton() {
-        if plusButton.currentImage == UIImage(named: "plus") {
-            plusButton.setImage(UIImage(named: "x"), for: .normal)
-            
-            UIView.animate(withDuration: 0.3) {
-                self.peopleButton.alpha = 1
-                self.participateButton.alpha = 1
-                self.joinLabel.alpha = 1
-                self.addLabel.alpha = 1
-                self.overlayView.alpha = 0.8
-            }
-        } else {
-            plusButton.setImage(UIImage(named: "plus"), for: .normal)
-            
-            UIView.animate(withDuration: 0.3) {
-                self.peopleButton.alpha = 0
-                self.participateButton.alpha = 0
-                self.joinLabel.alpha = 0
-                self.addLabel.alpha = 0
-                self.overlayView.alpha = 0
-                
-            }
-        }
-    }
-    
-    @objc func didTapparticipateButton(_ sender: Any) {
-        let popupVC = MeetingPopUpViewController()
-        popupVC.modalPresentationStyle = .overFullScreen
-        present(popupVC, animated: false, completion: nil)
-    }
-    
-    @objc func didTapPeopleButton(_ sender: Any) {
-        let addVC = MeetingAddViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
     }
 }

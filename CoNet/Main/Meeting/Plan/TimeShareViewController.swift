@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class TimeShareViewController: UIViewController {
+    var planId: Int = 0
+    
     // x 버튼
     let xButton = UIButton().then {
         $0.setImage(UIImage(named: "closeBtn"), for: .normal)
@@ -30,6 +32,7 @@ class TimeShareViewController: UIViewController {
     // 이전 날짜로 이동 버튼
     let prevBtn = UIButton().then {
         $0.setImage(UIImage(named: "planPrevBtn"), for: .normal)
+        $0.isHidden = true
     }
     
     // 날짜 3개
@@ -78,19 +81,19 @@ class TimeShareViewController: UIViewController {
     }
     
     let purpleEx2 = UIView().then {
-        $0.layer.backgroundColor = UIColor(red: 0.677, green: 0.525, blue: 1, alpha: 0.2).cgColor
+        $0.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.2).cgColor
         $0.layer.borderColor = UIColor.gray100?.cgColor
         $0.layer.borderWidth = 1
     }
     
     let purpleEx3 = UIView().then {
-        $0.layer.backgroundColor = UIColor(red: 0.741, green: 0.62, blue: 1, alpha: 0.6).cgColor
+        $0.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5).cgColor
         $0.layer.borderColor = UIColor.gray100?.cgColor
         $0.layer.borderWidth = 1
     }
     
     let purpleEx4 = UIView().then {
-        $0.layer.backgroundColor = UIColor(red: 0.677, green: 0.525, blue: 1, alpha: 0.8).cgColor
+        $0.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.8).cgColor
         $0.layer.borderColor = UIColor.gray100?.cgColor
         $0.layer.borderWidth = 1
     }
@@ -120,6 +123,18 @@ class TimeShareViewController: UIViewController {
         $0.font = UIFont.overline
     }
     
+    var page: Int = 0
+    
+    var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
+    
+    let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    var sectionMemberCount: [String] = ["0", "", "", ""]
+    
+    var possibleMemberDateTime: [PossibleMemberDateTime] = []
+    
+    var apiCheck = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -131,15 +146,126 @@ class TimeShareViewController: UIViewController {
         btnClickEvents()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        getMemberPossibleTimeAPI()
+        updateTimeTable()
+        memberCountUpdate()
+    }
+    
+    // 구성원 시간 조회
+    func getMemberPossibleTimeAPI() {
+        PlanTimeAPI().getMemberPossibleTime(planId: planId) { _, _, planName, planStartPeriod, planEndPeriod, sectionMemberCounts, possibleMemberDateTime in
+            self.planTitle.text = planName
+            self.possibleMemberDateTime = possibleMemberDateTime
+            self.apiCheck = true
+            
+            // 날짜 배열 update
+            self.updateDateArray(planStartPeriod: planStartPeriod, planEndPeriod: planEndPeriod, memberTime: possibleMemberDateTime)
+            self.timeTable.timeTableCollectionView.reloadData()
+            
+            // 인원 수 별 셀 색 예시 인원
+            for index in 0..<sectionMemberCounts.count {
+                let sectionIndex = sectionMemberCounts[index].section
+                if sectionMemberCounts[index].memberCount.count == 1 {
+                    self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0])
+                } else {
+                    self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0]) + "-" + String(sectionMemberCounts[index].memberCount.last!)
+                }
+            }
+        }
+    }
+    
+    // 날짜 배열 update
+    func updateDateArray(planStartPeriod: String, planEndPeriod: String, memberTime: [PossibleMemberDateTime]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = dateFormatter.date(from: planStartPeriod)!
+        let endDate = dateFormatter.date(from: planEndPeriod)!
+        
+        let currentCalendar = Calendar.current
+        var currentDate = startDate
+        var index = 0
+        
+        while currentDate <= endDate {
+            dateFormatter.dateFormat = "MM.dd "
+            var stringDate = dateFormatter.string(from: currentDate)
+            stringDate += weekDay[currentCalendar.component(.weekday, from: currentDate) - 1]
+            
+            // 날짜 배열에 저장
+            date[index] = stringDate
+            index += 1
+            
+            currentDate = currentCalendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+    }
+    
+    // 이전, 다음 버튼 ishidden 속성
+    func btnVisible() {
+        if page == 0 {
+            prevBtn.isHidden = true
+            nextBtn.isHidden = false
+        } else if page == 1 {
+            prevBtn.isHidden = false
+            nextBtn.isHidden = false
+        } else if page == 2 {
+            prevBtn.isHidden = false
+            nextBtn.isHidden = true
+        }
+        timeTable.timeTableCollectionView.reloadData()
+        updateTimeTable()
+    }
+    
+    func updateTimeTable() {
+        // 날짜
+        date1.text = date[page*3]
+        if page == 2 {
+            date2.isHidden = true
+            date3.isHidden = true
+        } else {
+            date2.isHidden = false
+            date3.isHidden = false
+            date2.text = date[page*3+1]
+            date3.text = date[page*3+2]
+        }
+    }
+    
+    // 셀 색 예시 - 멤버 수 update
+    func memberCountUpdate() {
+        peopleNum1.text = sectionMemberCount[0]
+        peopleNum2.text = sectionMemberCount[1]
+        peopleNum3.text = sectionMemberCount[2]
+        peopleNum4.text = sectionMemberCount[3]
+    }
+    
     func btnClickEvents() {
+        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
+        prevBtn.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(didClickNextButton), for: .touchUpInside)
+    }
+    
+    @objc private func xButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     // 내 시간 입력하기 버튼 클릭 시
     @objc func didClickInputTimeButton(_ sender: UIView) {
         // 화면 이동
         let nextVC = TimeInputViewController()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        nextVC.planId = planId
+        nextVC.date = date
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    @objc func didClickPrevButton() {
+        page -= 1
+        btnVisible()
+    }
+    
+    @objc func didClickNextButton() {
+        page += 1
+        btnVisible()
     }
     
     func timeTableSetting() {
@@ -150,7 +276,7 @@ class TimeShareViewController: UIViewController {
     func layoutConstraints() {
         headerConstraintS()
         timetableConstraints()
-        colorExample()  // 타임테이블 옆 색 예시
+        colorExample() // 타임테이블 옆 색 예시
     }
 
     // 헤더 - x버튼, 약속 이름 등
@@ -304,16 +430,22 @@ class TimeShareViewController: UIViewController {
 }
 
 extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
-                
+        print(indexPath.section, indexPath.row)
     }
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        24*3
+        24
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if page == 2 {
+            return 1
+        }
+        return 3
     }
     
     // 셀 사이즈 설정
@@ -333,6 +465,11 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
+        
+        if !apiCheck { return cell }
+        
+        let section = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row].section
+        cell.showCellColor(section: section)
         
         return cell
     }

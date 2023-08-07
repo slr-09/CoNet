@@ -18,6 +18,7 @@ class HomeViewController: UIViewController {
     // 스크롤뷰
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
     }
     
     // 컴포넌트들이 들어갈 뷰
@@ -81,8 +82,6 @@ class HomeViewController: UIViewController {
     // 대기 중 약속 데이터
     private var waitingPlanData: [WaitingPlan] = []
     
-    var backgroundHeight = 2000
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,9 +111,18 @@ class HomeViewController: UIViewController {
             self.waitingPlanNum.text = String(count)
             self.waitingPlanData = plans
             self.waitingPlanCollectionView.reloadData()
+            self.layoutConstraints()
         }
+        
+        updateContentSize()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateContentSize()
+    }
+//
     // 특정 날짜 약속 조회 api 함수
     func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
@@ -122,19 +130,27 @@ class HomeViewController: UIViewController {
             self.planNum.text = String(count)
             self.dayPlanData = plans
             self.dayPlanCollectionView.reloadData()
-            self.backgroundHeight = 660 + self.dayPlanData.count*82 + self.waitingPlanData.count*92
             self.layoutConstraints()
         }
     }
     
-//    func dayPlanApi(count: Int, plans: [Plan]) {
-//        planNum.text = String(count)
-//        dayPlanData = plans
-//        backgroundHeight = 660 + dayPlanData.count*82 + waitingPlanData.count*92
-//        print("height", backgroundHeight)
-//        dayPlanCollectionView.reloadData()
-//        layoutConstraints()
-//    }
+    // view height update
+    func updateContentSize() {
+        var contentHeight: CGFloat = 670
+        var dayCollectionHeight: CGFloat = 0
+        for collectionView in [dayPlanCollectionView, waitingPlanCollectionView] {
+            collectionView.layoutIfNeeded()
+            if collectionView == dayPlanCollectionView {
+                dayCollectionHeight += collectionView.contentSize.height+10
+            }
+            contentHeight += collectionView.contentSize.height
+        }
+        
+        dayPlanCollectionView.frame.size.height = dayCollectionHeight
+        
+        contentView.frame.size.height = contentHeight
+        scrollView.contentSize = contentView.frame.size
+    }
     
     private func setupCollectionView() {
         // 오늘 약속 collectionView
@@ -146,18 +162,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.delegate = self
         waitingPlanCollectionView.dataSource = self
         waitingPlanCollectionView.register(ShadowWaitingPlanCell.self, forCellWithReuseIdentifier: ShadowWaitingPlanCell.registerId)
-        
-        // 캘린더 뷰
-//        calendarVC.calendarCollectionView.delegate = self
     }
-    
-//    // yearMonth 클릭
-//    @objc func didClickYearBtn(_ sender: UIView) {
-//        let popupVC = MonthViewController()
-//        popupVC.modalPresentationStyle = .overCurrentContext
-//        popupVC.modalTransitionStyle = .crossDissolve
-//        present(popupVC, animated: true, completion: nil)
-//    }
     
     func addView() {
         view.addSubview(scrollView)
@@ -193,7 +198,7 @@ class HomeViewController: UIViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
-            make.height.equalTo(backgroundHeight) // 높이를 설정해야 스크롤이 됨
+            make.height.equalTo(2000) // 높이를 설정해야 스크롤이 됨
         }
         
         // logo
@@ -205,13 +210,6 @@ class HomeViewController: UIViewController {
         }
         
         // 캘린더 뷰
-//        calendarView.snp.makeConstraints { make in
-//            make.top.equalTo(logoImage.snp.bottom).offset(5)
-//            make.leading.equalTo(contentView.snp.leading).offset(0)
-//            make.trailing.equalTo(contentView.snp.trailing).offset(0)
-//            make.height.equalTo(448)
-//        }
-        
         calendarVC.didMove(toParent: self)
         calendarVC.view.snp.makeConstraints { make in
             make.top.equalTo(logoImage.snp.bottom).offset(5)
@@ -241,14 +239,14 @@ class HomeViewController: UIViewController {
         // collectionView: 오늘의 약속
         dayPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(dayPlanData.count*92 - 10)
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.height.equalTo(dayPlanData.count*100 - 10)
         }
         
         // label: 대기 중 약속
         waitingPlanLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).offset(24)
-            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(50)
+            make.top.equalTo(dayPlanCollectionView.snp.bottom).offset(40)
         }
         
         planNumCircle2.snp.makeConstraints { make in
@@ -267,7 +265,7 @@ class HomeViewController: UIViewController {
         waitingPlanCollectionView.snp.makeConstraints { make in
             make.top.equalTo(waitingPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(waitingPlanData.count*92)
+            make.height.equalTo(waitingPlanData.count*100 - 10)
         }
     }
     
@@ -284,45 +282,17 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
-        
-//        if collectionView == calendarVC.calendarCollectionView {
-//            // 캘린더 날짜
-//            let yeMo = calendarView.calendarDateFormatter.getYearMonthText()
-//            let calendarDay = calendarView.calendarDateFormatter.days[indexPath.item]
-//
-//            var day = calendarDay
-//            if calendarDay.count == 1 {
-//                day = "0" + calendarDay
-//            }
-//
-//            // 날짜 포멧 바꾸기
-//            var calendarDate = yeMo + " " + day + "일"
-//
-//            let format = DateFormatter()
-//            format.dateFormat = "yyyy년 MM월 dd일"
-//            format.locale = Locale(identifier: "ko_KR")
-//            format.timeZone = TimeZone(abbreviation: "KST")
-//
-//            let today = format.string(from: Date())
-//
-//            // 선택한 날짜가 오늘일 때
-//            // 날짜 label 변경
-//            if today == calendarDate {
-//                changeDate(month: "", day: "")
-//            } else {
-//
-//                changeDate(month: calendarView.calendarDateFormatter.getMonthText(), day: calendarDay)
-//            }
-//
-//            // 선택 날짜 포맷 변경
-//            calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
-//            calendarDate = calendarDate.replacingOccurrences(of: "월 ", with: "-")
-//            calendarDate = calendarDate.replacingOccurrences(of: "일", with: "")
-//
-//            // api: 특정 날짜 약속
-//            dayPlanAPI(date: calendarDate)
-//        }
+        if collectionView == dayPlanCollectionView {
+            print("Selected 오늘 cell at indexPath: \(indexPath)")
+            let nextVC = PlanInfoViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        } else {
+            print("Selected 대기 cell at indexPath: \(indexPath.item)")
+            let nextVC = TimeShareViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // 셀 개수
@@ -333,9 +303,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else if collectionView == waitingPlanCollectionView { // 대기 중 약속
             count = waitingPlanData.count
         }
-//        else if collectionView == calendarView.calendarCollectionView {   // 캘린더
-//            count = calendarView.calendarDateFormatter.days.count
-//        }
         
         return count
     }
@@ -375,19 +342,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width - 24
         
-//        if collectionView == calendarView.calendarCollectionView {  // 캘린더
-//            let width = calendarView.weekStackView.frame.width / 7
-//            return CGSize(width: width, height: 50)
-//        }
-        
         return CGSize(width: width, height: 82)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        if collectionView == calendarView.calendarCollectionView {  // 캘린더
-//            return .zero
-//        }
         return 10
     }
     

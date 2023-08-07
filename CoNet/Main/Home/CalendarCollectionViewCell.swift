@@ -25,6 +25,12 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         $0.image = UIImage(named: "calendarPlanMark")
     }
     
+    // 약속 만들기 - 셀 선택 시 진한 보라 동그라미
+    private let meetingBackCircle = UIImageView().then {
+        $0.image = UIImage(named: "meetingCellSelected")
+        $0.isHidden = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

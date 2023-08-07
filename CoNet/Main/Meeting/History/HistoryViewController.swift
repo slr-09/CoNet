@@ -5,22 +5,13 @@
 //  Created by 가은 on 2023/07/23.
 //
 
+import Kingfisher
 import SnapKit
 import Then
 import UIKit
 
 class HistoryViewController: UIViewController {
-    // x 버튼
-    let xBtn = UIImageView().then {
-        $0.image = UIImage(named: "closeBtn")
-    }
-    
-    // label: 히스토리
-    let historyLabel = UILabel().then {
-        $0.text = "히스토리"
-        $0.font = UIFont.headline3Bold
-        $0.textColor = UIColor.textHigh
-    }
+    var meetingId: Int = 0
     
     // 추가 버튼
     let addBtn = UIButton().then {
@@ -29,6 +20,8 @@ class HistoryViewController: UIViewController {
         $0.setTitleColor(UIColor.purpleMain, for: .normal)
     }
     
+    var histories: [GetHistoryResult] = []
+    
     // collectionView: history
     let historyCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -36,9 +29,45 @@ class HistoryViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-
+        
+        // navigation bar title "iOS 스터디"로 지정
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "히스토리"
+        
+        // 네비게이션 바 item 추가 - 뒤로가기, 사이드바 버튼
+        addNavigationBarItem()
+        
         layoutConstraints()
         collectionViewSetting()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        
+        HistoryAPI().getHistory(meetingId: meetingId) { histories in
+            self.histories = histories
+            self.historyCollectionView.reloadData()
+        }
+    }
+    
+    private func addNavigationBarItem() {
+        // 사이드바 버튼 추가
+        addBtn.addTarget(self, action: #selector(addHistory), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: addBtn)
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    // 추가 버튼
+    @objc func addHistory() {
+        let nextVC = UnResgisteredPlanListViewController()
+        nextVC.meetingId = self.meetingId
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // history collectionView setting
@@ -48,53 +77,19 @@ class HistoryViewController: UIViewController {
         historyCollectionView.register(HistoryCell.self, forCellWithReuseIdentifier: HistoryCell.identifier)
     }
     
+    // 전체 layout
     func layoutConstraints() {
-        backgroundConstraints()
         historyConstraints()
     }
     
-    func backgroundConstraints() {
-        let safeArea = view.safeAreaLayoutGuide
-        
-        // x 버튼
-        view.addSubview(xBtn)
-        xBtn.snp.makeConstraints { make in
-            make.height.width.equalTo(24)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-            make.top.equalTo(safeArea.snp.top).offset(41)
-        }
-        
-        // label: 히스토리
-        view.addSubview(historyLabel)
-        historyLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(safeArea.snp.centerX)
-            make.centerY.equalTo(xBtn.snp.centerY)
-        }
-        
-        // 추가 버튼
-        view.addSubview(addBtn)
-        addBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-            make.centerY.equalTo(xBtn.snp.centerY)
-        }
-    }
-    
     func historyConstraints() {
-        // collectionView: history
+        historyCollectionView.showsVerticalScrollIndicator = false
+        
         view.addSubview(historyCollectionView)
         historyCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(24)
-            make.top.equalTo(historyLabel.snp.bottom).offset(30)
-            make.height.equalTo(1000)
+            make.height.equalToSuperview()
         }
-    }
-    
-    // 수정&삭제 bottom sheet 보여주기
-    @objc func showBottomSheet() {
-        let popupVC = HistoryBottomSheetViewController()
-        popupVC.modalPresentationStyle = .overCurrentContext
-        popupVC.modalTransitionStyle = .crossDissolve
-        present(popupVC, animated: true, completion: nil)
     }
 }
 
@@ -102,20 +97,35 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
+        let nextVC = PlanInfoViewController()
+        nextVC.planId = histories[indexPath.item].planId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return histories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HistoryCell.identifier, for: indexPath) as? HistoryCell else {
             return UICollectionViewCell()
         }
+        cell.date.text = histories[indexPath.item].planDate
+        cell.planTitle.text = histories[indexPath.item].planName
+        cell.memberNum.text = "\(histories[indexPath.item].planMemberNum)명"
         
-        // 수정&삭제 bottom sheet 보여주기
-        cell.dots.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
+        if let url = URL(string: histories[indexPath.item].historyImgUrl ?? "") {
+            cell.historyImage.kf.setImage(with: url, placeholder: UIImage(named: "uploadImageWithNoDescription"))
+            cell.historyImage.snp.makeConstraints { make in
+                make.height.equalTo(collectionView.frame.width)
+            }
+        }
+        
+        if let description = histories[indexPath.item].historyDescription {
+            cell.contents.text = description
+        }
         
         return cell
     }
@@ -123,11 +133,17 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        return CGSize(width: width, height: 500)
+        var height = CGFloat(200)
+        if histories[indexPath.item].historyImgUrl != nil {
+            height += width
+        }
+        
+        return CGSize(width: width, height: height)
     }
     
     // 셀 사이의 위아래 간격
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 80
+        // 원래 80인데 20으로 함
+        return 20
     }
 }

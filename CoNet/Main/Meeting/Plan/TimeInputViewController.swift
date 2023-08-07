@@ -8,6 +8,8 @@
 import UIKit
 
 class TimeInputViewController: UIViewController {
+    var planId: Int = 0
+    
     // 이전 화면 버튼
     let prevButton = UIButton().then {
         $0.setImage(UIImage(named: "prevBtn"), for: .normal)
@@ -23,6 +25,7 @@ class TimeInputViewController: UIViewController {
     // 이전 날짜로 이동 버튼
     let prevDayBtn = UIButton().then {
         $0.setImage(UIImage(named: "planPrevBtn"), for: .normal)
+        $0.isHidden = true
     }
     
     // 날짜 3개
@@ -79,6 +82,24 @@ class TimeInputViewController: UIViewController {
     // 가능한 시간 없음 버튼 클릭 여부 체크
     var possibleTimeCheck = false
     
+    /* 나의 가능한 시간 조회 시
+     * hasRegisteredTime: false, hasPossibleTime: false -> 입력한 적 없는 초기 상태
+     * hasRegisteredTime: true, hasPossibleTime: false -> 가능한 시간 없음 버튼 클릭 상태
+     * hasRegisteredTime: true, hasPossibleTime: true -> 시간 있음
+     */
+    var hasRegisteredTime = false
+    var hasPossibleTime = false
+    
+    // 현재 페이지
+    var page: Int = 0
+    
+    var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
+    
+    let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    // 가능한 시간 저장할 배열
+    var possibleTime: [PossibleTime] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -90,10 +111,62 @@ class TimeInputViewController: UIViewController {
         btnClickEvents()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        getMyPossibleTimeAPI()
+        updateTimeTable()
+    }
+    
+    func getMyPossibleTimeAPI() {
+        // 내가 입력한 시간 조회 api
+        PlanTimeAPI().getMyPossibleTime(planId: planId) { _, _, hasRegisteredTime, hasPossibleTime, possibleTime in
+            self.possibleTime = possibleTime
+            self.hasRegisteredTime = hasRegisteredTime
+            self.hasPossibleTime = hasPossibleTime
+            if hasRegisteredTime && !hasPossibleTime {
+                self.possibleTimeCheck = true
+            }
+            print("pp", possibleTime)
+            self.timeTable.timeTableCollectionView.reloadData()
+        }
+    }
+    
+    // 이전, 다음 버튼 ishidden 속성
+    func btnVisible() {
+        if page == 0 {
+            prevDayBtn.isHidden = true
+            nextDayBtn.isHidden = false
+        } else if page == 1 {
+            prevDayBtn.isHidden = false
+            nextDayBtn.isHidden = false
+        } else if page == 2 {
+            prevDayBtn.isHidden = false
+            nextDayBtn.isHidden = true
+        }
+        timeTable.timeTableCollectionView.reloadData()
+        updateTimeTable()
+    }
+    
+    func updateTimeTable() {
+        // 날짜
+        date1.text = date[page*3]
+        if page == 2 {
+            date2.isHidden = true
+            date3.isHidden = true
+        } else {
+            date2.isHidden = false
+            date3.isHidden = false
+            date2.text = date[page*3+1]
+            date3.text = date[page*3+2]
+        }
+    }
+    
     // 버튼 클릭 이벤트 
     func btnClickEvents() {
         prevButton.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
         timeImpossibleButton.addTarget(self, action: #selector(didClickTimeImpossibleButton), for: .touchUpInside)
+        prevDayBtn.addTarget(self, action: #selector(didClickPrevDayButton), for: .touchUpInside)
+        nextDayBtn.addTarget(self, action: #selector(didClickNextDayButton), for: .touchUpInside)
     }
     
     // 이전 버튼 클릭 시 창 끄기
@@ -105,6 +178,11 @@ class TimeInputViewController: UIViewController {
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
         possibleTimeCheck = !possibleTimeCheck
+        if possibleTimeCheck {
+            hasRegisteredTime = true
+            hasPossibleTime = false
+        }
+        
         timeTable.timeTableCollectionView.reloadData()
         
         if possibleTimeCheck {
@@ -114,6 +192,18 @@ class TimeInputViewController: UIViewController {
             timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
             timeImpossibleLabel.textColor = UIColor.textDisabled
         }
+    }
+    
+    // 날짜 이전 버튼 클릭
+    @objc func didClickPrevDayButton() {
+        page -= 1
+        btnVisible()
+    }
+    
+    // 날짜 다음 버튼 클릭
+    @objc func didClickNextDayButton() {
+        page += 1
+        btnVisible()
     }
     
     func timeTableSetting() {
@@ -191,7 +281,7 @@ class TimeInputViewController: UIViewController {
         saveButton.snp.makeConstraints { make in
             make.height.equalTo(52)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.snp.bottom).offset(-45)
+            make.bottom.equalTo(view.snp.bottom).offset(-35)
         }
         
         // 타임테이블
@@ -235,7 +325,14 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        24*3
+        24
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if page == 2 {
+            return 1
+        }
+        return 3
     }
     
     // 셀 사이즈 설정
@@ -259,8 +356,12 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         // 가능한 시간 없음 버튼 클릭 여부 체크
         if possibleTimeCheck {
             cell.contentView.backgroundColor = UIColor.gray50
-        } else {
-            cell.contentView.backgroundColor = .white
+        } else if hasRegisteredTime && hasPossibleTime {
+            if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
+                cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
+            } else {
+                cell.contentView.backgroundColor = .white
+            }
         }
         
         return cell

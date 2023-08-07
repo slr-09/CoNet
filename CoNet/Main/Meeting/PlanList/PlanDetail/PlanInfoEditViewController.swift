@@ -10,12 +10,14 @@ import Then
 import UIKit
 
 class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-    }
+    var planId: Int = 17
+    private var plansCount: Int = 0
+    private var planDetail: [PlanDetail] = []
+    
+    let backButton = UIButton().then { $0.setImage(UIImage(named: "prevBtn"), for: .normal) }
     
     let planInfoLabel = UILabel().then {
-        $0.text = "상세 페이지"
+        $0.text = "약속 수정하기"
         $0.font = UIFont.headline3Bold
         $0.textColor = UIColor.black
         $0.numberOfLines = 0
@@ -40,18 +42,14 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let xnameButton = UIButton().then {
-        $0.setImage(UIImage(named: "clearBtn"), for: .normal)
-    }
+    let xnameButton = UIButton().then { $0.setImage(UIImage(named: "clearBtn"), for: .normal) }
     
     let textCountLabel = UILabel().then {
         $0.font = UIFont.caption
         $0.textColor = UIColor.textDisabled
     }
     
-    let grayLine1 = UIView().then {
-        $0.backgroundColor = UIColor.iconDisabled
-    }
+    let grayLine1 = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
     let planDateLabel = UILabel().then {
         $0.text = "약속 날짜"
@@ -66,13 +64,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let calendarButton = UIButton().then {
-        $0.setImage(UIImage(named: "calendar"), for: .normal)
-    }
+    let calendarButton = UIButton().then { $0.setImage(UIImage(named: "calendar"), for: .normal) }
     
-    let grayLine2 = UIView().then {
-        $0.backgroundColor = UIColor.iconDisabled
-    }
+    let grayLine2 = UIView().then { $0.backgroundColor = UIColor.iconDisabled }
     
     let planTimeLabel = UILabel().then {
         $0.text = "약속 시간"
@@ -87,9 +81,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.becomeFirstResponder()
     }
     
-    let clockButton = UIButton().then {
-        $0.setImage(UIImage(named: "clock"), for: .normal)
-    }
+    let clockButton = UIButton().then { $0.setImage(UIImage(named: "clock"), for: .normal) }
     
     let grayLine3 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
@@ -192,10 +184,12 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(memberAddLabel)
         applyConstraintsToPlanMember()
         
+        backButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(didTapcalendarButton), for: .touchUpInside)
         clockButton.addTarget(self, action: #selector(didTapclockButton), for: .touchUpInside)
         memberAddButton.addTarget(self, action: #selector(didTapmemberAddButton), for: .touchUpInside)
+        completionButton.addTarget(self, action: #selector(updatePlan), for: .touchUpInside)
         
         planNameTextField.delegate = self
         planDateTextField.delegate = self
@@ -203,6 +197,33 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.planNameTextField.text = plans.planName
+            self.planDateTextField.text = plans.date
+            self.planTimeTextField.text = plans.time
+            self.member1NameLabel.text = plans.members[0].name
+        }
+    }
+    
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func updatePlan() {
+        guard let name = planNameTextField.text else { return }
+        guard let date = planDateTextField.text else { return }
+        guard let time = planTimeTextField.text else { return }
+        guard let selectedImage = member1ImageView.image else { return }
+        
+        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
+            if isSuccess {
+                print("DEBUG (약속 수정 api): isSuccess true")
+            }
+        }
     }
     
     func applyConstraintsToTopSection() {
