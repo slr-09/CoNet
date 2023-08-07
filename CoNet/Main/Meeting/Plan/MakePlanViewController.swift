@@ -11,14 +11,7 @@ import UIKit
 
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
     var meetingId: Int = 0
-//    let backButton = UIButton().then {
-//        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
-//    }
-//    let makePlanLabel = UILabel().then {
-//        $0.text = "약속 만들기"
-//        $0.font = UIFont.headline3Bold
-//        $0.textColor = UIColor.black
-//    }
+    
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
         $0.font = UIFont.body2Bold
@@ -85,28 +78,8 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.isHidden = false
         navigationItem.title = "약속 만들기"
         
-//        self.view.addSubview(backButton)
-//        self.view.addSubview(makePlanLabel)
-//        applyConstraintsToTopSection()
+        layoutConstraints()
         
-        self.view.addSubview(planNameLabel)
-        self.view.addSubview(xnameButton)
-        self.view.addSubview(planNameTextField)
-        self.view.addSubview(textCountLabel)
-        self.view.addSubview(grayLine1)
-        applyConstraintsToPlanName()
-        
-        self.view.addSubview(planStartDateLabel)
-        self.view.addSubview(planStartDateField)
-        self.view.addSubview(calendarButton)
-        self.view.addSubview(grayLine2)
-        self.view.addSubview(planStartDateUnderImage)
-        self.view.addSubview(planStartDateUnderLabel)
-        applyConstraintsToPlanDate()
-        
-        self.view.addSubview(makeButton)
-        applyConstraintsToMakeButton()
-//        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
         makeButton.addTarget(self, action: #selector(makeButtonTapped), for: .touchUpInside)
@@ -130,8 +103,112 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.isHidden = false
     }
     
-    @objc private func popViewController(_: UIView) {
-        navigationController?.popViewController(animated: true)
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
+        if var data = notification.userInfo?["date"] as? String {
+            date = data
+            data = data.replacingOccurrences(of: "-", with: ".")
+            planStartDateField.text = data
+        }
+        updateMakeButtonState()
+    }
+    
+    @objc private func textFieldEditingChanged(_ textField: UITextField) {
+        if textField == planNameTextField {
+            if let text = textField.text {
+                let maxLength = 20
+                var newText = text
+                if text.count > maxLength {
+                    let index = text.index(text.startIndex, offsetBy: maxLength)
+                    newText = String(text[..<index])
+                }
+                textCountLabel.text = "\(newText.count)/20"
+                xnameButton.isHidden = newText.isEmpty
+                textField.text = newText
+            }
+        }
+        updateMakeButtonState()
+    }
+    
+    @objc private func xnameButtonTapped() {
+        planNameTextField.text = ""
+        planNameTextField.sendActions(for: .editingChanged)
+    }
+    
+    @objc private func calendarButtonTapped() {
+        let bottomSheetVC = PlanDateButtonSheetViewController()
+        bottomSheetVC.modalPresentationStyle = .overCurrentContext
+        bottomSheetVC.modalTransitionStyle = .crossDissolve
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
+    @objc private func makeButtonTapped() {
+        if makeButton.backgroundColor == UIColor.purpleMain {
+            guard let newName = planNameTextField.text else { return }
+            guard let newStartDate = planStartDateField.text else { return }
+            let date = newStartDate.replacingOccurrences(of: ".", with: "-")
+            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { isSuccess in
+                print("is", isSuccess)
+            }
+        }
+    }
+    
+    private func updateMakeButtonState() {
+        let isPlanNameFilled = !(planNameTextField.text?.isEmpty ?? true)
+        let isPlanStartDateFilled = !(planStartDateField.text?.isEmpty ?? true)
+        
+        if isPlanNameFilled && isPlanStartDateFilled {
+            makeButton.backgroundColor = UIColor.purpleMain
+        } else {
+            makeButton.backgroundColor = UIColor.gray200
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+}
+
+extension MakePlanViewController {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = false
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+            xnameButton.isHidden = true
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planStartDateField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        }
+        xnameButton.isHidden = true
+    }
+}
+
+// layout
+extension MakePlanViewController {
+    func layoutConstraints() {
+        self.view.addSubview(planNameLabel)
+        self.view.addSubview(xnameButton)
+        self.view.addSubview(planNameTextField)
+        self.view.addSubview(textCountLabel)
+        self.view.addSubview(grayLine1)
+        applyConstraintsToPlanName()
+        
+        self.view.addSubview(planStartDateLabel)
+        self.view.addSubview(planStartDateField)
+        self.view.addSubview(calendarButton)
+        self.view.addSubview(grayLine2)
+        self.view.addSubview(planStartDateUnderImage)
+        self.view.addSubview(planStartDateUnderLabel)
+        applyConstraintsToPlanDate()
+        
+        self.view.addSubview(makeButton)
+        applyConstraintsToMakeButton()
     }
     
     func applyConstraintsToPlanName() {
@@ -206,98 +283,4 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             make.bottom.equalTo(safeArea.snp.bottom).offset(-12)
         }
     }
-    
-    @objc func dataReceivedByCalendarVC(notification: Notification) {
-        if var data = notification.userInfo?["date"] as? String {
-            date = data
-            data = data.replacingOccurrences(of: "-", with: ".")
-            planStartDateField.text = data
-        }
-        updateMakeButtonState()
-    }
-    
-    @objc private func textFieldEditingChanged(_ textField: UITextField) {
-        if textField == planNameTextField {
-            if let text = textField.text {
-                let maxLength = 20
-                var newText = text
-                if text.count > maxLength {
-                    let index = text.index(text.startIndex, offsetBy: maxLength)
-                    newText = String(text[..<index])
-                }
-                textCountLabel.text = "\(newText.count)/20"
-                xnameButton.isHidden = newText.isEmpty
-                textField.text = newText
-            }
-        }
-        updateMakeButtonState()
-    }
-    
-    @objc private func xnameButtonTapped() {
-        planNameTextField.text = ""
-        planNameTextField.sendActions(for: .editingChanged)
-    }
-    
-    @objc private func calendarButtonTapped() {
-        let bottomSheetVC = PlanDateButtonSheetViewController()
-        bottomSheetVC.modalPresentationStyle = .overFullScreen
-        self.present(bottomSheetVC, animated: false, completion: nil)
-    }
-    
-    @objc private func makeButtonTapped() {
-        if makeButton.backgroundColor == UIColor.purpleMain {
-            guard let newName = planNameTextField.text else { return }
-            guard let newStartDate = planStartDateField.text else { return }
-            let date = newStartDate.replacingOccurrences(of: ".", with: "-")
-            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { isSuccess in
-                print("is", isSuccess)
-            }
-        }
-    }
-    
-    private func updateMakeButtonState() {
-        let isPlanNameFilled = !(planNameTextField.text?.isEmpty ?? true)
-        let isPlanStartDateFilled = !(planStartDateField.text?.isEmpty ?? true)
-        
-        if isPlanNameFilled && isPlanStartDateFilled {
-            makeButton.backgroundColor = UIColor.purpleMain
-        } else {
-            makeButton.backgroundColor = UIColor.gray200
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
 }
-extension MakePlanViewController {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.purpleMain
-            xnameButton.isHidden = false
-        } else if textField == planStartDateField {
-            grayLine2.backgroundColor = UIColor.purpleMain
-            xnameButton.isHidden = true
-        }
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.iconDisabled
-        } else if textField == planStartDateField {
-            grayLine2.backgroundColor = UIColor.iconDisabled
-        }
-        xnameButton.isHidden = true
-    }
-}
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        MakePlanViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif
