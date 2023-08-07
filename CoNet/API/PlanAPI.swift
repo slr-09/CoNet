@@ -39,9 +39,9 @@ struct PlanDetail: Codable {
     let planId: Int
     let planName, date, time: String
     let members: [String]
-    let membersID: [Int]
+    let membersId: [Int]
     let isRegisteredToHistory: Bool
-    let historyImgURL, historyDescription: String?
+    let historyImgUrl, historyDescription: String?
 }
 
 struct PlanEditResponse: Codable {
@@ -153,14 +153,14 @@ class PlanAPI {
     }
     
     // 약속 상세 정보 조회
-    func getPlanDetail(planId: Int, completion: @escaping (_ plans: [PlanDetail]) -> Void) {
+    func getPlanDetail(planId: Int, completion: @escaping (_ plans: PlanDetail) -> Void) {
         let url = "\(baseUrl)/team/plan/detail?planId=\(planId)"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
         
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: BaseResponse<[PlanDetail]>.self) { response in
+            .responseDecodable(of: BaseResponse<PlanDetail>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let serverPlans = response.result else { return }
@@ -174,7 +174,7 @@ class PlanAPI {
     }
     
     // 약속 상세 수정
-    func updatePlan(planId: Int, planName: String, date: String?, time: String, members: [String]?, isRegisteredToHistory: Bool, historyDescription: String?, completion: @escaping (_ isSuccess: Bool) -> Void) {
+    func updatePlan(planId: Int, planName: String, date: String?, time: String, members: [Int]?, isRegisteredToHistory: Bool, historyDescription: String?, image: UIImage, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/update-fixed"
         let headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded",
@@ -185,21 +185,30 @@ class PlanAPI {
             "planId": planId,
             "planName": planName,
             "time": time,
+            "date": date,
+            "members": members,
+            "historyDescription": historyDescription,
             "isRegisteredToHistory": isRegisteredToHistory
         ]
-        if let date = date {
-            requestBody["date"] = date
+        var requestBodyJson: String = ""
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print(jsonString)
+                    requestBodyJson = jsonString
+                }
+        } catch {
+            print("Error encoding JSON: (error)")
         }
-
-        if let members = members {
-            requestBody["members"] = members
-        }
-
-        if let historyDescription = historyDescription {
-            requestBody["historyDescription"] = historyDescription
-        }
-
-        AF.request(url, method: .post, parameters: requestBody, encoding: JSONEncoding.default, headers: headers)
+        
+        guard let image = image.pngData() else { return }
+        
+        // Multipart Form 데이터 생성
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(image, withName: "file", fileName: "\(image).png", mimeType: "image/png")
+            multipartFormData.append(requestBodyJson.data(using: .utf8)!, withName: "request", mimeType: "application/json")
+        }, to: url, method: .post, headers: headers)
             .responseDecodable(of: BaseResponse<PlanEditResponse>.self) { response in
                 switch response.result {
                 case .success(let response):
@@ -210,8 +219,8 @@ class PlanAPI {
                     print("DEBUG(약속 상세 수정 api) error: \(error)")
                 }
             }
-    }
-    
+}
+
     func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/create"
         let headers: HTTPHeaders = [
@@ -239,3 +248,4 @@ class PlanAPI {
     }
 
 }
+    

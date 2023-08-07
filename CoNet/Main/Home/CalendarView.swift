@@ -298,4 +298,27 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
 //            home.changeDate(month: calendarMonth, day: calendarDateFormatter.days[indexPath.item])
 //        }
 //    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+
+        // 달력 년,월
+        var calendarDate = calendarDateFormatter.getYearMonthText()
+        // 형식 변환
+        calendarDate = calendarDate.replacingOccurrences(of: "년 ", with: "-")
+        calendarDate = calendarDate.replacingOccurrences(of: "월", with: "-")
+        
+        // 클릭한 날짜 (일)
+        let clickDay = calendarDateFormatter.days[indexPath.item]
+        
+        if clickDay.count == 1 {
+            calendarDate += "0"
+        }
+        
+        // 클릭한 날짜 (yyyy-MM-dd)
+        let clickDate = calendarDate + clickDay
+        // calendarVC에 meetingId 넘기기
+        NotificationCenter.default.post(name: NSNotification.Name("ToMakePlanVC"), object: nil, userInfo: ["date": clickDate])
+        
+        NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
+    }
 }
