@@ -129,6 +129,8 @@ class TimeShareViewController: UIViewController {
     
     let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
     
+    var sectionMemberCount: [String] = ["0", "", "", ""]
+    
     var possibleMemberDateTime: [PossibleMemberDateTime] = []
     
     var apiCheck = false
@@ -142,19 +144,18 @@ class TimeShareViewController: UIViewController {
         timeTableSetting()
         
         btnClickEvents()
-        
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         getMemberPossibleTimeAPI()
         updateTimeTable()
-        
+        memberCountUpdate()
     }
     
     // 구성원 시간 조회
     func getMemberPossibleTimeAPI() {
-        PlanTimeAPI().getMemberPossibleTime(planId: planId) { _, _, planName, planStartPeriod, planEndPeriod, possibleMemberDateTime in
+        PlanTimeAPI().getMemberPossibleTime(planId: planId) { _, _, planName, planStartPeriod, planEndPeriod, sectionMemberCounts, possibleMemberDateTime in
             self.planTitle.text = planName
             self.possibleMemberDateTime = possibleMemberDateTime
             self.apiCheck = true
@@ -162,6 +163,16 @@ class TimeShareViewController: UIViewController {
             // 날짜 배열 update
             self.updateDateArray(planStartPeriod: planStartPeriod, planEndPeriod: planEndPeriod, memberTime: possibleMemberDateTime)
             self.timeTable.timeTableCollectionView.reloadData()
+            
+            // 인원 수 별 셀 색 예시 인원
+            for index in 0..<sectionMemberCounts.count {
+                let sectionIndex = sectionMemberCounts[index].section
+                if sectionMemberCounts[index].memberCount.count == 1 {
+                    self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0])
+                } else {
+                    self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0]) + "-" + String(sectionMemberCounts[index].memberCount.last!)
+                }
+            }
         }
     }
     
@@ -217,6 +228,14 @@ class TimeShareViewController: UIViewController {
             date2.text = date[page*3+1]
             date3.text = date[page*3+2]
         }
+    }
+    
+    // 셀 색 예시 - 멤버 수 update
+    func memberCountUpdate() {
+        peopleNum1.text = sectionMemberCount[0]
+        peopleNum2.text = sectionMemberCount[1]
+        peopleNum3.text = sectionMemberCount[2]
+        peopleNum4.text = sectionMemberCount[3]
     }
     
     func btnClickEvents() {

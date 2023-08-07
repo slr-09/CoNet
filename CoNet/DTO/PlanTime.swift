@@ -11,7 +11,13 @@ import Foundation
 struct GetMemberPossibleTimeResult: Codable {
     let teamId, planId: Int
     let planName, planStartPeriod, planEndPeriod: String
+    let sectionMemberCounts: [SectionMemberCounts]
     let possibleMemberDateTime: [PossibleMemberDateTime]
+}
+
+struct SectionMemberCounts: Codable {
+    let section: Int
+    let memberCount: [Int]
 }
 
 struct PossibleMemberDateTime: Codable {
