@@ -224,7 +224,7 @@ class PlanAPI {
     }
     
     // 약속 생성
-    func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
+    func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ planId: Int, _ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/create"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
@@ -241,7 +241,8 @@ class PlanAPI {
             switch response.result {
             case .success(let response):
                 print("DEBUG(약속 생성 api) success response: \(response.message)")
-                completion(response.code == 1000)
+                guard let planId = response.result?.planId else { return }
+                completion(planId, response.code == 1000)
                 
             case .failure(let error):
                 print("DEBUG(create plan api) error: \(error)")
@@ -253,7 +254,7 @@ class PlanAPI {
     func deletePlan(planId: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/delete"
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         ]
         
         let parameters: Parameters = [

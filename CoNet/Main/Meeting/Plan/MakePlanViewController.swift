@@ -141,13 +141,19 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
+    // 이전 ViewController로 데이터를 전달하는 delegate
+    weak var delegate: MeetingMainViewControllerDelegate?
+    
     @objc private func makeButtonTapped() {
         if makeButton.backgroundColor == UIColor.purpleMain {
             guard let newName = planNameTextField.text else { return }
             guard let newStartDate = planStartDateField.text else { return }
             let date = newStartDate.replacingOccurrences(of: ".", with: "-")
-            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { isSuccess in
-                print("is", isSuccess)
+            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { planId, isSuccess in
+                if isSuccess {
+                    self.navigationController?.popViewController(animated: true)
+                    self.delegate?.sendIntDataBack(data: planId)
+                }
             }
         }
     }
