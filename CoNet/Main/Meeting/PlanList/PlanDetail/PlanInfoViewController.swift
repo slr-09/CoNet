@@ -14,13 +14,9 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
     
-    var dataStatus: [dataStatus] = []
-    
-    struct dataStatus {
-        var isPhotoUploaded = false
-        var isTextUploaded = false
-        var ishistoryExisted = false
-    }
+    var isPhotoUploaded = false
+    var isTextUploaded = false
+    var ishistoryExisted = false
     
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
@@ -507,6 +503,7 @@ extension PlanInfoViewController {
         }
     }
 }
+
 extension PlanInfoViewController {
     @objc private func photoAddButtonTapped() {
         let imagePicker = UIImagePickerController()
