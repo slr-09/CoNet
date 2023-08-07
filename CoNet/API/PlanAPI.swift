@@ -251,5 +251,28 @@ class PlanAPI {
         }
     }
 
+    // 약속 삭제
+    func deletePlan(planId: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/plan/delete"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+        ]
+        
+        let parameters: Parameters = [
+            "planId": planId
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 삭제 api) success response: \(response)")
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(약속 삭제 api) error: \(error)")
+            }
+        }
+    }
 }
     

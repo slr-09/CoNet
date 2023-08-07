@@ -281,6 +281,7 @@ class PlanInfoViewController: UIViewController {
 extension PlanInfoViewController: PlanInfoViewControllerDelegate {
     func sendDataBack(data: String) {
         let popUpVC = DeletePlanPopUpViewController()
+        popUpVC.planId = planId
         popUpVC.modalPresentationStyle = .overCurrentContext
         popUpVC.modalTransitionStyle = .crossDissolve
         present(popUpVC, animated: true, completion: nil)

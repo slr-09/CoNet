@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class DeletePlanPopUpViewController: UIViewController {
+    var planId: Int = 0
+    
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -42,7 +44,11 @@ class DeletePlanPopUpViewController: UIViewController {
     
     // 약속 삭제 버튼 동작
     @objc func deletePlan(_ sender: UIView) {
-        
+        PlanAPI().deletePlan(planId: planId) { isSuccess in
+            if isSuccess {
+                print("약속 삭제 성공!!")
+            }
+        }
     }
     
     // 모든 layout Constraints
