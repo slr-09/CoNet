@@ -267,6 +267,7 @@ class PlanInfoViewController: UIViewController {
 
     func showPlanEditDelBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.delegate = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
         bottomSheetViewController.modalTransitionStyle = .crossDissolve
         present(bottomSheetViewController, animated: true, completion: nil)
@@ -275,5 +276,17 @@ class PlanInfoViewController: UIViewController {
     @objc private func sideBarButtonTapped() {
         showPlanEditDelBottomSheet()
     }
+}
 
+extension PlanInfoViewController: PlanInfoViewControllerDelegate {
+    func sendDataBack(data: String) {
+        let popUpVC = DeletePlanPopUpViewController()
+        popUpVC.modalPresentationStyle = .overCurrentContext
+        popUpVC.modalTransitionStyle = .crossDissolve
+        present(popUpVC, animated: true, completion: nil)
+    }
+}
+
+protocol PlanInfoViewControllerDelegate: AnyObject {
+    func sendDataBack(data: String)
 }

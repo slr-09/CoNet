@@ -65,7 +65,7 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         background.addGestureRecognizer(tapGesture)
         
         editButton.addTarget(self, action: #selector(showPlanEditVC), for: .touchUpInside)
-        deleteButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(showDeletePlanVC), for: .touchUpInside)
     }
     
     @objc func dismissPopUp() {
@@ -73,10 +73,19 @@ class PlanEditDelBottomSheetViewController: UIViewController {
     }
     
     @objc func showPlanEditVC() {
-        let bottomSheetViewController = PlanInfoEditViewController()
-        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
-        bottomSheetViewController.modalTransitionStyle = .crossDissolve
-        present(bottomSheetViewController, animated: true, completion: nil)
+        let popUpVC = PlanInfoEditViewController()
+        popUpVC.modalPresentationStyle = .overCurrentContext
+        popUpVC.modalTransitionStyle = .crossDissolve
+        present(popUpVC, animated: true, completion: nil)
+    }
+    
+    weak var delegate: PlanInfoViewControllerDelegate?
+    
+    @objc func showDeletePlanVC() {
+        dismiss(animated: true) {
+            print("삭제")
+            self.delegate?.sendDataBack(data: "삭제")
+        }
     }
     
     func layoutConstraints() {
