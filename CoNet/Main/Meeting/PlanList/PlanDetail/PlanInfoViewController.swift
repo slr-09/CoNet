@@ -268,6 +268,7 @@ class PlanInfoViewController: UIViewController {
     func showPlanEditDelBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
         present(bottomSheetViewController, animated: true, completion: nil)
     }
 
