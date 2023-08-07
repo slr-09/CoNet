@@ -217,9 +217,17 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         navigationItem.rightBarButtonItem = barButtonItem
         
         layoutConstraints()
+
+        var isPhotoUploaded = false
+        var isTextUploaded = false
+        var ishistoryExisted = false
+        
+        hidePhotoViews()
+        showPhotoViews()
+        hideTextViews()
+        showTextViews()
+        
         historyExists()
-        photoImageViewUpdate()
-        textUpdate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -231,6 +239,12 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
         
+        hidePhotoViews()
+        showPhotoViews()
+        hideTextViews()
+        showTextViews()
+        
+        historyExists()
         getPlanDetail()
     }
     
@@ -280,11 +294,6 @@ extension PlanInfoViewController {
         view.addSubview(scrollview)
         scrollview.addSubview(contentView)
         applyConstraintsToscrollview()
-        
-        contentView.addSubview(backButton)
-        contentView.addSubview(planInfoLabel)
-        contentView.addSubview(sideBarButton)
-        applyConstraintsToTopSection()
         
         contentView.addSubview(planNameLabel)
         contentView.addSubview(planNameText)
@@ -344,27 +353,9 @@ extension PlanInfoViewController {
         }
     }
     
-    func applyConstraintsToTopSection() {
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(contentView.snp.leading).offset(17)
-            make.top.equalTo(contentView.snp.top).offset(41)
-        }
-        planInfoLabel.snp.makeConstraints { make in
-            make.width.equalTo(80)
-            make.leading.equalTo(backButton.snp.trailing).offset(116)
-            make.top.equalTo(contentView.snp.top).offset(41)
-        }
-        sideBarButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(planInfoLabel.snp.trailing).offset(108)
-            make.top.equalTo(contentView.snp.top).offset(40)
-        }
-    }
-    
     func applyConstraintsToPlanName() {
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(contentView.snp.top).offset(12)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in
@@ -552,41 +543,68 @@ extension PlanInfoViewController {
     }
     
     func historyExists() {
-        if ishistoryExisted {
-            self.historyAddButton.isHidden = false
-            self.historyAddView.isHidden = false
-            self.historyAddLabel.isHidden = false
-        } else {
+        if ishistoryExisted { // 히스토리 있을 때
             self.historyAddButton.isHidden = true
             self.historyAddView.isHidden = true
             self.historyAddLabel.isHidden = true
-            photoImageViewUpdate()
-            textUpdate()
+            showPhotoViews()
+            showTextViews()
+        } else { // 히스토리 없을 때
+            self.historyAddButton.isHidden = false
+            self.historyAddView.isHidden = false
+            self.historyAddLabel.isHidden = false
+            self.contentsLabel.isHidden = true
+            self.contentsView.isHidden = true
+            hidePhotoViews()
+            hideTextViews()
         }
     }
-    
-    func photoImageViewUpdate() {
-        if isPhotoUploaded {
+
+    func hidePhotoViews() {
+        noPhotoImageView.isHidden = true
+        noPhotoView.isHidden = true
+        noPhotoLabel.isHidden = true
+        photoImageView.isHidden = true
+    }
+
+    func showPhotoViews() {
+        if ishistoryExisted {
             noPhotoImageView.isHidden = true
             noPhotoView.isHidden = true
             noPhotoLabel.isHidden = true
-            photoImageView.isHidden = false
-        } else {
-            noPhotoImageView.isHidden = false
-            noPhotoView.isHidden = false
-            noPhotoLabel.isHidden = false
             photoImageView.isHidden = true
+        } else {
+            if isPhotoUploaded {
+                noPhotoImageView.isHidden = true
+                noPhotoView.isHidden = true
+                noPhotoLabel.isHidden = true
+                photoImageView.isHidden = false
+            } else {
+                noPhotoImageView.isHidden = false
+                noPhotoView.isHidden = false
+                noPhotoLabel.isHidden = false
+                photoImageView.isHidden = true
+            }
         }
     }
-    
-    func textUpdate() {
-        if isTextUploaded {
+
+    func hideTextViews() {
+        nocontentsText.isHidden = true
+        contentsText.isHidden = true
+    }
+
+    func showTextViews() {
+        if ishistoryExisted {
             nocontentsText.isHidden = true
-            contentsText.isHidden = false
-        } else {
-            nocontentsText.isHidden = false
             contentsText.isHidden = true
+        } else {
+            if isTextUploaded {
+                nocontentsText.isHidden = true
+                contentsText.isHidden = false
+            } else {
+                nocontentsText.isHidden = false
+                contentsText.isHidden = true
+            }
         }
     }
 }
-
