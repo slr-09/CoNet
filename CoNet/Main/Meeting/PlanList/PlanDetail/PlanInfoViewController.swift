@@ -258,9 +258,10 @@ class PlanInfoViewController: UIViewController {
     
     func getPlanDetail() {
         PlanAPI().getPlanDetail(planId: planId) { plans in
-            self.plansCount = plans.count
-            self.planDetail = plans
-            // reload해야하는게 뭘까...
+            self.planNameText.text = plans.planName
+            self.planDateText.text = plans.date
+            self.planTimeText.text = plans.time
+            self.member1NameLabel.text = plans.members[0]
         }
     }
 
