@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    var planId: Int = 0
+    
     var isPhotoUploaded = false
     var isContentsEntered = false
     
