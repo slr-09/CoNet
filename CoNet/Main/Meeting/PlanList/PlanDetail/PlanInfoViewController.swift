@@ -261,7 +261,7 @@ class PlanInfoViewController: UIViewController {
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-            self.member1NameLabel.text = plans.members[0]
+            self.member1NameLabel.text = plans.members[0].name
         }
     }
 

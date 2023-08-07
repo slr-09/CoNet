@@ -38,10 +38,14 @@ struct PastPlanInfo: Codable {
 struct PlanDetail: Codable {
     let planId: Int
     let planName, date, time: String
-    let members: [String]
-    let membersId: [Int]
+    let members: [PlanDetailMember]
     let isRegisteredToHistory: Bool
     let historyImgUrl, historyDescription: String?
+}
+
+struct PlanDetailMember: Codable {
+    let id: Int
+    let name, image: String
 }
 
 struct PlanEditResponse: Codable {
