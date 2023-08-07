@@ -2,7 +2,6 @@ import Then
 import UIKit
 
 class PlanDateButtonSheetViewController: UIViewController {
-
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
@@ -31,6 +30,8 @@ class PlanDateButtonSheetViewController: UIViewController {
         $0.layer.masksToBounds = true
     }
     
+    var date: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,10 +45,27 @@ class PlanDateButtonSheetViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closePopUp))
         background.addGestureRecognizer(tapGesture)
+        
+        applyButton.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
     }
     
     @objc func closePopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func applyButtonTapped() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
+        applyButton.backgroundColor = UIColor.purpleMain
+        if let data = notification.userInfo?["date"] as? String {
+            self.date = data
+            
+        }
     }
     
     private func layoutConstraints() {
@@ -55,13 +73,19 @@ class PlanDateButtonSheetViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         bottomSheetView.snp.makeConstraints { make in
-            make.height.equalTo(600)
+            make.height.equalTo(400)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
         }
+        grayLine.snp.makeConstraints { make in
+            make.width.equalTo(36)
+            make.height.equalTo(3)
+            make.top.equalTo(bottomSheetView.snp.top).offset(10)
+            make.centerX.equalTo(bottomSheetView)
+        }
         calendarView.snp.makeConstraints { make in
-            make.height.equalTo(500)
-            make.top.equalTo(bottomSheetView.snp.top).offset(0)
+            make.height.equalTo(350)
+            make.top.equalTo(grayLine.snp.bottom).offset(25)
             make.leading.equalTo(bottomSheetView.snp.leading).offset(0)
             make.trailing.equalTo(bottomSheetView.snp.trailing).offset(0)
         }

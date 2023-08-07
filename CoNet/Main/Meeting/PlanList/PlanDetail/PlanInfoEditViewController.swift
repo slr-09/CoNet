@@ -214,13 +214,13 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         guard let name = planNameTextField.text else { return }
         guard let date = planDateTextField.text else { return }
         guard let time = planTimeTextField.text else { return }
+        guard let selectedImage = member1ImageView.image else { return }
         
-        // 밑에서 members에 뭐를 넣어야할까..?
-        /* PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: ) { isSuccess in
+        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
             if isSuccess {
                 print("DEBUG (약속 수정 api): isSuccess true")
             }
-        } */
+        }
     }
     
     func applyConstraintsToTopSection() {

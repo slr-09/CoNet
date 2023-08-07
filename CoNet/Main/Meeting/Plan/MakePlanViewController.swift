@@ -76,6 +76,8 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         $0.layer.masksToBounds = true
     }
     
+    var date = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -104,11 +106,15 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
+        makeButton.addTarget(self, action: #selector(makeButtonTapped), for: .touchUpInside)
         
         planNameTextField.delegate = self
         planStartDateField.delegate = self
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        
+        // calendarViewController에서 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
     }
     
     @objc private func popViewController(_: UIView) {
@@ -212,6 +218,15 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
+        if var data = notification.userInfo?["date"] as? String {
+            date = data
+            data = data.replacingOccurrences(of: "-", with: ".")
+            planStartDateField.text = data
+        }
+        updateMakeButtonState()
+    }
+    
     @objc private func textFieldEditingChanged(_ textField: UITextField) {
         if textField == planNameTextField {
             if let text = textField.text {
@@ -236,8 +251,16 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func calendarButtonTapped() {
         let bottomSheetVC = PlanDateButtonSheetViewController()
-            bottomSheetVC.modalPresentationStyle = .overFullScreen
-            self.present(bottomSheetVC, animated: false, completion: nil)
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
+    @objc private func makeButtonTapped() {
+        if makeButton.backgroundColor == UIColor.purpleMain {
+            PlanAPI().createPlan(teamId: meetingId, planName: planNameLabel.text ?? "", planStartPeriod: date) { isSuccess in
+                print("is", isSuccess)
+            }
+        }
     }
     
     private func updateMakeButtonState() {
@@ -256,6 +279,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     }
 }
 extension MakePlanViewController {
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == planNameTextField {
             grayLine1.backgroundColor = UIColor.purpleMain
