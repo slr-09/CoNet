@@ -269,9 +269,6 @@ extension UnRegisteredPlanDetailViewController {
     }
 
     func applyConstraintsToPlanName() {
-        // 안전 영역
-        let safeArea = view.safeAreaLayoutGuide
-        
         planNameLabel.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top).offset(24)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -469,4 +466,3 @@ extension UnRegisteredPlanDetailViewController {
         }
     }
 }
-
