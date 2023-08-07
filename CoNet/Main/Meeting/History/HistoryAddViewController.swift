@@ -413,7 +413,12 @@ extension HistoryAddViewController {
 // MARK: - Button Actions Extensions
 extension HistoryAddViewController {
     @objc private func completionButtonTapped() {
-        // 완료 버튼 후
+        print("wow wow")
+        guard let image = photoImageView.image else { return }
+        guard let description = contentsTextField.text else { return }
+        HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
+            print("히스토리 성공!")
+        }
     }
     
     @objc private func photoAddButtonTapped() {
