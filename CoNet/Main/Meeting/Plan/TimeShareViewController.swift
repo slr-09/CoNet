@@ -127,6 +127,8 @@ class TimeShareViewController: UIViewController {
     
     var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
     
+    let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,11 +143,44 @@ class TimeShareViewController: UIViewController {
         updateTimeTable()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateTimeTable()
+        print(date)
+    }
+    
     // 구성원 시간 조회
     func getMemberPossibleTimeAPI() {
         PlanTimeAPI().getMemberPossibleTime(planId: planId) { teamId, planId, planName, planStartPeriod, planEndPeriod, possibleMemberDateTime in
             self.planTitle.text = planName
             
+            // 날짜 배열 update
+            self.updateDateArray(planStartPeriod: planStartPeriod, planEndPeriod: planEndPeriod)
+            print(planStartPeriod, planEndPeriod)
+        }
+    }
+    
+    // 날짜 배열 update
+    func updateDateArray(planStartPeriod: String, planEndPeriod: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = dateFormatter.date(from: planStartPeriod)!
+        let endDate = dateFormatter.date(from: planEndPeriod)!
+        
+        let currentCalendar = Calendar.current
+        var currentDate = startDate
+        var index = 0
+//        print(startDate, endDate)
+        while currentDate <= endDate {
+            dateFormatter.dateFormat = "MM.dd "
+            var stringDate = dateFormatter.string(from: currentDate)
+            stringDate += weekDay[currentCalendar.component(.weekday, from: currentDate)-1]
+            
+            // 날짜 배열에 저장
+            date[index] = stringDate
+            index += 1
+            
+            currentDate = currentCalendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
     }
     

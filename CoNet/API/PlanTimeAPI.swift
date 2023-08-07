@@ -27,7 +27,7 @@ class PlanTimeAPI {
                     guard let result = response.result else { return }
                     print("DEBUG(getMemberPossibleTime api): \(result)")
                     
-                    completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planStartPeriod, result.possibleMemberDateTime)
+                    completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planEndPeriod, result.possibleMemberDateTime)
 
                 case .failure(let error):
                     print("DEBUG(getMemberPossibleTime api) error: \(error)")
