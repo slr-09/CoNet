@@ -313,8 +313,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
         let clickDate = calendarDate + clickDay
         // calendarVC에 meetingId 넘기기
         NotificationCenter.default.post(name: NSNotification.Name("ToMakePlanVC"), object: nil, userInfo: ["date": clickDate])
-        
-        NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
 
+        NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
     }
 }
