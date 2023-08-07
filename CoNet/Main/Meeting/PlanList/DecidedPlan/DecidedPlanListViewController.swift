@@ -58,6 +58,7 @@ extension DecidedPlanListViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         let nextVC = PlanInfoViewController()
+        nextVC.planId = decidedPlanData[indexPath.item].planId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }

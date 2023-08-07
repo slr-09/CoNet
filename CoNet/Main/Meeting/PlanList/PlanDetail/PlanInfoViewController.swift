@@ -208,16 +208,29 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        self.navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "상세 페이지"
+        
+        // 사이드바 버튼 추가
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: sideBarButton)
+        navigationItem.rightBarButtonItem = barButtonItem
+        
         layoutConstraints()
         historyExists()
         photoImageViewUpdate()
         textUpdate()
-        
-        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        
         getPlanDetail()
     }
     
