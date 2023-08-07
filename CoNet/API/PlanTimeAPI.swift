@@ -13,7 +13,7 @@ class PlanTimeAPI {
     let baseUrl = "http://15.164.196.172:9000"
     
     // 구성원의 가능한 시간 조회 
-    func getMemberPossibleTime(planId: Int, completion: @escaping (_ teamId: Int, _ planId: Int, _ planName: String, _ planStartPeriod: String, _ planEndPeriod: String, _ possibleMemberDateTime: [PossibleMemberDateTime]) -> Void) {
+    func getMemberPossibleTime(planId: Int, completion: @escaping (_ teamId: Int, _ planId: Int, _ planName: String, _ planStartPeriod: String, _ planEndPeriod: String, _ sectionMemberCounts: [SectionMemberCounts], _ possibleMemberDateTime: [PossibleMemberDateTime]) -> Void) {
         let url = "\(baseUrl)/team/plan/member-time?planId=\(planId)"
         
         let headers: HTTPHeaders = [
@@ -27,7 +27,7 @@ class PlanTimeAPI {
                     guard let result = response.result else { return }
                     print("DEBUG(getMemberPossibleTime api): \(result)")
                     
-                    completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planEndPeriod, result.possibleMemberDateTime)
+                    completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planEndPeriod, result.sectionMemberCounts, result.possibleMemberDateTime)
 
                 case .failure(let error):
                     print("DEBUG(getMemberPossibleTime api) error: \(error)")
