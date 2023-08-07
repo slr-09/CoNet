@@ -280,11 +280,16 @@ class PlanInfoViewController: UIViewController {
 
 extension PlanInfoViewController: PlanInfoViewControllerDelegate {
     func sendDataBack(data: String) {
-        let popUpVC = DeletePlanPopUpViewController()
-        popUpVC.planId = planId
-        popUpVC.modalPresentationStyle = .overCurrentContext
-        popUpVC.modalTransitionStyle = .crossDissolve
-        present(popUpVC, animated: true, completion: nil)
+        if data == "pop" {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let popUpVC = DeletePlanPopUpViewController()
+            popUpVC.planId = planId
+            popUpVC.delegate = self
+            popUpVC.modalPresentationStyle = .overCurrentContext
+            popUpVC.modalTransitionStyle = .crossDissolve
+            present(popUpVC, animated: true, completion: nil)
+        }
     }
 }
 

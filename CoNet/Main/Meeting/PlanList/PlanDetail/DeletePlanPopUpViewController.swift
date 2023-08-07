@@ -42,11 +42,15 @@ class DeletePlanPopUpViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    weak var delegate: PlanInfoViewControllerDelegate?
+    
     // 약속 삭제 버튼 동작
     @objc func deletePlan(_ sender: UIView) {
         PlanAPI().deletePlan(planId: planId) { isSuccess in
             if isSuccess {
-                print("약속 삭제 성공!!")
+                self.dismiss(animated: true) {
+                    self.delegate?.sendDataBack(data: "pop")
+                }
             }
         }
     }
