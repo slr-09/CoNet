@@ -32,7 +32,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         $0.text = "상세 페이지"
         $0.font = UIFont.headline3Bold
         $0.textColor = UIColor.black
-        $0.numberOfLines = 0
+        $0.adjustsFontSizeToFitWidth = true
     }
     let sideBarButton = UIButton().then {
         $0.setImage(UIImage(named: "sidebar"), for: .normal)
@@ -252,6 +252,11 @@ extension PlanInfoViewController {
         scrollview.addSubview(contentView)
         applyConstraintsToscrollview()
         
+        contentView.addSubview(backButton)
+        contentView.addSubview(planInfoLabel)
+        contentView.addSubview(sideBarButton)
+        applyConstraintsToTopSection()
+        
         contentView.addSubview(planNameLabel)
         contentView.addSubview(planNameText)
         contentView.addSubview(grayLine1)
@@ -310,9 +315,27 @@ extension PlanInfoViewController {
         }
     }
     
+    func applyConstraintsToTopSection() {
+        backButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.leading.equalTo(contentView.snp.leading).offset(17)
+            make.top.equalTo(contentView.snp.top).offset(41)
+        }
+        planInfoLabel.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.leading.equalTo(backButton.snp.trailing).offset(116)
+            make.top.equalTo(contentView.snp.top).offset(41)
+        }
+        sideBarButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.leading.equalTo(planInfoLabel.snp.trailing).offset(108)
+            make.top.equalTo(contentView.snp.top).offset(40)
+        }
+    }
+    
     func applyConstraintsToPlanName() {
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(24)
+            make.top.equalTo(backButton.snp.bottom).offset(44)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         planNameText.snp.makeConstraints { make in
@@ -536,3 +559,4 @@ extension PlanInfoViewController {
         }
     }
 }
+
