@@ -229,20 +229,40 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-            self.member1NameLabel.text = plans.members[0]
+            self.member1NameLabel.text = plans.members[0].name
         }
     }
 
     func showPlanEditDelBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.delegate = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
         present(bottomSheetViewController, animated: true, completion: nil)
     }
 
     @objc private func sideBarButtonTapped() {
         showPlanEditDelBottomSheet()
     }
+}
 
+extension PlanInfoViewController: PlanInfoViewControllerDelegate {
+    func sendDataBack(data: String) {
+        if data == "pop" {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let popUpVC = DeletePlanPopUpViewController()
+            popUpVC.planId = planId
+            popUpVC.delegate = self
+            popUpVC.modalPresentationStyle = .overCurrentContext
+            popUpVC.modalTransitionStyle = .crossDissolve
+            present(popUpVC, animated: true, completion: nil)
+        }
+    }
+}
+
+protocol PlanInfoViewControllerDelegate: AnyObject {
+    func sendDataBack(data: String)
 }
 
 extension PlanInfoViewController {

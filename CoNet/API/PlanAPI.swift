@@ -38,10 +38,14 @@ struct PastPlanInfo: Codable {
 struct PlanDetail: Codable {
     let planId: Int
     let planName, date, time: String
-    let members: [String]
-    let membersId: [Int]
+    let members: [PlanDetailMember]
     let isRegisteredToHistory: Bool
     let historyImgUrl, historyDescription: String?
+}
+
+struct PlanDetailMember: Codable {
+    let id: Int
+    let name, image: String
 }
 
 struct PlanEditResponse: Codable {
@@ -247,5 +251,28 @@ class PlanAPI {
         }
     }
 
+    // 약속 삭제
+    func deletePlan(planId: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
+        let url = "\(baseUrl)/team/plan/delete"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+        ]
+        
+        let parameters: Parameters = [
+            "planId": planId
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 삭제 api) success response: \(response)")
+                completion(response.code == 1000)
+                
+            case .failure(let error):
+                print("DEBUG(약속 삭제 api) error: \(error)")
+            }
+        }
+    }
 }
     
