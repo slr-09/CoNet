@@ -129,7 +129,7 @@ class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegat
         $0.layer.borderWidth = 1
     }
     
-    let PhotoImageView = UIImageView().then {
+    let photoImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = UIColor.white
@@ -186,7 +186,8 @@ class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegat
         addNavigationBarItem()
         
         layoutConstraints()
-        PhotoImageViewUpdate()
+        photoImageViewUpdate()
+        textUpdate()
         
         sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
     }
@@ -249,10 +250,10 @@ extension UnRegisteredPlanDetailViewController {
         contentView.addSubview(noPhotoLabel)
         applyConstraintsToPhoto()
         
-        contentsTextField.delegate = self
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)
-        contentView.addSubview(contentsTextField)
+        contentView.addSubview(contentsText)
+        contentView.addSubview(nocontentsText)
         applyConstraintsToContents()
     }
     
@@ -384,7 +385,7 @@ extension UnRegisteredPlanDetailViewController {
             make.top.equalTo(photoLabel.snp.bottom).offset(8)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
-        PhotoImageView.snp.makeConstraints { make in
+        photoImageView.snp.makeConstraints { make in
             make.width.height.equalTo(345)
             make.top.equalTo(photoLabel.snp.bottom).offset(8)
             make.leading.equalTo(contentView.snp.leading).offset(24)
@@ -444,21 +445,21 @@ extension UnRegisteredPlanDetailViewController {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    func PhotoImageViewUpdate() {
+    func photoImageViewUpdate() {
         if isPhotoUploaded {
             noPhotoImageView.isHidden = true
             noPhotoView.isHidden = true
             noPhotoLabel.isHidden = true
-            PhotoImageView.isHidden = false
+            photoImageView.isHidden = false
         } else {
             noPhotoImageView.isHidden = false
             noPhotoView.isHidden = false
             noPhotoLabel.isHidden = false
-            PhotoImageView.isHidden = true
+            photoImageView.isHidden = true
         }
     }
     
-    func TextUpdate() {
+    func textUpdate() {
         if isTextUploaded {
             nocontentsText.isHidden = true
             contentsText.isHidden = false
