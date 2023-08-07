@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class HistoryAddViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var planId: Int = 0
     
     var isPhotoUploaded = false
@@ -157,13 +157,14 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         $0.layer.borderWidth = 1
     }
     
-    let contentsTextField = UITextField().then {
-        $0.placeholder = "내용을 입력하세요."
+    private lazy var contentsTextView: UITextView = UITextView().then {
+        $0.text = "내용을 입력하세요."
         $0.font = UIFont.body2Medium
-        $0.tintColor = UIColor.black
-        $0.becomeFirstResponder()
-        $0.contentVerticalAlignment = .top
-        $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        $0.textColor = UIColor.gray100
+        $0.isScrollEnabled = false
+        $0.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        $0.layer.borderWidth = 0
+        $0.delegate = self
     }
 
     override func viewDidLoad() {
@@ -183,6 +184,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
         
         updatePhotoImageViewSize()
+        updateContentsTextViewAppearance()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -243,10 +245,9 @@ extension HistoryAddViewController {
         contentView.addSubview(photoAddLabel)
         applyConstraintsToPhoto()
         
-        contentsTextField.delegate = self
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)
-        contentView.addSubview(contentsTextField)
+        contentView.addSubview(contentsTextView)
         applyConstraintsToContents()
     }
     
@@ -404,7 +405,7 @@ extension HistoryAddViewController {
             make.leading.equalTo(contentView.snp.leading).offset(24)
             make.trailing.equalTo(contentView.snp.trailing).offset(-24)
         }
-        contentsTextField.snp.makeConstraints { make in
+        contentsTextView.snp.makeConstraints { make in
             make.top.equalTo(contentsView.snp.top).offset(25)
             make.leading.equalTo(contentsView.snp.leading).offset(25)
             make.trailing.equalTo(contentsView.snp.trailing).offset(-25)
@@ -414,10 +415,30 @@ extension HistoryAddViewController {
 
 // MARK: - Button Actions Extensions
 extension HistoryAddViewController {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if contentsTextView.textColor == UIColor.gray100 {
+            contentsTextView.text = nil
+            contentsTextView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        updateContentsTextViewAppearance()
+        isContentsEntered = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        updateCompletionButtonColor()
+    }
+
+    private func updateContentsTextViewAppearance() {
+        let fixedWidth = contentsTextView.frame.size.width
+        let newSize = contentsTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        contentsTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+    }
+    
     @objc private func completionButtonTapped() {
+        // 완료 버튼 후
         print("wow wow")
         guard let image = photoImageView.image else { return }
-        guard let description = contentsTextField.text else { return }
+        guard let description = contentsTextView.text else { return }
         HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
             print("히스토리 성공!")
         }
