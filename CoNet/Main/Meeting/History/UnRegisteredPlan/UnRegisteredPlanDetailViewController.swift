@@ -1,28 +1,23 @@
 //
-//  HistoryAddViewController.swift
+//  UnRegisteredPlanDetailViewController.swift
 //  CoNet
 //
-//  Created by 정아현 on 2023/07/23.
+//  Created by 정아현 on 2023/08/07.
 //
 
 import SnapKit
 import Then
 import UIKit
 
-class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    var planId: Int = 0
-    
+class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var isPhotoUploaded = false
     var isContentsEntered = false
     
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
     let contentView = UIView().then { $0.backgroundColor = .clear }
     
-    let completionButton = UIButton().then {
-        $0.setTitle("완료", for: .normal)
-        $0.titleLabel?.font = UIFont.headline3Medium
-        $0.setTitleColor(.textDisabled, for: .normal)
-        $0.titleLabel?.lineBreakMode = .byClipping
+    let sideBarButton = UIButton().then {
+        $0.setImage(UIImage(named: "sidebar"), for: .normal)
     }
     
     let planNameLabel = UILabel().then {
@@ -126,7 +121,7 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         $0.textColor = UIColor.textDisabled
     }
     
-    let photoImageView = UIImageView().then {
+    let noPhotoImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = UIColor.white
@@ -134,12 +129,20 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         $0.layer.borderWidth = 1
     }
     
-    let photoAddButton = UIButton().then {
-        $0.setImage(UIImage(named: "imageplus"), for: .normal)
+    let PhotoImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.backgroundColor = UIColor.white
+        $0.layer.borderColor = UIColor.gray200?.cgColor
+        $0.layer.borderWidth = 1
     }
     
-    let photoAddLabel = UILabel().then {
-        $0.text = "사진 추가"
+    let noPhotoView = UIImageView().then {
+        $0.image = UIImage(named: "image-x")
+    }
+    
+    let noPhotoLabel = UILabel().then {
+        $0.text = "사진 없음"
         $0.font = UIFont.overline
         $0.textColor = UIColor.iconDisabled
         $0.adjustsFontSizeToFitWidth = true
@@ -178,11 +181,9 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
         addNavigationBarItem()
         
         layoutConstraints()
+        PhotoImageViewUpdate()
         
-        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
-        photoAddButton.addTarget(self, action: #selector(photoAddButtonTapped), for: .touchUpInside)
-        
-        updatePhotoImageViewSize()
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -197,13 +198,13 @@ class HistoryAddViewController: UIViewController, UITextFieldDelegate, UIImagePi
     
     private func addNavigationBarItem() {
         // 사이드바 버튼 추가
-        completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
-        let barButtonItem = UIBarButtonItem(customView: completionButton)
+        sideBarButton.addTarget(self, action: #selector(sideBarButtonTapped), for: .touchUpInside)
+        let barButtonItem = UIBarButtonItem(customView: sideBarButton)
         navigationItem.rightBarButtonItem = barButtonItem
     }
 }
 
-extension HistoryAddViewController {
+extension UnRegisteredPlanDetailViewController {
     private func layoutConstraints() {
         view.addSubview(scrollview)
         scrollview.addSubview(contentView)
@@ -238,9 +239,9 @@ extension HistoryAddViewController {
         applyConstraintsToHistory()
         
         contentView.addSubview(photoLabel)
-        contentView.addSubview(photoImageView)
-        contentView.addSubview(photoAddButton)
-        contentView.addSubview(photoAddLabel)
+        contentView.addSubview(noPhotoImageView)
+        contentView.addSubview(noPhotoView)
+        contentView.addSubview(noPhotoLabel)
         applyConstraintsToPhoto()
         
         contentsTextField.delegate = self
@@ -373,28 +374,34 @@ extension HistoryAddViewController {
             make.top.equalTo(historyLabel.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
-        photoImageView.snp.makeConstraints { make in
+        noPhotoImageView.snp.makeConstraints { make in
             make.width.height.equalTo(88)
             make.top.equalTo(photoLabel.snp.bottom).offset(8)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
-        photoAddButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(photoImageView.snp.top).offset(24)
-            make.leading.equalTo(photoImageView.snp.leading).offset(32)
-            make.trailing.equalTo(photoImageView.snp.trailing).offset(-32)
+        PhotoImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(345)
+            make.top.equalTo(photoLabel.snp.bottom).offset(8)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.trailing.equalTo(contentView.snp.trailing).offset(24)
         }
-        photoAddLabel.snp.makeConstraints { make in
+        noPhotoView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.top.equalTo(noPhotoImageView.snp.top).offset(24)
+            make.leading.equalTo(noPhotoImageView.snp.leading).offset(32)
+            make.trailing.equalTo(noPhotoImageView.snp.trailing).offset(-32)
+        }
+        noPhotoLabel.snp.makeConstraints { make in
             make.width.equalTo(37)
-            make.top.equalTo(photoAddButton.snp.bottom).offset(4)
-            make.leading.equalTo(photoImageView.snp.leading).offset(25)
-            make.trailing.equalTo(photoImageView.snp.trailing).offset(-26)
+            make.top.equalTo(noPhotoView.snp.bottom).offset(4)
+            make.leading.equalTo(noPhotoImageView.snp.leading).offset(25)
+            make.trailing.equalTo(noPhotoImageView.snp.trailing).offset(-26)
         }
     }
 
     func applyConstraintsToContents() {
         contentsLabel.snp.makeConstraints { make in
-            make.top.equalTo(photoImageView.snp.bottom).offset(26)
+            make.top.equalTo(noPhotoImageView.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
         contentsView.snp.makeConstraints { make in
@@ -413,14 +420,9 @@ extension HistoryAddViewController {
 }
 
 // MARK: - Button Actions Extensions
-extension HistoryAddViewController {
-    @objc private func completionButtonTapped() {
-        print("wow wow")
-        guard let image = photoImageView.image else { return }
-        guard let description = contentsTextField.text else { return }
-        HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
-            print("히스토리 성공!")
-        }
+extension UnRegisteredPlanDetailViewController {
+    @objc private func sideBarButtonTapped() {
+        // 사이드버튼 클릭 후
     }
     
     @objc private func photoAddButtonTapped() {
@@ -432,62 +434,20 @@ extension HistoryAddViewController {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         isContentsEntered = !textField.text!.isEmpty
-        updateCompletionButtonColor()
     }
     
-    func updateCompletionButtonColor() {
-        if isContentsEntered || isPhotoUploaded {
-            completionButton.setTitleColor(.purpleMain, for: .normal)
+    func PhotoImageViewUpdate() {
+        if isPhotoUploaded {
+            noPhotoImageView.isHidden = true
+            noPhotoView.isHidden = true
+            noPhotoLabel.isHidden = true
+            PhotoImageView.isHidden = false
         } else {
-            completionButton.setTitleColor(.textDisabled, for: .normal)
-        }
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let pickedImage = info[.originalImage] as? UIImage {
-            photoImageView.image = pickedImage
-            isPhotoUploaded = true
-            updatePhotoImageViewSize()
-            updateCompletionButtonColor()
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func updatePhotoImageViewSize() {
-        photoImageView.clipsToBounds = true
-        
-        photoImageView.snp.remakeConstraints { make in
-            if isPhotoUploaded {
-                make.width.height.equalTo(345)
-                make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(contentView.snp.leading).offset(24)
-            } else {
-                make.width.height.equalTo(88)
-                make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(contentView.snp.leading).offset(24)
-            }
-        }
-        photoAddButton.snp.makeConstraints { make in
-            if isPhotoUploaded {
-                make.width.height.equalTo(24)
-                make.centerX.equalTo(photoImageView)
-                make.centerY.equalTo(photoImageView)
-            } else {
-                make.width.height.equalTo(24)
-                make.top.equalTo(photoImageView.snp.top).offset(24)
-                make.leading.equalTo(photoImageView.snp.leading).offset(32)
-                make.trailing.equalTo(photoImageView.snp.trailing).offset(-32)
-            }
-        }
-        photoAddLabel.snp.makeConstraints { make in
-            if isPhotoUploaded {
-                make.width.equalTo(37)
-                make.top.equalTo(photoAddButton.snp.bottom).offset(4)
-                make.leading.equalTo(photoImageView.snp.leading).offset(25)
-                make.trailing.equalTo(photoImageView.snp.trailing).offset(-26)
-            } else {
-                
-            }
+            noPhotoImageView.isHidden = false
+            noPhotoView.isHidden = false
+            noPhotoLabel.isHidden = false
+            PhotoImageView.isHidden = true
         }
     }
 }
+
