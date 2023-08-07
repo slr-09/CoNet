@@ -123,7 +123,9 @@ class TimeShareViewController: UIViewController {
         $0.font = UIFont.overline
     }
     
-    var page: Int = 1
+    var page: Int = 0
+    
+    var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,26 +138,43 @@ class TimeShareViewController: UIViewController {
         btnClickEvents()
         
         getMemberPossibleTimeAPI()
+        updateTimeTable()
     }
     
     // 구성원 시간 조회
     func getMemberPossibleTimeAPI() {
-        PlanTimeAPI().getMemberPossibleTime(planId: planId) { _, _, planName, _, _, _ in
+        PlanTimeAPI().getMemberPossibleTime(planId: planId) { teamId, planId, planName, planStartPeriod, planEndPeriod, possibleMemberDateTime in
             self.planTitle.text = planName
+            
         }
     }
     
     // 이전, 다음 버튼 ishidden 속성
     func btnVisible() {
-        if page == 1 {
+        if page == 0 {
             prevBtn.isHidden = true
+            nextBtn.isHidden = false
+        } else if page == 1 {
+            prevBtn.isHidden = false
             nextBtn.isHidden = false
         } else if page == 2 {
             prevBtn.isHidden = false
-            nextBtn.isHidden = false
-        } else if page == 3 {
-            prevBtn.isHidden = false
             nextBtn.isHidden = true
+        }
+        updateTimeTable()
+    }
+    
+    func updateTimeTable() {
+        // 날짜
+        date1.text = date[page*3]
+        if page==2 {
+            date2.isHidden = true
+            date3.isHidden = true
+        } else {
+            date2.isHidden = false
+            date3.isHidden = false
+            date2.text = date[page*3+1]
+            date3.text = date[page*3+2]
         }
     }
     
@@ -174,7 +193,7 @@ class TimeShareViewController: UIViewController {
     @objc func didClickInputTimeButton(_ sender: UIView) {
         // 화면 이동
         let nextVC = TimeInputViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func didClickPrevButton() {
@@ -195,7 +214,7 @@ class TimeShareViewController: UIViewController {
     func layoutConstraints() {
         headerConstraintS()
         timetableConstraints()
-        colorExample() // 타임테이블 옆 색 예시
+        colorExample()  // 타임테이블 옆 색 예시
     }
 
     // 헤더 - x버튼, 약속 이름 등
@@ -349,14 +368,16 @@ class TimeShareViewController: UIViewController {
 }
 
 extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     // 셀 클릭 시 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
+                
     }
     
     // 셀 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        24 * 3
+        24*3
     }
     
     // 셀 사이즈 설정
