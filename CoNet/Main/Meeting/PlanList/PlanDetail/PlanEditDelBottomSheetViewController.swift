@@ -25,6 +25,8 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         $0.layer.cornerRadius = 1.5
     }
     
+    let editButton = UIButton().then { $0.backgroundColor = .clear }
+    
     let editView = UIImageView().then {
         $0.image = UIImage(named: "edit")
     }
@@ -34,6 +36,8 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         $0.font = UIFont.body1Medium
         $0.textColor = UIColor.black
     }
+    
+    let deleteButton = UIButton().then { $0.backgroundColor = .clear }
     
     let delView = UIImageView().then {
         $0.image = UIImage(named: "deleteRed")
@@ -51,14 +55,17 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         view.addSubview(background)
         view.addSubview(bottomSheet)
         bottomSheet.addSubview(grayRectangle)
-        bottomSheet.addSubview(editView)
-        bottomSheet.addSubview(editLabel)
-        bottomSheet.addSubview(delView)
-        bottomSheet.addSubview(delLabel)
+        editButton.addSubview(editView)
+        editButton.addSubview(editLabel)
+        deleteButton.addSubview(delView)
+        deleteButton.addSubview(delLabel)
         layoutConstraints()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
+        
+        editButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
     }
     
     @objc func dismissPopUp() {
@@ -88,9 +95,16 @@ class PlanEditDelBottomSheetViewController: UIViewController {
             make.centerX.equalTo(bottomSheet.snp.centerX)
             make.top.equalTo(bottomSheet.snp.top).offset(10)
         }
+        
+        bottomSheet.addSubview(editButton)
+        editButton.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(50)
+            make.top.equalTo(grayRectangle.snp.bottom).offset(33)
+        }
         editView.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.top.equalTo(grayRectangle.snp.bottom).offset(33)
+            make.centerY.equalTo(editButton.snp.centerY)
             make.leading.equalTo(bottomSheet.snp.leading).offset(24)
         }
         editLabel.snp.makeConstraints { make in
@@ -98,9 +112,16 @@ class PlanEditDelBottomSheetViewController: UIViewController {
             make.centerY.equalTo(editView)
             make.leading.equalTo(editView.snp.trailing).offset(6)
         }
+        
+        bottomSheet.addSubview(deleteButton)
+        deleteButton.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(50)
+            make.top.equalTo(editButton.snp.bottom)
+        }
         delView.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.top.equalTo(editView.snp.bottom).offset(26)
+            make.centerY.equalTo(deleteButton.snp.centerY)
             make.leading.equalTo(bottomSheet.snp.leading).offset(24)
         }
         delLabel.snp.makeConstraints { make in
@@ -110,3 +131,13 @@ class PlanEditDelBottomSheetViewController: UIViewController {
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct ViewControllerPreview: PreviewProvider {
+    static var previews: some View {
+        PlanEditDelBottomSheetViewController().showPreview(.iPhone14Pro)
+    }
+}
+#endif
