@@ -249,7 +249,7 @@ extension UnRegisteredPlanDetailViewController {
         contentView.addSubview(noPhotoView)
         contentView.addSubview(noPhotoLabel)
         applyConstraintsToPhoto()
-    
+        
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)
         contentView.addSubview(contentsText)
