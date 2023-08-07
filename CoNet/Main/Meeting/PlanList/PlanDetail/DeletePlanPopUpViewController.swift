@@ -10,8 +10,6 @@ import Then
 import UIKit
 
 class DeletePlanPopUpViewController: UIViewController {
-    var meetingId: Int = 0
-    
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -19,11 +17,11 @@ class DeletePlanPopUpViewController: UIViewController {
     
     // 팝업
     let popUp = PopUpView()
-                    .withNoDescription(title: "모임을 나가시겠습니까?",
+                    .withNoDescription(title: "약속을 삭제하시겠습니까?",
                                        leftButtonTitle: "취소",
                                        leftButtonAction: #selector(dismissPopUp),
-                                       rightButtonTitle: "나가기",
-                                       rightButtonAction: #selector(outMeeting))
+                                       rightButtonTitle: "삭제",
+                                       rightButtonAction: #selector(deletePlan))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,25 +40,9 @@ class DeletePlanPopUpViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    // 이전 ViewController로 데이터를 전달하는 delegate
-    weak var delegate: MeetingMainViewControllerDelegate?
-    
-    // 모임 나가기 버튼 동작
-    @objc func outMeeting(_ sender: UIView) {
-        MeetingAPI().leaveMeeting(id: meetingId) { isSuccess in
-            if isSuccess {
-                self.showMeetingVC()
-            }
-        }
-    }
-    
-    private func showMeetingVC() {
-        // TODO: 모임 탭으로 이동 구현
-        let nextVC = TabbarViewController()
-        self.navigationController?.pushViewController(nextVC, animated: true)
+    // 약속 삭제 버튼 동작
+    @objc func deletePlan(_ sender: UIView) {
         
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
     }
     
     // 모든 layout Constraints
