@@ -60,6 +60,8 @@
 		51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AA82A6147F500AD543D /* ChangeNameViewController.swift */; };
 		51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AAA2A62F60200AD543D /* PreviewExtension.swift */; };
 		512856352A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */; };
+		512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */; };
+		512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
 		513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */; };
@@ -160,6 +162,8 @@
 		51046AA82A6147F500AD543D /* ChangeNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNameViewController.swift; sourceTree = "<group>"; };
 		51046AAA2A62F60200AD543D /* PreviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExtension.swift; sourceTree = "<group>"; };
 		512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePlanPopUpViewController.swift; sourceTree = "<group>"; };
+		512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpViewController.swift; sourceTree = "<group>"; };
+		512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpView.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -358,6 +362,7 @@
 				514D73CF2A59839200404E64 /* MyPageList.swift */,
 				518F55D82A683F68002D8F0F /* PopUpView.swift */,
 				51A3DA122A72BF4D00CAEE2A /* ArrowList.swift */,
+				512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -484,6 +489,7 @@
 				23DE37C22A72A40C00F1DFE0 /* TimeTableView.swift */,
 				23DE37C42A72A6A700F1DFE0 /* TimeTableViewCell.swift */,
 				239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */,
+				512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -692,6 +698,7 @@
 				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */,
 				23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */,
+				512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				51B526CE2A6C4077009DBFB4 /* PastPlanListViewController.swift in Sources */,
 				51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */,
@@ -721,6 +728,7 @@
 				23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */,
 				235F5B732A69893F00ADC0D6 /* CalendarDateFormatter.swift in Sources */,
 				51B526C82A6C3893009DBFB4 /* PlanDummyData.swift in Sources */,
+				512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */,
 				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				23DE37C12A7287BD00F1DFE0 /* TimeShareViewController.swift in Sources */,
 				231E97D12A6BD3F8000BB2AD /* MonthCollectionViewCell.swift in Sources */,
