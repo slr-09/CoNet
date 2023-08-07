@@ -257,9 +257,9 @@ class MeetingMainViewController: UIViewController {
         navigationItem.rightBarButtonItem = barButtonItem
         
         // 뒤로가기 버튼 추가
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        let leftbarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = leftbarButtonItem
+//        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//        let leftbarButtonItem = UIBarButtonItem(customView: backButton)
+//        navigationItem.leftBarButtonItem = leftbarButtonItem
     }
     
     // 뒤로가기 버튼 동작

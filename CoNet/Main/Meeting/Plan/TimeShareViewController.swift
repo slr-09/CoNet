@@ -434,6 +434,11 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected cell at indexPath: \(indexPath)")
         print(indexPath.section, indexPath.row)
+        
+        let nextVC = FixPlanPopUpViewController()
+        nextVC.modalPresentationStyle = .overCurrentContext
+        nextVC.modalTransitionStyle = .crossDissolve
+        present(nextVC, animated: true, completion: nil)
     }
     
     // 셀 수

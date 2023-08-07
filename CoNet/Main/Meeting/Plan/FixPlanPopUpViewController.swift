@@ -7,117 +7,81 @@
 
 import UIKit
 
-class FixPlanPopUpViewController: UIViewController {
-
+class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
+    
+    // 배경 - black 투명도 30%
+    let background = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    }
+    
+    // 팝업
+    let popUp = FixPlanPopUpView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // background color를 clear로 설정 (default: black)
+        view.backgroundColor = .clear
+        
+        layoutConstraints()
+        
+        popUp.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        background.addGestureRecognizer(tapGesture)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 여기에 타임 테이블 블럭 정보 불러와서
+        // 팝업 View 업데이트 하면 됩니당
+        popUp.setDate("2023년 7월 3일 월요일")
+        popUp.setTime("16:00")
+        popUp.setMembers("이안진, 김미보, 김채린, 정아현")
     }
-    */
-
+    
+    func cancel() {
+        dismissPopUp()
+    }
+    
+    func fixPlan() {
+        // 여기에 약속 확정 api 연동
+    }
+    
+    // 배경 탭 시 팝업 닫기
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // 모든 layout Constraints
+    private func layoutConstraints() {
+        backgroundConstraints()
+        popUpConstraints()
+    }
+    
+    // 배경 Constraints
+    private func backgroundConstraints() {
+        view.addSubview(background)
+        background.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(0)
+        }
+    }
+    
+    // 팝업 Constraints
+    private func popUpConstraints() {
+        view.addSubview(popUp)
+        popUp.snp.makeConstraints { make in
+            make.height.equalTo(340)
+            make.leading.equalTo(view.snp.leading).offset(24)
+            make.trailing.equalTo(view.snp.trailing).offset(24)
+            
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
+        }
+    }
 }
 
-/*
- // 배경
- let view = UIView().then {
-     $0.backgroundColor = .white
-     $0.layer.cornerRadius = 10
- }
- 
- // 제목
- let titleLabel = UILabel().then {
-     $0.text = title
-     $0.font = UIFont.headline3Bold
-     $0.textColor = UIColor.textHigh
- }
- 
- // 가로 구분선
- let horizontalDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
- 
- // 세로 짧은 구분선
- let verticalDivider = UIView().then { $0.backgroundColor = UIColor.gray100 }
- 
- // 왼쪽 버튼
- let leftButton = UIButton().then { $0.backgroundColor = .clear }
- let leftButtonTitle = UILabel().then {
-     $0.text = leftButtonTitle
-     $0.font = UIFont.body1Medium
-     $0.textColor = UIColor.textMedium
- }
- 
- // 오른쪽 버튼
- let rightButton = UIButton().then { $0.backgroundColor = .clear }
- let rightButtonTitle = UILabel().then {
-     $0.text = rightButtonTitle
-     $0.font = UIFont.body1Bold
-     $0.textColor = UIColor.purpleMain
- }
- 
- view.snp.makeConstraints { make in
-     make.height.equalTo(180)
- }
- 
- view.addSubview(titleLabel)
- titleLabel.snp.makeConstraints { make in
-     make.height.equalTo(22)
-     make.centerX.equalTo(view.snp.centerX)
-     make.top.equalTo(view.snp.top).offset(54)
- }
- 
- view.addSubview(horizontalDivider)
- horizontalDivider.snp.makeConstraints { make in
-     make.height.equalTo(1)
-     make.width.equalTo(view.snp.width)
-     make.bottom.equalTo(view.snp.bottom).offset(-60)
- }
- 
- view.addSubview(verticalDivider)
- verticalDivider.snp.makeConstraints { make in
-     make.height.equalTo(24)
-     make.width.equalTo(1)
-     make.centerX.equalTo(view.snp.centerX)
-     make.bottom.equalTo(view.snp.bottom).offset(-18)
- }
- 
- view.addSubview(leftButton)
- leftButton.snp.makeConstraints { make in
-     make.width.equalTo(view.snp.width).dividedBy(2)
-     make.height.equalTo(60)
-     make.leading.equalTo(view.snp.leading)
-     make.bottom.equalTo(view.snp.bottom)
- }
- 
- leftButton.addSubview(leftButtonTitle)
- leftButtonTitle.snp.makeConstraints { make in
-     make.height.equalTo(20)
-     make.center.equalTo(leftButton.snp.center)
- }
- 
- view.addSubview(rightButton)
- rightButton.snp.makeConstraints { make in
-     make.width.equalTo(view.snp.width).dividedBy(2)
-     make.height.equalTo(60)
-     make.trailing.equalTo(view.snp.trailing)
-     make.bottom.equalTo(view.snp.bottom)
- }
- 
- rightButton.addSubview(rightButtonTitle)
- rightButtonTitle.snp.makeConstraints { make in
-     make.height.equalTo(20)
-     make.center.equalTo(rightButton.snp.center)
- }
- 
- leftButton.addTarget(self, action: leftButtonAction, for: .touchUpInside)
- rightButton.addTarget(self, action: rightButtonAction, for: .touchUpInside)
- */
+protocol FixPlanDelegate: AnyObject {
+    func cancel()
+    func fixPlan()
+}
