@@ -282,7 +282,17 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
+        if collectionView == dayPlanCollectionView {
+            print("Selected 오늘 cell at indexPath: \(indexPath)")
+            let nextVC = PlanInfoViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        } else {
+            print("Selected 대기 cell at indexPath: \(indexPath.item)")
+            let nextVC = TimeShareViewController()
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // 셀 개수

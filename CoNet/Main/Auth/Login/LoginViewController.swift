@@ -6,6 +6,7 @@
 //
 
 import AuthenticationServices
+import KakaoSDKAuth
 import KakaoSDKUser
 import KeychainSwift
 import SnapKit
@@ -236,6 +237,7 @@ class LoginViewController: UIViewController {
     // 카카오 로그인
     private func kakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
+            print("kakao available")
             // 카카오톡 앱 로그인
             UserApi.shared.loginWithKakaoTalk { [weak self] oauthToken, error in
                 if let error = error {
@@ -262,6 +264,7 @@ class LoginViewController: UIViewController {
                 }
             }
         } else {
+            print("kakao 앱 불가능")
             // 카카오톡 웹 로그인
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in
                 if let error = error {
