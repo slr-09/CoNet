@@ -79,9 +79,6 @@ class TimeInputViewController: UIViewController {
         $0.layer.cornerRadius = 12
     }
     
-    // 가능한 시간 없음 버튼 클릭 여부 체크
-    var possibleTimeCheck = false
-    
     /* 나의 가능한 시간 조회 시
      * hasRegisteredTime: false, hasPossibleTime: false -> 입력한 적 없는 초기 상태
      * hasRegisteredTime: true, hasPossibleTime: false -> 가능한 시간 없음 버튼 클릭 상태
@@ -89,6 +86,8 @@ class TimeInputViewController: UIViewController {
      */
     var hasRegisteredTime = false
     var hasPossibleTime = false
+    // 0: 입력한 적 없는 초기 상태, 1: 가능한 시간 없음 버튼 클릭 상태, 2: 시간 있음
+    var timeStateCheck = -1
     
     // 현재 페이지
     var page: Int = 0
@@ -123,9 +122,15 @@ class TimeInputViewController: UIViewController {
             self.possibleTime = possibleTime
             self.hasRegisteredTime = hasRegisteredTime
             self.hasPossibleTime = hasPossibleTime
+            
             if hasRegisteredTime && !hasPossibleTime {
-                self.possibleTimeCheck = true
+                self.timeStateCheck = 1
+            } else if !hasRegisteredTime && !hasPossibleTime {
+                self.timeStateCheck = 0
+            } else if hasRegisteredTime && hasPossibleTime {
+                self.timeStateCheck = 2
             }
+            
             print("pp", possibleTime)
             self.timeTable.timeTableCollectionView.reloadData()
         }
@@ -177,21 +182,21 @@ class TimeInputViewController: UIViewController {
     // 가능한 시간 없음 버튼 클릭 시
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
-        possibleTimeCheck = !possibleTimeCheck
-        if possibleTimeCheck {
-            hasRegisteredTime = true
-            hasPossibleTime = false
+        if timeStateCheck == 1 {
+            if !hasRegisteredTime && !hasPossibleTime {
+                timeStateCheck = 0
+            } else if hasRegisteredTime && hasPossibleTime {
+                timeStateCheck = 2
+            }
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.textDisabled
+        } else {
+            timeStateCheck = 1
+            timeImpossibleButton.setImage(UIImage(named: "timeImpossibleSelected"), for: .normal)
+            timeImpossibleLabel.textColor = UIColor.purpleMain
         }
         
         timeTable.timeTableCollectionView.reloadData()
-        
-        if possibleTimeCheck {
-            timeImpossibleButton.setImage(UIImage(named: "timeImpossibleSelected"), for: .normal)
-            timeImpossibleLabel.textColor = UIColor.purpleMain
-        } else {
-            timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
-            timeImpossibleLabel.textColor = UIColor.textDisabled
-        }
     }
     
     // 날짜 이전 버튼 클릭
@@ -316,7 +321,7 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         print("Selected cell at indexPath: \(indexPath)")
         
         // 가능한 시간 없은 버튼 체크하지 않은 경우만
-        if !possibleTimeCheck {
+        if timeStateCheck != 1 {
             // change cell background color
             let cell  = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
             cell.changeCellColor()
@@ -354,14 +359,16 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
         
         // 가능한 시간 없음 버튼 클릭 여부 체크
-        if possibleTimeCheck {
+        if timeStateCheck == 1 {
             cell.contentView.backgroundColor = UIColor.gray50
-        } else if hasRegisteredTime && hasPossibleTime {
+        } else if timeStateCheck == 2 {
             if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
                 cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
             } else {
                 cell.contentView.backgroundColor = .white
             }
+        } else if timeStateCheck == 0 {
+            cell.contentView.backgroundColor = .white
         }
         
         return cell
