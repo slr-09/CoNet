@@ -293,6 +293,13 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		512675862A81DEA800AFC46C /* Member */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
 		513D6B7C2A4BFCCC00E9ACDA = {
 			isa = PBXGroup;
 			children = (
@@ -471,6 +478,7 @@
 		5199BCD82A7242AD00CE585C /* PlanDetail */ = {
 			isa = PBXGroup;
 			children = (
+				512675862A81DEA800AFC46C /* Member */,
 				1AA197C02A816432001064F8 /* MemberCollectionViewCell.swift */,
 				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
 				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
