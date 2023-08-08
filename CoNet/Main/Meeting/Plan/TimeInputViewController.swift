@@ -112,7 +112,7 @@ class TimeInputViewController: UIViewController {
         
         btnClickEvents()
         
-        for index in 0..<7 {
+        for index in 0 ..< 7 {
             possibleTime[index].date = sendDate[index]
         }
     }
@@ -126,7 +126,6 @@ class TimeInputViewController: UIViewController {
     func getMyPossibleTimeAPI() {
         // 내가 입력한 시간 조회 api
         PlanTimeAPI().getMyPossibleTime(planId: planId) { _, _, hasRegisteredTime, hasPossibleTime, possibleTime in
-            self.possibleTime = possibleTime
             self.hasRegisteredTime = hasRegisteredTime
             self.hasPossibleTime = hasPossibleTime
             
@@ -136,6 +135,11 @@ class TimeInputViewController: UIViewController {
                 self.timeStateCheck = 0
             } else if hasRegisteredTime && hasPossibleTime {
                 self.timeStateCheck = 2
+            }
+            
+            // 입력한 시간 있을 때만 배열 초기화
+            if self.timeStateCheck == 2 {
+                self.possibleTime = possibleTime
             }
             
             self.timeTable.timeTableCollectionView.reloadData()
@@ -329,7 +333,13 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
         if timeStateCheck != 1 {
             // change cell background color
             let cell = collectionView.cellForItem(at: indexPath) as! TimeTableViewCell
-            cell.changeCellColor()
+            let num = cell.changeCellColor()
+            // 클릭 시 possibleTime 배열에 추가/삭제
+            if num == 1 {
+                possibleTime[page*3 + indexPath.section].time.append(indexPath.row)
+            } else if num == 0 {
+                possibleTime[page*3 + indexPath.section].time.removeAll { $0 == indexPath.row }
+            }
         }
     }
     
