@@ -9,7 +9,7 @@ import UIKit
 
 class DecidedPlanInfoViewController: UIViewController {
     var planId: Int = 0
-    var members: [PlanDetailMember] = [PlanDetailMember(id: 0, name: "야", image: ""), PlanDetailMember(id: 0, name: "외", image: ""), PlanDetailMember(id: 0, name: "수", image: "")]
+    var members: [PlanDetailMember] = []
     
     // 배경 - .clear
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
@@ -224,13 +224,3 @@ extension DecidedPlanInfoViewController: PlanInfoViewControllerDelegate {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        DecidedPlanInfoViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

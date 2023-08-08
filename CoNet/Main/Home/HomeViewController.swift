@@ -285,8 +285,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == dayPlanCollectionView {
-            print("Selected 오늘 cell at indexPath: \(indexPath)")
-            let nextVC = PlanInfoViewController()
+            let nextVC = DecidedPlanInfoViewController()
             nextVC.planId = dayPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
