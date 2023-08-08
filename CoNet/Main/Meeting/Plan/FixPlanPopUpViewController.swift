@@ -17,6 +17,9 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     // 팝업
     let popUp = FixPlanPopUpView()
     
+    var date: String = "2023년 7월 3일 월요일"
+    var time: String = "16:00"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,8 +38,8 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
         
         // 여기에 타임 테이블 블럭 정보 불러와서
         // 팝업 View 업데이트 하면 됩니당
-        popUp.setDate("2023년 7월 3일 월요일")
-        popUp.setTime("16:00")
+        popUp.setDate(date)
+        popUp.setTime(time)
         popUp.setMembers("이안진, 김미보, 김채린, 정아현")
     }
     

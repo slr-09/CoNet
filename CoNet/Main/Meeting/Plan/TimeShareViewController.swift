@@ -440,9 +440,24 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         print("Selected cell at indexPath: \(indexPath)")
         print(indexPath.section, indexPath.row)
         
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        // 넘길 날짜
+        let date = format.date(from: sendDate[page*3 + indexPath.section])!
+        // 요일
+        let cal = Calendar.current
+        let dayOfWeek = cal.component(.weekday, from: date)
+        
+        format.dateFormat = "yyyy년 M월 d일"
+        
+        let stringDate = format.string(from: date)
+        
         // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
         if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
             let nextVC = FixPlanPopUpViewController()
+            nextVC.time = String(indexPath.row) + ":00"
+            nextVC.date = stringDate + " " + cal.shortWeekdaySymbols[dayOfWeek-1] + "요일"
             nextVC.modalPresentationStyle = .overCurrentContext
             nextVC.modalTransitionStyle = .crossDissolve
             present(nextVC, animated: true, completion: nil)
