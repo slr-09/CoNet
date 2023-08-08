@@ -63,6 +63,8 @@ class FixPlanInfoViewController: UIViewController {
         $0.layer.cornerRadius = 12
     }
     
+    var timeShareVC: TimeShareViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -71,6 +73,8 @@ class FixPlanInfoViewController: UIViewController {
         
         layoutConstraints()
         setupCollectionView()
+        
+        completeButton.addTarget(self, action: #selector(didClickCompleteButton), for: .touchUpInside)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -106,6 +110,11 @@ class FixPlanInfoViewController: UIViewController {
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
         bottomSheetViewController.modalTransitionStyle = .crossDissolve
         present(bottomSheetViewController, animated: true, completion: nil)
+    }
+    
+    @objc func didClickCompleteButton() {
+        navigationController?.popViewController(animated: true)
+        timeShareVC?.popPage()
     }
     
     // 전체 layout

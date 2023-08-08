@@ -438,8 +438,14 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
     // 약속 확정 버튼 클릭 시
     func pushFixPlanInfo() {
         let nextVC = FixPlanInfoViewController()
+        nextVC.timeShareVC = self
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    // 화면 pop
+    func popPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -510,4 +516,5 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
 }
 protocol TimeShareProtocol {
     func pushFixPlanInfo()
+    func popPage()
 }
