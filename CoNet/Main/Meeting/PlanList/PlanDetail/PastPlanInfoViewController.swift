@@ -211,6 +211,7 @@ class PastPlanInfoViewController: UIViewController {
     
     @objc private func showBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.planId = planId
         bottomSheetViewController.delegate = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
         bottomSheetViewController.modalTransitionStyle = .crossDissolve

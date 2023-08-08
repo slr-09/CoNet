@@ -25,8 +25,6 @@ class PlanTimeAPI {
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
-                    print("DEBUG(getMemberPossibleTime api): \(result)")
-                    
                     completion(result.teamId, result.planId, result.planName, result.planStartPeriod, result.planEndPeriod, result.sectionMemberCounts, result.possibleMemberDateTime)
 
                 case .failure(let error):
@@ -67,9 +65,15 @@ class PlanTimeAPI {
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
         
+        var times: [[String: Any]] = []
+        for time in possibleDateTimes {
+            let data = ["date": time.date, "time": time.time] as [String: Any]
+            times.append(data)
+        }
+
         let body: [String: Any] = [
             "planId": planId,
-            "possibleDateTimes": possibleDateTimes
+            "possibleDateTimes": times
         ]
         
         AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
