@@ -72,6 +72,15 @@ class DecidedPlanInfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
+        
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.nameRow.setText(plans.planName)
+            self.dateRow.setText(plans.date)
+            self.timeRow.setText(plans.time)
+            
+//            self.members = plans.members
+//            self.memberCollectionView.reloadData()
+        }
     }
     
     private func setupCollectionView() {
