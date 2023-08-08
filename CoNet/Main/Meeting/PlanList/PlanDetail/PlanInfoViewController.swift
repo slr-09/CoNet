@@ -239,7 +239,12 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
             
             self.members = plans.members
             self.memberCollectionView.reloadData()
+            
+            self.ishistoryExisted = plans.isRegisteredToHistory
+            
+            self.historyExists()
             self.layoutConstraints()
+            self.loadViewIfNeeded()
         }
     }
 

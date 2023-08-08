@@ -70,9 +70,6 @@ class MeetingMainAPI {
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
-                    print("DEBUG(get meeting waiting plan api): \(result)")
-                    
-                    print("wowowow", result.count)
                     completion(result.count, result.plans)
 
                 case .failure(let error):

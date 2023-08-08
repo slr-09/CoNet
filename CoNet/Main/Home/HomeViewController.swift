@@ -50,6 +50,7 @@ class HomeViewController: UIViewController {
     
     // 오늘 약속 collectionView
     private lazy var dayPlanCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.isScrollEnabled = false
     }
     
@@ -238,9 +239,10 @@ class HomeViewController: UIViewController {
         
         // collectionView: 오늘의 약속
         dayPlanCollectionView.snp.makeConstraints { make in
+            let height = (dayPlanData.count - 1) * 100 + 90
+            make.height.equalTo(height)
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(dayPlanData.count*100 - 10)
         }
         
         // label: 대기 중 약속
