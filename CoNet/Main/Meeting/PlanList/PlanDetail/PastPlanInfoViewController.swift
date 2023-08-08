@@ -165,7 +165,31 @@ class PastPlanInfoViewController: UIViewController {
             self.members = plans.members
             self.memberCollectionView.reloadData()
             
-            self.layoutConstraints()
+            if plans.isRegisteredToHistory {
+                self.isHistoryExist = true
+                self.historyContentsConstraints()
+                
+                if let imgUrl = plans.historyImgUrl {
+                    self.isPhotoExist = true
+                    self.photoImageConstraints()
+                } else {
+                    self.isPhotoExist = false
+                    self.noPhotoImageConstraints()
+                }
+                
+                if let description = plans.historyDescription {
+                    self.isDescriptionExist = true
+                    self.descriptionContraints()
+                } else {
+                    self.isDescriptionExist = false
+                    self.descriptionContraints()
+                }
+            } else {
+                self.isHistoryExist = false
+                self.isPhotoExist = false
+                self.isDescriptionExist = false
+                self.historyAddButtonConstraints()
+            }
         }
     }
     
@@ -191,12 +215,6 @@ extension PastPlanInfoViewController {
         rowConstraints()
         memberConstraints()
         historyLabelConstraints()
-        if self.isHistoryExist {
-            historyContentsConstraints()
-        } else {
-            historyAddButtonConstraints()
-        }
-        descriptionContraints()
     }
     
     // scrollview, contentsview layout
@@ -313,25 +331,16 @@ extension PastPlanInfoViewController {
         }
         
         contentsView.addSubview(photoView)
-        if self.isPhotoExist {
-            photoView.snp.makeConstraints { make in
-                make.width.height.equalTo(contentsView.snp.width).offset(-48)
-                make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(contentsView.snp.leading).offset(24)
-            }
-            photoImageConstraints()
-        } else {
-            photoView.snp.makeConstraints { make in
-                make.width.height.equalTo(88)
-                make.top.equalTo(photoLabel.snp.bottom).offset(8)
-                make.leading.equalTo(contentsView.snp.leading).offset(24)
-            }
-            noPhotoImageConstraints()
-        }
     }
     
     // 사진 없음 layout
     private func noPhotoImageConstraints() {
+        photoView.snp.makeConstraints { make in
+            make.width.height.equalTo(88)
+            make.top.equalTo(photoLabel.snp.bottom).offset(8)
+            make.leading.equalTo(contentsView.snp.leading).offset(24)
+        }
+        
         photoView.addSubview(noPhotoImageView)
         noPhotoImageView.snp.makeConstraints { make in
             make.width.height.equalTo(88)
@@ -356,6 +365,12 @@ extension PastPlanInfoViewController {
     
     // 사진 layout
     private func photoImageConstraints() {
+        photoView.snp.makeConstraints { make in
+            make.width.height.equalTo(contentsView.snp.width).offset(-48)
+            make.top.equalTo(photoLabel.snp.bottom).offset(8)
+            make.leading.equalTo(contentsView.snp.leading).offset(24)
+        }
+        
         photoView.addSubview(photoImageView)
         photoImageView.snp.makeConstraints { make in
             make.width.height.equalToSuperview()
