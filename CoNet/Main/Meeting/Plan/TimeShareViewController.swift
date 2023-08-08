@@ -440,10 +440,13 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         print("Selected cell at indexPath: \(indexPath)")
         print(indexPath.section, indexPath.row)
         
-        let nextVC = FixPlanPopUpViewController()
-        nextVC.modalPresentationStyle = .overCurrentContext
-        nextVC.modalTransitionStyle = .crossDissolve
-        present(nextVC, animated: true, completion: nil)
+        // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
+        if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
+            let nextVC = FixPlanPopUpViewController()
+            nextVC.modalPresentationStyle = .overCurrentContext
+            nextVC.modalTransitionStyle = .crossDissolve
+            present(nextVC, animated: true, completion: nil)
+        }
     }
     
     // 셀 수
