@@ -418,10 +418,10 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
             if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
                 cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
             } else {
-                cell.contentView.backgroundColor = .white
+                cell.contentView.backgroundColor = UIColor.grayWhite
             }
         } else if timeStateCheck == 0 {
-            cell.contentView.backgroundColor = .white
+            cell.contentView.backgroundColor = UIColor.grayWhite
         }
         
         return cell

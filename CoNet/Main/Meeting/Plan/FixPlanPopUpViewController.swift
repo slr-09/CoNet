@@ -24,6 +24,8 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     var memberList: String = "이안진, 김미보, 김채린, 정아현"
     var userIds: [Int] = []
     
+    var timeShareVC: TimeShareViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -65,16 +67,16 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     
     func fixPlan() {
         // 약속 확정 api 연동
-        PlanAPI().fixPlan(planId: planId, fixedDate: date, fixedTime: time, userId: userIds)
-        
-        // TODO: 약속 상세 페이지로 이동 추가
+//        PlanAPI().fixPlan(planId: planId, fixedDate: date, fixedTime: time, userId: userIds)
         
         dismissPopUp()
     }
     
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.timeShareVC?.pushFixPlanInfo()
+        }
     }
     
     // 모든 layout Constraints

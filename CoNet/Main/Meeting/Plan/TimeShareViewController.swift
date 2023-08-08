@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class TimeShareViewController: UIViewController {
+class TimeShareViewController: UIViewController, TimeShareProtocol {
     var planId: Int = 0
     
     // x 버튼
@@ -135,6 +135,8 @@ class TimeShareViewController: UIViewController {
     var possibleMemberDateTime: [PossibleMemberDateTime] = []
     
     var apiCheck = false
+    
+    var fixPlanInfoVC: DecidedPlanInfoViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -432,6 +434,13 @@ class TimeShareViewController: UIViewController {
             make.bottom.equalTo(purpleEx4.snp.bottom)
         }
     }
+    
+    // 약속 확정 버튼 클릭 시
+    func pushFixPlanInfo() {
+        let nextVC = FixPlanInfoViewController()
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
 }
 
 extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -449,6 +458,7 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
         if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
             let nextVC = FixPlanPopUpViewController()
+            nextVC.timeShareVC = self
             nextVC.planId = planId
             nextVC.time = indexPath.row
             nextVC.date = sendDate[page*3 + indexPath.section]
@@ -497,4 +507,7 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         
         return cell
     }
+}
+protocol TimeShareProtocol {
+    func pushFixPlanInfo()
 }
