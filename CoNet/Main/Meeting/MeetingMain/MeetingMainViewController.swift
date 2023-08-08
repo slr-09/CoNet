@@ -425,7 +425,10 @@ extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewD
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
-            
+            let nextVC = TimeShareViewController()
+            nextVC.planId = waitingPlanData[indexPath.item].planId
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
         }
     }
     

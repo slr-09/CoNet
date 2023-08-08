@@ -290,7 +290,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
-            print("Selected 대기 cell at indexPath: \(indexPath.item)")
             let nextVC = TimeShareViewController()
             nextVC.planId = waitingPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
