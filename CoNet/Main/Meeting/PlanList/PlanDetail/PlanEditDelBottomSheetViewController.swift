@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class PlanEditDelBottomSheetViewController: UIViewController {
+    var planId: Int = 0
+    
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
@@ -74,6 +76,7 @@ class PlanEditDelBottomSheetViewController: UIViewController {
     
     @objc func showPlanEditVC() {
         let popUpVC = PlanInfoEditViewController()
+        popUpVC.planId = planId
         popUpVC.modalPresentationStyle = .overCurrentContext
         popUpVC.modalTransitionStyle = .crossDissolve
         present(popUpVC, animated: true, completion: nil)
