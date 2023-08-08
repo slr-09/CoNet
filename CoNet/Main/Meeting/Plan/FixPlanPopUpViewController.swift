@@ -8,6 +8,7 @@
 import UIKit
 
 class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
+    var planId: Int = 0
     
     // 배경 - black 투명도 30%
     let background = UIView().then {
@@ -19,8 +20,9 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     
     var date: String = "2023-07-03"
     var weekOfDay: String = "월요일"
-    var time: String = "16:00"
+    var time: Int = 0
     var memberList: String = "이안진, 김미보, 김채린, 정아현"
+    var userIds: [Int] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +55,7 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
         // 여기에 타임 테이블 블럭 정보 불러와서
         // 팝업 View 업데이트 하면 됩니당
         popUp.setDate(stringDate + cal.shortWeekdaySymbols[dayOfWeek-1] + "요일")
-        popUp.setTime(time)
+        popUp.setTime(String(time) + ":00")
         popUp.setMembers(memberList)
     }
     
@@ -62,7 +64,12 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     }
     
     func fixPlan() {
-        // 여기에 약속 확정 api 연동
+        // 약속 확정 api 연동
+        PlanAPI().fixPlan(planId: planId, fixedDate: date, fixedTime: time, userId: userIds)
+        
+        // TODO: 약속 상세 페이지로 이동 추가
+        
+        dismissPopUp()
     }
     
     // 배경 탭 시 팝업 닫기

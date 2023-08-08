@@ -444,14 +444,16 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         format.dateFormat = "yyyy-MM-dd"
         
         // 해당 시간에 가능한 멤버
-        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row].memberNames
+        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row]
         
         // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
         if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
             let nextVC = FixPlanPopUpViewController()
-            nextVC.time = String(indexPath.row) + ":00"
+            nextVC.planId = planId
+            nextVC.time = indexPath.row
             nextVC.date = sendDate[page*3 + indexPath.section]
-            nextVC.memberList = memberList.joined(separator: ", ")
+            nextVC.memberList = memberList.memberNames.joined(separator: ", ")
+            nextVC.userIds = memberList.memberIds
             nextVC.modalPresentationStyle = .overCurrentContext
             nextVC.modalTransitionStyle = .crossDissolve
             present(nextVC, animated: true, completion: nil)

@@ -275,8 +275,8 @@ class PlanAPI {
     }
     
     // 약속 확정
-    func fixPlan(planId: Int, fixedDate: String, fixedTime: String, userId: [Int]) {
-        let url = "\(baseUrl)/team/plan/delete"
+    func fixPlan(planId: Int, fixedDate: String, fixedTime: Int, userId: [Int]) {
+        let url = "\(baseUrl)/team/plan/fix"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
@@ -292,10 +292,10 @@ class PlanAPI {
         .responseDecodable(of: BaseResponse<String>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(약속 삭제 api) success response: \(response)")
+                print("DEBUG(약속 확정 api) success response: \(response.result ?? "empty")")
                 
             case .failure(let error):
-                print("DEBUG(약속 삭제 api) error: \(error)")
+                print("DEBUG(약속 확정 api) error: \(error)")
             }
         }
     }
