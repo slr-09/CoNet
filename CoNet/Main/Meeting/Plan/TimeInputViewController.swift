@@ -188,7 +188,7 @@ class TimeInputViewController: UIViewController {
     
     // timePossible 배열에 time 정보가 비었는지 확인
     func timePossibleCountCheck() {
-        for index in 0..<7 {
+        for index in 0 ..< 7 {
             timeStateCheck = 2
             if possibleTime[index].time.count > 0 {
                 return
@@ -245,7 +245,7 @@ class TimeInputViewController: UIViewController {
         if saveButton.backgroundColor == UIColor.purpleMain {
             // 가능한 시간 없음 버튼 클릭 시 빈 배열로 초기화
             if timeStateCheck == 1 {
-                for index in 0..<7 {
+                for index in 0 ..< 7 {
                     possibleTime[index].time.removeAll()
                 }
             }
@@ -418,10 +418,10 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
             if possibleTime[page*3 + indexPath.section].time.contains(indexPath.row) {
                 cell.contentView.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5)
             } else {
-                cell.contentView.backgroundColor = .white
+                cell.contentView.backgroundColor = UIColor.grayWhite
             }
         } else if timeStateCheck == 0 {
-            cell.contentView.backgroundColor = .white
+            cell.contentView.backgroundColor = UIColor.grayWhite
         }
         
         return cell

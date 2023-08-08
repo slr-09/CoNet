@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class TimeShareViewController: UIViewController {
+class TimeShareViewController: UIViewController, TimeShareProtocol {
     var planId: Int = 0
     
     // x 버튼
@@ -136,6 +136,8 @@ class TimeShareViewController: UIViewController {
     
     var apiCheck = false
     
+    var fixPlanInfoVC: DecidedPlanInfoViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -166,7 +168,7 @@ class TimeShareViewController: UIViewController {
             self.timeTable.timeTableCollectionView.reloadData()
             
             // 인원 수 별 셀 색 예시 인원
-            for index in 0..<sectionMemberCounts.count {
+            for index in 0 ..< sectionMemberCounts.count {
                 let sectionIndex = sectionMemberCounts[index].section
                 if sectionMemberCounts[index].memberCount.count == 1 {
                     self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0])
@@ -229,8 +231,8 @@ class TimeShareViewController: UIViewController {
         } else {
             date2.isHidden = false
             date3.isHidden = false
-            date2.text = date[page*3+1]
-            date3.text = date[page*3+2]
+            date2.text = date[page*3 + 1]
+            date3.text = date[page*3 + 2]
         }
     }
     
@@ -432,6 +434,19 @@ class TimeShareViewController: UIViewController {
             make.bottom.equalTo(purpleEx4.snp.bottom)
         }
     }
+    
+    // 약속 확정 버튼 클릭 시
+    func pushFixPlanInfo() {
+        let nextVC = FixPlanInfoViewController()
+        nextVC.timeShareVC = self
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    // 화면 pop
+    func popPage() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -440,10 +455,25 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         print("Selected cell at indexPath: \(indexPath)")
         print(indexPath.section, indexPath.row)
         
-        let nextVC = FixPlanPopUpViewController()
-        nextVC.modalPresentationStyle = .overCurrentContext
-        nextVC.modalTransitionStyle = .crossDissolve
-        present(nextVC, animated: true, completion: nil)
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        // 해당 시간에 가능한 멤버
+        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row]
+        
+        // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
+        if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
+            let nextVC = FixPlanPopUpViewController()
+            nextVC.timeShareVC = self
+            nextVC.planId = planId
+            nextVC.time = indexPath.row
+            nextVC.date = sendDate[page*3 + indexPath.section]
+            nextVC.memberList = memberList.memberNames.joined(separator: ", ")
+            nextVC.userIds = memberList.memberIds
+            nextVC.modalPresentationStyle = .overCurrentContext
+            nextVC.modalTransitionStyle = .crossDissolve
+            present(nextVC, animated: true, completion: nil)
+        }
     }
     
     // 셀 수
@@ -483,4 +513,8 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         
         return cell
     }
+}
+protocol TimeShareProtocol {
+    func pushFixPlanInfo()
+    func popPage()
 }
