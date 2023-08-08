@@ -14,9 +14,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
     
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
-    var members: [PlanDetailMember] = [PlanDetailMember(id: 0, name: "참여참여", image: "space"),
-                                       PlanDetailMember(id: 0, name: "참여참2", image: "space"),
-                                       PlanDetailMember(id: 0, name: "참여참3", image: "space")]
+    var members: [PlanDetailMember] = []
     
     var isPhotoUploaded = false
     var isTextUploaded = false
@@ -95,33 +93,6 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         $0.isScrollEnabled = false
         $0.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
-    
-//    let member1ImageView = UIImageView().then {
-//        $0.image = UIImage(named: "defaultProfile")
-//    }
-//
-//    let member1NameLabel = UILabel().then {
-//        $0.text = "참여자 이름"
-//        $0.font = UIFont.body2Medium
-//    }
-//
-//    let member2ImageView = UIImageView().then {
-//        $0.image = UIImage(named: "defaultProfile")
-//    }
-//
-//    let member2NameLabel = UILabel().then {
-//        $0.text = "참여자 이름"
-//        $0.font = UIFont.body2Medium
-//    }
-//
-//    let member3ImageView = UIImageView().then {
-//        $0.image = UIImage(named: "defaultProfile")
-//    }
-//
-//    let member3NameLabel = UILabel().then {
-//        $0.text = "참여자 이름"
-//        $0.font = UIFont.body2Medium
-//    }
     
     let grayLine4 = UIView().then {
         $0.backgroundColor = UIColor.gray50
@@ -227,10 +198,6 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         
         layoutConstraints()
         setupCollectionView()
-
-        var isPhotoUploaded = false
-        var isTextUploaded = false
-        var ishistoryExisted = false
         
         hidePhotoViews()
         showPhotoViews()
@@ -269,7 +236,10 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-//            self.member1NameLabel.text = plans.members[0].name
+            
+            self.members = plans.members
+            self.memberCollectionView.reloadData()
+            self.layoutConstraints()
         }
     }
 
@@ -303,8 +273,10 @@ extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewData
             return UICollectionViewCell()
         }
         
-        cell.profileImage.image = UIImage(named: members[indexPath.item].image)
         cell.name.text = members[indexPath.item].name
+        if let url = URL(string: members[indexPath.item].image) {
+            cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        }
         
         return cell
     }
@@ -364,12 +336,6 @@ extension PlanInfoViewController {
         
         contentView.addSubview(memberLabel)
         contentView.addSubview(memberCollectionView)
-//        contentView.addSubview(member1ImageView)
-//        contentView.addSubview(member1NameLabel)
-//        contentView.addSubview(member2ImageView)
-//        contentView.addSubview(member2NameLabel)
-//        contentView.addSubview(member3ImageView)
-//        contentView.addSubview(member3NameLabel)
         applyConstraintsToMember()
         
         contentView.addSubview(grayLine4)
@@ -469,42 +435,14 @@ extension PlanInfoViewController {
         
         memberCollectionView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
+            
             var memberRow = ceil(Double(members.count) / 2.0)
             var height = (memberRow * 42) + ((memberRow - 1) * 10)
             make.height.equalTo(height)
+            
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
             make.leading.trailing.equalToSuperview().inset(24)
         }
-//        member1ImageView.snp.makeConstraints { make in
-//            make.width.height.equalTo(42)
-//            make.top.equalTo(memberLabel.snp.bottom).offset(14)
-//            make.leading.equalTo(contentView.snp.leading).offset(24)
-//        }
-//        member1NameLabel.snp.makeConstraints { make in
-//            make.width.equalTo(93)
-//            make.centerY.equalTo(member1ImageView)
-//            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
-//        }
-//        member2ImageView.snp.makeConstraints { make in
-//            make.width.height.equalTo(42)
-//            make.centerY.equalTo(member1ImageView)
-//            make.leading.equalTo(member1ImageView.snp.trailing).offset(138)
-//        }
-//        member2NameLabel.snp.makeConstraints { make in
-//            make.width.equalTo(93)
-//            make.centerY.equalTo(member2ImageView)
-//            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
-//        }
-//        member3ImageView.snp.makeConstraints { make in
-//            make.width.height.equalTo(42)
-//            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
-//            make.leading.equalTo(contentView.snp.leading).offset(24)
-//        }
-//        member3NameLabel.snp.makeConstraints { make in
-//            make.width.equalTo(93)
-//            make.centerY.equalTo(member3ImageView)
-//            make.leading.equalTo(member3ImageView.snp.trailing).offset(10)
-//        }
     }
     
     func applyConstraintsToHistory() {
