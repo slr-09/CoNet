@@ -17,8 +17,10 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     // 팝업
     let popUp = FixPlanPopUpView()
     
-    var date: String = "2023년 7월 3일 월요일"
+    var date: String = "2023-07-03"
+    var weekOfDay: String = "월요일"
     var time: String = "16:00"
+    var memberList: String = "이안진, 김미보, 김채린, 정아현"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +38,23 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        let datetype = format.date(from: date)!
+        
+        let cal = Calendar.current
+        let dayOfWeek = cal.component(.weekday, from: datetype)
+        
+        format.dateFormat = "yyyy년 M월 d일 "
+        
+        let stringDate = format.string(from: datetype)
+        
         // 여기에 타임 테이블 블럭 정보 불러와서
         // 팝업 View 업데이트 하면 됩니당
-        popUp.setDate(date)
+        popUp.setDate(stringDate + cal.shortWeekdaySymbols[dayOfWeek-1] + "요일")
         popUp.setTime(time)
-        popUp.setMembers("이안진, 김미보, 김채린, 정아현")
+        popUp.setMembers(memberList)
     }
     
     func cancel() {

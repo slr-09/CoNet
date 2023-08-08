@@ -166,7 +166,7 @@ class TimeShareViewController: UIViewController {
             self.timeTable.timeTableCollectionView.reloadData()
             
             // 인원 수 별 셀 색 예시 인원
-            for index in 0..<sectionMemberCounts.count {
+            for index in 0 ..< sectionMemberCounts.count {
                 let sectionIndex = sectionMemberCounts[index].section
                 if sectionMemberCounts[index].memberCount.count == 1 {
                     self.sectionMemberCount[sectionIndex] = String(sectionMemberCounts[index].memberCount[0])
@@ -229,8 +229,8 @@ class TimeShareViewController: UIViewController {
         } else {
             date2.isHidden = false
             date3.isHidden = false
-            date2.text = date[page*3+1]
-            date3.text = date[page*3+2]
+            date2.text = date[page*3 + 1]
+            date3.text = date[page*3 + 2]
         }
     }
     
@@ -443,21 +443,15 @@ extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewD
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         
-        // 넘길 날짜
-        let date = format.date(from: sendDate[page*3 + indexPath.section])!
-        // 요일
-        let cal = Calendar.current
-        let dayOfWeek = cal.component(.weekday, from: date)
-        
-        format.dateFormat = "yyyy년 M월 d일"
-        
-        let stringDate = format.string(from: date)
+        // 해당 시간에 가능한 멤버
+        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row].memberNames
         
         // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
         if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
             let nextVC = FixPlanPopUpViewController()
             nextVC.time = String(indexPath.row) + ":00"
-            nextVC.date = stringDate + " " + cal.shortWeekdaySymbols[dayOfWeek-1] + "요일"
+            nextVC.date = sendDate[page*3 + indexPath.section]
+            nextVC.memberList = memberList.joined(separator: ", ")
             nextVC.modalPresentationStyle = .overCurrentContext
             nextVC.modalTransitionStyle = .crossDissolve
             present(nextVC, animated: true, completion: nil)
