@@ -60,6 +60,8 @@
 		51046AA72A5D7E4100AD543D /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */; };
 		51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AA82A6147F500AD543D /* ChangeNameViewController.swift */; };
 		51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AAA2A62F60200AD543D /* PreviewExtension.swift */; };
+		5126758A2A82100300AFC46C /* DecidedPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */; };
+		5126758D2A82156D00AFC46C /* PlanInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126758C2A82156D00AFC46C /* PlanInfoRow.swift */; };
 		512856352A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */; };
 		512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */; };
 		512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */; };
@@ -163,6 +165,8 @@
 		51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		51046AA82A6147F500AD543D /* ChangeNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNameViewController.swift; sourceTree = "<group>"; };
 		51046AAA2A62F60200AD543D /* PreviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExtension.swift; sourceTree = "<group>"; };
+		512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecidedPlanInfoViewController.swift; sourceTree = "<group>"; };
+		5126758C2A82156D00AFC46C /* PlanInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInfoRow.swift; sourceTree = "<group>"; };
 		512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePlanPopUpViewController.swift; sourceTree = "<group>"; };
 		512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpViewController.swift; sourceTree = "<group>"; };
 		512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpView.swift; sourceTree = "<group>"; };
@@ -302,6 +306,15 @@
 			path = Member;
 			sourceTree = "<group>";
 		};
+		5126758B2A82155A00AFC46C /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */,
+				5126758C2A82156D00AFC46C /* PlanInfoRow.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
 		513D6B7C2A4BFCCC00E9ACDA = {
 			isa = PBXGroup;
 			children = (
@@ -373,7 +386,6 @@
 				514D73CF2A59839200404E64 /* MyPageList.swift */,
 				518F55D82A683F68002D8F0F /* PopUpView.swift */,
 				51A3DA122A72BF4D00CAEE2A /* ArrowList.swift */,
-				512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -381,6 +393,7 @@
 		518F55E52A691731002D8F0F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5126758B2A82155A00AFC46C /* Plan */,
 				5199BCD32A72414200CE585C /* SideBar */,
 				5199BCDB2A72435800CE585C /* PlanList */,
 				518F55D72A683F27002D8F0F /* MyPage */,
@@ -481,6 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				512675862A81DEA800AFC46C /* Member */,
+				512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */,
 				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
 				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
 				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
@@ -743,6 +757,7 @@
 				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				23DE37C12A7287BD00F1DFE0 /* TimeShareViewController.swift in Sources */,
 				231E97D12A6BD3F8000BB2AD /* MonthCollectionViewCell.swift in Sources */,
+				5126758A2A82100300AFC46C /* DecidedPlanInfoViewController.swift in Sources */,
 				1AE5C7892A6F683D001B88D1 /* PlanInfoEditViewController.swift in Sources */,
 				518F55E72A69173F002D8F0F /* Divider.swift in Sources */,
 				23F6F90A2A7011C000772AFF /* Home.swift in Sources */,
@@ -778,6 +793,7 @@
 				518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */,
 				23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */,
 				51A3DA132A72BF4D00CAEE2A /* ArrowList.swift in Sources */,
+				5126758D2A82156D00AFC46C /* PlanInfoRow.swift in Sources */,
 				51B526D02A6C40F1009DBFB4 /* PastPlanCell.swift in Sources */,
 				517C28D02A7F402600D2CE50 /* HistoryAPI.swift in Sources */,
 				239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */,
