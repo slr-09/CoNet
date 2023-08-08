@@ -99,6 +99,10 @@ class HomeViewController: UIViewController {
         calendarVC.homeVC = self
         
         setupCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
@@ -123,7 +127,7 @@ class HomeViewController: UIViewController {
         
         updateContentSize()
     }
-//
+
     // 특정 날짜 약속 조회 api 함수
     func dayPlanAPI(date: String) {
         // api: 특정 날짜 약속
@@ -169,7 +173,7 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logoImage)
-//        contentView.addSubview(calendarView)
+        
         addChild(calendarVC)
         contentView.addSubview(calendarVC.view)
         contentView.addSubview(dayPlanLabel)
@@ -311,9 +315,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     // 셀
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("check")
+        
         if collectionView == dayPlanCollectionView {
-            print("yes")
             // 오늘 약속
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayPlanCell.registerId, for: indexPath) as? DayPlanCell else {
                 return UICollectionViewCell()

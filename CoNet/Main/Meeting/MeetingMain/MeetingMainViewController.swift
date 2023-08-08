@@ -137,21 +137,6 @@ class MeetingMainViewController: UIViewController {
         addMeetingButton.addTarget(self, action: #selector(showMakePlanViewController), for: .touchUpInside)
         starButton.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
         
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd"
-        format.locale = Locale(identifier: "ko_KR")
-        format.timeZone = TimeZone(abbreviation: "KST")
-        
-        dayPlanAPI(date: format.string(from: Date()))
-        
-        // api: 대기 중인 약속
-        MeetingMainAPI().getMeetingWaitingPlan(teamId: meetingId) { count, plans in
-            self.waitingPlanNum.text = String(count)
-            self.waitingPlanData = plans
-            self.waitingPlanCollectionView.reloadData()
-            self.layoutContraints()
-        }
-        
         // view height 동적 설정
         updateContentSize()
         
@@ -167,6 +152,21 @@ class MeetingMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        format.locale = Locale(identifier: "ko_KR")
+        format.timeZone = TimeZone(abbreviation: "KST")
+        
+        dayPlanAPI(date: format.string(from: Date()))
+        
+        // api: 대기 중인 약속
+        MeetingMainAPI().getMeetingWaitingPlan(teamId: meetingId) { count, plans in
+            self.waitingPlanNum.text = String(count)
+            self.waitingPlanData = plans
+            self.waitingPlanCollectionView.reloadData()
+            self.layoutContraints()
+        }
         
         MeetingAPI().getMeetingDetailInfo(teamId: meetingId) { meeting in
             self.meetingName.text = meeting.name
