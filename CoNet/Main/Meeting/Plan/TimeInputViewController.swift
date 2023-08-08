@@ -193,11 +193,7 @@ class TimeInputViewController: UIViewController {
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
         if timeStateCheck == 1 {
-            if !hasRegisteredTime && !hasPossibleTime {
-                timeStateCheck = 0
-            } else if hasRegisteredTime && hasPossibleTime {
-                timeStateCheck = 2
-            }
+            timeStateCheck = 2
             timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
             timeImpossibleLabel.textColor = UIColor.textDisabled
         } else {
@@ -337,6 +333,7 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
             // 클릭 시 possibleTime 배열에 추가/삭제
             if num == 1 {
                 possibleTime[page*3 + indexPath.section].time.append(indexPath.row)
+                timeStateCheck = 2
             } else if num == 0 {
                 possibleTime[page*3 + indexPath.section].time.removeAll { $0 == indexPath.row }
             }
