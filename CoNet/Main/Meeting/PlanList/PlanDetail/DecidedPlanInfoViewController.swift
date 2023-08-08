@@ -9,6 +9,7 @@ import UIKit
 
 class DecidedPlanInfoViewController: UIViewController {
     var planId: Int = 0
+    var members: [PlanDetailMember] = [PlanDetailMember(id: 0, name: "야", image: ""), PlanDetailMember(id: 0, name: "외", image: ""), PlanDetailMember(id: 0, name: "수", image: "")]
     
     // 배경 - .clear
     let scrollview = UIScrollView().then { $0.backgroundColor = .clear }
@@ -78,8 +79,10 @@ class DecidedPlanInfoViewController: UIViewController {
             self.dateRow.setText(plans.date)
             self.timeRow.setText(plans.time)
             
-//            self.members = plans.members
-//            self.memberCollectionView.reloadData()
+            self.members = plans.members
+            self.memberCollectionView.reloadData()
+            
+            self.layoutConstraints()
         }
     }
     
@@ -159,9 +162,8 @@ class DecidedPlanInfoViewController: UIViewController {
         memberCollectionView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
             
-//            var memberRow = ceil(Double(members.count) / 2.0)
-            var memberRow = ceil(Double(3) / 2.0)
-            var height = (memberRow * 42) + ((memberRow - 1) * 10)
+            let memberRow = ceil(Double(members.count) / 2.0)
+            let height = (memberRow * 42) + ((memberRow - 1) * 10)
             make.height.equalTo(height)
             
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
@@ -178,8 +180,7 @@ extension DecidedPlanInfoViewController: UICollectionViewDelegate, UICollectionV
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return members.count
-        return 3
+        return members.count
     }
     
     // 셀
@@ -188,12 +189,10 @@ extension DecidedPlanInfoViewController: UICollectionViewDelegate, UICollectionV
             return UICollectionViewCell()
         }
         
-//        cell.name.text = members[indexPath.item].name
-//        if let url = URL(string: members[indexPath.item].image) {
-//            cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
-//        }
-        cell.name.text = "참여참여"
-        cell.profileImage.image = UIImage(named: "defaultProfile")
+        cell.name.text = members[indexPath.item].name
+        if let url = URL(string: members[indexPath.item].image) {
+            cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        }
         
         return cell
     }
