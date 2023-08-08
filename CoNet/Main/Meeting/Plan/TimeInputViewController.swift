@@ -121,6 +121,7 @@ class TimeInputViewController: UIViewController {
         super.viewWillAppear(animated)
         getMyPossibleTimeAPI()
         updateTimeTable()
+        changeSaveButtonColor()
     }
     
     func getMyPossibleTimeAPI() {
@@ -176,12 +177,33 @@ class TimeInputViewController: UIViewController {
         }
     }
     
+    func changeSaveButtonColor() {
+        // 저장 버튼 색
+        if timeStateCheck == 0 || timeStateCheck == -1 {
+            saveButton.backgroundColor = UIColor.gray200
+        } else {
+            saveButton.backgroundColor = UIColor.purpleMain
+        }
+    }
+    
+    // timePossible 배열에 time 정보가 비었는지 확인
+    func timePossibleCountCheck() {
+        for index in 0..<7 {
+            timeStateCheck = 2
+            if possibleTime[index].time.count > 0 {
+                return
+            }
+            timeStateCheck = 0
+        }
+    }
+    
     // 버튼 클릭 이벤트
     func btnClickEvents() {
         prevButton.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
         timeImpossibleButton.addTarget(self, action: #selector(didClickTimeImpossibleButton), for: .touchUpInside)
         prevDayBtn.addTarget(self, action: #selector(didClickPrevDayButton), for: .touchUpInside)
         nextDayBtn.addTarget(self, action: #selector(didClickNextDayButton), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(didClickSaveButton), for: .touchUpInside)
     }
     
     // 이전 버튼 클릭 시 창 끄기
@@ -193,7 +215,7 @@ class TimeInputViewController: UIViewController {
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
         if timeStateCheck == 1 {
-            timeStateCheck = 2
+            timePossibleCountCheck()
             timeImpossibleButton.setImage(UIImage(named: "timeImpossible"), for: .normal)
             timeImpossibleLabel.textColor = UIColor.textDisabled
         } else {
@@ -203,6 +225,7 @@ class TimeInputViewController: UIViewController {
         }
         
         timeTable.timeTableCollectionView.reloadData()
+        changeSaveButtonColor()
     }
     
     // 날짜 이전 버튼 클릭
@@ -215,6 +238,22 @@ class TimeInputViewController: UIViewController {
     @objc func didClickNextDayButton() {
         page += 1
         btnVisible()
+    }
+    
+    @objc func didClickSaveButton() {
+        // save button 활성화 시에만
+        if saveButton.backgroundColor == UIColor.purpleMain {
+            // 가능한 시간 없음 버튼 클릭 시 빈 배열로 초기화
+            if timeStateCheck == 1 {
+                for index in 0..<7 {
+                    possibleTime[index].time.removeAll()
+                }
+            }
+            
+            // 나의 가능한 시간 저장 api
+            PlanTimeAPI().postMyPossibleTime(planId: planId, possibleDateTimes: possibleTime)
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     func timeTableSetting() {
@@ -336,7 +375,9 @@ extension TimeInputViewController: UICollectionViewDataSource, UICollectionViewD
                 timeStateCheck = 2
             } else if num == 0 {
                 possibleTime[page*3 + indexPath.section].time.removeAll { $0 == indexPath.row }
+                timePossibleCountCheck()
             }
+            changeSaveButtonColor()
         }
     }
     
