@@ -11,8 +11,10 @@ import UIKit
 
 class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var planId: Int = 17
+    
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
+    var members: [PlanDetailMember] = []
     
     var isPhotoUploaded = false
     var isTextUploaded = false
@@ -87,31 +89,9 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         $0.textColor = UIColor.textDisabled
     }
     
-    let member1ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member1NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-    
-    let member2ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member2NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-
-    let member3ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member3NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
+    lazy var memberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.isScrollEnabled = false
+        $0.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     let grayLine4 = UIView().then {
@@ -217,10 +197,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         navigationItem.rightBarButtonItem = barButtonItem
         
         layoutConstraints()
-
-        var isPhotoUploaded = false
-        var isTextUploaded = false
-        var ishistoryExisted = false
+        setupCollectionView()
         
         hidePhotoViews()
         showPhotoViews()
@@ -248,12 +225,26 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         getPlanDetail()
     }
     
+    private func setupCollectionView() {
+        memberCollectionView.delegate = self
+        memberCollectionView.dataSource = self
+        memberCollectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.cellId)
+    }
+    
     func getPlanDetail() {
         PlanAPI().getPlanDetail(planId: planId) { plans in
             self.planNameText.text = plans.planName
             self.planDateText.text = plans.date
             self.planTimeText.text = plans.time
-//            self.member1NameLabel.text = plans.members[0].name
+            
+            self.members = plans.members
+            self.memberCollectionView.reloadData()
+            
+            self.ishistoryExisted = plans.isRegisteredToHistory
+            
+            self.historyExists()
+            self.layoutConstraints()
+            self.loadViewIfNeeded()
         }
     }
 
@@ -267,6 +258,44 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
 
     @objc private func sideBarButtonTapped() {
         showPlanEditDelBottomSheet()
+    }
+}
+
+extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+    }
+    
+    // 셀 개수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return members.count
+    }
+    
+    // 셀
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.cellId, for: indexPath) as? MemberCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.name.text = members[indexPath.item].name
+        if let url = URL(string: members[indexPath.item].image) {
+            cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        }
+        
+        return cell
+    }
+    
+    // 셀 크기
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        let halfWidth = (width - 10) / 2
+        return CGSize.init(width: halfWidth, height: 42)
+    }
+    
+    // 셀 사이의 위아래 간격
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
     }
 }
 
@@ -311,12 +340,7 @@ extension PlanInfoViewController {
         applyConstraintsToPlanTime()
         
         contentView.addSubview(memberLabel)
-        contentView.addSubview(member1ImageView)
-        contentView.addSubview(member1NameLabel)
-        contentView.addSubview(member2ImageView)
-        contentView.addSubview(member2NameLabel)
-        contentView.addSubview(member3ImageView)
-        contentView.addSubview(member3NameLabel)
+        contentView.addSubview(memberCollectionView)
         applyConstraintsToMember()
         
         contentView.addSubview(grayLine4)
@@ -413,35 +437,16 @@ extension PlanInfoViewController {
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
-        member1ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
+        
+        memberCollectionView.snp.makeConstraints { make in
+            make.width.equalToSuperview().offset(-48)
+            
+            var memberRow = ceil(Double(members.count) / 2.0)
+            var height = (memberRow * 42) + ((memberRow - 1) * 10)
+            make.height.equalTo(height)
+            
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
-        }
-        member1NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
-        }
-        member2ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(138)
-        }
-        member2NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member2ImageView)
-            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
-        }
-        member3ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
-        }
-        member3NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(member3ImageView.snp.trailing).offset(10)
+            make.leading.trailing.equalToSuperview().inset(24)
         }
     }
     
@@ -449,7 +454,7 @@ extension PlanInfoViewController {
         grayLine4.snp.makeConstraints { make in
             make.width.equalTo(393)
             make.height.equalTo(12)
-            make.top.equalTo(member3ImageView.snp.bottom).offset(32)
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(32)
         }
         historyLabel.snp.makeConstraints { make in
             make.width.equalTo(62)

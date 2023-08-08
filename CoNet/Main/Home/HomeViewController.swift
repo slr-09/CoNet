@@ -50,6 +50,7 @@ class HomeViewController: UIViewController {
     
     // 오늘 약속 collectionView
     private lazy var dayPlanCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.isScrollEnabled = false
     }
     
@@ -238,9 +239,10 @@ class HomeViewController: UIViewController {
         
         // collectionView: 오늘의 약속
         dayPlanCollectionView.snp.makeConstraints { make in
+            let height = (dayPlanData.count - 1) * 100 + 90
+            make.height.equalTo(height)
             make.top.equalTo(dayPlanLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(dayPlanData.count*100 - 10)
         }
         
         // label: 대기 중 약속
@@ -283,13 +285,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == dayPlanCollectionView {
-            print("Selected 오늘 cell at indexPath: \(indexPath)")
-            let nextVC = PlanInfoViewController()
+            let nextVC = DecidedPlanInfoViewController()
             nextVC.planId = dayPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
-            print("Selected 대기 cell at indexPath: \(indexPath.item)")
             let nextVC = TimeShareViewController()
             nextVC.planId = waitingPlanData[indexPath.item].planId
             nextVC.hidesBottomBarWhenPushed = true
