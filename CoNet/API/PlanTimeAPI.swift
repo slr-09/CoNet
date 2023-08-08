@@ -59,21 +59,25 @@ class PlanTimeAPI {
     }
     
     // 나의 가능한 시간 저장
-    func postMyPossibleTime() {
+    func postMyPossibleTime(planId: Int, possibleDateTimes: [PossibleTime]) {
         let url = "\(baseUrl)/team/plan/time"
         
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
+        
+        let body: [String: Any] = [
+            "planId": planId,
+            "possibleDateTimes": possibleDateTimes
+        ]
 
-        AF.request(url, method: .post, encoding: JSONEncoding.default, headers: headers)
+        AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .responseDecodable(of: BaseResponse<String>.self) { response in
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
                     print("DEBUG(postMyPossibleTime api): \(result)")
                     
-
                 case .failure(let error):
                     print("DEBUG(postMyPossibleTime api) error: \(error)")
                 }
