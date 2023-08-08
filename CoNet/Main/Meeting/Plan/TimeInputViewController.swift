@@ -92,9 +92,14 @@ class TimeInputViewController: UIViewController {
     // 현재 페이지
     var page: Int = 0
     
+    // 화면에 표시할 날짜
     var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
+    // 서버에 보낼 날짜 데이터
+    var sendDate: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
     
     let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
+    
+    var countCheck: Int = 0
     
     // 가능한 시간 저장할 배열
     var possibleTime: [PossibleTime] = []
@@ -108,6 +113,7 @@ class TimeInputViewController: UIViewController {
         timeTableSetting()
         
         btnClickEvents()
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -123,15 +129,17 @@ class TimeInputViewController: UIViewController {
             self.hasRegisteredTime = hasRegisteredTime
             self.hasPossibleTime = hasPossibleTime
             
-            if hasRegisteredTime && !hasPossibleTime {
-                self.timeStateCheck = 1
-            } else if !hasRegisteredTime && !hasPossibleTime {
-                self.timeStateCheck = 0
-            } else if hasRegisteredTime && hasPossibleTime {
-                self.timeStateCheck = 2
+            if self.countCheck == 0 {
+                if hasRegisteredTime && !hasPossibleTime {
+                    self.timeStateCheck = 1
+                } else if !hasRegisteredTime && !hasPossibleTime {
+                    self.timeStateCheck = 0
+                } else if hasRegisteredTime && hasPossibleTime {
+                    self.timeStateCheck = 2
+                }
+                self.countCheck += 1
             }
             
-            print("pp", possibleTime)
             self.timeTable.timeTableCollectionView.reloadData()
         }
     }
@@ -182,6 +190,7 @@ class TimeInputViewController: UIViewController {
     // 가능한 시간 없음 버튼 클릭 시
     // possibleTimeCheck: true/false
     @objc func didClickTimeImpossibleButton() {
+        
         if timeStateCheck == 1 {
             if !hasRegisteredTime && !hasPossibleTime {
                 timeStateCheck = 0

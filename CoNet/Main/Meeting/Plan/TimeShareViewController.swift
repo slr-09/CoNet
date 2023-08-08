@@ -126,6 +126,7 @@ class TimeShareViewController: UIViewController {
     var page: Int = 0
     
     var date: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
+    var sendDate: [String] = ["07.03", "07.04", "07.05", "07.06", "07.07", "07.08", "07.09"]
     
     let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
     
@@ -188,6 +189,7 @@ class TimeShareViewController: UIViewController {
         var index = 0
         
         while currentDate <= endDate {
+            sendDate[index] = dateFormatter.string(from: currentDate)
             dateFormatter.dateFormat = "MM.dd "
             var stringDate = dateFormatter.string(from: currentDate)
             stringDate += weekDay[currentCalendar.component(.weekday, from: currentDate) - 1]
@@ -255,6 +257,7 @@ class TimeShareViewController: UIViewController {
         let nextVC = TimeInputViewController()
         nextVC.planId = planId
         nextVC.date = date
+        nextVC.sendDate = sendDate
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
