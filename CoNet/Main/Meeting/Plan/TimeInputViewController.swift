@@ -99,8 +99,8 @@ class TimeInputViewController: UIViewController {
     
     let weekDay = ["일", "월", "화", "수", "목", "금", "토"]
     
-    // 가능한 시간 저장할 배열
-    var possibleTime: [PossibleTime] = []
+    // 가능한 시간 저장할 배열 초기화
+    var possibleTime: [PossibleTime] = [PossibleTime(date: "", time: []), PossibleTime(date: "", time: []), PossibleTime(date: "", time: []), PossibleTime(date: "", time: []), PossibleTime(date: "", time: []), PossibleTime(date: "", time: []), PossibleTime(date: "", time: [])]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +111,10 @@ class TimeInputViewController: UIViewController {
         timeTableSetting()
         
         btnClickEvents()
+        
+        for index in 0..<7 {
+            possibleTime[index].date = sendDate[index]
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

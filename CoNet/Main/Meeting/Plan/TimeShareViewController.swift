@@ -188,10 +188,12 @@ class TimeShareViewController: UIViewController {
         var currentDate = startDate
         var index = 0
         
+        let format = DateFormatter()
+        format.dateFormat = "MM.dd "
+        
         while currentDate <= endDate {
             sendDate[index] = dateFormatter.string(from: currentDate)
-            dateFormatter.dateFormat = "MM.dd "
-            var stringDate = dateFormatter.string(from: currentDate)
+            var stringDate = format.string(from: currentDate)
             stringDate += weekDay[currentCalendar.component(.weekday, from: currentDate) - 1]
             
             // 날짜 배열에 저장
