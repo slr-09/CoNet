@@ -169,8 +169,9 @@ class PastPlanInfoViewController: UIViewController {
                 self.isHistoryExist = true
                 self.historyContentsConstraints()
                 
-                if let imgUrl = plans.historyImgUrl {
+                if let url = URL(string: plans.historyImgUrl ?? "") {
                     self.isPhotoExist = true
+                    self.photoImageView.kf.setImage(with: url, placeholder: UIImage(named: "uploadImage"))
                     self.photoImageConstraints()
                 } else {
                     self.isPhotoExist = false
@@ -179,6 +180,7 @@ class PastPlanInfoViewController: UIViewController {
                 
                 if let description = plans.historyDescription {
                     self.isDescriptionExist = true
+                    self.descriptionText.text = description
                     self.descriptionContraints()
                 } else {
                     self.isDescriptionExist = false
@@ -228,7 +230,7 @@ extension PastPlanInfoViewController {
         contentsView.snp.makeConstraints { make in
             make.edges.equalTo(scrollview.contentLayoutGuide)
             make.width.equalTo(scrollview.frameLayoutGuide)
-            make.height.equalTo(1000)
+            make.height.equalTo(1200)
         }
     }
     
