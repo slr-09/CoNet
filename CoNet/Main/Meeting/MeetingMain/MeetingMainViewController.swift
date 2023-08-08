@@ -232,6 +232,8 @@ class MeetingMainViewController: UIViewController {
     
     @objc private func showMakePlanViewController(_ sender: UIView) {
         let nextVC = MakePlanViewController()
+        nextVC.delegate = self
+        nextVC.meetingId = meetingId
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -255,9 +257,9 @@ class MeetingMainViewController: UIViewController {
         navigationItem.rightBarButtonItem = barButtonItem
         
         // 뒤로가기 버튼 추가
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        let leftbarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = leftbarButtonItem
+//        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//        let leftbarButtonItem = UIBarButtonItem(customView: backButton)
+//        navigationItem.leftBarButtonItem = leftbarButtonItem
     }
     
     // 뒤로가기 버튼 동작
@@ -305,6 +307,13 @@ class MeetingMainViewController: UIViewController {
 
 // 사이드바 화면 전환
 extension MeetingMainViewController: MeetingMainViewControllerDelegate {
+    func sendIntDataBack(data: Int) {
+        let nextVC = TimeShareViewController()
+        nextVC.planId = data
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
     func sendDataBack(data: SideBarMenu) {
         var nextVC: UIViewController
         
@@ -404,23 +413,23 @@ extension MeetingMainViewController: MeetingMainViewControllerDelegate {
         nextVC.modalTransitionStyle = .crossDissolve
         present(nextVC, animated: true, completion: nil)
     }
-    
-//    // change day label
-//    func changeDate(month: String, day: String) {
-//        print(month, day)
-//        if month == "" && day == "" {
-//            dayPlanLabel.text = "오늘의 약속"
-//        } else {
-//            dayPlanLabel.text = month + "월 " + day + "일의 약속"
-//        }
-//    }
 }
 
 // collectionview 설정
 extension MeetingMainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
+        if collectionView == dayPlanCollectionView {
+            let nextVC = DecidedPlanInfoViewController()
+            nextVC.planId = dayPlanData[indexPath.item].planId
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        } else {
+            let nextVC = TimeShareViewController()
+            nextVC.planId = waitingPlanData[indexPath.item].planId
+            nextVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     // 셀 개수

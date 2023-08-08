@@ -37,10 +37,10 @@ struct GetMyPossibleTimeResult: Codable {
     let planId, userId: Int
     let hasRegisteredTime: Bool     // 시간 입력한 적이 있는가에 대한 값
     let hasPossibleTime: Bool       // 가능한 시간이 있는가에 대한 값 -> 시간 없음 버튼을 클릭하면 false 값
-    let possibleTime: [PossibleTime]
+    var possibleTime: [PossibleTime]
 }
 
 struct PossibleTime: Codable {
-    let date: String
-    let time: [Int]
+    var date: String
+    var time: [Int]
 }

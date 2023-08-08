@@ -37,7 +37,6 @@ class HistoryAPI {
                 switch response.result {
                 case .success(let response):
                     guard let serverHistories = response.result else { return }
-                    print("DEBUG(히스토리 조회 api) history: \(serverHistories)")
                     completion(serverHistories)
                     
                 case .failure(let error):

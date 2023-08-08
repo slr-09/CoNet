@@ -236,10 +236,35 @@ class LoginViewController: UIViewController {
     // MARK: - Login Actions
     // 카카오 로그인
     private func kakaoLogin() {
+        UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+            if let error = error {
+                print(error)
+            } else {
+                print("loginWithKakaoTalkAccount() success")
+                print("Kakao id token: \(oauthToken?.idToken ?? "id token 없음..")")
+                
+                AuthAPI.shared.kakaoLogin(idToken: oauthToken?.idToken ?? "") { isRegistered in
+                    if isRegistered {
+                        // 홈 탭으로 이동
+                        let nextVC = TabbarViewController()
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                            
+                        // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
+                        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                        sceneDelegate?.changeRootVC(TabbarViewController(), animated: false)
+                    } else {
+                        // 회원가입 탭으로 이동
+                        let nextVC = TermsOfUseViewController()
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                    }
+                }
+            }
+        }
+        /*
         if UserApi.isKakaoTalkLoginAvailable() {
             print("kakao available")
             // 카카오톡 앱 로그인
-            UserApi.shared.loginWithKakaoTalk { [weak self] oauthToken, error in
+            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
                 if let error = error {
                     print("DEBUG(kakao login): \(error)")
                 } else {
@@ -250,7 +275,7 @@ class LoginViewController: UIViewController {
                         if isRegistered {
                             // 홈 탭으로 이동
                             let nextVC = TabbarViewController()
-                            self?.navigationController?.pushViewController(nextVC, animated: true)
+                            self.navigationController?.pushViewController(nextVC, animated: true)
                                 
                             // 루트뷰를 홈 탭으로 바꾸기 (스택 초기화)
                             let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
@@ -258,7 +283,7 @@ class LoginViewController: UIViewController {
                         } else {
                             // 회원가입 탭으로 이동
                             let nextVC = TermsOfUseViewController()
-                            self?.navigationController?.pushViewController(nextVC, animated: true)
+                            self.navigationController?.pushViewController(nextVC, animated: true)
                         }
                     }
                 }
@@ -291,6 +316,7 @@ class LoginViewController: UIViewController {
                 }
             }
         }
+         */
     }
         
     private func appleLogin() {

@@ -35,8 +35,6 @@ class HomeAPI {
         dataRequest.responseDecodable(of: BaseResponse<GetMonthPlanResult>.self) { response in
             switch response.result {
             case .success(let response): // 성공한 경우에
-                print(response.result ?? "getmonthplan result empty")
-                
                 guard let result = response.result else { return }
                 
                 let count = result.count
@@ -72,8 +70,6 @@ class HomeAPI {
         dataRequest.responseDecodable(of: BaseResponse<GetDayPlanResult>.self) { response in
             switch response.result {
             case .success(let response): // 성공한 경우에
-                print(response.result ?? "getdayplan result empty")
-                
                 guard let result = response.result else { return }
                 
                 let count = result.count
@@ -107,8 +103,6 @@ class HomeAPI {
         dataRequest.responseDecodable(of: BaseResponse<GetWaitingPlanResult>.self) { response in
             switch response.result {
             case .success(let response): // 성공한 경우에
-                print(response.result ?? "getwaitingplan result empty")
-                
                 guard let result = response.result else { return }
                 
                 let count = result.count

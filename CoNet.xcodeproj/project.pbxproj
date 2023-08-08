@@ -16,6 +16,7 @@
 		1AA197BB2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */; };
 		1AA197BD2A7F7430001064F8 /* PlanEditDelBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA197BC2A7F7430001064F8 /* PlanEditDelBottomSheetViewController.swift */; };
 		1AA197BF2A80F251001064F8 /* UnRegisteredPlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA197BE2A80F251001064F8 /* UnRegisteredPlanDetailViewController.swift */; };
+		1AA197C12A816432001064F8 /* MemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA197C02A816432001064F8 /* MemberCollectionViewCell.swift */; };
 		1ABF8C862A69150900023A8D /* MeetingPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */; };
 		1ABF8C882A694B3800023A8D /* MeetingInfoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */; };
 		1AC014262A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */; };
@@ -42,6 +43,7 @@
 		23A7DEE22A657C0600D52436 /* PlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */; };
 		23B681DA2A5FF9580039A67B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 23B681D92A5FF9580039A67B /* FSCalendar */; };
 		23C9BF712A7C126A00B3D9C9 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C9BF702A7C126A00B3D9C9 /* CalendarViewController.swift */; };
+		23CAB74E2A82A06F000F05D3 /* FixPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CAB74D2A82A06F000F05D3 /* FixPlanInfoViewController.swift */; };
 		23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA18292A694551004EC6A6 /* CalendarView.swift */; };
 		23DA182C2A695541004EC6A6 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */; };
 		23DE37C12A7287BD00F1DFE0 /* TimeShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE37C02A7287BD00F1DFE0 /* TimeShareViewController.swift */; };
@@ -59,7 +61,12 @@
 		51046AA72A5D7E4100AD543D /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */; };
 		51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AA82A6147F500AD543D /* ChangeNameViewController.swift */; };
 		51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51046AAA2A62F60200AD543D /* PreviewExtension.swift */; };
+		5126758A2A82100300AFC46C /* DecidedPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */; };
+		5126758D2A82156D00AFC46C /* PlanInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126758C2A82156D00AFC46C /* PlanInfoRow.swift */; };
+		5126758F2A821DDD00AFC46C /* PastPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126758E2A821DDD00AFC46C /* PastPlanInfoViewController.swift */; };
 		512856352A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */; };
+		512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */; };
+		512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */; };
 		513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */; };
 		513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */; };
 		513D6B922A4BFCCE00E9ACDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513D6B912A4BFCCE00E9ACDA /* Assets.xcassets */; };
@@ -118,6 +125,7 @@
 		1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanMemberBottonSheetViewController.swift; sourceTree = "<group>"; };
 		1AA197BC2A7F7430001064F8 /* PlanEditDelBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanEditDelBottomSheetViewController.swift; sourceTree = "<group>"; };
 		1AA197BE2A80F251001064F8 /* UnRegisteredPlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnRegisteredPlanDetailViewController.swift; sourceTree = "<group>"; };
+		1AA197C02A816432001064F8 /* MemberCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		1ABF8C852A69150900023A8D /* MeetingPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPopUpViewController.swift; sourceTree = "<group>"; };
 		1ABF8C872A694B3800023A8D /* MeetingInfoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingInfoEditViewController.swift; sourceTree = "<group>"; };
 		1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDateButtonSheetViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +150,7 @@
 		239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputViewController.swift; sourceTree = "<group>"; };
 		23A7DEE12A657C0600D52436 /* PlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanTableViewCell.swift; sourceTree = "<group>"; };
 		23C9BF702A7C126A00B3D9C9 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		23CAB74D2A82A06F000F05D3 /* FixPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanInfoViewController.swift; sourceTree = "<group>"; };
 		23DA18292A694551004EC6A6 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		23DA182B2A695541004EC6A6 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		23DE37C02A7287BD00F1DFE0 /* TimeShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShareViewController.swift; sourceTree = "<group>"; };
@@ -159,7 +168,12 @@
 		51046AA62A5D7E4100AD543D /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		51046AA82A6147F500AD543D /* ChangeNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNameViewController.swift; sourceTree = "<group>"; };
 		51046AAA2A62F60200AD543D /* PreviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExtension.swift; sourceTree = "<group>"; };
+		512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecidedPlanInfoViewController.swift; sourceTree = "<group>"; };
+		5126758C2A82156D00AFC46C /* PlanInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInfoRow.swift; sourceTree = "<group>"; };
+		5126758E2A821DDD00AFC46C /* PastPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastPlanInfoViewController.swift; sourceTree = "<group>"; };
 		512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePlanPopUpViewController.swift; sourceTree = "<group>"; };
+		512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpViewController.swift; sourceTree = "<group>"; };
+		512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpView.swift; sourceTree = "<group>"; };
 		513D6B852A4BFCCC00E9ACDA /* CoNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		513D6B882A4BFCCC00E9ACDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513D6B8A2A4BFCCC00E9ACDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -287,6 +301,24 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		512675862A81DEA800AFC46C /* Member */ = {
+			isa = PBXGroup;
+			children = (
+				1AA197C02A816432001064F8 /* MemberCollectionViewCell.swift */,
+				1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */,
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
+		5126758B2A82155A00AFC46C /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */,
+				5126758C2A82156D00AFC46C /* PlanInfoRow.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
 		513D6B7C2A4BFCCC00E9ACDA = {
 			isa = PBXGroup;
 			children = (
@@ -365,6 +397,7 @@
 		518F55E52A691731002D8F0F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5126758B2A82155A00AFC46C /* Plan */,
 				5199BCD32A72414200CE585C /* SideBar */,
 				5199BCDB2A72435800CE585C /* PlanList */,
 				518F55D72A683F27002D8F0F /* MyPage */,
@@ -464,12 +497,14 @@
 		5199BCD82A7242AD00CE585C /* PlanDetail */ = {
 			isa = PBXGroup;
 			children = (
+				512675862A81DEA800AFC46C /* Member */,
+				512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */,
+				5126758E2A821DDD00AFC46C /* PastPlanInfoViewController.swift */,
 				1AC014252A6F7B3100E3E9C9 /* PlanDateButtonSheetViewController.swift */,
 				1A3AD0172A6E8A2B00975427 /* PlanInfoViewController.swift */,
 				1AE5C7882A6F683D001B88D1 /* PlanInfoEditViewController.swift */,
 				1AA197BC2A7F7430001064F8 /* PlanEditDelBottomSheetViewController.swift */,
 				1A99CFE32A7233580080091B /* PlanTimePickerViewController.swift */,
-				1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */,
 				512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */,
 			);
 			path = PlanDetail;
@@ -484,6 +519,8 @@
 				23DE37C22A72A40C00F1DFE0 /* TimeTableView.swift */,
 				23DE37C42A72A6A700F1DFE0 /* TimeTableViewCell.swift */,
 				239B625C2A738CEE00C48CBE /* TimeInputViewController.swift */,
+				512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */,
+				23CAB74D2A82A06F000F05D3 /* FixPlanInfoViewController.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -692,6 +729,7 @@
 				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */,
 				23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */,
+				512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				51B526CE2A6C4077009DBFB4 /* PastPlanListViewController.swift in Sources */,
 				51046AA92A6147F500AD543D /* ChangeNameViewController.swift in Sources */,
@@ -700,6 +738,7 @@
 				518F55F22A6BC172002D8F0F /* WaitingPlanCell.swift in Sources */,
 				23DE37C52A72A6A700F1DFE0 /* TimeTableViewCell.swift in Sources */,
 				23ED939D2A6D6485007B0E63 /* HistoryCell.swift in Sources */,
+				23CAB74E2A82A06F000F05D3 /* FixPlanInfoViewController.swift in Sources */,
 				1A3AD0182A6E8A2B00975427 /* PlanInfoViewController.swift in Sources */,
 				518F55DF2A6868C2002D8F0F /* LogoutPopUpViewController.swift in Sources */,
 				518F55E22A6870CB002D8F0F /* MyPageAPI.swift in Sources */,
@@ -713,6 +752,7 @@
 				1AA197BF2A80F251001064F8 /* UnRegisteredPlanDetailViewController.swift in Sources */,
 				234428702A5E99BE006A4D66 /* BaseResponse.swift in Sources */,
 				519FC3592A700FED002EF91C /* MeetingMainViewController.swift in Sources */,
+				5126758F2A821DDD00AFC46C /* PastPlanInfoViewController.swift in Sources */,
 				2387E75C2A8018430003044E /* PlanTime.swift in Sources */,
 				1A3AD0152A6D411900975427 /* HistoryAddViewController.swift in Sources */,
 				514D73D42A59D19A00404E64 /* NoticeViewController.swift in Sources */,
@@ -721,12 +761,15 @@
 				23DA182A2A694551004EC6A6 /* CalendarView.swift in Sources */,
 				235F5B732A69893F00ADC0D6 /* CalendarDateFormatter.swift in Sources */,
 				51B526C82A6C3893009DBFB4 /* PlanDummyData.swift in Sources */,
+				512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */,
 				51046AAB2A62F60200AD543D /* PreviewExtension.swift in Sources */,
 				23DE37C12A7287BD00F1DFE0 /* TimeShareViewController.swift in Sources */,
 				231E97D12A6BD3F8000BB2AD /* MonthCollectionViewCell.swift in Sources */,
+				5126758A2A82100300AFC46C /* DecidedPlanInfoViewController.swift in Sources */,
 				1AE5C7892A6F683D001B88D1 /* PlanInfoEditViewController.swift in Sources */,
 				518F55E72A69173F002D8F0F /* Divider.swift in Sources */,
 				23F6F90A2A7011C000772AFF /* Home.swift in Sources */,
+				1AA197C12A816432001064F8 /* MemberCollectionViewCell.swift in Sources */,
 				513D6B8B2A4BFCCC00E9ACDA /* SceneDelegate.swift in Sources */,
 				231E97CF2A6BCA04000BB2AD /* MonthViewController.swift in Sources */,
 				51B526CA2A6C3901009DBFB4 /* DecidedPlanListViewController.swift in Sources */,
@@ -758,6 +801,7 @@
 				518F55F02A6BC102002D8F0F /* PlanListCollectionView.swift in Sources */,
 				23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */,
 				51A3DA132A72BF4D00CAEE2A /* ArrowList.swift in Sources */,
+				5126758D2A82156D00AFC46C /* PlanInfoRow.swift in Sources */,
 				51B526D02A6C40F1009DBFB4 /* PastPlanCell.swift in Sources */,
 				517C28D02A7F402600D2CE50 /* HistoryAPI.swift in Sources */,
 				239B625D2A738CEE00C48CBE /* TimeInputViewController.swift in Sources */,
@@ -904,7 +948,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CoNet/CoNet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 99KH3TLG9V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoNet/Info.plist;
@@ -935,7 +979,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CoNet/CoNet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 99KH3TLG9V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoNet/Info.plist;

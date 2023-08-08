@@ -230,6 +230,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
+        navigationItem.title = ""
         
         item = UIStackView(arrangedSubviews: [allTab, favTab]).then {
             $0.axis = .horizontal

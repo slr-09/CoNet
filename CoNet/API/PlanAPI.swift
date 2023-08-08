@@ -54,9 +54,7 @@ struct PlanEditResponse: Codable {
 }
 
 struct CreatePlanResponse: Codable {
-    let code, status: Int
-    let message: String
-    let result: Result
+    let planId: Int
 }
 
 struct Result: Codable {
@@ -223,13 +221,13 @@ class PlanAPI {
                     print("DEBUG(약속 상세 수정 api) error: \(error)")
                 }
             }
-}
-
-    func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
+    }
+    
+    // 약속 생성
+    func createPlan(teamId: Int, planName: String, planStartPeriod: String, completion: @escaping (_ planId: Int, _ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/create"
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
+            "Content-Type": "application/json"
         ]
         
         let parameters: Parameters = [
@@ -242,8 +240,9 @@ class PlanAPI {
         .responseDecodable(of: BaseResponse<CreatePlanResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(약속 생성 api) success response: \(response)")
-                completion(response.code == 1000)
+                print("DEBUG(약속 생성 api) success response: \(response.message)")
+                guard let planId = response.result?.planId else { return }
+                completion(planId, response.code == 1000)
                 
             case .failure(let error):
                 print("DEBUG(create plan api) error: \(error)")
@@ -255,7 +254,7 @@ class PlanAPI {
     func deletePlan(planId: Int, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/delete"
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         ]
         
         let parameters: Parameters = [
@@ -271,6 +270,32 @@ class PlanAPI {
                 
             case .failure(let error):
                 print("DEBUG(약속 삭제 api) error: \(error)")
+            }
+        }
+    }
+    
+    // 약속 확정
+    func fixPlan(planId: Int, fixedDate: String, fixedTime: Int, userId: [Int]) {
+        let url = "\(baseUrl)/team/plan/fix"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        let parameters: Parameters = [
+            "planId": planId,
+            "fixed_date": fixedDate,
+            "fixed_time": fixedTime,
+            "userId": userId
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 확정 api) success response: \(response.result ?? "empty")")
+                
+            case .failure(let error):
+                print("DEBUG(약속 확정 api) error: \(error)")
             }
         }
     }

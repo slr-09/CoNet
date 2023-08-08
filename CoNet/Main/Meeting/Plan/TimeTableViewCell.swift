@@ -14,7 +14,7 @@ class TimeTableViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.gray100?.cgColor
-        contentView.backgroundColor = UIColor.white
+        contentView.backgroundColor = UIColor.grayWhite
     }
 
     @available(*, unavailable)
@@ -23,13 +23,14 @@ class TimeTableViewCell: UICollectionViewCell {
     }
     
     // 셀 클릭 시 background color 바꾸기
-    func changeCellColor() {
-        if contentView.backgroundColor == UIColor.white {
+    func changeCellColor() -> Int {
+        if contentView.backgroundColor == UIColor.grayWhite {
             contentView.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5).cgColor
+            return 1
         } else {
             contentView.layer.backgroundColor = UIColor.white.cgColor
+            return 0
         }
-        
     }
     
     // 인원수에 따른 셀 색
