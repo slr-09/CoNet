@@ -56,7 +56,7 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
         
         // 여기에 타임 테이블 블럭 정보 불러와서
         // 팝업 View 업데이트 하면 됩니당
-        popUp.setDate(stringDate + cal.shortWeekdaySymbols[dayOfWeek-1] + "요일")
+        popUp.setDate(stringDate + cal.shortWeekdaySymbols[dayOfWeek - 1] + "요일")
         popUp.setTime(String(time) + ":00")
         popUp.setMembers(memberList)
     }
@@ -75,7 +75,7 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true) {
-            self.timeShareVC?.pushFixPlanInfo()
+            self.timeShareVC?.pushFixPlanInfo(planId: self.planId)
         }
     }
     

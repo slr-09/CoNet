@@ -51,7 +51,7 @@ class FixPlanInfoViewController: UIViewController {
     // 참여자 collection view
     lazy var memberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         $0.isScrollEnabled = false
-        $0.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+        $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     // 확인 버튼
@@ -67,9 +67,9 @@ class FixPlanInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         
         layoutConstraints()
         setupCollectionView()
@@ -79,12 +79,12 @@ class FixPlanInfoViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         
         PlanAPI().getPlanDetail(planId: planId) { plans in
             self.nameRow.setText(plans.planName)
@@ -113,7 +113,7 @@ class FixPlanInfoViewController: UIViewController {
     }
     
     @objc func didClickCompleteButton() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: false)
         timeShareVC?.popPage()
     }
     
@@ -233,7 +233,7 @@ extension FixPlanInfoViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         let halfWidth = (width - 10) / 2
-        return CGSize.init(width: halfWidth, height: 42)
+        return CGSize(width: halfWidth, height: 42)
     }
     
     // 셀 사이의 위아래 간격
@@ -245,7 +245,7 @@ extension FixPlanInfoViewController: UICollectionViewDelegate, UICollectionViewD
 extension FixPlanInfoViewController: PlanInfoViewControllerDelegate {
     func sendDataBack(data: String) {
         if data == "pop" {
-            self.navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         } else {
             let popUpVC = DeletePlanPopUpViewController()
             popUpVC.planId = planId
