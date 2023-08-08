@@ -36,6 +36,7 @@ class MemberCollectionViewCell: UICollectionViewCell {
         addSubview(background)
         background.snp.makeConstraints { make in
             make.height.equalTo(42)
+            make.width.equalToSuperview()
         }
         
         background.addSubview(profileImage)

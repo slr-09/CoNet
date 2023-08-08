@@ -87,32 +87,37 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         $0.textColor = UIColor.textDisabled
     }
     
-    let member1ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
+    lazy var memberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.isScrollEnabled = false
+        $0.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    let member1NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-    
-    let member2ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member2NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-
-    let member3ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member3NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
+//    let member1ImageView = UIImageView().then {
+//        $0.image = UIImage(named: "defaultProfile")
+//    }
+//
+//    let member1NameLabel = UILabel().then {
+//        $0.text = "참여자 이름"
+//        $0.font = UIFont.body2Medium
+//    }
+//
+//    let member2ImageView = UIImageView().then {
+//        $0.image = UIImage(named: "defaultProfile")
+//    }
+//
+//    let member2NameLabel = UILabel().then {
+//        $0.text = "참여자 이름"
+//        $0.font = UIFont.body2Medium
+//    }
+//
+//    let member3ImageView = UIImageView().then {
+//        $0.image = UIImage(named: "defaultProfile")
+//    }
+//
+//    let member3NameLabel = UILabel().then {
+//        $0.text = "참여자 이름"
+//        $0.font = UIFont.body2Medium
+//    }
     
     let grayLine4 = UIView().then {
         $0.backgroundColor = UIColor.gray50
@@ -217,6 +222,7 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         navigationItem.rightBarButtonItem = barButtonItem
         
         layoutConstraints()
+        setupCollectionView()
 
         var isPhotoUploaded = false
         var isTextUploaded = false
@@ -248,6 +254,12 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
         getPlanDetail()
     }
     
+    private func setupCollectionView() {
+        memberCollectionView.delegate = self
+        memberCollectionView.dataSource = self
+        memberCollectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.cellId)
+    }
+    
     func getPlanDetail() {
         PlanAPI().getPlanDetail(planId: planId) { plans in
             self.planNameText.text = plans.planName
@@ -267,6 +279,42 @@ class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePick
 
     @objc private func sideBarButtonTapped() {
         showPlanEditDelBottomSheet()
+    }
+}
+
+extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+    }
+    
+    // 셀 개수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    // 셀
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.cellId, for: indexPath) as? MemberCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.profileImage.image = UIImage(named: "defaultProfile")
+        cell.name.text = "참여참여"
+        
+        return cell
+    }
+    
+    // 셀 크기
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        let halfWidth = (width - 58) / 2
+        return CGSize.init(width: halfWidth, height: 42)
+    }
+    
+    // 셀 사이의 위아래 간격
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
     }
 }
 
@@ -311,12 +359,13 @@ extension PlanInfoViewController {
         applyConstraintsToPlanTime()
         
         contentView.addSubview(memberLabel)
-        contentView.addSubview(member1ImageView)
-        contentView.addSubview(member1NameLabel)
-        contentView.addSubview(member2ImageView)
-        contentView.addSubview(member2NameLabel)
-        contentView.addSubview(member3ImageView)
-        contentView.addSubview(member3NameLabel)
+        contentView.addSubview(memberCollectionView)
+//        contentView.addSubview(member1ImageView)
+//        contentView.addSubview(member1NameLabel)
+//        contentView.addSubview(member2ImageView)
+//        contentView.addSubview(member2NameLabel)
+//        contentView.addSubview(member3ImageView)
+//        contentView.addSubview(member3NameLabel)
         applyConstraintsToMember()
         
         contentView.addSubview(grayLine4)
@@ -413,43 +462,50 @@ extension PlanInfoViewController {
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
             make.leading.equalTo(contentView.snp.leading).offset(24)
         }
-        member1ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
+        
+        memberCollectionView.snp.makeConstraints { make in
+            make.width.equalToSuperview().offset(-48)
+            make.height.equalTo(2 * 42 + 10)
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.leading.trailing.equalToSuperview().inset(24)
         }
-        member1NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
-        }
-        member2ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(138)
-        }
-        member2NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member2ImageView)
-            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
-        }
-        member3ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
-            make.leading.equalTo(contentView.snp.leading).offset(24)
-        }
-        member3NameLabel.snp.makeConstraints { make in
-            make.width.equalTo(93)
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(member3ImageView.snp.trailing).offset(10)
-        }
+//        member1ImageView.snp.makeConstraints { make in
+//            make.width.height.equalTo(42)
+//            make.top.equalTo(memberLabel.snp.bottom).offset(14)
+//            make.leading.equalTo(contentView.snp.leading).offset(24)
+//        }
+//        member1NameLabel.snp.makeConstraints { make in
+//            make.width.equalTo(93)
+//            make.centerY.equalTo(member1ImageView)
+//            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
+//        }
+//        member2ImageView.snp.makeConstraints { make in
+//            make.width.height.equalTo(42)
+//            make.centerY.equalTo(member1ImageView)
+//            make.leading.equalTo(member1ImageView.snp.trailing).offset(138)
+//        }
+//        member2NameLabel.snp.makeConstraints { make in
+//            make.width.equalTo(93)
+//            make.centerY.equalTo(member2ImageView)
+//            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
+//        }
+//        member3ImageView.snp.makeConstraints { make in
+//            make.width.height.equalTo(42)
+//            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
+//            make.leading.equalTo(contentView.snp.leading).offset(24)
+//        }
+//        member3NameLabel.snp.makeConstraints { make in
+//            make.width.equalTo(93)
+//            make.centerY.equalTo(member3ImageView)
+//            make.leading.equalTo(member3ImageView.snp.trailing).offset(10)
+//        }
     }
     
     func applyConstraintsToHistory() {
         grayLine4.snp.makeConstraints { make in
             make.width.equalTo(393)
             make.height.equalTo(12)
-            make.top.equalTo(member3ImageView.snp.bottom).offset(32)
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(32)
         }
         historyLabel.snp.makeConstraints { make in
             make.width.equalTo(62)
