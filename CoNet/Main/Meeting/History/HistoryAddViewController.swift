@@ -219,6 +219,8 @@ extension HistoryAddViewController: UICollectionViewDelegate, UICollectionViewDa
         }
         
         cell.name.text = members[indexPath.item].name
+        cell.name.textColor = UIColor.textDisabled
+        
         if let url = URL(string: members[indexPath.item].image) {
             cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
         }
