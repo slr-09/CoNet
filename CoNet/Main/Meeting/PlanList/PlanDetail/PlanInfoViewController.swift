@@ -11,8 +11,12 @@ import UIKit
 
 class PlanInfoViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     var planId: Int = 17
+    
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
+    var members: [PlanDetailMember] = [PlanDetailMember(id: 0, name: "참여참여", image: "space"),
+                                       PlanDetailMember(id: 0, name: "참여참2", image: "space"),
+                                       PlanDetailMember(id: 0, name: "참여참3", image: "space")]
     
     var isPhotoUploaded = false
     var isTextUploaded = false
@@ -290,7 +294,7 @@ extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewData
     
     // 셀 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return members.count
     }
     
     // 셀
@@ -299,8 +303,8 @@ extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewData
             return UICollectionViewCell()
         }
         
-        cell.profileImage.image = UIImage(named: "defaultProfile")
-        cell.name.text = "참여참여"
+        cell.profileImage.image = UIImage(named: members[indexPath.item].image)
+        cell.name.text = members[indexPath.item].name
         
         return cell
     }
@@ -308,7 +312,7 @@ extension PlanInfoViewController: UICollectionViewDelegate, UICollectionViewData
     // 셀 크기
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
-        let halfWidth = (width - 58) / 2
+        let halfWidth = (width - 10) / 2
         return CGSize.init(width: halfWidth, height: 42)
     }
     
@@ -465,7 +469,9 @@ extension PlanInfoViewController {
         
         memberCollectionView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
-            make.height.equalTo(2 * 42 + 10)
+            var memberRow = ceil(Double(members.count) / 2.0)
+            var height = (memberRow * 42) + ((memberRow - 1) * 10)
+            make.height.equalTo(height)
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
             make.leading.trailing.equalToSuperview().inset(24)
         }
