@@ -252,6 +252,7 @@ class TimeInputViewController: UIViewController {
             
             // 나의 가능한 시간 저장 api
             PlanTimeAPI().postMyPossibleTime(planId: planId, possibleDateTimes: possibleTime)
+            navigationController?.popViewController(animated: true)
         }
     }
     
