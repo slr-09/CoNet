@@ -273,5 +273,31 @@ class PlanAPI {
             }
         }
     }
+    
+    // 약속 확정
+    func fixPlan(planId: Int, fixedDate: String, fixedTime: String, userId: [Int]) {
+        let url = "\(baseUrl)/team/plan/delete"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        let parameters: Parameters = [
+            "planId": planId,
+            "fixed_date": fixedDate,
+            "fixed_time": fixedTime,
+            "userId": userId
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 삭제 api) success response: \(response)")
+                
+            case .failure(let error):
+                print("DEBUG(약속 삭제 api) error: \(error)")
+            }
+        }
+    }
 }
     
