@@ -62,9 +62,7 @@ class MeetingAPI {
             "Content-Type": "application/json",
             "Authorization": "Bearer \(keychain.get("accessToken") ?? "")"
         ]
-        let body: [String: Any] = [
-            "inviteCode": code
-        ]
+        let body: [String: Any] = ["inviteCode": code]
         
         AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .responseData { response in
@@ -75,11 +73,9 @@ class MeetingAPI {
                     guard let data = response.value else { return }
                     switch statusCode {
                     case 200:
-                        print("DEBUG 모임 참여 api: status 200")
                         completion(true, .valid)
                     default:
                         guard let data = try? decoder.decode(BadRequestResponse.self, from: data) else { return }
-                        print("DEBUG 모임 참여 api message: \(data.message)")
                         switch data.code {
                         case 5501: completion(false, .isNotExist)
                         case 5502: completion(false, .expired)
@@ -109,7 +105,6 @@ class MeetingAPI {
                 switch response.result {
                 case .success(let response):
                     guard let result = response.result else { return }
-                    print("DEBUG(모임 초대코드 발급 api): \(result)")
                     completion(result.inviteCode, result.codeDeadLine)
                     
                 case .failure(let error):
@@ -136,7 +131,6 @@ class MeetingAPI {
         .responseDecodable(of: BaseResponse<PostUpdateMeetingResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(모임 수정 api) success response: \(response)")
                 completion(response.code == 1000)
                 
             case .failure(let error):
@@ -160,9 +154,6 @@ class MeetingAPI {
             .responseDecodable(of: BaseResponse<String>.self) { response in
                 switch response.result {
                 case .success(let response):
-                    print("DEBUG(모임 나가기 api): 성공 모임 id \(id)")
-                    print("DEBUG(모임 나가기 api): 성공 \(response.code)")
-                    print("DEBUG(모임 나가기 api): 성공 \(response.message)")
                     completion(response.code == 1000)
                     
                 case .failure(let error):
@@ -186,9 +177,6 @@ class MeetingAPI {
             .responseDecodable(of: BaseResponse<String>.self) { response in
                 switch response.result {
                 case .success(let response):
-                    print("DEBUG(모임 삭제 api): 성공 모임 id \(id)")
-                    print("DEBUG(모임 삭제 api): 성공 \(response.code)")
-                    print("DEBUG(모임 삭제 api): 성공 \(response.message)")
                     completion(response.code == 1000)
                     
                 case .failure(let error):

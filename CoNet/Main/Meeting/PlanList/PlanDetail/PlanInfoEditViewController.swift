@@ -146,43 +146,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.view.addSubview(backButton)
-        self.view.addSubview(planInfoLabel)
-        self.view.addSubview(completionButton)
-        applyConstraintsToTopSection()
-        
-        self.view.addSubview(planNameLabel)
-        self.view.addSubview(planNameTextField)
-        self.view.addSubview(xnameButton)
-        self.view.addSubview(textCountLabel)
-        self.view.addSubview(grayLine1)
-        applyConstraintsToPlanName()
-        
-        self.view.addSubview(planDateLabel)
-        self.view.addSubview(planDateTextField)
-        self.view.addSubview(calendarButton)
-        self.view.addSubview(grayLine2)
-        applyConstraintsToPlanDate()
-
-        self.view.addSubview(planTimeLabel)
-        self.view.addSubview(planTimeTextField)
-        self.view.addSubview(clockButton)
-        self.view.addSubview(grayLine3)
-        applyConstraintsToPlanTime()
-        
-        self.view.addSubview(memberLabel)
-        self.view.addSubview(member1ImageView)
-        self.view.addSubview(member1NameLabel)
-        self.view.addSubview(member1DelButton)
-        self.view.addSubview(member2ImageView)
-        self.view.addSubview(member2NameLabel)
-        self.view.addSubview(member2DelButton)
-        self.view.addSubview(member3ImageView)
-        self.view.addSubview(member3NameLabel)
-        self.view.addSubview(member3DelButton)
-        self.view.addSubview(memberAddButton)
-        self.view.addSubview(memberAddLabel)
-        applyConstraintsToPlanMember()
+        layoutConstraints()
         
         backButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
         xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
@@ -224,6 +188,105 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
                 print("DEBUG (약속 수정 api): isSuccess true")
             }
         }
+    }
+    
+    @objc private func textFieldEditingChanged(_ textField: UITextField) {
+        if textField == planNameTextField {
+            guard let text = textField.text else { return }
+            let nameCount = text.count
+
+            textCountLabel.text = "\(nameCount)/20"
+            xnameButton.isHidden = text.isEmpty
+        }
+    }
+    
+    @objc private func xnameButtonTapped() {
+        planNameTextField.text = ""
+        planNameTextField.sendActions(for: .editingChanged)
+    }
+    
+    @objc func didTapmemberAddButton(_ sender: Any) {
+        let addVC = PlanMemberBottomSheetViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapcalendarButton(_ sender: Any) {
+        let addVC = PlanDateButtonSheetViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapclockButton(_ sender: Any) {
+        let addVC = PlanTimePickerViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+}
+
+extension PlanInfoEditViewController {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+        } else if textField == planDateTextField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+        } else if textField == planTimeTextField {
+            grayLine3.backgroundColor = UIColor.purpleMain
+        }
+        xnameButton.isHidden = false
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planDateTextField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        } else if textField == planTimeTextField {
+            grayLine3.backgroundColor = UIColor.iconDisabled
+        }
+        xnameButton.isHidden = true
+    }
+}
+
+// layout
+extension PlanInfoEditViewController {
+    func layoutConstraints() {
+        self.view.addSubview(backButton)
+        self.view.addSubview(planInfoLabel)
+        self.view.addSubview(completionButton)
+        applyConstraintsToTopSection()
+        
+        self.view.addSubview(planNameLabel)
+        self.view.addSubview(planNameTextField)
+        self.view.addSubview(xnameButton)
+        self.view.addSubview(textCountLabel)
+        self.view.addSubview(grayLine1)
+        applyConstraintsToPlanName()
+        
+        self.view.addSubview(planDateLabel)
+        self.view.addSubview(planDateTextField)
+        self.view.addSubview(calendarButton)
+        self.view.addSubview(grayLine2)
+        applyConstraintsToPlanDate()
+
+        self.view.addSubview(planTimeLabel)
+        self.view.addSubview(planTimeTextField)
+        self.view.addSubview(clockButton)
+        self.view.addSubview(grayLine3)
+        applyConstraintsToPlanTime()
+        
+        self.view.addSubview(memberLabel)
+        self.view.addSubview(member1ImageView)
+        self.view.addSubview(member1NameLabel)
+        self.view.addSubview(member1DelButton)
+        self.view.addSubview(member2ImageView)
+        self.view.addSubview(member2NameLabel)
+        self.view.addSubview(member2DelButton)
+        self.view.addSubview(member3ImageView)
+        self.view.addSubview(member3NameLabel)
+        self.view.addSubview(member3DelButton)
+        self.view.addSubview(memberAddButton)
+        self.view.addSubview(memberAddLabel)
+        applyConstraintsToPlanMember()
     }
     
     func applyConstraintsToTopSection() {
@@ -375,60 +438,5 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
             make.centerY.equalTo(memberAddButton)
             make.leading.equalTo(member3DelButton.snp.trailing).offset(67)
         }
-    }
-    
-    @objc private func textFieldEditingChanged(_ textField: UITextField) {
-        if textField == planNameTextField {
-            guard let text = textField.text else { return }
-            let nameCount = text.count
-
-            textCountLabel.text = "\(nameCount)/20"
-            xnameButton.isHidden = text.isEmpty
-        }
-    }
-    
-    @objc private func xnameButtonTapped() {
-        planNameTextField.text = ""
-        planNameTextField.sendActions(for: .editingChanged)
-    }
-    
-    @objc func didTapmemberAddButton(_ sender: Any) {
-        let addVC = PlanMemberBottomSheetViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-    
-    @objc func didTapcalendarButton(_ sender: Any) {
-        let addVC = PlanDateButtonSheetViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-    
-    @objc func didTapclockButton(_ sender: Any) {
-        let addVC = PlanTimePickerViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-}
-extension PlanInfoEditViewController {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.purpleMain
-        } else if textField == planDateTextField {
-            grayLine2.backgroundColor = UIColor.purpleMain
-        } else if textField == planTimeTextField {
-            grayLine3.backgroundColor = UIColor.purpleMain
-        }
-        xnameButton.isHidden = false
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.iconDisabled
-        } else if textField == planDateTextField {
-            grayLine2.backgroundColor = UIColor.iconDisabled
-        } else if textField == planTimeTextField {
-            grayLine3.backgroundColor = UIColor.iconDisabled
-        }
-        xnameButton.isHidden = true
     }
 }

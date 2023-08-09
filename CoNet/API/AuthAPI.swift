@@ -27,25 +27,6 @@ class AuthAPI {
                    parameters: body,
                    encoding: JSONEncoding.default,
                    headers: headers)
-//            .responseDecodable(of: PostRegenerateTokenResponse.self) { response in
-//                switch response.result {
-//                case .success(let response):
-//                    let result = response.result
-//                    print(result)
-//
-//                    self.keychain.set(result.accessToken, forKey: "accessToken")
-//                    self.keychain.set(result.refreshToken, forKey: "refreshToken")
-//
-//                    print("DEBUG(regenerate api) accessToken: \(result.accessToken)")
-//                    print("DEBUG(regenerate api) refreshToken: \(result.refreshToken)")
-//
-//                    completion(true)
-//
-//                case .failure(let error):
-//                    print("DEBUG(regenerate api) error: \(error)")
-//                    completion(false)
-//                }
-//            }
             .responseData { response in
                 switch response.result {
                 case .success:
@@ -56,13 +37,9 @@ class AuthAPI {
                     switch statusCode {
                     case 200:
                         guard let data = try? decoder.decode(PostRegenerateTokenResponse.self, from: data) else { return }
-                        print(data)
 
                         self.keychain.set(data.result.accessToken, forKey: "accessToken")
                         self.keychain.set(data.result.refreshToken, forKey: "refreshToken")
-
-                        print("DEBUG(regenerate api) accessToken: \(data.result.accessToken)")
-                        print("DEBUG(regenerate api) refreshToken: \(data.result.refreshToken)")
 
                         completion(true)
 

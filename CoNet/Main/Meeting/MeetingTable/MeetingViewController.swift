@@ -80,7 +80,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
         let nextVC = MeetingMainViewController()
         nextVC.hidesBottomBarWhenPushed = true
         nextVC.meetingId = meetings[indexPath.item].id
