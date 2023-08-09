@@ -13,6 +13,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     var planId: Int = 17
     private var plansCount: Int = 0
     private var planDetail: [PlanDetail] = []
+    var members: [PlanDetailMember] = []
     
     let backButton = UIButton().then { $0.setImage(UIImage(named: "prevBtn"), for: .normal) }
     
@@ -93,43 +94,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.textColor = UIColor.textDisabled
     }
     
-    let member1ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member1NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-    
-    let member1DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
-    }
-    
-    let member2ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member2NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-    
-    let member2DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
-    }
-    
-    let member3ImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
-    }
-    
-    let member3NameLabel = UILabel().then {
-        $0.text = "참여자 이름"
-        $0.font = UIFont.body2Medium
-    }
-    
-    let member3DelButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
+    lazy var memberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        $0.isScrollEnabled = false
+        $0.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     let memberAddButton = UIButton().then {
@@ -146,6 +113,158 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        layoutConstraints()
+        setupCollectionView()
+        
+        backButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
+        xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(didTapcalendarButton), for: .touchUpInside)
+        clockButton.addTarget(self, action: #selector(didTapclockButton), for: .touchUpInside)
+        memberAddButton.addTarget(self, action: #selector(didTapmemberAddButton), for: .touchUpInside)
+        completionButton.addTarget(self, action: #selector(updatePlan), for: .touchUpInside)
+        
+        planNameTextField.delegate = self
+        planDateTextField.delegate = self
+        planTimeTextField.delegate = self
+        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        PlanAPI().getPlanDetail(planId: planId) { plans in
+            self.planNameTextField.text = plans.planName
+            self.planDateTextField.text = plans.date
+            self.planTimeTextField.text = plans.time
+            
+            self.members = plans.members
+            self.memberCollectionView.reloadData()
+            
+            self.layoutConstraints()
+        }
+    }
+    
+    private func setupCollectionView() {
+        memberCollectionView.delegate = self
+        memberCollectionView.dataSource = self
+        memberCollectionView.register(EditMemberCollectionViewCell.self, forCellWithReuseIdentifier: EditMemberCollectionViewCell.cellId)
+    }
+    
+    @objc func dismissPopUp() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func updatePlan() {
+        guard let name = planNameTextField.text else { return }
+        guard let date = planDateTextField.text else { return }
+        guard let time = planTimeTextField.text else { return }
+        
+//        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
+//            if isSuccess {
+//                print("DEBUG (약속 수정 api): isSuccess true")
+//            }
+//        }
+    }
+    
+    @objc private func textFieldEditingChanged(_ textField: UITextField) {
+        if textField == planNameTextField {
+            guard let text = textField.text else { return }
+            let nameCount = text.count
+
+            textCountLabel.text = "\(nameCount)/20"
+            xnameButton.isHidden = text.isEmpty
+        }
+    }
+    
+    @objc private func xnameButtonTapped() {
+        planNameTextField.text = ""
+        planNameTextField.sendActions(for: .editingChanged)
+    }
+    
+    @objc func didTapmemberAddButton(_ sender: Any) {
+        let addVC = PlanMemberBottomSheetViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapcalendarButton(_ sender: Any) {
+        let addVC = PlanDateButtonSheetViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapclockButton(_ sender: Any) {
+        let addVC = PlanTimePickerViewController()
+        addVC.modalPresentationStyle = .overFullScreen
+        present(addVC, animated: false, completion: nil)
+    }
+}
+
+extension PlanInfoEditViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // 각 셀을 클릭했을 때 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+    }
+    
+    // 셀 개수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return members.count
+    }
+    
+    // 셀
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditMemberCollectionViewCell.cellId, for: indexPath) as? EditMemberCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.name.text = members[indexPath.item].name
+        if let url = URL(string: members[indexPath.item].image) {
+            cell.profileImage.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        }
+        
+        return cell
+    }
+    
+    // 셀 크기
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        let halfWidth = (width - 10) / 2
+        return CGSize.init(width: halfWidth, height: 42)
+    }
+    
+    // 셀 사이의 위아래 간격
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+}
+
+extension PlanInfoEditViewController {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.purpleMain
+        } else if textField == planDateTextField {
+            grayLine2.backgroundColor = UIColor.purpleMain
+        } else if textField == planTimeTextField {
+            grayLine3.backgroundColor = UIColor.purpleMain
+        }
+        xnameButton.isHidden = false
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == planNameTextField {
+            grayLine1.backgroundColor = UIColor.iconDisabled
+        } else if textField == planDateTextField {
+            grayLine2.backgroundColor = UIColor.iconDisabled
+        } else if textField == planTimeTextField {
+            grayLine3.backgroundColor = UIColor.iconDisabled
+        }
+        xnameButton.isHidden = true
+    }
+}
+
+// layout
+extension PlanInfoEditViewController {
+    func layoutConstraints() {
         self.view.addSubview(backButton)
         self.view.addSubview(planInfoLabel)
         self.view.addSubview(completionButton)
@@ -171,59 +290,10 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         applyConstraintsToPlanTime()
         
         self.view.addSubview(memberLabel)
-        self.view.addSubview(member1ImageView)
-        self.view.addSubview(member1NameLabel)
-        self.view.addSubview(member1DelButton)
-        self.view.addSubview(member2ImageView)
-        self.view.addSubview(member2NameLabel)
-        self.view.addSubview(member2DelButton)
-        self.view.addSubview(member3ImageView)
-        self.view.addSubview(member3NameLabel)
-        self.view.addSubview(member3DelButton)
+        self.view.addSubview(memberCollectionView)
         self.view.addSubview(memberAddButton)
         self.view.addSubview(memberAddLabel)
         applyConstraintsToPlanMember()
-        
-        backButton.addTarget(self, action: #selector(dismissPopUp), for: .touchUpInside)
-        xnameButton.addTarget(self, action: #selector(xnameButtonTapped), for: .touchUpInside)
-        calendarButton.addTarget(self, action: #selector(didTapcalendarButton), for: .touchUpInside)
-        clockButton.addTarget(self, action: #selector(didTapclockButton), for: .touchUpInside)
-        memberAddButton.addTarget(self, action: #selector(didTapmemberAddButton), for: .touchUpInside)
-        completionButton.addTarget(self, action: #selector(updatePlan), for: .touchUpInside)
-        
-        planNameTextField.delegate = self
-        planDateTextField.delegate = self
-        planTimeTextField.delegate = self
-        planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
-        planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
-        planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        PlanAPI().getPlanDetail(planId: planId) { plans in
-            self.planNameTextField.text = plans.planName
-            self.planDateTextField.text = plans.date
-            self.planTimeTextField.text = plans.time
-            self.member1NameLabel.text = plans.members[0].name
-        }
-    }
-    
-    @objc func dismissPopUp() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func updatePlan() {
-        guard let name = planNameTextField.text else { return }
-        guard let date = planDateTextField.text else { return }
-        guard let time = planTimeTextField.text else { return }
-        guard let selectedImage = member1ImageView.image else { return }
-        
-        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
-            if isSuccess {
-                print("DEBUG (약속 수정 api): isSuccess true")
-            }
-        }
     }
     
     func applyConstraintsToTopSection() {
@@ -323,112 +393,48 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
-        member1ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
+        
+        memberCollectionView.snp.makeConstraints { make in
+            make.width.equalToSuperview().offset(-48)
+            
+            let memberRow = ceil(Double(members.count) / 2.0)
+            let height = (memberRow * 42) + ((memberRow - 1) * 10)
+            make.height.equalTo(height)
+            
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
+            make.leading.trailing.equalToSuperview().inset(24)
         }
-        member1NameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(10)
-        }
-        member1DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member1ImageView.snp.trailing).offset(107)
-        }
-        member2ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.top.equalTo(memberLabel.snp.bottom).offset(14)
-            make.leading.equalTo(safeArea.snp.leading).offset(204)
-        }
-        member2NameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(member1ImageView)
-            make.leading.equalTo(member2ImageView.snp.trailing).offset(10)
-            make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
-        }
-        member2DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member2ImageView)
-            make.leading.equalTo(member2ImageView.snp.trailing).offset(107)
-        }
-        member3ImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(42)
-            make.top.equalTo(member1ImageView.snp.bottom).offset(10)
-            make.leading.equalTo(safeArea.snp.leading).offset(24)
-        }
-        member3NameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(safeArea.snp.leading).offset(76)
-        }
-        member3DelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.centerY.equalTo(member3ImageView)
-            make.leading.equalTo(member3ImageView.snp.trailing).offset(107)
-        }
+        
+//        if members.count.isMultiple(of: 2) {
+//            memberAddButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(42)
+//                make.top.equalTo(memberCollectionView.snp.bottom).offset(10)
+//                make.leading.equalTo(safeArea.snp.leading).offset(24)
+//            }
+//            memberAddLabel.snp.makeConstraints { make in
+//                make.centerY.equalTo(memberAddButton.snp.centerY)
+//                make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
+//            }
+//        } else {
+//            memberAddButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(42)
+//                make.top.equalTo(memberCollectionView.snp.bottom).offset(-42)
+////                make.leading.equalTo(safeArea.snp.leading).offset()
+//            }
+//            memberAddLabel.snp.makeConstraints { make in
+//                make.centerY.equalTo(memberAddButton)
+//                make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
+//            }
+//        }
+        
         memberAddButton.snp.makeConstraints { make in
             make.width.height.equalTo(42)
-            make.top.equalTo(member3ImageView.snp.top)
-            make.leading.equalTo(member3DelButton.snp.trailing).offset(15)
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(10)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         memberAddLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(memberAddButton)
-            make.leading.equalTo(member3DelButton.snp.trailing).offset(67)
+            make.centerY.equalTo(memberAddButton.snp.centerY)
+            make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
         }
-    }
-    
-    @objc private func textFieldEditingChanged(_ textField: UITextField) {
-        if textField == planNameTextField {
-            guard let text = textField.text else { return }
-            let nameCount = text.count
-
-            textCountLabel.text = "\(nameCount)/20"
-            xnameButton.isHidden = text.isEmpty
-        }
-    }
-    
-    @objc private func xnameButtonTapped() {
-        planNameTextField.text = ""
-        planNameTextField.sendActions(for: .editingChanged)
-    }
-    
-    @objc func didTapmemberAddButton(_ sender: Any) {
-        let addVC = PlanMemberBottomSheetViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-    
-    @objc func didTapcalendarButton(_ sender: Any) {
-        let addVC = PlanDateButtonSheetViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-    
-    @objc func didTapclockButton(_ sender: Any) {
-        let addVC = PlanTimePickerViewController()
-        addVC.modalPresentationStyle = .overFullScreen
-        present(addVC, animated: false, completion: nil)
-    }
-}
-extension PlanInfoEditViewController {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.purpleMain
-        } else if textField == planDateTextField {
-            grayLine2.backgroundColor = UIColor.purpleMain
-        } else if textField == planTimeTextField {
-            grayLine3.backgroundColor = UIColor.purpleMain
-        }
-        xnameButton.isHidden = false
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == planNameTextField {
-            grayLine1.backgroundColor = UIColor.iconDisabled
-        } else if textField == planDateTextField {
-            grayLine2.backgroundColor = UIColor.iconDisabled
-        } else if textField == planTimeTextField {
-            grayLine3.backgroundColor = UIColor.iconDisabled
-        }
-        xnameButton.isHidden = true
     }
 }

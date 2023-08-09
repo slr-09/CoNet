@@ -86,7 +86,6 @@ class PlanEditDelBottomSheetViewController: UIViewController {
     
     @objc func showDeletePlanVC() {
         dismiss(animated: true) {
-            print("삭제")
             self.delegate?.sendDataBack(data: "삭제")
         }
     }

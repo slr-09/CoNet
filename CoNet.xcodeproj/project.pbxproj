@@ -64,6 +64,7 @@
 		5126758A2A82100300AFC46C /* DecidedPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */; };
 		5126758D2A82156D00AFC46C /* PlanInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126758C2A82156D00AFC46C /* PlanInfoRow.swift */; };
 		5126758F2A821DDD00AFC46C /* PastPlanInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126758E2A821DDD00AFC46C /* PastPlanInfoViewController.swift */; };
+		512675912A83D71600AFC46C /* EditMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512675902A83D71600AFC46C /* EditMemberCollectionViewCell.swift */; };
 		512856352A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */; };
 		512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */; };
 		512856392A81678200C1FBA7 /* FixPlanPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */; };
@@ -171,6 +172,7 @@
 		512675892A82100300AFC46C /* DecidedPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecidedPlanInfoViewController.swift; sourceTree = "<group>"; };
 		5126758C2A82156D00AFC46C /* PlanInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInfoRow.swift; sourceTree = "<group>"; };
 		5126758E2A821DDD00AFC46C /* PastPlanInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastPlanInfoViewController.swift; sourceTree = "<group>"; };
+		512675902A83D71600AFC46C /* EditMemberCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		512856342A8110A100C1FBA7 /* DeletePlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePlanPopUpViewController.swift; sourceTree = "<group>"; };
 		512856362A81671100C1FBA7 /* FixPlanPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpViewController.swift; sourceTree = "<group>"; };
 		512856382A81678200C1FBA7 /* FixPlanPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixPlanPopUpView.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			children = (
 				1AA197C02A816432001064F8 /* MemberCollectionViewCell.swift */,
 				1AA197BA2A73C54B001064F8 /* PlanMemberBottonSheetViewController.swift */,
+				512675902A83D71600AFC46C /* EditMemberCollectionViewCell.swift */,
 			);
 			path = Member;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				513D6B892A4BFCCC00E9ACDA /* AppDelegate.swift in Sources */,
 				1A3AD0132A6958B400975427 /* InvitationCodeViewController.swift in Sources */,
 				515E53BF2A77D16D00536C6D /* Meeting.swift in Sources */,
+				512675912A83D71600AFC46C /* EditMemberCollectionViewCell.swift in Sources */,
 				51F72C5B2A592C0E0055E8C4 /* MyPageViewController.swift in Sources */,
 				1A99CFE22A70D4650080091B /* MeetingDelPopUpViewController.swift in Sources */,
 				1AA197BF2A80F251001064F8 /* UnRegisteredPlanDetailViewController.swift in Sources */,

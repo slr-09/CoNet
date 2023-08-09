@@ -71,7 +71,7 @@ class CalendarView: UIView {
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
         planDates = []
-        HomeAPI.shared.getMonthPlan(date: date) { count, dates in
+        HomeAPI.shared.getMonthPlan(date: date) { _, dates in
             self.planDates = dates
             self.calendarCollectionView.reloadData()
         }

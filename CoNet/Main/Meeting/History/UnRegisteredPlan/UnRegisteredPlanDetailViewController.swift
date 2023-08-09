@@ -178,7 +178,6 @@ class UnRegisteredPlanDetailViewController: UIViewController, UITextFieldDelegat
         super.viewDidLoad()
         self.view.backgroundColor = .white
     
-        
         layoutConstraints()
         photoImageViewUpdate()
         textUpdate()
@@ -237,7 +236,6 @@ extension UnRegisteredPlanDetailViewController {
         contentView.addSubview(grayLine4)
         contentView.addSubview(historyLabel)
         applyConstraintsToHistory()
-        
         
         contentView.addSubview(contentsLabel)
         contentView.addSubview(contentsView)
