@@ -228,17 +228,17 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     
     func applyConstraintsToTopSection() {
         let safeArea = view.safeAreaLayoutGuide
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalTo(safeArea.snp.top).offset(41)
-            make.leading.equalTo(safeArea.snp.leading).offset(17)
-        }
         planInfoLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(41)
+            make.top.equalTo(safeArea.snp.top).offset(6)
             make.leading.equalTo(backButton.snp.trailing).offset(116)
         }
+        backButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(planInfoLabel.snp.centerY)
+            make.leading.equalTo(safeArea.snp.leading).offset(17)
+        }
         completionButton.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(41)
+            make.centerY.equalTo(planInfoLabel.snp.centerY)
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
     }
@@ -246,7 +246,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     func applyConstraintsToPlanName() {
         let safeArea = view.safeAreaLayoutGuide
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(44)
+            make.top.equalTo(backButton.snp.bottom).offset(19)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planNameTextField.snp.makeConstraints { make in

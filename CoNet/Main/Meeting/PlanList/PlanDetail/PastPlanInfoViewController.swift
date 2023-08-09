@@ -211,6 +211,7 @@ class PastPlanInfoViewController: UIViewController {
     
     @objc private func showBottomSheet() {
         let bottomSheetViewController = PlanEditDelBottomSheetViewController()
+        bottomSheetViewController.planId = planId
         bottomSheetViewController.delegate = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext
         bottomSheetViewController.modalTransitionStyle = .crossDissolve
@@ -474,13 +475,3 @@ extension PastPlanInfoViewController: PlanInfoViewControllerDelegate {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        PastPlanInfoViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

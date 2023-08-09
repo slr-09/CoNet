@@ -69,14 +69,14 @@ class FixPlanPopUpViewController: UIViewController, FixPlanDelegate {
         // 약속 확정 api 연동
         PlanAPI().fixPlan(planId: planId, fixedDate: date, fixedTime: time, userId: userIds)
         
-        dismissPopUp()
+        dismiss(animated: true) {
+            self.timeShareVC?.pushFixPlanInfo(planId: self.planId)
+        }
     }
     
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
-        dismiss(animated: true) {
-            self.timeShareVC?.pushFixPlanInfo(planId: self.planId)
-        }
+        dismiss(animated: true)
     }
     
     // 모든 layout Constraints
