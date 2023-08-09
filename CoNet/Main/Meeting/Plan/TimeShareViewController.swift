@@ -312,6 +312,21 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
     // 약속 수정 페이지로 이동
     func pushEditPlanPage() {
         let nextVC = MakePlanViewController()
+        
+        // setting
+        nextVC.titleLabel.text = "약속 수정하기"
+        nextVC.planNameTextField.text = planTitle.text
+        nextVC.planStartDateField.text = sendDate[0].replacingOccurrences(of: "-", with: ". ")
+        nextVC.calendarButton.isEnabled = false
+        nextVC.planStartDateUnderLabel.text = "약속 기간은 수정할 수 없습니다."
+        nextVC.planStartDateUnderLabel.textColor = UIColor.textDisabled
+        nextVC.planStartDateUnderLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nextVC.view.safeAreaLayoutGuide.snp.leading).offset(24)
+        }
+        nextVC.planStartDateUnderImage.isHidden = true
+        nextVC.planStartDateField.isUserInteractionEnabled = false
+        nextVC.makeButton.setTitle("수정", for: .normal)
+        
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }

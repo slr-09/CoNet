@@ -12,6 +12,17 @@ import UIKit
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
     var meetingId: Int = 0
     
+    // 이전 버튼
+    let backButton = UIButton().then {
+        $0.setImage(UIImage(named: "prevBtn"), for: .normal)
+    }
+    
+    let titleLabel = UILabel().then {
+        $0.text = "약속 만들기"
+        $0.font = UIFont.headline3Bold
+        $0.textColor = UIColor.textHigh
+    }
+    
     let planNameLabel = UILabel().then {
         $0.text = "약속 이름"
         $0.font = UIFont.body2Bold
@@ -75,8 +86,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.navigationController?.navigationBar.isHidden = false
-        navigationItem.title = "약속 만들기"
+        self.navigationController?.navigationBar.isHidden = true
         
         layoutConstraints()
         
@@ -88,6 +98,9 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         planStartDateField.delegate = self
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planStartDateField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        backButton.addTarget(self, action: #selector(didClickBackButton), for: .touchUpInside)
+        
+        updateMakeButtonState()
         
         // calendarViewController에서 데이터 받기
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
@@ -100,7 +113,12 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    // back button event
+    @objc func didClickBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func dataReceivedByCalendarVC(notification: Notification) {
@@ -198,6 +216,8 @@ extension MakePlanViewController {
 // layout
 extension MakePlanViewController {
     func layoutConstraints() {
+        self.view.addSubview(backButton)
+        self.view.addSubview(titleLabel)
         self.view.addSubview(planNameLabel)
         self.view.addSubview(xnameButton)
         self.view.addSubview(planNameTextField)
@@ -219,8 +239,18 @@ extension MakePlanViewController {
     
     func applyConstraintsToPlanName() {
         let safeArea = view.safeAreaLayoutGuide
+        backButton.snp.makeConstraints { make in
+            make.height.width.equalTo(24)
+            make.top.equalTo(safeArea.snp.top).offset(41)
+            make.leading.equalTo(safeArea.snp.leading).offset(17)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(22)
+            make.centerX.equalTo(safeArea.snp.centerX)
+            make.centerY.equalTo(backButton.snp.centerY)
+        }
         planNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top).offset(20)
+            make.top.equalTo(backButton.snp.bottom).offset(44)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
         planNameTextField.snp.makeConstraints { make in
