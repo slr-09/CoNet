@@ -254,6 +254,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
         prevBtn.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
         nextBtn.addTarget(self, action: #selector(didClickNextButton), for: .touchUpInside)
+        dots.addTarget(self, action: #selector(didClickDots), for: .touchUpInside)
     }
     
     @objc private func xButtonTapped() {
@@ -280,11 +281,136 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         btnVisible()
     }
     
+    @objc func didClickDots() {
+        let bottomSheetViewController = TimeShareBottomSheetViewController()
+        bottomSheetViewController.planId = planId
+        bottomSheetViewController.timeShareVC = self
+        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
+        present(bottomSheetViewController, animated: true, completion: nil)
+    }
+    
     func timeTableSetting() {
         timeTable.timeTableCollectionView.dataSource = self
         timeTable.timeTableCollectionView.delegate = self
     }
     
+    // 약속 확정 버튼 클릭 시
+    func pushFixPlanInfo(planId: Int) {
+        let nextVC = FixPlanInfoViewController()
+        nextVC.timeShareVC = self
+        nextVC.planId = planId
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    // 화면 pop
+    func popPage() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // 약속 수정 페이지로 이동
+    func pushEditPlanPage() {
+        let nextVC = MakePlanViewController()
+        
+        // setting
+        nextVC.titleLabel.text = "약속 수정하기"
+        nextVC.planNameTextField.text = planTitle.text
+        nextVC.planStartDateField.text = sendDate[0].replacingOccurrences(of: "-", with: ". ")
+        nextVC.calendarButton.isEnabled = false
+        nextVC.planStartDateUnderLabel.text = "약속 기간은 수정할 수 없습니다."
+        nextVC.planStartDateUnderLabel.textColor = UIColor.textDisabled
+        nextVC.planStartDateUnderLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nextVC.view.safeAreaLayoutGuide.snp.leading).offset(24)
+        }
+        nextVC.planStartDateUnderImage.isHidden = true
+        nextVC.planStartDateField.isUserInteractionEnabled = false
+        nextVC.makeButton.setTitle("수정", for: .normal)
+        nextVC.planId = planId
+        
+        nextVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    // 약속 삭제 팝업
+    func pushDeletePlanPopUp() {
+        let popUpVC = DeletePlanPopUpViewController()
+        popUpVC.planId = planId
+//        popUpVC.delegate = self
+        popUpVC.modalPresentationStyle = .overCurrentContext
+        popUpVC.modalTransitionStyle = .crossDissolve
+        present(popUpVC, animated: true, completion: nil)
+    }
+}
+
+extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    // 셀 클릭 시 이벤트 처리
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selected cell at indexPath: \(indexPath)")
+        print(indexPath.section, indexPath.row)
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        // 해당 시간에 가능한 멤버
+        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row]
+        
+        // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
+        if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
+            let nextVC = FixPlanPopUpViewController()
+            nextVC.timeShareVC = self
+            nextVC.planId = planId
+            nextVC.time = indexPath.row
+            nextVC.date = sendDate[page*3 + indexPath.section]
+            nextVC.memberList = memberList.memberNames.joined(separator: ", ")
+            nextVC.userIds = memberList.memberIds
+            nextVC.modalPresentationStyle = .overCurrentContext
+            nextVC.modalTransitionStyle = .crossDissolve
+            present(nextVC, animated: true, completion: nil)
+        }
+    }
+    
+    // 셀 수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        24
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if page == 2 {
+            return 1
+        }
+        return 3
+    }
+    
+    // 셀 사이즈 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 24)
+    }
+    
+    // 위 아래 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return -1
+    }
+    
+    // 양옆 space zero로 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return -1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
+        
+        if !apiCheck { return cell }
+        
+        let section = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row].section
+        cell.showCellColor(section: section)
+        
+        return cell
+    }
+}
+
+// layout
+extension TimeShareViewController {
     func layoutConstraints() {
         headerConstraintS()
         timetableConstraints()
@@ -439,89 +565,12 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
             make.bottom.equalTo(purpleEx4.snp.bottom)
         }
     }
-    
-    // 약속 확정 버튼 클릭 시
-    func pushFixPlanInfo(planId: Int) {
-        let nextVC = FixPlanInfoViewController()
-        nextVC.timeShareVC = self
-        nextVC.planId = planId
-        nextVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    // 화면 pop
-    func popPage() {
-        navigationController?.popViewController(animated: true)
-    }
-}
 
-extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    // 셀 클릭 시 이벤트 처리
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
-        print(indexPath.section, indexPath.row)
-        
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd"
-        
-        // 해당 시간에 가능한 멤버
-        let memberList = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row]
-        
-        // 셀 색이 흰 색이 아닌 경우 약속 확정 팝업 띄우기
-        if collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor != UIColor.grayWhite {
-            let nextVC = FixPlanPopUpViewController()
-            nextVC.timeShareVC = self
-            nextVC.planId = planId
-            nextVC.time = indexPath.row
-            nextVC.date = sendDate[page*3 + indexPath.section]
-            nextVC.memberList = memberList.memberNames.joined(separator: ", ")
-            nextVC.userIds = memberList.memberIds
-            nextVC.modalPresentationStyle = .overCurrentContext
-            nextVC.modalTransitionStyle = .crossDissolve
-            present(nextVC, animated: true, completion: nil)
-        }
-    }
-    
-    // 셀 수
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        24
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if page == 2 {
-            return 1
-        }
-        return 3
-    }
-    
-    // 셀 사이즈 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 24)
-    }
-    
-    // 위 아래 space zero로 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return -1
-    }
-    
-    // 양옆 space zero로 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return -1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimeTableViewCell.identifier, for: indexPath) as? TimeTableViewCell else { return UICollectionViewCell() }
-        
-        if !apiCheck { return cell }
-        
-        let section = possibleMemberDateTime[page*3 + indexPath.section].possibleMember[indexPath.row].section
-        cell.showCellColor(section: section)
-        
-        return cell
-    }
 }
 
 protocol TimeShareProtocol {
     func pushFixPlanInfo(planId: Int)
     func popPage()
+    func pushEditPlanPage()
+    func pushDeletePlanPopUp()
 }
