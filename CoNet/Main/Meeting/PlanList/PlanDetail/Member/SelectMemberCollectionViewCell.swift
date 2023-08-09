@@ -22,7 +22,7 @@ class SelectMemberCollectionViewCell: UICollectionViewCell {
         $0.font = UIFont.body2Medium
     }
     let checkButton = UIButton().then {
-        $0.setImage(UIImage(named: "delete"), for: .normal)
+        $0.setImage(UIImage(named: "check-circle"), for: .normal)
     }
     
     override init(frame: CGRect) {
@@ -70,6 +70,10 @@ class SelectMemberCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func checkButtonTapped() {
-        print("wow check")
+        if checkButton.currentImage == UIImage(named: "check-circle") {
+            checkButton.setImage(UIImage(named: "uncheck-circle"), for: .normal)
+        } else {
+            checkButton.setImage(UIImage(named: "check-circle"), for: .normal)
+        }
     }
 }
