@@ -393,6 +393,7 @@ extension PlanInfoEditViewController {
             make.top.equalTo(grayLine3.snp.bottom).offset(26)
             make.leading.equalTo(safeArea.snp.leading).offset(24)
         }
+        
         memberCollectionView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
             
@@ -402,6 +403,38 @@ extension PlanInfoEditViewController {
             
             make.top.equalTo(memberLabel.snp.bottom).offset(14)
             make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+//        if members.count.isMultiple(of: 2) {
+//            memberAddButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(42)
+//                make.top.equalTo(memberCollectionView.snp.bottom).offset(10)
+//                make.leading.equalTo(safeArea.snp.leading).offset(24)
+//            }
+//            memberAddLabel.snp.makeConstraints { make in
+//                make.centerY.equalTo(memberAddButton.snp.centerY)
+//                make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
+//            }
+//        } else {
+//            memberAddButton.snp.makeConstraints { make in
+//                make.width.height.equalTo(42)
+//                make.top.equalTo(memberCollectionView.snp.bottom).offset(-42)
+////                make.leading.equalTo(safeArea.snp.leading).offset()
+//            }
+//            memberAddLabel.snp.makeConstraints { make in
+//                make.centerY.equalTo(memberAddButton)
+//                make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
+//            }
+//        }
+        
+        memberAddButton.snp.makeConstraints { make in
+            make.width.height.equalTo(42)
+            make.top.equalTo(memberCollectionView.snp.bottom).offset(10)
+            make.leading.equalTo(safeArea.snp.leading).offset(24)
+        }
+        memberAddLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(memberAddButton.snp.centerY)
+            make.leading.equalTo(memberAddButton.snp.trailing).offset(10)
         }
     }
 }
