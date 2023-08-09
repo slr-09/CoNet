@@ -282,7 +282,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
     }
     
     @objc func didClickDots() {
-        let bottomSheetViewController = HistoryBottomSheetViewController()
+        let bottomSheetViewController = TimeShareBottomSheetViewController()
         bottomSheetViewController.planId = planId
         bottomSheetViewController.timeShareVC = self
         bottomSheetViewController.modalPresentationStyle = .overCurrentContext

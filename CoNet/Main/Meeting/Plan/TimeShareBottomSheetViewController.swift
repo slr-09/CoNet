@@ -9,7 +9,7 @@ import SnapKit
 import Then
 import UIKit
 
-class HistoryBottomSheetViewController: UIViewController {
+class TimeShareBottomSheetViewController: UIViewController {
     var planId: Int = 0
     
     // 배경 - black 투명도 30%

@@ -52,7 +52,7 @@
 		23ED93962A6D427A007B0E63 /* DayPlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED93952A6D427A007B0E63 /* DayPlanCell.swift */; };
 		23ED93992A6D5FB9007B0E63 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */; };
 		23ED939D2A6D6485007B0E63 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED939C2A6D6485007B0E63 /* HistoryCell.swift */; };
-		23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */; };
+		23F6F9062A6FE9A300772AFF /* TimeShareBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9052A6FE9A300772AFF /* TimeShareBottomSheetViewController.swift */; };
 		23F6F9082A700F4700772AFF /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9072A700F4700772AFF /* HomeAPI.swift */; };
 		23F6F90A2A7011C000772AFF /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6F9092A7011C000772AFF /* Home.swift */; };
 		23FE4ECC2A55B0E300BBF17E /* EnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */; };
@@ -159,7 +159,7 @@
 		23ED93952A6D427A007B0E63 /* DayPlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPlanCell.swift; sourceTree = "<group>"; };
 		23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		23ED939C2A6D6485007B0E63 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
-		23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryBottomSheetViewController.swift; sourceTree = "<group>"; };
+		23F6F9052A6FE9A300772AFF /* TimeShareBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShareBottomSheetViewController.swift; sourceTree = "<group>"; };
 		23F6F9072A700F4700772AFF /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
 		23F6F9092A7011C000772AFF /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		23FE4ECB2A55B0E300BBF17E /* EnterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameViewController.swift; sourceTree = "<group>"; };
@@ -512,7 +512,7 @@
 		5199BCD92A72432700CE585C /* Plan */ = {
 			isa = PBXGroup;
 			children = (
-				23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */,
+				23F6F9052A6FE9A300772AFF /* TimeShareBottomSheetViewController.swift */,
 				1AE5C78A2A6F6957001B88D1 /* MakePlanViewController.swift */,
 				1AC014272A70A75700E3E9C9 /* PlanConfirmViewController.swift */,
 				23DE37C02A7287BD00F1DFE0 /* TimeShareViewController.swift */,
@@ -728,7 +728,7 @@
 				519FC35B2A7016AE002EF91C /* WhiteGradientView.swift in Sources */,
 				51F2A4712A5497A500D134CC /* AuthAPI.swift in Sources */,
 				51B526C42A6C2F76009DBFB4 /* SideBarList.swift in Sources */,
-				23F6F9062A6FE9A300772AFF /* HistoryBottomSheetViewController.swift in Sources */,
+				23F6F9062A6FE9A300772AFF /* TimeShareBottomSheetViewController.swift in Sources */,
 				512856372A81671100C1FBA7 /* FixPlanPopUpViewController.swift in Sources */,
 				51F2A46A2A548A1000D134CC /* FontExtension.swift in Sources */,
 				51B526CE2A6C4077009DBFB4 /* PastPlanListViewController.swift in Sources */,
