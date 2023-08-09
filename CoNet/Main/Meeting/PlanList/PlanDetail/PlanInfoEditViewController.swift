@@ -213,6 +213,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     
     @objc func didTapmemberAddButton(_ sender: Any) {
         let addVC = PlanMemberBottomSheetViewController()
+        addVC.members = members
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }

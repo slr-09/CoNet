@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class PlanMemberBottomSheetViewController: UIViewController {
+    var members: [PlanDetailMember] = []
+    
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
@@ -80,10 +82,10 @@ class PlanMemberBottomSheetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .clear
+        view.backgroundColor = .clear
         
-        self.view.addSubview(background)
-        self.view.addSubview(bottomSheet)
+        view.addSubview(background)
+        view.addSubview(bottomSheet)
         bottomSheet.addSubview(grayLine)
         bottomSheet.addSubview(member1ImageView)
         bottomSheet.addSubview(member1NameLabel)
