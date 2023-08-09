@@ -109,6 +109,11 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.textColor = UIColor.textDisabled
     }
     
+    // 선택한 날짜 : yyyy-MM-dd
+    var date: String = ""
+    // 선택한 시간 : HH:mm (24시간제)
+    var time: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -129,6 +134,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        
+        // 데이터 받기 from calendarV & planTimePickerVC
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarV(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -145,6 +153,19 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // 데이터 받기
+    @objc func dataReceivedByCalendarV(notification: Notification) {
+        if var data = notification.userInfo?["date"] as? String {
+            date = data
+            data = data.replacingOccurrences(of: "-", with: ". ")
+            planDateTextField.text = data
+        }
+        if var data = notification.userInfo?["time"] as? String {
+            time = data
+            planTimeTextField.text = data
+        }
+    }
+    
     private func setupCollectionView() {
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
@@ -157,8 +178,6 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func updatePlan() {
         guard let name = planNameTextField.text else { return }
-        guard let date = planDateTextField.text else { return }
-        guard let time = planTimeTextField.text else { return }
         
 //        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
 //            if isSuccess {
