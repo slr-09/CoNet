@@ -28,48 +28,59 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.gray300
     }
+
     let planNameTextField = UITextField().then {
         $0.placeholder = "약속 이름 입력"
         $0.font = UIFont.headline3Regular
         $0.tintColor = UIColor.textDisabled
         $0.becomeFirstResponder()
     }
+
     let xnameButton = UIButton().then {
         $0.setImage(UIImage(named: "clearBtn"), for: .normal)
         $0.isHidden = true
     }
+
     let textCountLabel = UILabel().then {
         $0.font = UIFont.caption
         $0.textColor = UIColor.textDisabled
     }
+
     let grayLine1 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
     }
+
     let planStartDateLabel = UILabel().then {
         $0.text = "약속 기간 - 시작일"
         $0.font = UIFont.body2Bold
         $0.textColor = UIColor.gray300
     }
+
     let planStartDateField = UITextField().then {
         $0.placeholder = "YYYY.MM.DD"
         $0.font = UIFont.headline3Regular
         $0.tintColor = UIColor.textDisabled
         $0.becomeFirstResponder()
     }
+
     let calendarButton = UIButton().then {
         $0.setImage(UIImage(named: "calendar"), for: .normal)
     }
+
     let grayLine2 = UIView().then {
         $0.backgroundColor = UIColor.iconDisabled
     }
+
     let planStartDateUnderImage = UIImageView().then {
         $0.image = UIImage(named: "emarkPurple")
     }
+
     let planStartDateUnderLabel = UILabel().then {
         $0.text = "약속 기간은 시작일로부터 7일 자동 설정됩니다"
         $0.font = UIFont.caption
         $0.textColor = UIColor.textHigh
     }
+
     let makeButton = UIButton().then {
         $0.frame = CGRect(x: 0, y: 0, width: 345, height: 52)
         $0.backgroundColor = UIColor.gray200
@@ -84,9 +95,9 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         
         layoutConstraints()
         
@@ -108,12 +119,12 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     // back button event
@@ -156,7 +167,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         let bottomSheetVC = PlanDateButtonSheetViewController()
         bottomSheetVC.modalPresentationStyle = .overCurrentContext
         bottomSheetVC.modalTransitionStyle = .crossDissolve
-        self.present(bottomSheetVC, animated: false, completion: nil)
+        present(bottomSheetVC, animated: false, completion: nil)
     }
     
     // 이전 ViewController로 데이터를 전달하는 delegate
@@ -164,15 +175,27 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func makeButtonTapped() {
         if makeButton.backgroundColor == UIColor.purpleMain {
-            guard let newName = planNameTextField.text else { return }
-            guard let newStartDate = planStartDateField.text else { return }
-            let date = newStartDate.replacingOccurrences(of: ".", with: "-")
-            PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { planId, isSuccess in
-                if isSuccess {
-                    self.navigationController?.popViewController(animated: true)
-                    self.delegate?.sendIntDataBack(data: planId)
+            // 이전 화면 체크
+            if let previousVC = navigationController?.viewControllers[navigationController!.viewControllers.count - 2] {
+                if previousVC is TimeShareViewController {
+                    // 약속 수정하기
+                    
+                } else {
+                    // 약속 만들기
+                    guard let newName = planNameTextField.text else { return }
+                    guard let newStartDate = planStartDateField.text else { return }
+                    let date = newStartDate.replacingOccurrences(of: ".", with: "-")
+                    PlanAPI().createPlan(teamId: meetingId, planName: newName, planStartPeriod: date) { planId, isSuccess in
+                        if isSuccess {
+                            self.navigationController?.popViewController(animated: true)
+                            self.delegate?.sendIntDataBack(data: planId)
+                        }
+                    }
                 }
+            } else {
+                print("makePlanVC 이전 뷰 컨트롤러 없음")
             }
+            
         }
     }
     
@@ -188,7 +211,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
 }
 
@@ -216,24 +239,24 @@ extension MakePlanViewController {
 // layout
 extension MakePlanViewController {
     func layoutConstraints() {
-        self.view.addSubview(backButton)
-        self.view.addSubview(titleLabel)
-        self.view.addSubview(planNameLabel)
-        self.view.addSubview(xnameButton)
-        self.view.addSubview(planNameTextField)
-        self.view.addSubview(textCountLabel)
-        self.view.addSubview(grayLine1)
+        view.addSubview(backButton)
+        view.addSubview(titleLabel)
+        view.addSubview(planNameLabel)
+        view.addSubview(xnameButton)
+        view.addSubview(planNameTextField)
+        view.addSubview(textCountLabel)
+        view.addSubview(grayLine1)
         applyConstraintsToPlanName()
         
-        self.view.addSubview(planStartDateLabel)
-        self.view.addSubview(planStartDateField)
-        self.view.addSubview(calendarButton)
-        self.view.addSubview(grayLine2)
-        self.view.addSubview(planStartDateUnderImage)
-        self.view.addSubview(planStartDateUnderLabel)
+        view.addSubview(planStartDateLabel)
+        view.addSubview(planStartDateField)
+        view.addSubview(calendarButton)
+        view.addSubview(grayLine2)
+        view.addSubview(planStartDateUnderImage)
+        view.addSubview(planStartDateUnderLabel)
         applyConstraintsToPlanDate()
         
-        self.view.addSubview(makeButton)
+        view.addSubview(makeButton)
         applyConstraintsToMakeButton()
     }
     
