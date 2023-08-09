@@ -53,6 +53,8 @@ class HistoryBottomSheetViewController: UIViewController {
         $0.setTitleColor(UIColor.error, for: .normal)
     }
     
+    var timeShareVC: TimeShareViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -71,11 +73,13 @@ class HistoryBottomSheetViewController: UIViewController {
     
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     @objc func didClickEditButton() {
-        
+        dismiss(animated: true) {
+            self.timeShareVC?.pushEditPlanPage()
+        }
     }
     
     @objc func didClickDeleteButton() {
