@@ -326,6 +326,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         nextVC.planStartDateUnderImage.isHidden = true
         nextVC.planStartDateField.isUserInteractionEnabled = false
         nextVC.makeButton.setTitle("수정", for: .normal)
+        nextVC.planId = planId
         
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)

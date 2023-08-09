@@ -301,7 +301,7 @@ class PlanAPI {
     }
     
     // 대기 중 약속 수정
-    func editWaitingPlan(planId: Int, planName: String) {
+    func editWaitingPlan(planId: Int, planName: String, completion: @escaping (_ isSuccess: Bool) -> Void) {
         let url = "\(baseUrl)/team/plan/update-waiting"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
@@ -318,6 +318,7 @@ class PlanAPI {
             case .success(let response):
                 print("DEBUG(약속 확정 api) success response: \(response.result ?? "empty")")
                 
+                completion(response.code == 1000)
             case .failure(let error):
                 print("DEBUG(약속 확정 api) error: \(error)")
             }

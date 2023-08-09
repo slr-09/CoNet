@@ -11,6 +11,7 @@ import UIKit
 
 class MakePlanViewController: UIViewController, UITextFieldDelegate {
     var meetingId: Int = 0
+    var planId: Int = 0
     
     // 이전 버튼
     let backButton = UIButton().then {
@@ -178,8 +179,12 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
             // 이전 화면 체크
             if let previousVC = navigationController?.viewControllers[navigationController!.viewControllers.count - 2] {
                 if previousVC is TimeShareViewController {
-                    // 약속 수정하기
-                    
+                    // 대기 중 약속 수정하기
+                    PlanAPI().editWaitingPlan(planId: planId, planName: planNameTextField.text!) { isSuccess in
+                        if isSuccess {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }
                 } else {
                     // 약속 만들기
                     guard let newName = planNameTextField.text else { return }
