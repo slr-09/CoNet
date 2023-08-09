@@ -61,7 +61,7 @@ class PlanMemberBottomSheetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .clear
+        view.backgroundColor = .clear
         
         layoutConstraints()
         setupCollectionView()
