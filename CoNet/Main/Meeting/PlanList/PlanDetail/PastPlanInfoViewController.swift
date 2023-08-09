@@ -475,13 +475,3 @@ extension PastPlanInfoViewController: PlanInfoViewControllerDelegate {
         }
     }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        PastPlanInfoViewController().showPreview(.iPhone14Pro)
-    }
-}
-#endif

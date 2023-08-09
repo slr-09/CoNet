@@ -254,6 +254,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         inputTimeButton.addTarget(self, action: #selector(didClickInputTimeButton), for: .touchUpInside)
         prevBtn.addTarget(self, action: #selector(didClickPrevButton), for: .touchUpInside)
         nextBtn.addTarget(self, action: #selector(didClickNextButton), for: .touchUpInside)
+        dots.addTarget(self, action: #selector(didClickDots), for: .touchUpInside)
     }
     
     @objc private func xButtonTapped() {
@@ -278,6 +279,15 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
     @objc func didClickNextButton() {
         page += 1
         btnVisible()
+    }
+    
+    @objc func didClickDots() {
+        let bottomSheetViewController = HistoryBottomSheetViewController()
+        bottomSheetViewController.planId = planId
+//        bottomSheetViewController.delegate = self
+        bottomSheetViewController.modalPresentationStyle = .overCurrentContext
+        bottomSheetViewController.modalTransitionStyle = .crossDissolve
+        present(bottomSheetViewController, animated: true, completion: nil)
     }
     
     func timeTableSetting() {

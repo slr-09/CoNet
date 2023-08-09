@@ -277,7 +277,6 @@
 				1A3AD0142A6D411900975427 /* HistoryAddViewController.swift */,
 				23ED93982A6D5FB9007B0E63 /* HistoryViewController.swift */,
 				23ED939C2A6D6485007B0E63 /* HistoryCell.swift */,
-				23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -513,6 +512,7 @@
 		5199BCD92A72432700CE585C /* Plan */ = {
 			isa = PBXGroup;
 			children = (
+				23F6F9052A6FE9A300772AFF /* HistoryBottomSheetViewController.swift */,
 				1AE5C78A2A6F6957001B88D1 /* MakePlanViewController.swift */,
 				1AC014272A70A75700E3E9C9 /* PlanConfirmViewController.swift */,
 				23DE37C02A7287BD00F1DFE0 /* TimeShareViewController.swift */,

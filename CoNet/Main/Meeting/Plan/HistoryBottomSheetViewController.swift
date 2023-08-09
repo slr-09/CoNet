@@ -10,6 +10,8 @@ import Then
 import UIKit
 
 class HistoryBottomSheetViewController: UIViewController {
+    var planId: Int = 0
+    
     // 배경 - black 투명도 30%
     let background = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -34,7 +36,7 @@ class HistoryBottomSheetViewController: UIViewController {
     
     // 수정 버튼
     let editBtn = UIButton().then {
-        $0.setTitle("수정", for: .normal)
+        $0.setTitle("약속 수정", for: .normal)
         $0.titleLabel?.font = UIFont.body1Medium
         $0.setTitleColor(UIColor.textHigh, for: .normal)
     }
@@ -46,7 +48,7 @@ class HistoryBottomSheetViewController: UIViewController {
     
     // 삭제 label
     let deleteBtn = UIButton().then {
-        $0.setTitle("삭제", for: .normal)
+        $0.setTitle("약속 삭제", for: .normal)
         $0.titleLabel?.font = UIFont.body1Medium
         $0.setTitleColor(UIColor.error, for: .normal)
     }
@@ -55,15 +57,34 @@ class HistoryBottomSheetViewController: UIViewController {
         super.viewDidLoad()
 
         layoutConstraints()
+        buttonEvents()
         
         // 배경 탭
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
     }
     
+    func buttonEvents() {
+        editBtn.addTarget(self, action: #selector(didClickEditButton), for: .touchUpInside)
+        deleteBtn.addTarget(self, action: #selector(didClickDeleteButton), for: .touchUpInside)
+    }
+    
     // 배경 탭 시 팝업 닫기
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func didClickEditButton() {
+        
+    }
+    
+    @objc func didClickDeleteButton() {
+        let popUpVC = DeletePlanPopUpViewController()
+        popUpVC.planId = planId
+//        popUpVC.delegate = self
+        popUpVC.modalPresentationStyle = .overCurrentContext
+        popUpVC.modalTransitionStyle = .crossDissolve
+        present(popUpVC, animated: true, completion: nil)
     }
     
     func layoutConstraints() {
@@ -108,7 +129,6 @@ class HistoryBottomSheetViewController: UIViewController {
         bottomSheet.addSubview(editBtn)
         editBtn.snp.makeConstraints { make in
             make.height.equalTo(20)
-            make.width.equalTo(28)
             make.leading.equalTo(editImage.snp.trailing).offset(6)
             make.centerY.equalTo(editImage.snp.centerY)
         }
@@ -125,7 +145,6 @@ class HistoryBottomSheetViewController: UIViewController {
         bottomSheet.addSubview(deleteBtn)
         deleteBtn.snp.makeConstraints { make in
             make.height.equalTo(24)
-            make.width.equalTo(28)
             make.leading.equalTo(deleteImage.snp.trailing).offset(6)
             make.centerY.equalTo(deleteImage.snp.centerY)
         }
