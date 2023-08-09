@@ -113,6 +113,8 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     var date: String = ""
     // 선택한 시간 : HH:mm (24시간제)
     var time: String = ""
+    // 참여 유저 아이디 리스트
+    var userIds: [Int] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,6 +168,14 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // 유저 아이디 리스트 업데이트
+    func updateUserId() {
+        userIds = []
+        for index in 0..<members.count {
+            userIds.append(members[index].id)
+        }
+    }
+    
     private func setupCollectionView() {
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
@@ -179,7 +189,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     @objc private func updatePlan() {
         guard let name = planNameTextField.text else { return }
         
-//        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: [1, 2], isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
+//        PlanAPI().updatePlan(planId: planId, planName: name, date: date, time: time, members: userIds, isRegisteredToHistory: true, historyDescription: "메롱", image: selectedImage) { isSuccess in
 //            if isSuccess {
 //                print("DEBUG (약속 수정 api): isSuccess true")
 //            }
@@ -203,6 +213,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     
     @objc func didTapmemberAddButton(_ sender: Any) {
         let addVC = PlanMemberBottomSheetViewController()
+        addVC.members = members
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
     }
