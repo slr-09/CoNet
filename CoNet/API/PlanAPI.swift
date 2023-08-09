@@ -299,5 +299,29 @@ class PlanAPI {
             }
         }
     }
+    
+    // 대기 중 약속 수정
+    func editWaitingPlan(planId: Int, planName: String) {
+        let url = "\(baseUrl)/team/plan/update-waiting"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        let parameters: Parameters = [
+            "planId": planId,
+            "planName": planName
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let response):
+                print("DEBUG(약속 확정 api) success response: \(response.result ?? "empty")")
+                
+            case .failure(let error):
+                print("DEBUG(약속 확정 api) error: \(error)")
+            }
+        }
+    }
 }
     
