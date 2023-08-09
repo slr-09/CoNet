@@ -42,22 +42,40 @@ class PlanTimePickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .clear
+        view.backgroundColor = .clear
         
-        self.view.addSubview(background)
-        self.view.addSubview(bottomSheet)
-        self.view.addSubview(grayLine)
-        self.view.addSubview(timePicker)
-        self.view.addSubview(applyButton)
+        view.addSubview(background)
+        view.addSubview(bottomSheet)
+        view.addSubview(grayLine)
+        view.addSubview(timePicker)
+        view.addSubview(applyButton)
         applyConstraintsToBackground()
         applyConstraintsToComponents()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         background.addGestureRecognizer(tapGesture)
+        
+        timePicker.addTarget(self, action: #selector(timePickerValueChanged(_:)), for: .valueChanged)
+        applyButton.addTarget(self, action: #selector(didClickApplyButton), for: .touchUpInside)
     }
     
     @objc func dismissPopUp() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func didClickApplyButton() {
+        dismissPopUp()
+    }
+    
+    // timePicker에 변화가 있을 때
+    @objc func timePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedTime = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "HH:mm"  // 24시간제
+        
+        let formattedTime = dateFormatter.string(from: selectedTime)
+        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["time": formattedTime])
     }
     
     func applyConstraintsToBackground() {
@@ -98,5 +116,4 @@ class PlanTimePickerViewController: UIViewController {
             make.trailing.equalTo(safeArea.snp.trailing).offset(-24)
         }
     }
-    
 }
