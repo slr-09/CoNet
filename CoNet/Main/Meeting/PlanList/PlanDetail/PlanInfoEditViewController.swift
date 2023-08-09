@@ -109,6 +109,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.textColor = UIColor.textDisabled
     }
     
+    // 선택한 날짜 : yyyy-MM-dd
+    var date: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -129,6 +132,9 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planDateTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        
+        // calendarv에서 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarV(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -142,6 +148,15 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
             self.memberCollectionView.reloadData()
             
             self.layoutConstraints()
+        }
+    }
+    
+    // calendarv에서 데이터 받기
+    @objc func dataReceivedByCalendarV(notification: Notification) {
+        if var data = notification.userInfo?["date"] as? String {
+            date = data
+            data = data.replacingOccurrences(of: "-", with: ". ")
+            planDateTextField.text = data
         }
     }
     
