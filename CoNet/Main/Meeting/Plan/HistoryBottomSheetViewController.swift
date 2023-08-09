@@ -83,12 +83,9 @@ class HistoryBottomSheetViewController: UIViewController {
     }
     
     @objc func didClickDeleteButton() {
-        let popUpVC = DeletePlanPopUpViewController()
-        popUpVC.planId = planId
-//        popUpVC.delegate = self
-        popUpVC.modalPresentationStyle = .overCurrentContext
-        popUpVC.modalTransitionStyle = .crossDissolve
-        present(popUpVC, animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.timeShareVC?.pushDeletePlanPopUp()
+        }
     }
     
     func layoutConstraints() {

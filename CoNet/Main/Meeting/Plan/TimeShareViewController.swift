@@ -315,6 +315,16 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         nextVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
+    
+    // 약속 삭제 팝업
+    func pushDeletePlanPopUp() {
+        let popUpVC = DeletePlanPopUpViewController()
+        popUpVC.planId = planId
+//        popUpVC.delegate = self
+        popUpVC.modalPresentationStyle = .overCurrentContext
+        popUpVC.modalTransitionStyle = .crossDissolve
+        present(popUpVC, animated: true, completion: nil)
+    }
 }
 
 extension TimeShareViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -546,4 +556,5 @@ protocol TimeShareProtocol {
     func pushFixPlanInfo(planId: Int)
     func popPage()
     func pushEditPlanPage()
+    func pushDeletePlanPopUp()
 }
