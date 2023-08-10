@@ -24,11 +24,11 @@ class TimeTableViewCell: UICollectionViewCell {
     
     // 셀 클릭 시 background color 바꾸기
     func changeCellColor() -> Int {
-        if contentView.backgroundColor == UIColor.grayWhite {
+        if contentView.layer.backgroundColor == UIColor.grayWhite?.cgColor {
             contentView.layer.backgroundColor = UIColor.mainSub1?.withAlphaComponent(0.5).cgColor
             return 1
         } else {
-            contentView.layer.backgroundColor = UIColor.white.cgColor
+            contentView.layer.backgroundColor = UIColor.grayWhite?.cgColor
             return 0
         }
     }
