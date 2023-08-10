@@ -102,7 +102,6 @@ class MeetingPopUpViewController: UIViewController {
             if isSuccess {
                 self.dismissPopUp()
             } else {
-                print("DEBUG wow false")
                 switch status {
                 case .valid:
                     self.updateInfoViewWithStatusCode(text: "", isHidden: true)

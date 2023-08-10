@@ -444,11 +444,12 @@ extension HistoryAddViewController {
     
     @objc private func completionButtonTapped() {
         // 완료 버튼 후
-        print("wow wow")
         guard let image = photoImageView.image else { return }
         guard let description = contentsTextView.text else { return }
         HistoryAPI().postHistory(planId: planId, image: image, description: description) { isSuccess in
-            self.navigationController?.popViewController(animated: true)
+            if isSuccess {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     

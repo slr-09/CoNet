@@ -56,7 +56,6 @@ class MeetingDelPopUpViewController: UIViewController {
     }
     
     private func showMeetingVC() {
-        // TODO: 모임 탭으로 이동 구현
         let nextVC = TabbarViewController()
         self.navigationController?.pushViewController(nextVC, animated: true)
         

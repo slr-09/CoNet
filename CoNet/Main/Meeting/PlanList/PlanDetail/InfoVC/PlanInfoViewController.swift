@@ -441,8 +441,8 @@ extension PlanInfoViewController {
         memberCollectionView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
             
-            var memberRow = ceil(Double(members.count) / 2.0)
-            var height = (memberRow * 42) + ((memberRow - 1) * 10)
+            let memberRow = ceil(Double(members.count) / 2.0)
+            let height = (memberRow * 42) + ((memberRow - 1) * 10)
             make.height.equalTo(height)
             
             make.top.equalTo(memberLabel.snp.bottom).offset(14)

@@ -80,7 +80,6 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // 각 셀을 클릭했을 때 이벤트 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected cell at indexPath: \(indexPath)")
         let nextVC = MeetingMainViewController()
         nextVC.hidesBottomBarWhenPushed = true
         nextVC.meetingId = meetings[indexPath.item].id
@@ -266,13 +265,34 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.addLabel.alpha = 0
             self.overlayView.alpha = 0
         }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        overlayView.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getAllMeetings()
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getAllMeetings()
+    }
+    
+    // 배경 탭 시 팝업 꺼짐
+    @objc func dismissPopUp() {
+        plusButton.setImage(UIImage(named: "plus"), for: .normal)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.peopleButton.alpha = 0
+            self.participateButton.alpha = 0
+            self.joinLabel.alpha = 0
+            self.addLabel.alpha = 0
+            self.overlayView.alpha = 0
+        }
+    }
+    
     func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -365,12 +385,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func didTapparticipateButton(_ sender: Any) {
+        dismissPopUp()
         let popupVC = MeetingAddViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
     }
     
     @objc func didTapPeopleButton(_ sender: Any) {
+        dismissPopUp()
         let addVC = MeetingPopUpViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)

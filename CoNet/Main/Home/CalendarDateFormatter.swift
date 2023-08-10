@@ -83,7 +83,7 @@ class CalendarDateFormatter {
         let addYear = year - Int(currentYear())!
         let addMonth = month - Int(currentMonth())!
         
-        nowCalendarDate = calendar.date(byAdding: DateComponents(year: addYear,month: addMonth), to: nowCalendarDate) ?? Date()
+        nowCalendarDate = calendar.date(byAdding: DateComponents(year: addYear, month: addMonth), to: nowCalendarDate) ?? Date()
         updateCurrentMonthDays()
         
         return getYearMonthText()

@@ -132,7 +132,6 @@ class UserInfoViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     // 프로필 이미지 서버 전송
-    // TODO: 이미지 사용 권한 물어봐야함
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             // 이미지 선택 완료 후에 사용할 코드 작성

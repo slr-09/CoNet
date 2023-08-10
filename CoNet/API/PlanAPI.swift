@@ -48,6 +48,19 @@ struct PlanDetailMember: Codable {
     let name, image: String
 }
 
+struct EditPlanMember: Codable {
+    let id: Int
+    let name, image: String
+    let isAvailable: Bool
+    
+    private enum CodingKeys: String, CodingKey {
+        case id = "userId"
+        case name = "name"
+        case image = "userImgUrl"
+        case isAvailable = "isInPlan"
+    }
+}
+
 struct PlanEditResponse: Codable {
     let code, status: Int
     let message, result: String
@@ -321,6 +334,27 @@ class PlanAPI {
                 completion(response.code == 1000)
             case .failure(let error):
                 print("DEBUG(약속 확정 api) error: \(error)")
+            }
+        }
+    }
+    
+    // 구성원 약속 가능 여부 조회
+    func getPlanMemberIsAvailable(planId: Int, completion: @escaping (_ members: [EditPlanMember]) -> Void) {
+        let url = "\(baseUrl)/team/plan/member-plan?planId=\(planId)"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .responseDecodable(of: BaseResponse<[EditPlanMember]>.self) { response in
+                switch response.result {
+                case .success(let response):
+                    guard let result = response.result else { return }
+                    print("구성원 가능 여부 조회 \(response.message)")
+                    completion(result)
+                    
+                case .failure(let error):
+                    print("구성원 가능 여부 조회 \(error)")
             }
         }
     }

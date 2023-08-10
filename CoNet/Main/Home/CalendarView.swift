@@ -71,7 +71,7 @@ class CalendarView: UIView {
     // API: 특정 달 약속 조회
     func getMonthPlanAPI(date: String) {
         planDates = []
-        HomeAPI.shared.getMonthPlan(date: date) { count, dates in
+        HomeAPI.shared.getMonthPlan(date: date) { _, dates in
             self.planDates = dates
             self.calendarCollectionView.reloadData()
         }
@@ -311,9 +311,12 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
         
         // 클릭한 날짜 (yyyy-MM-dd)
         let clickDate = calendarDate + clickDay
+        
         // calendarVC에 meetingId 넘기기
         NotificationCenter.default.post(name: NSNotification.Name("ToMakePlanVC"), object: nil, userInfo: ["date": clickDate])
 
         NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
+        
+//        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["date2": clickDate])
     }
 }

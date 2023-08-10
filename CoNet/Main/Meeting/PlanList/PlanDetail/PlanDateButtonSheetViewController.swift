@@ -50,6 +50,7 @@ class PlanDateButtonSheetViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarV(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
     }
     
     @objc func closePopUp() {
@@ -57,7 +58,9 @@ class PlanDateButtonSheetViewController: UIViewController {
     }
     
     @objc func applyButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: NSNotification.Name("SendDateToMakePlanVC"), object: nil, userInfo: ["date": self.date])
+        }
     }
     
     @objc func dataReceivedByCalendarVC(notification: Notification) {

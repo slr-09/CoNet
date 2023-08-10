@@ -65,14 +65,18 @@ class CalendarViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByMeetingMain(notification:)), name: NSNotification.Name("ToCalendarVC"), object: nil)
         
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM"
-        // api 호출
-        getMonthPlanAPI(date: format.string(from: Date()))
-        
         // 년월 설정
         yearMonth.setTitle(calendarDateFormatter.getYearMonthText(), for: .normal)
         yearMonth.addTarget(self, action: #selector(didClickYearBtn), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM"
+        
+        // api 호출
+        getMonthPlanAPI(date: format.string(from: Date()))
     }
     
     // API: 특정 달 약속 조회
@@ -85,9 +89,9 @@ class CalendarViewController: UIViewController {
                     self.planDates = dates
                     self.calendarCollectionView.reloadData()
                 }
-            } else if parentVC is MeetingMainViewController {3
+            } else if parentVC is MeetingMainViewController {
                 // 부모 뷰컨트롤러가 MeetingMainViewController
-                MeetingMainAPI().getMeetingMonthPlan(teamId: meetingId, searchDate: date) { count, dates in
+                MeetingMainAPI().getMeetingMonthPlan(teamId: meetingId, searchDate: date) { _, dates in
                     self.planDates = dates
                     self.calendarCollectionView.reloadData()
                 }
