@@ -9,12 +9,6 @@ import SnapKit
 import Then
 import UIKit
 
-struct EditPlanMember: Codable {
-    let id: Int
-    let name, image: String
-    let isAvailable: Bool
-}
-
 class PlanMemberBottomSheetViewController: UIViewController {
     var planId: Int = 17
     var members: [PlanDetailMember] = [PlanDetailMember(id: 0, name: "wow", image: ""),
@@ -72,6 +66,16 @@ class PlanMemberBottomSheetViewController: UIViewController {
         background.addGestureRecognizer(tapGesture)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        PlanAPI().getPlanMemberIsAvailable(planId: planId) { members in
+            self.allMembers = members
+            self.memberCollectionView.reloadData()
+            
+            self.layoutConstraints()
+        }
+    }
+    
     private func setupCollectionView() {
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
@@ -92,6 +96,16 @@ class PlanMemberBottomSheetViewController: UIViewController {
 
     @objc func addButtonTapped() {
         // "추가하기" 버튼을 눌렀을 때 수행할 동작
+        var newMembers: [PlanDetailMember] = []
+        for member in allMembers {
+            if member.isAvailable {
+                let member = PlanDetailMember(id: member.id, name: member.name, image: member.image)
+                newMembers.append(member)
+            }
+        }
+        
+        // 멤버를 선택된 멤버로 변경
+        self.members = newMembers
     }
     
     private func layoutConstraints() {

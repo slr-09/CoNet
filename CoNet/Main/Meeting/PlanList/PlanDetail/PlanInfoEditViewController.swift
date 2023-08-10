@@ -213,20 +213,24 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     
     @objc func didTapmemberAddButton(_ sender: Any) {
         let addVC = PlanMemberBottomSheetViewController()
+        addVC.planId = self.planId
         addVC.members = members
         addVC.modalPresentationStyle = .overFullScreen
+        addVC.modalTransitionStyle = .crossDissolve
         present(addVC, animated: false, completion: nil)
     }
     
     @objc func didTapcalendarButton(_ sender: Any) {
         let addVC = PlanDateButtonSheetViewController()
         addVC.modalPresentationStyle = .overFullScreen
+        addVC.modalTransitionStyle = .crossDissolve
         present(addVC, animated: false, completion: nil)
     }
     
     @objc func didTapclockButton(_ sender: Any) {
         let addVC = PlanTimePickerViewController()
         addVC.modalPresentationStyle = .overFullScreen
+        addVC.modalTransitionStyle = .crossDissolve
         present(addVC, animated: false, completion: nil)
     }
 }
