@@ -154,7 +154,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         getMemberPossibleTimeAPI()
     }
     
-    // 시간 입력 후 돌아왔을 때 업데이트 
+    // 시간 입력 후 돌아왔을 때 업데이트
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         getMemberPossibleTimeAPI()

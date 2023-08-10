@@ -46,7 +46,7 @@ class MeetingAPI {
         .responseDecodable(of: BaseResponse<PostCreateMeetingResponse>.self) { response in
             switch response.result {
             case .success(let response):
-                print("DEBUG(모임 생성 api) success response: \(response)")
+                print("DEBUG(모임 생성 api) success response: \(response.message)")
                 completion(response.code == 1000)
                 
             case .failure(let error):
