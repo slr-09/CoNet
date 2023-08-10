@@ -142,7 +142,7 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-
+        view.layoutIfNeeded()
         layoutConstraints()
         timeTableSetting()
         
@@ -151,6 +151,12 @@ class TimeShareViewController: UIViewController, TimeShareProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        getMemberPossibleTimeAPI()
+    }
+    
+    // 시간 입력 후 돌아왔을 때 업데이트
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         getMemberPossibleTimeAPI()
     }
     

@@ -271,7 +271,12 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewWillAppear(animated)
         getAllMeetings()
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getAllMeetings()
+    }
+    
     func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self

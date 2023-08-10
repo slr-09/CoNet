@@ -57,7 +57,9 @@ class PlanDateButtonSheetViewController: UIViewController {
     }
     
     @objc func applyButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: NSNotification.Name("SendDateToMakePlanVC"), object: nil, userInfo: ["date": self.date])
+        }
     }
     
     @objc func dataReceivedByCalendarVC(notification: Notification) {

@@ -114,8 +114,8 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         
         updateMakeButtonState()
         
-        // calendarViewController에서 데이터 받기
-        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
+        // 데이터 받기
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByBottomSheet(notification:)), name: NSNotification.Name("SendDateToMakePlanVC"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -133,7 +133,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func dataReceivedByCalendarVC(notification: Notification) {
+    @objc func dataReceivedByBottomSheet(notification: Notification) {
         if var data = notification.userInfo?["date"] as? String {
             date = data
             data = data.replacingOccurrences(of: "-", with: ".")
