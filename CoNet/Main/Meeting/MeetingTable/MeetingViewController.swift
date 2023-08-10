@@ -276,7 +276,7 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewDidAppear(animated)
         getAllMeetings()
     }
-
+    
     func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
