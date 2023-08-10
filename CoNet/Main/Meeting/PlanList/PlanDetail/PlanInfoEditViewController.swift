@@ -62,6 +62,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         $0.placeholder = "2023.07.15"
         $0.font = UIFont.headline3Regular
         $0.tintColor = UIColor.black
+        $0.isEnabled = false
         $0.becomeFirstResponder()
     }
     

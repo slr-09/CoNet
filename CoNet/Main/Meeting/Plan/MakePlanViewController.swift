@@ -61,6 +61,7 @@ class MakePlanViewController: UIViewController, UITextFieldDelegate {
         $0.placeholder = "YYYY.MM.DD"
         $0.font = UIFont.headline3Regular
         $0.tintColor = UIColor.textDisabled
+        $0.isEnabled = false
         $0.becomeFirstResponder()
     }
 
