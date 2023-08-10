@@ -40,6 +40,8 @@ class PlanTimePickerViewController: UIViewController {
         $0.layer.masksToBounds = true
     }
     
+    var formattedTime = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
@@ -64,6 +66,7 @@ class PlanTimePickerViewController: UIViewController {
     }
     
     @objc func didClickApplyButton() {
+        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["time": formattedTime])
         dismissPopUp()
     }
     
@@ -74,8 +77,7 @@ class PlanTimePickerViewController: UIViewController {
         dateFormatter.timeStyle = .short
         dateFormatter.dateFormat = "HH:mm"  // 24시간제
         
-        let formattedTime = dateFormatter.string(from: selectedTime)
-        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["time": formattedTime])
+        formattedTime = dateFormatter.string(from: selectedTime)
     }
     
     func applyConstraintsToBackground() {

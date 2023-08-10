@@ -50,6 +50,7 @@ class PlanDateButtonSheetViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToMakePlanVC"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarV(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
     }
     
     @objc func closePopUp() {

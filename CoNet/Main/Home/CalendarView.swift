@@ -317,6 +317,6 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegateFlow
 
         NotificationCenter.default.post(name: NSNotification.Name("ToPlanDateSheetVC"), object: nil)
         
-        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["date": clickDate])
+//        NotificationCenter.default.post(name: NSNotification.Name("ToPlanInfoEditVC"), object: nil, userInfo: ["date2": clickDate])
     }
 }

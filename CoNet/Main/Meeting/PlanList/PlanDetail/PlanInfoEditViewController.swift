@@ -139,7 +139,8 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
         planTimeTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         
         // 데이터 받기 from calendarV & planTimePickerVC
-        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarV(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("ToPlanInfoEditVC"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dataReceivedByCalendarVC(notification:)), name: NSNotification.Name("SendDateToMakePlanVC"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,7 +158,7 @@ class PlanInfoEditViewController: UIViewController, UITextFieldDelegate {
     }
     
     // 데이터 받기
-    @objc func dataReceivedByCalendarV(notification: Notification) {
+    @objc func dataReceivedByCalendarVC(notification: Notification) {
         if var data = notification.userInfo?["date"] as? String {
             date = data
             data = data.replacingOccurrences(of: "-", with: ". ")
