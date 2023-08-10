@@ -126,10 +126,10 @@ class TermsOfUseViewController: UIViewController {
         button3.addTarget(self, action: #selector(button3Tapped), for: .touchUpInside)
         button4.addTarget(self, action: #selector(button4Tapped), for: .touchUpInside)
         
-        button1.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
-        button2.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
-        button3.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
-        button4.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+//        button1.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+//        button2.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+//        button3.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
+//        button4.addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
         
         nextButton.addTarget(self, action: #selector(showEnterName(_:)), for: .touchUpInside)
     }
@@ -240,9 +240,9 @@ class TermsOfUseViewController: UIViewController {
         }
     }
     
-    @objc private func buttonTouchedDown() {
-        nextButton.backgroundColor = UIColor.purplePressed
-    }
+//    @objc private func buttonTouchedDown() {
+//        nextButton.backgroundColor = UIColor.purplePressed
+//    }
     
     @objc private func updateNextButtonState() {
         if (buttonSelectedStates[1] && buttonSelectedStates[2]) || buttonSelectedStates[0] {
@@ -274,40 +274,58 @@ class TermsOfUseViewController: UIViewController {
         button3.setImage(selectedImage, for: .normal)
         button4.setImage(selectedImage, for: .normal)
         
-        buttonTouchedDown()
+//        buttonTouchedDown()
         updateNextButtonState()
     }
     
     @objc private func button2Tapped() {
-        let newState = !buttonSelectedStates[1]
-        buttonSelectedStates[1] = newState
-            
+        buttonSelectedStates[1] = !buttonSelectedStates[1]
+        checkboxStateCheck()
+        
+        let newState = buttonSelectedStates[1]
+        
         let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
         button2.setImage(selectedImage, for: .normal)
         
-        buttonTouchedDown()
+//        buttonTouchedDown()
         updateNextButtonState()
     }
         
     @objc private func button3Tapped() {
-        let newState = !buttonSelectedStates[2]
-        buttonSelectedStates[2] = newState
+        buttonSelectedStates[2] = !buttonSelectedStates[2]
+        checkboxStateCheck()
+        
+        let newState = buttonSelectedStates[2]
             
         let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
         button3.setImage(selectedImage, for: .normal)
          
-        buttonTouchedDown()
+//        buttonTouchedDown()
         updateNextButtonState()
     }
         
     @objc private func button4Tapped() {
-        let newState = !buttonSelectedStates[3]
-        buttonSelectedStates[3] = newState
+        buttonSelectedStates[3] = !buttonSelectedStates[3]
+        checkboxStateCheck()
+        
+        let newState = buttonSelectedStates[3]
         
         let selectedImage = newState ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
         button4.setImage(selectedImage, for: .normal)
         
-        buttonTouchedDown()
+//        buttonTouchedDown()
         updateNextButtonState()
+    }
+    
+    // 전체 동의 버튼 update
+    func checkboxStateCheck() {
+        if buttonSelectedStates[1] && buttonSelectedStates[2] && buttonSelectedStates[3] {
+            buttonSelectedStates[0] = buttonSelectedStates[1]
+        } else {
+            buttonSelectedStates[0] = false
+        }
+        
+        let selectedImage = buttonSelectedStates[0] ? UIImage(named: "checkbox 1") : UIImage(named: "checkbox 2")
+        button1.setImage(selectedImage, for: .normal)
     }
 }

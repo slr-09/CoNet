@@ -127,7 +127,7 @@ class FixPlanPopUpView: UIView {
         fixPlanLabel.snp.makeConstraints { make in
             make.height.equalTo(20)
             make.centerX.equalTo(background.snp.centerX)
-            make.bottom.equalTo(horizontalDivider.snp.top).offset(-48)
+            make.bottom.equalTo(horizontalDivider.snp.top).offset(-58)
         }
         
         background.addSubview(verticalDivider)
