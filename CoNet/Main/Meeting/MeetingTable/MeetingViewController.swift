@@ -385,12 +385,14 @@ class MeetingViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func didTapparticipateButton(_ sender: Any) {
+        dismissPopUp()
         let popupVC = MeetingAddViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         present(popupVC, animated: false, completion: nil)
     }
     
     @objc func didTapPeopleButton(_ sender: Any) {
+        dismissPopUp()
         let addVC = MeetingPopUpViewController()
         addVC.modalPresentationStyle = .overFullScreen
         present(addVC, animated: false, completion: nil)
